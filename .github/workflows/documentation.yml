@@ -1,0 +1,223 @@
+name: 📚 Auto-Generate Documentation
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'frontend/**'
+      - 'backend/**' 
+      - 'docs/**'
+      - '*.js'
+      - '*.json'
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  analyze-and-document:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: 📦 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: 🔧 Install Root Dependencies
+      run: |
+        if [ -f package.json ]; then npm ci; fi
+        
+    - name: 🔧 Install Shared Component Dependencies
+      working-directory: ./frontend/shared
+      run: npm ci
+      
+    - name: 🔧 Install Web App Dependencies  
+      working-directory: ./frontend/web-app
+      run: npm ci
+      
+    - name: 🔧 Install Documentation Dependencies
+      working-directory: ./docs
+      run: npm ci
+      
+    - name: 🔍 Run Codebase Analysis
+      run: |
+        node analyze-codebase.js
+        echo "✅ Codebase analysis complete"
+        
+    - name: 🌐 Run API Analysis
+      run: |
+        node analyze-apis.js || echo "⚠️ API analysis failed, continuing with partial data"
+        
+    - name: 📚 Generate Documentation
+      run: |
+        node generate-docs.js
+        echo "✅ Documentation generated"
+        
+    - name: 📊 Generate Analysis Reports
+      run: |
+        # Create summary for GitHub Actions
+        echo "## 📊 Platform Analysis Summary" >> $GITHUB_STEP_SUMMARY
+        echo "- **Total Files:** $(jq -r '.overview.stats.totalFiles // "N/A"' FILO_ANALYSIS_REPORT.json)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Shared Components:** $(jq -r '.shared.components | length' FILO_ANALYSIS_REPORT.json)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Custom Hooks:** $(jq -r '.frontend.hooks | length' FILO_ANALYSIS_REPORT.json)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Analysis Date:** $(date)" >> $GITHUB_STEP_SUMMARY
+        
+        if [ -f FILO_API_ANALYSIS.json ]; then
+          echo "- **Working APIs:** $(jq -r '.summary.working // 0' FILO_API_ANALYSIS.json)/$(jq -r '.summary.total // 0' FILO_API_ANALYSIS.json)" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+    - name: 🏗️ Build Documentation Site
+      working-directory: ./docs
+      run: |
+        npm run build
+        echo "✅ Documentation site built"
+        
+    - name: 📋 Documentation Health Check
+      working-directory: ./docs
+      run: |
+        # Check if key documentation files exist
+        echo "🔍 Checking documentation completeness..."
+        
+        if [ -f "docs/intro.md" ]; then
+          echo "✅ Overview documentation generated"
+        else
+          echo "❌ Overview documentation missing"
+        fi
+        
+        if [ -f "docs/architecture/overview.md" ]; then
+          echo "✅ Architecture documentation generated"  
+        else
+          echo "❌ Architecture documentation missing"
+        fi
+        
+        if [ -f "docs/components/overview.md" ]; then
+          echo "✅ Component documentation generated"
+        else
+          echo "❌ Component documentation missing"
+        fi
+        
+        if [ -f "docs/api/overview.md" ]; then
+          echo "✅ API documentation generated"
+        else
+          echo "❌ API documentation missing"
+        fi
+        
+    - name: 📈 Upload Analysis Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: platform-analysis-reports
+        path: |
+          FILO_ANALYSIS_REPORT.json
+          FILO_API_ANALYSIS.json
+          FILO_API_SWAGGER.json
+          FILO_API_SUMMARY.json
+        retention-days: 30
+        
+    - name: 📄 Upload Documentation Build
+      uses: actions/upload-artifact@v4
+      with:
+        name: documentation-site
+        path: docs/build/
+        retention-days: 7
+
+  deploy-documentation:
+    needs: analyze-and-document
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: 📦 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: 📥 Download Documentation Build
+      uses: actions/download-artifact@v4
+      with:
+        name: documentation-site
+        path: docs/build/
+        
+    - name: 🔍 Detect Custom Domain
+      id: domain
+      run: |
+        if [ -f "docs/static/CNAME" ]; then
+          echo "custom_domain=$(cat docs/static/CNAME)" >> $GITHUB_OUTPUT
+          echo "Custom domain detected: $(cat docs/static/CNAME)"
+        elif [ -f "CNAME" ]; then
+          echo "custom_domain=$(cat CNAME)" >> $GITHUB_OUTPUT
+          echo "Custom domain detected: $(cat CNAME)"
+        else
+          echo "custom_domain=" >> $GITHUB_OUTPUT
+          echo "No custom domain detected"
+        fi
+    
+    - name: 🚀 Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/build
+        cname: ${{ steps.domain.outputs.custom_domain }}
+        
+    - name: 📊 Deployment Summary
+      run: |
+        echo "## 🚀 Documentation Deployment Summary" >> $GITHUB_STEP_SUMMARY
+        echo "- **Status:** Successfully deployed to GitHub Pages" >> $GITHUB_STEP_SUMMARY
+        
+        # Dynamic URL based on repository and custom domain
+        if [ -n "${{ steps.domain.outputs.custom_domain }}" ]; then
+          echo "- **URL:** https://${{ steps.domain.outputs.custom_domain }}/" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "- **URL:** https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        echo "- **Repository:** https://github.com/${{ github.repository }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Build Time:** $(date)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+
+  notify-completion:
+    needs: [analyze-and-document, deploy-documentation]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+    - name: 📋 Workflow Summary
+      run: |
+        echo "## 🎯 FILO Documentation Workflow Complete" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Results:" >> $GITHUB_STEP_SUMMARY
+        
+        if [ "${{ needs.analyze-and-document.result }}" == "success" ]; then
+          echo "- ✅ **Analysis & Documentation Generation:** Success" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "- ❌ **Analysis & Documentation Generation:** Failed" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        if [ "${{ needs.deploy-documentation.result }}" == "success" ]; then
+          echo "- ✅ **Documentation Deployment:** Success" >> $GITHUB_STEP_SUMMARY
+        elif [ "${{ needs.deploy-documentation.result }}" == "skipped" ]; then
+          echo "- ⏭️ **Documentation Deployment:** Skipped (not main branch)" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "- ❌ **Documentation Deployment:** Failed" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Next Steps:" >> $GITHUB_STEP_SUMMARY
+        
+        # Dynamic documentation URL
+        if [ -f "docs/static/CNAME" ] || [ -f "CNAME" ]; then
+          DOMAIN=$(cat docs/static/CNAME 2>/dev/null || cat CNAME 2>/dev/null)
+          echo "1. 📖 Review documentation at: https://${DOMAIN}/" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "1. 📖 Review documentation at: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        echo "2. 📊 Check analysis reports in workflow artifacts" >> $GITHUB_STEP_SUMMARY
+        echo "3. 🔧 Address any gaps identified in the analysis" >> $GITHUB_STEP_SUMMARY
