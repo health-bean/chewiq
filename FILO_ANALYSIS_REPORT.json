@@ -4,7 +4,7 @@
       {
         "name": "FILO_ANALYSIS_REPORT.json",
         "type": "file",
-        "size": 44361
+        "size": 41641
       },
       {
         "name": "FILO_API_ANALYSIS.json",
@@ -24,7 +24,7 @@
       {
         "name": "README.md",
         "type": "file",
-        "size": 19
+        "size": 71
       },
       {
         "name": "amplify.yml",
@@ -129,9 +129,191 @@
             "size": 774
           },
           {
+            "name": "analyze-codebase.js",
+            "type": "file",
+            "size": 15600
+          },
+          {
+            "name": "build",
+            "type": "directory",
+            "children": [
+              {
+                "name": "404.html",
+                "type": "file",
+                "size": 8939
+              },
+              {
+                "name": "api",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "overview",
+                    "type": "directory",
+                    "children": null
+                  }
+                ]
+              },
+              {
+                "name": "architecture",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "overview",
+                    "type": "directory",
+                    "children": null
+                  }
+                ]
+              },
+              {
+                "name": "assets",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "css",
+                    "type": "directory",
+                    "children": null
+                  },
+                  {
+                    "name": "js",
+                    "type": "directory",
+                    "children": null
+                  }
+                ]
+              },
+              {
+                "name": "components",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "overview",
+                    "type": "directory",
+                    "children": null
+                  }
+                ]
+              },
+              {
+                "name": "deployment",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "overview",
+                    "type": "directory",
+                    "children": null
+                  }
+                ]
+              },
+              {
+                "name": "development",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "setup",
+                    "type": "directory",
+                    "children": null
+                  }
+                ]
+              },
+              {
+                "name": "img",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "docusaurus-social-card.jpg",
+                    "type": "file",
+                    "size": 55746
+                  },
+                  {
+                    "name": "docusaurus.png",
+                    "type": "file",
+                    "size": 5142
+                  },
+                  {
+                    "name": "favicon.ico",
+                    "type": "file",
+                    "size": 3626
+                  },
+                  {
+                    "name": "logo.svg",
+                    "type": "file",
+                    "size": 6438
+                  },
+                  {
+                    "name": "undraw_docusaurus_mountain.svg",
+                    "type": "file",
+                    "size": 31486
+                  },
+                  {
+                    "name": "undraw_docusaurus_react.svg",
+                    "type": "file",
+                    "size": 36002
+                  },
+                  {
+                    "name": "undraw_docusaurus_tree.svg",
+                    "type": "file",
+                    "size": 11887
+                  }
+                ]
+              },
+              {
+                "name": "index.html",
+                "type": "file",
+                "size": 20464
+              },
+              {
+                "name": "intro",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "index.html",
+                    "type": "file",
+                    "size": 22684
+                  }
+                ]
+              },
+              {
+                "name": "markdown-page",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "index.html",
+                    "type": "file",
+                    "size": 9010
+                  }
+                ]
+              },
+              {
+                "name": "sitemap.xml",
+                "type": "file",
+                "size": 1416
+              }
+            ]
+          },
+          {
             "name": "docs",
             "type": "directory",
             "children": [
+              {
+                "name": "api",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "overview.md",
+                    "type": "file",
+                    "size": 8875
+                  }
+                ]
+              },
+              {
+                "name": "architecture",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "overview.md",
+                    "type": "file",
+                    "size": 5217
+                  }
+                ]
+              },
               {
                 "name": "components",
                 "type": "directory",
@@ -139,7 +321,29 @@
                   {
                     "name": "overview.md",
                     "type": "file",
-                    "size": 8900
+                    "size": 8908
+                  }
+                ]
+              },
+              {
+                "name": "deployment",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "overview.md",
+                    "type": "file",
+                    "size": 5539
+                  }
+                ]
+              },
+              {
+                "name": "development",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "setup.md",
+                    "type": "file",
+                    "size": 5329
                   }
                 ]
               },
@@ -147,13 +351,29 @@
                 "name": "index.md",
                 "type": "file",
                 "size": 3098
+              },
+              {
+                "name": "intro.md",
+                "type": "file",
+                "size": 3114
+              },
+              {
+                "name": "platform",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "overview.md",
+                    "type": "file",
+                    "size": 930
+                  }
+                ]
               }
             ]
           },
           {
             "name": "docusaurus.config.js",
             "type": "file",
-            "size": 4555
+            "size": 3911
           },
           {
             "name": "package-lock.json",
@@ -168,7 +388,7 @@
           {
             "name": "sidebars.js",
             "type": "file",
-            "size": 855
+            "size": 969
           },
           {
             "name": "src",
@@ -255,6 +475,11 @@
                 ]
               }
             ]
+          },
+          {
+            "name": "test-deploy.md",
+            "type": "file",
+            "size": 0
           }
         ]
       },
@@ -415,7 +640,7 @@
               {
                 "name": "index.html",
                 "type": "file",
-                "size": 361
+                "size": 0
               },
               {
                 "name": "package-lock.json",
@@ -521,7 +746,7 @@
       {
         "name": "generate-docs.js",
         "type": "file",
-        "size": 21183
+        "size": 43959
       },
       {
         "name": "infrastructure",
@@ -545,9 +770,9 @@
       }
     ],
     "stats": {
-      "totalFiles": 361,
-      "directories": 205,
-      "lastModified": "2025-06-29T16:32:28.907Z"
+      "totalFiles": 512,
+      "directories": 274,
+      "lastModified": "2025-06-29T17:43:33.123Z"
     }
   },
   "frontend": {

@@ -1,12 +1,19 @@
 const { pool } = require('../database/connection');
 const { successResponse, errorResponse } = require('../utils/responses');
 const { handleDatabaseError } = require('../utils/errors');
-const { getTenantContext } = require('../middleware/auth');
+const { getCurrentUser, getAccessibleUserIds, requireAuth } = require('../middleware/auth');
 
 const handleGetTimelineEntries = async (queryParams, event) => {
+    // Require authentication
+    const authError = await requireAuth(event);
+    if (authError) {
+        return authError;
+    }
+
     try {
+        const user = await getCurrentUser(event);
+        const accessibleUserIds = await getAccessibleUserIds(event);
         const client = await pool.connect();
-        const { userId, tenantId } = getTenantContext(event);
         const { date = null, limit = 50 } = queryParams;
         
         let query = `
@@ -18,16 +25,17 @@ const handleGetTimelineEntries = async (queryParams, event) => {
                 te.severity,
                 te.protocol_compliant,
                 te.created_at,
-                je.entry_date
+                je.entry_date,
+                te.user_id
             FROM timeline_entries te
             JOIN journal_entries je ON te.journal_entry_id = je.id
-            WHERE te.user_id = $1 AND te.tenant_id = $2
+            WHERE te.user_id = ANY($1)
         `;
         
-        const values = [userId, tenantId];
+        const values = [accessibleUserIds];
         
         if (date) {
-            query += ` AND je.entry_date = $3`;
+            query += ` AND je.entry_date = $2`;
             values.push(date);
         }
         
@@ -49,9 +57,15 @@ const handleGetTimelineEntries = async (queryParams, event) => {
 };
 
 const handleCreateTimelineEntry = async (body, event) => {
+    // Require authentication
+    const authError = await requireAuth(event);
+    if (authError) {
+        return authError;
+    }
+
     try {
+        const user = await getCurrentUser(event);
         const client = await pool.connect();
-        const { userId, tenantId } = getTenantContext(event);
         
         const {
             entryDate,
@@ -66,29 +80,29 @@ const handleCreateTimelineEntry = async (body, event) => {
         
         let journalEntryId;
         const journalQuery = `
-            INSERT INTO journal_entries (tenant_id, user_id, entry_date)
-            VALUES ($1, $2, $3)
-            ON CONFLICT (user_id, tenant_id, entry_date) 
-            DO UPDATE SET updated_at = NOW()
+            INSERT INTO journal_entries (user_id, entry_date)
+            VALUES ($1, $2)
+            ON CONFLICT (user_id, entry_date) 
+            DO UPDATE SET updated_at = CURRENT_TIMESTAMP
             RETURNING id
         `;
         
-        const journalResult = await client.query(journalQuery, [tenantId, userId, entryDate]);
+        const journalResult = await client.query(journalQuery, [user.id, entryDate]);
         journalEntryId = journalResult.rows[0].id;
         
         const timelineQuery = `
             INSERT INTO timeline_entries (
-                journal_entry_id, user_id, tenant_id, entry_time, 
+                journal_entry_id, user_id, entry_time, 
                 entry_type, content, severity, protocol_compliant
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7)
             RETURNING *
         `;
         
         const protocolCompliant = entryType === 'food' ? 
-            await checkProtocolCompliance(selectedFoods, userId, client) : null;
+            await checkProtocolCompliance(selectedFoods, user.id, client) : null;
         
         const timelineValues = [
-            journalEntryId, userId, tenantId, entryTime,
+            journalEntryId, user.id, entryTime,
             entryType, content, severity, protocolCompliant
         ];
         

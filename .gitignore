@@ -167,3 +167,8 @@ docs/.docusaurus/
 frontend/shared/components/.DS_Store
 frontend/.DS_Store
 .DS_Store
+backend/.DS_Store
+backend/.DS_Store
+backend/functions/.DS_Store
+backend/functions/api/.DS_Store
+backend/functions/api/.DS_Store
