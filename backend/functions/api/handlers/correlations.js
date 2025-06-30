@@ -192,6 +192,22 @@ function groupFoodsByProperties(foodEntries, foodProperties) {
 }
 
 /**
+ * Helper function to safely parse date and time
+ */
+function parseDateTime(entry) {
+  let dateStr;
+  
+  // Handle case where entry_date is already a Date object
+  if (entry.entry_date instanceof Date) {
+    dateStr = entry.entry_date.toISOString().split('T')[0]; // Get just the date part
+  } else {
+    dateStr = entry.entry_date;
+  }
+  
+  return new Date(`${dateStr}T${entry.entry_time}`);
+}
+
+/**
  * Analyze correlation between food property and symptom
  */
 function analyzePropertySymptomCorrelation(propertyFoods, symptoms, timeWindow, propertyName, symptomType) {
@@ -199,12 +215,12 @@ function analyzePropertySymptomCorrelation(propertyFoods, symptoms, timeWindow, 
   let totalOpportunities = 0;
 
   for (const foodEntry of propertyFoods) {
-    const foodTime = new Date(`${foodEntry.entry_date}T${foodEntry.entry_time}`);
+    const foodTime = parseDateTime(foodEntry);
     const windowEnd = new Date(foodTime.getTime() + timeWindow.hours * 60 * 60 * 1000);
 
     // Look for symptoms in the time window
     const symptomInWindow = symptoms.find(symptom => {
-      const symptomTime = new Date(`${symptom.entry_date}T${symptom.entry_time}`);
+      const symptomTime = parseDateTime(symptom);
       return symptomTime > foodTime && symptomTime <= windowEnd;
     });
 
@@ -280,11 +296,11 @@ function analyzeIndividualFoodSymptomCorrelation(foodInstances, symptoms, timeWi
   let totalOpportunities = foodInstances.length;
 
   for (const foodEntry of foodInstances) {
-    const foodTime = new Date(`${foodEntry.entry_date}T${foodEntry.entry_time}`);
+    const foodTime = parseDateTime(foodEntry);
     const windowEnd = new Date(foodTime.getTime() + timeWindow.hours * 60 * 60 * 1000);
 
     const symptomInWindow = symptoms.find(symptom => {
-      const symptomTime = new Date(`${symptom.entry_date}T${symptom.entry_time}`);
+      const symptomTime = parseDateTime(symptom);
       return symptomTime > foodTime && symptomTime <= windowEnd;
     });
 
@@ -341,7 +357,7 @@ async function detectSupplementImprovements(timelineData, confidenceThreshold) {
     if (supplementInstances.length < 7) continue; // Need at least a week of data
 
     // Find supplement start date
-    const startDate = new Date(Math.min(...supplementInstances.map(s => new Date(`${s.entry_date}T${s.entry_time}`))));
+    const startDate = new Date(Math.min(...supplementInstances.map(s => parseDateTime(s).getTime())));
     
     // Analyze impact on symptoms
     for (const symptomType of getUniqueSymptoms(symptomEntries)) {
@@ -371,12 +387,12 @@ function analyzeSupplementSymptomImprovement(supplementInstances, symptoms, star
   const fourWeeksAfter = new Date(startDate.getTime() + 28 * 24 * 60 * 60 * 1000);
 
   const symptomsBefore = symptoms.filter(s => {
-    const sympTime = new Date(`${s.entry_date}T${s.entry_time}`);
+    const sympTime = parseDateTime(s);
     return sympTime >= fourWeeksBefore && sympTime < startDate;
   });
 
   const symptomsAfter = symptoms.filter(s => {
-    const sympTime = new Date(`${s.entry_date}T${s.entry_time}`);
+    const sympTime = parseDateTime(s);
     return sympTime >= startDate && sympTime <= fourWeeksAfter;
   });
 
