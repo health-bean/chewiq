@@ -5,10 +5,13 @@ const handleCors = (event) => {
         return {
             statusCode: 200,
             headers: corsHeaders,
-            body: JSON.stringify({ message: 'CORS preflight' })
+            body: JSON.stringify({ message: 'CORS preflight successful' })
         };
     }
     return null;
 };
 
-module.exports = { handleCors, corsHeaders };
+module.exports = {
+    handleCors,
+    corsHeaders
+};

@@ -5,7 +5,7 @@ const { handleGetUser, handleUpdateUser, handleGetUserProtocols, handleGetUserPr
 const { handleGetJournalEntries, handleCreateJournalEntry, handleGetJournalEntry, handleUpdateJournalEntry } = require('./handlers/journal');
 const { handleGetTimelineEntries, handleCreateTimelineEntry } = require('./handlers/timeline');
 const { handleGetProtocols } = require('./handlers/protocols');
-const { handleSearchFoods } = require('./handlers/foods');
+const { handleSearchFoods, handleGetProtocolFoods } = require('./handlers/foods');
 const { handleSearchSymptoms } = require('./handlers/symptoms');
 const { handleSearchSupplements } = require('./handlers/supplements');
 const { handleSearchMedications } = require('./handlers/medications');
@@ -35,36 +35,30 @@ exports.handler = async (event) => {
         else if (path === '/api/v1/users' && method === 'GET') {
             response = await handleGetUser(event);
         }
-        else if (path === '/api/v1/correlations/insights' && method === 'GET') {
-            response = await handleGetCorrelationInsights(queryParams, event);
-        }
-        // ALTERNATIVE: Future-proof correlation routing (OPTIONAL FOR POC)
-        else if (path.startsWith('/api/v1/correlations/') && method === 'GET') {
-            if (path === '/api/v1/correlations/insights') {
-                response = await handleGetCorrelationInsights(queryParams, event);
-            }
-            // Future endpoints can go here:
-            // else if (path === '/api/v1/correlations/user-patterns') {
-            //     response = await handleGetUserPatterns(queryParams, event);
-            // }
-            // else if (path === '/api/v1/correlations/food-triggers') {
-            //     response = await handleGetFoodTriggers(queryParams, event);
-            // }
-            else {
-                response = errorResponse('Correlation endpoint not found', 404);
-            }
-        }
         else if (path === '/api/v1/users' && method === 'POST') {
             response = await handleUpdateUser(body, event);
         }
         else if (path === '/api/v1/user/protocols' && method === 'GET') {
             response = await handleGetUserProtocols(event);
         }
+        else if (path === '/api/v1/user/preferences' && method === 'GET') {
+            response = await handleGetUserPreferences(event);
+        }
+        else if (path === '/api/v1/user/preferences' && method === 'POST') {
+            response = await handleUpdateUserPreferences(body, event);
+        }
+        else if (path === '/api/v1/correlations/insights' && method === 'GET') {
+            response = await handleGetCorrelationInsights(queryParams, event);
+        }
         else if (path === '/api/v1/protocols' && method === 'GET') {
             response = await handleGetProtocols(queryParams, event);
         }
         else if (path === '/api/v1/foods/search' && method === 'GET') {
             response = await handleSearchFoods(queryParams, event);
+        }
+        else if (path === '/api/v1/foods/by-protocol' && method === 'GET') {
+            console.log("Protocol foods route hit!");
+            response = await handleGetProtocolFoods(queryParams, event);
         }
         else if (path === '/api/v1/symptoms/search' && method === 'GET') {
             response = await handleSearchSymptoms(queryParams, event);
@@ -84,13 +78,13 @@ exports.handler = async (event) => {
         else if (path === '/api/v1/journal/entries' && method === 'POST') {
             response = await handleCreateJournalEntry(body, event);
         }
-        else if (path.startsWith('/api/v1/journal/entries/') && method === 'PUT') {
-            const date = path.split('/').pop();
-            response = await handleUpdateJournalEntry(date, body, event);
-        }
         else if (path.startsWith('/api/v1/journal/entries/') && method === 'GET') {
             const date = path.split('/').pop();
             response = await handleGetJournalEntry(date, event);
+        }
+        else if (path.startsWith('/api/v1/journal/entries/') && method === 'PUT') {
+            const date = path.split('/').pop();
+            response = await handleUpdateJournalEntry(date, body, event);
         }
         else if (path === '/api/v1/timeline/entries' && method === 'GET') {
             response = await handleGetTimelineEntries(queryParams, event);
@@ -98,16 +92,9 @@ exports.handler = async (event) => {
         else if (path === '/api/v1/timeline/entries' && method === 'POST') {
             response = await handleCreateTimelineEntry(body, event);
         }
-        else if (path === '/api/v1/user/preferences' && method === 'GET') {
-            response = await handleGetUserPreferences(event);
-        }
-        else if (path === '/api/v1/user/preferences' && method === 'POST') {
-            response = await handleUpdateUserPreferences(body, event);
-        }
         else {
             response = handleNotFound(path, method);
         }
-        
         
         return response;
         
@@ -126,9 +113,12 @@ const handleNotFound = (path, method) => {
             'GET /api/v1/users',
             'POST /api/v1/users',
             'GET /api/v1/user/protocols',
-            'GET /api/v1/protocols',
+            'GET /api/v1/user/preferences',
+            'POST /api/v1/user/preferences',
             'GET /api/v1/correlations/insights',
+            'GET /api/v1/protocols',
             'GET /api/v1/foods/search',
+            'GET /api/v1/foods/by-protocol',
             'GET /api/v1/symptoms/search',
             'GET /api/v1/supplements/search',
             'GET /api/v1/medications/search',
@@ -138,9 +128,7 @@ const handleNotFound = (path, method) => {
             'GET /api/v1/journal/entries/:date',
             'PUT /api/v1/journal/entries/:date',
             'GET /api/v1/timeline/entries',
-            'POST /api/v1/timeline/entries',
-            'GET /api/v1/user/preferences',
-            'POST /api/v1/user/preferences'
+            'POST /api/v1/timeline/entries'
         ]
     });
 };

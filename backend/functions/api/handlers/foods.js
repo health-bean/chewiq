@@ -15,7 +15,9 @@ const handleSearchFoods = async (queryParams, event) => {
                 fp.nightshade,
                 fp.histamine,
                 fp.oxalate,
-                fp.lectin
+                fp.lectin,
+                fp.fodmap,
+                fp.salicylate
         `;
         
         if (protocol_id) {
@@ -24,53 +26,12 @@ const handleSearchFoods = async (queryParams, event) => {
                 p.category as protocol_category,
                 COALESCE(pfr.status, 'unknown') as protocol_status,
                 pfr.phase as protocol_phase,
-                pfr.notes as protocol_notes,
-                CASE 
-                    WHEN p.protocol_type = 'property_based' THEN
-                        CASE p.category
-                            WHEN 'low_histamine' THEN 
-                                CASE WHEN fp.histamine = 'low' THEN 'allowed' ELSE 'avoid' END
-                            WHEN 'low_oxalate' THEN
-                                CASE WHEN fp.oxalate = 'low' THEN 'allowed' ELSE 'avoid' END
-                            WHEN 'low_lectin' THEN
-                                CASE WHEN fp.lectin = 'low' THEN 'allowed' ELSE 'avoid' END
-                            ELSE COALESCE(pfr.status, 'unknown')
-                        END
-                    ELSE COALESCE(pfr.status, 'unknown')
-                END as computed_status
+                pfr.notes as protocol_notes
             FROM food_properties fp
             JOIN protocols p ON p.id = $2
             LEFT JOIN protocol_food_rules pfr ON fp.id = pfr.food_id AND pfr.protocol_id = $2
             WHERE fp.name ILIKE $1
-            ORDER BY 
-                CASE 
-                    WHEN p.protocol_type = 'property_based' THEN
-                        CASE p.category
-                            WHEN 'low_histamine' THEN 
-                                CASE WHEN fp.histamine = 'low' THEN 1 ELSE 4 END
-                            WHEN 'low_oxalate' THEN
-                                CASE WHEN fp.oxalate = 'low' THEN 1 ELSE 4 END
-                            WHEN 'low_lectin' THEN
-                                CASE WHEN fp.lectin = 'low' THEN 1 ELSE 4 END
-                            ELSE 
-                                CASE pfr.status 
-                                    WHEN 'allowed' THEN 1
-                                    WHEN 'conditional' THEN 2  
-                                    WHEN 'reintroduction' THEN 3
-                                    WHEN 'avoid' THEN 4
-                                    ELSE 5
-                                END
-                        END
-                    ELSE
-                        CASE pfr.status 
-                            WHEN 'allowed' THEN 1
-                            WHEN 'conditional' THEN 2  
-                            WHEN 'reintroduction' THEN 3
-                            WHEN 'avoid' THEN 4
-                            ELSE 5
-                        END
-                END,
-                fp.name ASC
+            ORDER BY fp.name ASC
             LIMIT 50
             `;
         } else {
@@ -86,20 +47,9 @@ const handleSearchFoods = async (queryParams, event) => {
         const result = await client.query(query, values);
         client.release();
         
-        // If protocol_id provided, use computed_status as the protocol_status
-        const foods = result.rows.map(row => {
-            if (protocol_id && row.computed_status) {
-                return {
-                    ...row,
-                    protocol_status: row.computed_status
-                };
-            }
-            return row;
-        });
-        
         return successResponse({
-            foods: foods,
-            total: foods.length,
+            foods: result.rows,
+            total: result.rows.length,
             search_term: search,
             protocol_id: protocol_id
         });
@@ -110,6 +60,14 @@ const handleSearchFoods = async (queryParams, event) => {
     }
 };
 
+const handleGetProtocolFoods = async (queryParams, event) => {
+    return successResponse({
+        test: "Protocol foods function is working",
+        received_protocol_id: queryParams.protocol_id || "none"
+    });
+};
+
 module.exports = {
-    handleSearchFoods
+    handleSearchFoods,
+    handleGetProtocolFoods
 };

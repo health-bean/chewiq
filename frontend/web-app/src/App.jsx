@@ -7,16 +7,14 @@ import useProtocols from '../../shared/hooks/useProtocols';
 import useUserPreferences from '../../shared/hooks/useUserPreferences';
 import useExposureTypes from '../../shared/hooks/useExposureTypes';
 import useDetoxTypes from '../../shared/hooks/useDetoxTypes';
-
-// FIXED IMPORT: Updated path for moved useReflectionData
 import useReflectionData from '../../shared/hooks/useReflectionData';
 
 // Import app-specific hooks and features
 import SetupWizard from './features/setup/SetupWizard';
 
-// NEW IMPORTS: Add feature components for correlation insights and protocol foods
-import CorrelationInsights from './components/features/insights/CorrelationInsights';
-import ProtocolFoods from './components/features/foods/ProtocolFoods';
+// Import feature components for correlation insights and protocol foods
+import CorrelationInsights from './components/CorrelationInsights';
+import ProtocolFoods from './components/ProtocolFoods';
 
 // =================
 // API CONFIGURATION
@@ -582,12 +580,6 @@ useEffect(() => {
                 !
               </span>
             )}
-            {/* Example: Blue dot for new insights (when you implement this feature) */}
-            {/* 
-            {hasNewInsights() && !hasCriticalInsights() && (
-              <span className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs rounded-full w-3 h-3"></span>
-            )}
-            */}
           </div>
           <Button
             variant={activeView === 'protocol' ? 'primary' : 'secondary'}
@@ -1132,12 +1124,12 @@ useEffect(() => {
           </div>
         )}
 
-        {/* UPDATED: Real AI Correlation Insights */}
+        {/* AI Correlation Insights */}
         {activeView === 'insights' && (
           <CorrelationInsights />
         )}
 
-        {/* UPDATED: Real Protocol Foods Browser */}
+        {/* Protocol Foods Browser */}
         {activeView === 'protocol' && (
           <ProtocolFoods protocolId={preferences.protocols[0]} />
         )}

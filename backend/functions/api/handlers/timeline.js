@@ -79,16 +79,29 @@ const handleCreateTimelineEntry = async (body, event) => {
         await client.query('BEGIN');
         
         let journalEntryId;
-        const journalQuery = `
-            INSERT INTO journal_entries (user_id, entry_date)
-            VALUES ($1, $2)
-            ON CONFLICT (user_id, entry_date) 
-            DO UPDATE SET updated_at = CURRENT_TIMESTAMP
-            RETURNING id
+        
+        // First check if journal entry already exists for this user/date
+        const checkQuery = `
+            SELECT id FROM journal_entries 
+            WHERE user_id = $1 AND entry_date = $2
         `;
         
-        const journalResult = await client.query(journalQuery, [user.id, entryDate]);
-        journalEntryId = journalResult.rows[0].id;
+        const checkResult = await client.query(checkQuery, [user.id, entryDate]);
+        
+        if (checkResult.rows.length > 0) {
+            // Use existing journal entry
+            journalEntryId = checkResult.rows[0].id;
+        } else {
+            // Create new journal entry
+            const journalQuery = `
+                INSERT INTO journal_entries (user_id, entry_date, created_at, updated_at)
+                VALUES ($1, $2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+                RETURNING id
+            `;
+            
+            const journalResult = await client.query(journalQuery, [user.id, entryDate]);
+            journalEntryId = journalResult.rows[0].id;
+        }
         
         const timelineQuery = `
             INSERT INTO timeline_entries (
