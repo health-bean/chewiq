@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Search, Filter, Eye, EyeOff, AlertCircle, TrendingUp, Loader2 } from 'lucide-react';
 
 // Import hooks from shared folder
-import { useProtocolFoods, useFoodSearch } from '../../../../shared/hooks/useProtocolFoods';
+import { useProtocolFoods, useFoodSearch } from '../../../shared/hooks/useProtocolFoods';
 
 const ProtocolFoods = ({ protocolId }) => {
   const [searchTerm, setSearchTerm] = useState('');
