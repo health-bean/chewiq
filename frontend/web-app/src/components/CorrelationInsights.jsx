@@ -98,30 +98,30 @@ const CorrelationInsights = () => {
 
       {/* Filters - MOBILE RESPONSIVE FIX */}
       <div className="bg-white rounded-lg border border-gray-200 p-4">
-        <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-6">
+        <div className="space-y-3 sm:space-y-0 sm:flex sm:items-center sm:space-x-6">
           <div className="flex items-center space-x-2">
-            <label className="text-sm font-medium text-gray-700 whitespace-nowrap">Confidence:</label>
+            <label className="text-xs font-medium text-gray-700 min-w-0 flex-shrink-0">Confidence:</label>
             <select 
               value={confidenceFilter} 
               onChange={(e) => setConfidenceFilter(parseFloat(e.target.value))}
-              className="border border-gray-300 rounded px-3 py-1 text-sm w-full sm:w-auto"
+              className="border border-gray-300 rounded px-2 py-1 text-xs flex-1 sm:flex-none sm:w-32"
             >
-              <option value={0.1}>Show All (10%+)</option>
-              <option value={0.5}>Moderate (50%+)</option>
-              <option value={0.6}>Good (60%+)</option>
-              <option value={0.7}>Strong (70%+)</option>
+              <option value={0.1}>All (10%+)</option>
+              <option value={0.5}>Moderate</option>
+              <option value={0.6}>Good</option>
+              <option value={0.7}>Strong</option>
             </select>
           </div>
           <div className="flex items-center space-x-2">
-            <label className="text-sm font-medium text-gray-700 whitespace-nowrap">Timeframe:</label>
+            <label className="text-xs font-medium text-gray-700 min-w-0 flex-shrink-0">Time:</label>
             <select 
               value={timeframeFilter} 
               onChange={(e) => setTimeframeFilter(parseInt(e.target.value))}
-              className="border border-gray-300 rounded px-3 py-1 text-sm w-full sm:w-auto"
+              className="border border-gray-300 rounded px-2 py-1 text-xs flex-1 sm:flex-none sm:w-32"
             >
-              <option value={30}>Last 30 days</option>
-              <option value={90}>Last 3 months</option>
-              <option value={180}>Last 6 months</option>
+              <option value={30}>30 days</option>
+              <option value={90}>3 months</option>
+              <option value={180}>6 months</option>
             </select>
           </div>
         </div>
