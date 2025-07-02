@@ -96,15 +96,15 @@ const CorrelationInsights = () => {
         </div>
       </div>
 
-      {/* Filters */}
+      {/* Filters - MOBILE RESPONSIVE FIX */}
       <div className="bg-white rounded-lg border border-gray-200 p-4">
-        <div className="flex items-center space-x-6">
+        <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-6">
           <div className="flex items-center space-x-2">
-            <label className="text-sm font-medium text-gray-700">Confidence:</label>
+            <label className="text-sm font-medium text-gray-700 whitespace-nowrap">Confidence:</label>
             <select 
               value={confidenceFilter} 
               onChange={(e) => setConfidenceFilter(parseFloat(e.target.value))}
-              className="border border-gray-300 rounded px-3 py-1 text-sm"
+              className="border border-gray-300 rounded px-3 py-1 text-sm w-full sm:w-auto"
             >
               <option value={0.1}>Show All (10%+)</option>
               <option value={0.5}>Moderate (50%+)</option>
@@ -113,11 +113,11 @@ const CorrelationInsights = () => {
             </select>
           </div>
           <div className="flex items-center space-x-2">
-            <label className="text-sm font-medium text-gray-700">Timeframe:</label>
+            <label className="text-sm font-medium text-gray-700 whitespace-nowrap">Timeframe:</label>
             <select 
               value={timeframeFilter} 
               onChange={(e) => setTimeframeFilter(parseInt(e.target.value))}
-              className="border border-gray-300 rounded px-3 py-1 text-sm"
+              className="border border-gray-300 rounded px-3 py-1 text-sm w-full sm:w-auto"
             >
               <option value={30}>Last 30 days</option>
               <option value={90}>Last 3 months</option>
