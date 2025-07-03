@@ -15,17 +15,33 @@ const getCurrentUser = async (event) => {
     const authHeader = event.headers?.Authorization || event.headers?.authorization;
     
     if (!authHeader) {
-      // For development: return a default test user when no auth header
-      // This prevents crashes when authentication is disabled
-      return {
-        id: '8e8a568a-c2f8-43a8-abf2-4e54408dbdc0', // Sarah's user ID from test data
-        email: 'sarah@example.com',
-        first_name: 'Sarah',
-        last_name: 'Test',
-        user_type: 'patient',
-        is_active: true
-      };
+      return null; // Now requires real authentication
     }
+
+    const token = authHeader.replace('Bearer ', '');
+    const decoded = jwt.verify(token, JWT_SECRET);
+
+    // Get fresh user data from database
+    const client = await pool.connect();
+    const userQuery = `
+      SELECT id, email, first_name, last_name, user_type, is_active
+      FROM users 
+      WHERE id = $1 AND is_active = true
+    `;
+    
+    const result = await client.query(userQuery, [decoded.sub]);
+    client.release();
+
+    if (result.rows.length === 0) {
+      return null;
+    }
+
+    return result.rows[0];
+  } catch (error) {
+    console.error('Error in getCurrentUser:', error);
+    return null;
+  }
+};
 
     const token = authHeader.replace('Bearer ', '');
     const decoded = jwt.verify(token, JWT_SECRET);
