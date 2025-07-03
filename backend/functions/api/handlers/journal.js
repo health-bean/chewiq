@@ -1,226 +1,171 @@
-// backend/functions/api/middleware/auth.js - Clean relationship-based authentication
-const jwt = require('jsonwebtoken');
+cat > handlers/journal.js << 'EOF'
 const { pool } = require('../database/connection');
-const { errorResponse } = require('../utils/responses');
+const { successResponse, errorResponse } = require('../utils/responses');
+const { handleDatabaseError } = require('../utils/errors');
+const { getCurrentUser, requireAuth } = require('../middleware/auth');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-key';
-
-/**
- * Parse JWT token and return user information
- * @param {Object} event - Lambda event object
- * @returns {Object|null} - User object or null if not authenticated
- */
-const getCurrentUser = async (event) => {
-  try {
-    const authHeader = event.headers?.Authorization || event.headers?.authorization;
-    
-    if (!authHeader) {
-      return null;
-    }
-
-    const token = authHeader.replace('Bearer ', '');
-    const decoded = jwt.verify(token, JWT_SECRET);
-
-    // Get fresh user data from database
-    const client = await pool.connect();
-    const userQuery = `
-      SELECT id, email, first_name, last_name, user_type, is_active
-      FROM users 
-      WHERE id = $1 AND is_active = true
-    `;
-    
-    const result = await client.query(userQuery, [decoded.sub]);
-    client.release();
-
-    if (result.rows.length === 0) {
-      return null;
-    }
-
-    const user = result.rows[0];
-    return {
-      id: user.id,
-      email: user.email,
-      firstName: user.first_name,
-      lastName: user.last_name,
-      userType: user.user_type
-    };
-
-  } catch (error) {
-    console.error('Authentication error:', error);
-    return null;
-  }
-};
-
-/**
- * Get all user IDs that the current user can access
- * This is the main function most handlers should use
- * @param {Object} event - Lambda event object
- * @returns {Array} - Array of user IDs that can be accessed
- */
-const getAccessibleUserIds = async (event) => {
-  const user = await getCurrentUser(event);
-  
-  if (!user) {
-    return [];
-  }
-
-  if (user.userType === 'patient') {
-    return [user.id]; // Patients can only access their own data
-  }
-
-  if (user.userType === 'practitioner') {
+const handleGetJournalEntries = async (queryParams, event) => {
     try {
-      const client = await pool.connect();
-      
-      // Get all patients who have granted access to this practitioner
-      const relationshipQuery = `
-        SELECT DISTINCT patient_id
-        FROM patient_practitioner_relationships 
-        WHERE practitioner_id = $1 AND status = 'active'
-      `;
-      
-      const result = await client.query(relationshipQuery, [user.id]);
-      client.release();
+        const user = await getCurrentUser(event);
+        if (!user) {
+            return errorResponse('Authentication required', 401);
+        }
 
-      const patientIds = result.rows.map(row => row.patient_id);
-      return [user.id, ...patientIds]; // Practitioner can access their own data + patients
-      
+        const client = await pool.connect();
+        const { date = null, limit = 50 } = queryParams;
+        
+        let query = `
+            SELECT 
+                id, user_id, entry_date, entry_type, content, 
+                mood, energy_level, sleep_quality, stress_level, 
+                created_at, updated_at
+            FROM journal_entries 
+            WHERE user_id = $1
+        `;
+        
+        const values = [user.id];
+        
+        if (date) {
+            query += ` AND entry_date = $2`;
+            values.push(date);
+        }
+        
+        query += ` ORDER BY entry_date DESC, created_at DESC LIMIT $${values.length + 1}`;
+        values.push(limit);
+        
+        const result = await client.query(query, values);
+        client.release();
+        
+        return successResponse(result.rows);
+        
     } catch (error) {
-      console.error('Practitioner access error:', error);
-      return [user.id]; // Fallback to just their own data
+        console.error('Journal entries error:', error);
+        const appError = handleDatabaseError(error, 'fetch journal entries');
+        return errorResponse(appError.message, appError.statusCode);
     }
-  }
-
-  // For future user types (researchers, admins, etc.)
-  return [user.id];
 };
 
-/**
- * Get patient-practitioner relationships for a user
- * @param {Object} event - Lambda event object
- * @returns {Object|null} - Relationship data
- */
-const getRelationships = async (event) => {
-  const user = await getCurrentUser(event);
-  
-  if (!user) {
-    return null;
-  }
+const handleCreateJournalEntry = async (body, event) => {
+    try {
+        const user = await getCurrentUser(event);
+        if (!user) {
+            return errorResponse('Authentication required', 401);
+        }
 
-  try {
-    const client = await pool.connect();
-    
-    if (user.userType === 'patient') {
-      // Get all practitioners this patient has shared with
-      const query = `
-        SELECT 
-          ppr.practitioner_id,
-          ppr.status,
-          ppr.granted_at,
-          u.first_name,
-          u.last_name,
-          u.email
-        FROM patient_practitioner_relationships ppr
-        JOIN users u ON ppr.practitioner_id = u.id
-        WHERE ppr.patient_id = $1
-        ORDER BY ppr.granted_at DESC
-      `;
-      
-      const result = await client.query(query, [user.id]);
-      client.release();
-      
-      return {
-        userType: 'patient',
-        practitioners: result.rows.map(row => ({
-          id: row.practitioner_id,
-          name: `${row.first_name} ${row.last_name}`,
-          email: row.email,
-          status: row.status,
-          grantedAt: row.granted_at
-        }))
-      };
+        const client = await pool.connect();
+        
+        const { 
+            entryDate, 
+            entryType = 'reflection', 
+            content = '', 
+            mood = null, 
+            energyLevel = null, 
+            sleepQuality = null, 
+            stressLevel = null 
+        } = body;
+        
+        const query = `
+            INSERT INTO journal_entries (
+                user_id, entry_date, entry_type, content, 
+                mood, energy_level, sleep_quality, stress_level,
+                created_at, updated_at
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+            RETURNING *
+        `;
+        
+        const values = [user.id, entryDate, entryType, content, mood, energyLevel, sleepQuality, stressLevel];
+        const result = await client.query(query, values);
+        client.release();
+        
+        return successResponse(result.rows[0], 201);
+        
+    } catch (error) {
+        console.error('Create journal entry error:', error);
+        const appError = handleDatabaseError(error, 'create journal entry');
+        return errorResponse(appError.message, appError.statusCode);
     }
-    
-    if (user.userType === 'practitioner') {
-      // Get all patients who have shared with this practitioner
-      const query = `
-        SELECT 
-          ppr.patient_id,
-          ppr.status,
-          ppr.granted_at,
-          u.first_name,
-          u.last_name,
-          u.email
-        FROM patient_practitioner_relationships ppr
-        JOIN users u ON ppr.patient_id = u.id
-        WHERE ppr.practitioner_id = $1
-        ORDER BY ppr.granted_at DESC
-      `;
-      
-      const result = await client.query(query, [user.id]);
-      client.release();
-      
-      return {
-        userType: 'practitioner',
-        patients: result.rows.map(row => ({
-          id: row.patient_id,
-          name: `${row.first_name} ${row.last_name}`,
-          email: row.email,
-          status: row.status,
-          grantedAt: row.granted_at
-        }))
-      };
-    }
-    
-    client.release();
-    return { userType: user.userType, relationships: [] };
-    
-  } catch (error) {
-    console.error('Relationships error:', error);
-    return { userType: user.userType, relationships: [] };
-  }
 };
 
-/**
- * Require authentication middleware - returns error response if not authenticated
- * @param {Object} event - Lambda event object
- * @returns {Object|null} - Error response or null if authenticated
- */
-const requireAuth = async (event) => {
-  const user = await getCurrentUser(event);
-  
-  if (!user) {
-    return errorResponse('Authentication required', 401);
-  }
-  
-  return null; // No error, user is authenticated
+const handleGetJournalEntry = async (pathParams, event) => {
+    try {
+        const user = await getCurrentUser(event);
+        if (!user) {
+            return errorResponse('Authentication required', 401);
+        }
+
+        const client = await pool.connect();
+        const { id } = pathParams;
+        
+        const query = `
+            SELECT * FROM journal_entries 
+            WHERE id = $1 AND user_id = $2
+        `;
+        
+        const result = await client.query(query, [id, user.id]);
+        client.release();
+        
+        if (result.rows.length === 0) {
+            return errorResponse('Journal entry not found', 404);
+        }
+        
+        return successResponse(result.rows[0]);
+        
+    } catch (error) {
+        console.error('Get journal entry error:', error);
+        const appError = handleDatabaseError(error, 'fetch journal entry');
+        return errorResponse(appError.message, appError.statusCode);
+    }
 };
 
-/**
- * Require specific user type middleware
- * @param {Array} allowedTypes - Array of allowed user types
- * @returns {Function} - Middleware function
- */
-const requireUserType = (allowedTypes) => {
-  return async (event) => {
-    const user = await getCurrentUser(event);
-    
-    if (!user) {
-      return errorResponse('Authentication required', 401);
+const handleUpdateJournalEntry = async (pathParams, body, event) => {
+    try {
+        const user = await getCurrentUser(event);
+        if (!user) {
+            return errorResponse('Authentication required', 401);
+        }
+
+        const client = await pool.connect();
+        const { id } = pathParams;
+        
+        const { 
+            entryType, 
+            content, 
+            mood, 
+            energyLevel, 
+            sleepQuality, 
+            stressLevel 
+        } = body;
+        
+        const query = `
+            UPDATE journal_entries 
+            SET entry_type = $1, content = $2, mood = $3, 
+                energy_level = $4, sleep_quality = $5, stress_level = $6,
+                updated_at = CURRENT_TIMESTAMP
+            WHERE id = $7 AND user_id = $8
+            RETURNING *
+        `;
+        
+        const values = [entryType, content, mood, energyLevel, sleepQuality, stressLevel, id, user.id];
+        const result = await client.query(query, values);
+        client.release();
+        
+        if (result.rows.length === 0) {
+            return errorResponse('Journal entry not found', 404);
+        }
+        
+        return successResponse(result.rows[0]);
+        
+    } catch (error) {
+        console.error('Update journal entry error:', error);
+        const appError = handleDatabaseError(error, 'update journal entry');
+        return errorResponse(appError.message, appError.statusCode);
     }
-    
-    if (!allowedTypes.includes(user.userType)) {
-      return errorResponse('Insufficient permissions', 403);
-    }
-    
-    return null; // No error, user has correct type
-  };
 };
 
 module.exports = {
-  getCurrentUser,
-  getAccessibleUserIds,
-  getRelationships,
-  requireAuth,
-  requireUserType
+    handleGetJournalEntries,
+    handleCreateJournalEntry,
+    handleGetJournalEntry,
+    handleUpdateJournalEntry
 };
+EOF
