@@ -1,7 +1,5 @@
 const { handleLogin, handleRegister, handleLogout, handleVerify } = require('./handlers/auth');
 const { handleGetJournals, handleCreateJournal, handleUpdateJournal, handleDeleteJournal } = require('./handlers/journal');
-const { handleGetGoals, handleCreateGoal, handleUpdateGoal, handleDeleteGoal } = require('./handlers/goals');
-const { handleGetInsights } = require('./handlers/insights');
 
 exports.handler = async (event, context) => {
   try {
@@ -42,28 +40,6 @@ exports.handler = async (event, context) => {
     
     if (route.startsWith('/api/v1/journals/') && httpMethod === 'DELETE') {
       return await handleDeleteJournal(event, context);
-    }
-    
-    // Goals routes
-    if (route === '/api/v1/goals' && httpMethod === 'GET') {
-      return await handleGetGoals(event, context);
-    }
-    
-    if (route === '/api/v1/goals' && httpMethod === 'POST') {
-      return await handleCreateGoal(event, context);
-    }
-    
-    if (route.startsWith('/api/v1/goals/') && httpMethod === 'PUT') {
-      return await handleUpdateGoal(event, context);
-    }
-    
-    if (route.startsWith('/api/v1/goals/') && httpMethod === 'DELETE') {
-      return await handleDeleteGoal(event, context);
-    }
-    
-    // Insights routes
-    if (route === '/api/v1/insights' && httpMethod === 'GET') {
-      return await handleGetInsights(event, context);
     }
     
     return {
