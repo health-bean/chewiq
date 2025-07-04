@@ -5,7 +5,7 @@ const fs = require('fs');
 
 class FILOAPIAnalyzer {
   constructor() {
-    this.baseURL = 'https://9ob6wg0l1e.execute-api.us-east-1.amazonaws.com/dev';
+    this.baseURL = 'https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev';
     this.results = {
       endpoints: [],
       status: 'unknown',

@@ -4,7 +4,7 @@
 
 The Web App API provides endpoints for managing health protocols, timeline entries, and user data.
 
-**Base URL:** `https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/`
+**Base URL:** `https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev`
 **Current Status:** Active Development
 
 ## Authentication
@@ -12,13 +12,13 @@ The Web App API provides endpoints for managing health protocols, timeline entri
 **Current:** Development phase - mixed authentication requirements
 **Production Plan:** JWT Bearer token authentication
 
-## Working Endpoints (4)
+## Working Endpoints (3)
 
 
 ### GET /api/v1/protocols
 
 **Description:** Get available health protocols  
-**Response Time:** 1318ms  
+**Response Time:** 1464ms  
 **Status:** 200
 
 **Response Example:**
@@ -128,171 +128,51 @@ The Web App API provides endpoints for managing health protocols, timeline entri
 ### GET /api/v1/timeline/entries
 
 **Description:** Get timeline entries  
-**Response Time:** 113ms  
+**Response Time:** 61ms  
 **Status:** 200
 
 **Response Example:**
 ```json
 {
-  "entries": [
-    {
-      "id": "8c3aa9d0-c77d-4a79-baff-78d63c7999b7",
-      "entry_time": "23:10:00",
-      "entry_type": "food",
-      "content": "bell peppers",
-      "severity": null,
-      "protocol_compliant": true,
-      "created_at": "2025-06-29T03:10:38.187Z",
-      "entry_date": "2025-06-29T00:00:00.000Z"
-    },
-    {
-      "id": "569773b6-2d9a-4e69-ac1f-83223e5a3016",
-      "entry_time": "11:26:00",
-      "entry_type": "food",
-      "content": "bell peppers",
-      "severity": null,
-      "protocol_compliant": true,
-      "created_at": "2025-06-25T15:27:33.117Z",
-      "entry_date": "2025-06-25T00:00:00.000Z"
-    },
-    {
-      "id": "a3aaeee9-b4e3-408d-9581-f10923553124",
-      "entry_time": "22:13:00",
-      "entry_type": "food",
-      "content": "spinach",
-      "severity": null,
-      "protocol_compliant": true,
-      "created_at": "2025-06-24T02:14:29.362Z",
-      "entry_date": "2025-06-24T00:00:00.000Z"
-    },
-    {
-      "id": "859b401a-1aba-4651-b035-d7d2645685a9",
-      "entry_time": "12:01:00",
-      "entry_type": "food",
-      "content": "bell peppers",
-      "severity": null,
-      "protocol_compliant": true,
-      "created_at": "2025-06-24T16:01:42.791Z",
-      "entry_date": "2025-06-24T00:00:00.000Z"
-    },
-    {
-      "id": "f276261e-639b-4873-b7e7-2733422092da",
-      "entry_time": "18:12:00",
-      "entry_type": "food",
-      "content": "bell peppers, chicken",
-      "severity": null,
-      "protocol_compliant": true,
-      "created_at": "2025-06-24T00:52:01.206Z",
-      "entry_date": "2025-06-23T00:00:00.000Z"
-    },
-    {
-      "id": "41407a3d-2361-427a-9a3c-2f5ccade110f",
-      "entry_time": "17:03:00",
-      "entry_type": "food",
-      "content": "chicken",
-      "severity": null,
-      "protocol_compliant": true,
-      "created_at": "2025-06-23T21:05:21.273Z",
-      "entry_date": "2025-06-23T00:00:00.000Z"
-    },
-    {
-      "id": "58aa9ffe-619d-4fda-a11f-85869508685d",
-      "entry_time": "14:12:00",
-      "entry_type": "food",
-      "content": "chicken",
-      "severity": null,
-      "protocol_compliant": true,
-      "created_at": "2025-06-23T18:12:54.061Z",
-      "entry_date": "2025-06-23T00:00:00.000Z"
-    },
-    {
-      "id": "59b262b0-ee30-4140-b250-66ca92fd6db8",
-      "entry_time": "10:30:00",
-      "entry_type": "food",
-      "content": "test food entry",
-      "severity": null,
-      "protocol_compliant": true,
-      "created_at": "2025-06-23T01:32:42.162Z",
-      "entry_date": "2025-06-23T00:00:00.000Z"
-    }
-  ],
-  "total": 8
+  "entries": [],
+  "total": 0
 }
 ```
 
 **Data Structure:**
-- `entries`: array[8]
+- `entries`: array[0]
 - `total`: number
 
 
-### GET /api/v1/users
+### GET /api/v1/timeline/entries?date=2025-06-29
 
-**Description:** Get user data  
+**Description:** Get timeline entries with date filter  
 **Response Time:** 52ms  
 **Status:** 200
 
 **Response Example:**
 ```json
 {
-  "user": {
-    "id": "123e4567-e89b-12d3-a456-426614174000",
-    "email": "patient@example.com",
-    "firstName": "John",
-    "lastName": "Doe",
-    "role": "patient",
-    "tenantId": "123e4567-e89b-12d3-a456-426614174001"
-  }
+  "entries": [],
+  "total": 0
 }
 ```
 
 **Data Structure:**
-- `user`: object
-
-
-### GET /api/v1/timeline/entries?date=2025-06-29
-
-**Description:** Get timeline entries with date filter  
-**Response Time:** 56ms  
-**Status:** 200
-
-**Response Example:**
-```json
-{
-  "entries": [
-    {
-      "id": "8c3aa9d0-c77d-4a79-baff-78d63c7999b7",
-      "entry_time": "23:10:00",
-      "entry_type": "food",
-      "content": "bell peppers",
-      "severity": null,
-      "protocol_compliant": true,
-      "created_at": "2025-06-29T03:10:38.187Z",
-      "entry_date": "2025-06-29T00:00:00.000Z"
-    }
-  ],
-  "total": 1
-}
-```
-
-**Data Structure:**
-- `entries`: array[1]
+- `entries`: array[0]
 - `total`: number
 
 
-## Protected Endpoints (5)
+## Protected Endpoints (0)
 
 These endpoints require authentication in production:
 
-- **GET /api/v1/foods** - Get food database
-- **GET /api/v1/journal** - Get journal entries
-- **GET /api/v1/user-preferences** - Get user preferences
-- **GET /api/v1/exposure-types** - Get exposure types
-- **GET /api/v1/detox-types** - Get detox types
+
 
 ## Performance Metrics
 
-- **Average Response Time:** 385ms
-- **Success Rate:** 44%
+- **Average Response Time:** 526ms
+- **Success Rate:** 100%
 
 ## Error Handling
 
@@ -329,11 +209,11 @@ npm run analyze-api
 ### Manual Testing
 ```bash
 # Test working endpoints
-curl https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev//api/v1/protocols
+curl https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/protocols
 
 # Test with authentication (when available)
 curl -H "Authorization: Bearer YOUR_TOKEN" \
-     https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev//api/v1/user-preferences
+     https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/user-preferences
 ```
 
 ---

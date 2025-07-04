@@ -46,7 +46,7 @@ applications:
 ```
 
 **Environment Variables:**
-- `VITE_API_BASE_URL`: https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/
+- `VITE_API_BASE_URL`: https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev
 - `VITE_APP_ENV`: production
 
 ### Documentation Deployment (GitHub Actions)
@@ -107,7 +107,7 @@ VITE_DEBUG_MODE=false
 
 ### Production Environment
 ```env
-VITE_API_BASE_URL=https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/
+VITE_API_BASE_URL=https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev
 VITE_APP_ENV=production
 VITE_DEBUG_MODE=false
 VITE_SENTRY_DSN=your_sentry_dsn_here

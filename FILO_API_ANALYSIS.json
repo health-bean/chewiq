@@ -4,9 +4,9 @@
       "path": "/api/v1/protocols",
       "method": "GET",
       "description": "Get available health protocols",
-      "url": "https://9ob6wg0l1e.execute-api.us-east-1.amazonaws.com/dev/api/v1/protocols",
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/protocols",
       "status": 200,
-      "responseTime": 1318,
+      "responseTime": 1464,
       "dataType": "object",
       "dataSize": 2385,
       "sampleData": {
@@ -126,26 +126,32 @@
       "path": "/api/v1/foods",
       "method": "GET",
       "description": "Get food database",
-      "url": "https://9ob6wg0l1e.execute-api.us-east-1.amazonaws.com/dev/api/v1/foods",
-      "status": 403,
-      "responseTime": 33,
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/foods",
+      "status": 404,
+      "responseTime": 60,
       "dataType": "object",
-      "dataSize": 42,
+      "dataSize": 66,
       "sampleData": {
         "type": "object",
         "keys": [
-          "message"
+          "error",
+          "route",
+          "method"
         ],
         "sample": {
-          "message": "Missing Authentication Token"
+          "error": "Route not found",
+          "route": "/api/v1/foods",
+          "method": "GET"
         },
         "structure": {
-          "message": "string"
+          "error": "string",
+          "route": "string",
+          "method": "string"
         }
       },
       "headers": {
         "content-type": "application/json",
-        "content-length": "42"
+        "content-length": "66"
       },
       "working": false,
       "rawResponse": null
@@ -154,11 +160,11 @@
       "path": "/api/v1/timeline/entries",
       "method": "GET",
       "description": "Get timeline entries",
-      "url": "https://9ob6wg0l1e.execute-api.us-east-1.amazonaws.com/dev/api/v1/timeline/entries",
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/timeline/entries",
       "status": 200,
-      "responseTime": 113,
+      "responseTime": 61,
       "dataType": "object",
-      "dataSize": 1916,
+      "dataSize": 24,
       "sampleData": {
         "type": "object",
         "keys": [
@@ -166,98 +172,17 @@
           "total"
         ],
         "sample": {
-          "entries": [
-            {
-              "id": "8c3aa9d0-c77d-4a79-baff-78d63c7999b7",
-              "entry_time": "23:10:00",
-              "entry_type": "food",
-              "content": "bell peppers",
-              "severity": null,
-              "protocol_compliant": true,
-              "created_at": "2025-06-29T03:10:38.187Z",
-              "entry_date": "2025-06-29T00:00:00.000Z"
-            },
-            {
-              "id": "569773b6-2d9a-4e69-ac1f-83223e5a3016",
-              "entry_time": "11:26:00",
-              "entry_type": "food",
-              "content": "bell peppers",
-              "severity": null,
-              "protocol_compliant": true,
-              "created_at": "2025-06-25T15:27:33.117Z",
-              "entry_date": "2025-06-25T00:00:00.000Z"
-            },
-            {
-              "id": "a3aaeee9-b4e3-408d-9581-f10923553124",
-              "entry_time": "22:13:00",
-              "entry_type": "food",
-              "content": "spinach",
-              "severity": null,
-              "protocol_compliant": true,
-              "created_at": "2025-06-24T02:14:29.362Z",
-              "entry_date": "2025-06-24T00:00:00.000Z"
-            },
-            {
-              "id": "859b401a-1aba-4651-b035-d7d2645685a9",
-              "entry_time": "12:01:00",
-              "entry_type": "food",
-              "content": "bell peppers",
-              "severity": null,
-              "protocol_compliant": true,
-              "created_at": "2025-06-24T16:01:42.791Z",
-              "entry_date": "2025-06-24T00:00:00.000Z"
-            },
-            {
-              "id": "f276261e-639b-4873-b7e7-2733422092da",
-              "entry_time": "18:12:00",
-              "entry_type": "food",
-              "content": "bell peppers, chicken",
-              "severity": null,
-              "protocol_compliant": true,
-              "created_at": "2025-06-24T00:52:01.206Z",
-              "entry_date": "2025-06-23T00:00:00.000Z"
-            },
-            {
-              "id": "41407a3d-2361-427a-9a3c-2f5ccade110f",
-              "entry_time": "17:03:00",
-              "entry_type": "food",
-              "content": "chicken",
-              "severity": null,
-              "protocol_compliant": true,
-              "created_at": "2025-06-23T21:05:21.273Z",
-              "entry_date": "2025-06-23T00:00:00.000Z"
-            },
-            {
-              "id": "58aa9ffe-619d-4fda-a11f-85869508685d",
-              "entry_time": "14:12:00",
-              "entry_type": "food",
-              "content": "chicken",
-              "severity": null,
-              "protocol_compliant": true,
-              "created_at": "2025-06-23T18:12:54.061Z",
-              "entry_date": "2025-06-23T00:00:00.000Z"
-            },
-            {
-              "id": "59b262b0-ee30-4140-b250-66ca92fd6db8",
-              "entry_time": "10:30:00",
-              "entry_type": "food",
-              "content": "test food entry",
-              "severity": null,
-              "protocol_compliant": true,
-              "created_at": "2025-06-23T01:32:42.162Z",
-              "entry_date": "2025-06-23T00:00:00.000Z"
-            }
-          ],
-          "total": 8
+          "entries": [],
+          "total": 0
         },
         "structure": {
-          "entries": "array[8]",
+          "entries": "array[0]",
           "total": "number"
         }
       },
       "headers": {
         "content-type": "application/json",
-        "content-length": "1916"
+        "content-length": "24"
       },
       "working": true,
       "rawResponse": null
@@ -266,61 +191,66 @@
       "path": "/api/v1/users",
       "method": "GET",
       "description": "Get user data",
-      "url": "https://9ob6wg0l1e.execute-api.us-east-1.amazonaws.com/dev/api/v1/users",
-      "status": 200,
-      "responseTime": 52,
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/users",
+      "status": 404,
+      "responseTime": 68,
       "dataType": "object",
-      "dataSize": 187,
+      "dataSize": 66,
       "sampleData": {
         "type": "object",
         "keys": [
-          "user"
+          "error",
+          "route",
+          "method"
         ],
         "sample": {
-          "user": {
-            "id": "123e4567-e89b-12d3-a456-426614174000",
-            "email": "patient@example.com",
-            "firstName": "John",
-            "lastName": "Doe",
-            "role": "patient",
-            "tenantId": "123e4567-e89b-12d3-a456-426614174001"
-          }
+          "error": "Route not found",
+          "route": "/api/v1/users",
+          "method": "GET"
         },
         "structure": {
-          "user": "object"
+          "error": "string",
+          "route": "string",
+          "method": "string"
         }
       },
       "headers": {
         "content-type": "application/json",
-        "content-length": "187"
+        "content-length": "66"
       },
-      "working": true,
+      "working": false,
       "rawResponse": null
     },
     {
       "path": "/api/v1/journal",
       "method": "GET",
       "description": "Get journal entries",
-      "url": "https://9ob6wg0l1e.execute-api.us-east-1.amazonaws.com/dev/api/v1/journal",
-      "status": 403,
-      "responseTime": 26,
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/journal",
+      "status": 404,
+      "responseTime": 48,
       "dataType": "object",
-      "dataSize": 42,
+      "dataSize": 68,
       "sampleData": {
         "type": "object",
         "keys": [
-          "message"
+          "error",
+          "route",
+          "method"
         ],
         "sample": {
-          "message": "Missing Authentication Token"
+          "error": "Route not found",
+          "route": "/api/v1/journal",
+          "method": "GET"
         },
         "structure": {
-          "message": "string"
+          "error": "string",
+          "route": "string",
+          "method": "string"
         }
       },
       "headers": {
         "content-type": "application/json",
-        "content-length": "42"
+        "content-length": "68"
       },
       "working": false,
       "rawResponse": null
@@ -329,26 +259,32 @@
       "path": "/api/v1/user-preferences",
       "method": "GET",
       "description": "Get user preferences",
-      "url": "https://9ob6wg0l1e.execute-api.us-east-1.amazonaws.com/dev/api/v1/user-preferences",
-      "status": 403,
-      "responseTime": 24,
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/user-preferences",
+      "status": 404,
+      "responseTime": 46,
       "dataType": "object",
-      "dataSize": 42,
+      "dataSize": 77,
       "sampleData": {
         "type": "object",
         "keys": [
-          "message"
+          "error",
+          "route",
+          "method"
         ],
         "sample": {
-          "message": "Missing Authentication Token"
+          "error": "Route not found",
+          "route": "/api/v1/user-preferences",
+          "method": "GET"
         },
         "structure": {
-          "message": "string"
+          "error": "string",
+          "route": "string",
+          "method": "string"
         }
       },
       "headers": {
         "content-type": "application/json",
-        "content-length": "42"
+        "content-length": "77"
       },
       "working": false,
       "rawResponse": null
@@ -357,26 +293,32 @@
       "path": "/api/v1/exposure-types",
       "method": "GET",
       "description": "Get exposure types",
-      "url": "https://9ob6wg0l1e.execute-api.us-east-1.amazonaws.com/dev/api/v1/exposure-types",
-      "status": 403,
-      "responseTime": 21,
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/exposure-types",
+      "status": 404,
+      "responseTime": 46,
       "dataType": "object",
-      "dataSize": 42,
+      "dataSize": 75,
       "sampleData": {
         "type": "object",
         "keys": [
-          "message"
+          "error",
+          "route",
+          "method"
         ],
         "sample": {
-          "message": "Missing Authentication Token"
+          "error": "Route not found",
+          "route": "/api/v1/exposure-types",
+          "method": "GET"
         },
         "structure": {
-          "message": "string"
+          "error": "string",
+          "route": "string",
+          "method": "string"
         }
       },
       "headers": {
         "content-type": "application/json",
-        "content-length": "42"
+        "content-length": "75"
       },
       "working": false,
       "rawResponse": null
@@ -385,26 +327,32 @@
       "path": "/api/v1/detox-types",
       "method": "GET",
       "description": "Get detox types",
-      "url": "https://9ob6wg0l1e.execute-api.us-east-1.amazonaws.com/dev/api/v1/detox-types",
-      "status": 403,
-      "responseTime": 26,
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/detox-types",
+      "status": 404,
+      "responseTime": 63,
       "dataType": "object",
-      "dataSize": 42,
+      "dataSize": 72,
       "sampleData": {
         "type": "object",
         "keys": [
-          "message"
+          "error",
+          "route",
+          "method"
         ],
         "sample": {
-          "message": "Missing Authentication Token"
+          "error": "Route not found",
+          "route": "/api/v1/detox-types",
+          "method": "GET"
         },
         "structure": {
-          "message": "string"
+          "error": "string",
+          "route": "string",
+          "method": "string"
         }
       },
       "headers": {
         "content-type": "application/json",
-        "content-length": "42"
+        "content-length": "72"
       },
       "working": false,
       "rawResponse": null
@@ -413,11 +361,11 @@
       "path": "/api/v1/timeline/entries?date=2025-06-29",
       "method": "GET",
       "description": "Get timeline entries with date filter",
-      "url": "https://9ob6wg0l1e.execute-api.us-east-1.amazonaws.com/dev/api/v1/timeline/entries?date=2025-06-29",
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/timeline/entries?date=2025-06-29",
       "status": 200,
-      "responseTime": 56,
+      "responseTime": 52,
       "dataType": "object",
-      "dataSize": 260,
+      "dataSize": 24,
       "sampleData": {
         "type": "object",
         "keys": [
@@ -425,38 +373,27 @@
           "total"
         ],
         "sample": {
-          "entries": [
-            {
-              "id": "8c3aa9d0-c77d-4a79-baff-78d63c7999b7",
-              "entry_time": "23:10:00",
-              "entry_type": "food",
-              "content": "bell peppers",
-              "severity": null,
-              "protocol_compliant": true,
-              "created_at": "2025-06-29T03:10:38.187Z",
-              "entry_date": "2025-06-29T00:00:00.000Z"
-            }
-          ],
-          "total": 1
+          "entries": [],
+          "total": 0
         },
         "structure": {
-          "entries": "array[1]",
+          "entries": "array[0]",
           "total": "number"
         }
       },
       "headers": {
         "content-type": "application/json",
-        "content-length": "260"
+        "content-length": "24"
       },
       "working": true,
       "rawResponse": null
     }
   ],
   "status": "unknown",
-  "timestamp": "2025-06-29T15:41:30.840Z",
+  "timestamp": "2025-07-04T23:09:24.224Z",
   "summary": {
-    "working": 4,
-    "broken": 5,
+    "working": 3,
+    "broken": 6,
     "total": 9
   }
 }

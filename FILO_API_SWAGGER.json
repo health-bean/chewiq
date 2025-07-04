@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "https://9ob6wg0l1e.execute-api.us-east-1.amazonaws.com/dev",
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev",
       "description": "Production server"
     }
   ],
@@ -18,7 +18,7 @@
     "/api/v1/protocols": {
       "get": {
         "summary": "Get available health protocols",
-        "description": "Get available health protocols. Response time: 1318ms",
+        "description": "Get available health protocols. Response time: 1464ms",
         "responses": {
           "200": {
             "description": "Success",
@@ -44,7 +44,7 @@
     "/api/v1/timeline/entries": {
       "get": {
         "summary": "Get timeline entries with date filter",
-        "description": "Get timeline entries with date filter. Response time: 56ms",
+        "description": "Get timeline entries with date filter. Response time: 52ms",
         "responses": {
           "200": {
             "description": "Success",
@@ -76,29 +76,6 @@
             "example": "2025-06-29"
           }
         ]
-      }
-    },
-    "/api/v1/users": {
-      "get": {
-        "summary": "Get user data",
-        "description": "Get user data. Response time: 52ms",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "user": {
-                      "type": "object"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
       }
     }
   }

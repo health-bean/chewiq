@@ -38,7 +38,7 @@ nano frontend/web-app/.env
 
 **Required Environment Variables:**
 ```env
-VITE_API_BASE_URL=https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/
+VITE_API_BASE_URL=https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev
 VITE_APP_ENV=development
 ```
 

@@ -10,12 +10,12 @@ Web App is a sophisticated Protocol Management & Healing Platform designed for c
 - **Last Updated:** 6/29/2025
 - **Components:** 19
 - **Custom Hooks:** 6
-- **API Endpoints:** 4 working, 5 protected
+- **API Endpoints:** 3 working, 0 protected
 
 ## Live Links
 
 - **Source Code:** [https://github.com/deebyrne26/health-platform](https://github.com/deebyrne26/health-platform)
-- **API Base:** `https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/`
+- **API Base:** `https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev`
 
 ## Current Features
 
@@ -50,7 +50,7 @@ Web App is a sophisticated Protocol Management & Healing Platform designed for c
 - **Components:** 6 shared, 13 app-specific
 
 ### Backend
-- **API:** https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/
+- **API:** https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev
 - **Database:** PostgreSQL (planned for production)
 - **Hosting:** AWS Lambda + API Gateway
 - **Deployment:** AWS Amplify

@@ -63,10 +63,10 @@ Web App/
 ### AWS Infrastructure
 
 - **API Gateway:** REST API endpoints
-- **Base URL:** `https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/`
+- **Base URL:** `https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev`
 - **Lambda Functions:** Serverless compute
-- **Working Endpoints:** 4
-- **Protected Endpoints:** 5
+- **Working Endpoints:** 3
+- **Protected Endpoints:** 0
 
 
 ### Database Design
@@ -108,7 +108,7 @@ Web App/
 ### Current Implementation
 - **HTTPS:** All traffic encrypted in transit
 - **CORS:** Configured for secure cross-origin requests
-- **API Protection:** 5 endpoints require authentication
+
 
 ### Production Security Plan
 - **Authentication:** JWT tokens with refresh mechanism
