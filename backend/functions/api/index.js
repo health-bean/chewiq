@@ -7,22 +7,43 @@ exports.handler = async (event, context) => {
     const route = path || event.resource;
     
     console.log(`Processing ${httpMethod} ${route}`);
+    console.log('Event body:', event.body);
+    
+    // Parse body if it exists
+    let body = {};
+    if (event.body) {
+      try {
+        body = JSON.parse(event.body);
+      } catch (e) {
+        console.error('Body parsing error:', e);
+        return {
+          statusCode: 400,
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+          },
+          body: JSON.stringify({ error: 'Invalid JSON in request body' })
+        };
+      }
+    }
     
     // Auth routes
     if (route === '/api/v1/auth/login' && httpMethod === 'POST') {
-      return await handleLogin(event, context);
+      return await handleLogin(body, event);
     }
     
     if (route === '/api/v1/auth/register' && httpMethod === 'POST') {
-      return await handleRegister(event, context);
+      return await handleRegister(body, event);
     }
     
     if (route === '/api/v1/auth/logout' && httpMethod === 'POST') {
-      return await handleLogout(event, context);
+      return await handleLogout(body, event);
     }
     
     if (route === '/api/v1/auth/verify' && httpMethod === 'GET') {
-      return await handleVerify(event, context);
+      return await handleVerify(body, event);
     }
     
     // Journal routes
