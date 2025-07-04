@@ -1,12 +1,12 @@
 {
-  "timestamp": "2025-07-04T23:13:37.162Z",
+  "timestamp": "2025-07-04T23:23:21.612Z",
   "baseURL": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev",
   "summary": {
-    "working": 13,
-    "broken": 8,
+    "working": 14,
+    "broken": 7,
     "total": 21
   },
   "status": "healthy",
-  "workingEndpoints": 13,
+  "workingEndpoints": 14,
   "totalEndpoints": 21
 }

@@ -116,7 +116,7 @@
       "get": {
         "summary": "Get user data",
         "responses": {
-          "404": {
+          "401": {
             "description": "Error",
             "content": {
               "application/json": {
@@ -133,7 +133,7 @@
       "get": {
         "summary": "Get user active protocols",
         "responses": {
-          "404": {
+          "401": {
             "description": "Error",
             "content": {
               "application/json": {
@@ -150,7 +150,7 @@
       "get": {
         "summary": "Get user preferences",
         "responses": {
-          "404": {
+          "401": {
             "description": "Error",
             "content": {
               "application/json": {
@@ -167,7 +167,7 @@
       "get": {
         "summary": "Get journal entries with date filter",
         "responses": {
-          "404": {
+          "401": {
             "description": "Error",
             "content": {
               "application/json": {
@@ -252,8 +252,8 @@
       "get": {
         "summary": "Get detox types",
         "responses": {
-          "404": {
-            "description": "Error",
+          "200": {
+            "description": "Success",
             "content": {
               "application/json": {
                 "schema": {

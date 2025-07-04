@@ -6,7 +6,7 @@
       "description": "Get available health protocols",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/protocols",
       "status": 200,
-      "responseTime": 439,
+      "responseTime": 1212,
       "dataType": "object",
       "dataSize": 2385,
       "sampleData": {
@@ -128,7 +128,7 @@
       "description": "Get AI correlation insights",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/correlations/insights?userId=8e8a568a-c2f8-43a8-abf2-4e54408dbdc0",
       "status": 200,
-      "responseTime": 25813,
+      "responseTime": 25086,
       "dataType": "object",
       "dataSize": 42046,
       "sampleData": {
@@ -1692,7 +1692,7 @@
       "description": "Get filtered correlation insights",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/correlations/insights?userId=8e8a568a-c2f8-43a8-abf2-4e54408dbdc0&confidence_threshold=0.7",
       "status": 200,
-      "responseTime": 24440,
+      "responseTime": 24066,
       "dataType": "object",
       "dataSize": 25548,
       "sampleData": {
@@ -2645,7 +2645,7 @@
       "description": "Get AIP Core protocol foods",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/foods/by-protocol?protocol_id=1495844a-19de-404c-a288-7660eda0cbe1",
       "status": 200,
-      "responseTime": 251,
+      "responseTime": 310,
       "dataType": "object",
       "dataSize": 50636,
       "sampleData": {
@@ -5144,7 +5144,7 @@
       "description": "Get Low Histamine protocol foods",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/foods/by-protocol?protocol_id=51ca7a24-4691-4629-8ee5-c20876e68c29",
       "status": 200,
-      "responseTime": 52,
+      "responseTime": 66,
       "dataType": "object",
       "dataSize": 50655,
       "sampleData": {
@@ -7643,7 +7643,7 @@
       "description": "Search foods - chicken",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/foods/search?search=chicken",
       "status": 200,
-      "responseTime": 51,
+      "responseTime": 57,
       "dataType": "object",
       "dataSize": 250,
       "sampleData": {
@@ -7746,7 +7746,7 @@
       "description": "Get timeline entries",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/timeline/entries",
       "status": 200,
-      "responseTime": 43,
+      "responseTime": 54,
       "dataType": "object",
       "dataSize": 24,
       "sampleData": {
@@ -7777,7 +7777,7 @@
       "description": "Get timeline entries with date filter",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/timeline/entries?date=2025-07-04",
       "status": 200,
-      "responseTime": 50,
+      "responseTime": 52,
       "dataType": "object",
       "dataSize": 24,
       "sampleData": {
@@ -7808,7 +7808,7 @@
       "description": "Get user timeline entries",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/timeline/entries?userId=8e8a568a-c2f8-43a8-abf2-4e54408dbdc0",
       "status": 200,
-      "responseTime": 45,
+      "responseTime": 47,
       "dataType": "object",
       "dataSize": 24,
       "sampleData": {
@@ -7838,170 +7838,140 @@
       "method": "GET",
       "description": "Get user data",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/users",
-      "status": 404,
-      "responseTime": 52,
+      "status": 401,
+      "responseTime": 44,
       "dataType": "object",
-      "dataSize": 66,
+      "dataSize": 35,
       "sampleData": {
         "type": "object",
         "keys": [
-          "error",
-          "route",
-          "method"
+          "error"
         ],
         "sample": {
-          "error": "Route not found",
-          "route": "/api/v1/users",
-          "method": "GET"
+          "error": "Authentication required"
         },
         "structure": {
-          "error": "string",
-          "route": "string",
-          "method": "string"
+          "error": "string"
         }
       },
       "headers": {
         "content-type": "application/json",
-        "content-length": "66"
+        "content-length": "35"
       },
       "working": false,
-      "rawResponse": "{\"error\":\"Route not found\",\"route\":\"/api/v1/users\",\"method\":\"GET\"}"
+      "rawResponse": "{\"error\":\"Authentication required\"}"
     },
     {
       "path": "/api/v1/user/protocols",
       "method": "GET",
       "description": "Get user active protocols",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/user/protocols",
-      "status": 404,
+      "status": 401,
       "responseTime": 40,
       "dataType": "object",
-      "dataSize": 75,
+      "dataSize": 35,
       "sampleData": {
         "type": "object",
         "keys": [
-          "error",
-          "route",
-          "method"
+          "error"
         ],
         "sample": {
-          "error": "Route not found",
-          "route": "/api/v1/user/protocols",
-          "method": "GET"
+          "error": "Authentication required"
         },
         "structure": {
-          "error": "string",
-          "route": "string",
-          "method": "string"
+          "error": "string"
         }
       },
       "headers": {
         "content-type": "application/json",
-        "content-length": "75"
+        "content-length": "35"
       },
       "working": false,
-      "rawResponse": "{\"error\":\"Route not found\",\"route\":\"/api/v1/user/protocols\",\"method\":\"GET\"}"
+      "rawResponse": "{\"error\":\"Authentication required\"}"
     },
     {
       "path": "/api/v1/user/preferences",
       "method": "GET",
       "description": "Get user preferences",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/user/preferences",
-      "status": 404,
-      "responseTime": 35,
+      "status": 401,
+      "responseTime": 41,
       "dataType": "object",
-      "dataSize": 77,
+      "dataSize": 35,
       "sampleData": {
         "type": "object",
         "keys": [
-          "error",
-          "route",
-          "method"
+          "error"
         ],
         "sample": {
-          "error": "Route not found",
-          "route": "/api/v1/user/preferences",
-          "method": "GET"
+          "error": "Authentication required"
         },
         "structure": {
-          "error": "string",
-          "route": "string",
-          "method": "string"
+          "error": "string"
         }
       },
       "headers": {
         "content-type": "application/json",
-        "content-length": "77"
+        "content-length": "35"
       },
       "working": false,
-      "rawResponse": "{\"error\":\"Route not found\",\"route\":\"/api/v1/user/preferences\",\"method\":\"GET\"}"
+      "rawResponse": "{\"error\":\"Authentication required\"}"
     },
     {
       "path": "/api/v1/journal/entries",
       "method": "GET",
       "description": "Get journal entries",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/journal/entries",
-      "status": 404,
-      "responseTime": 41,
+      "status": 401,
+      "responseTime": 43,
       "dataType": "object",
-      "dataSize": 76,
+      "dataSize": 35,
       "sampleData": {
         "type": "object",
         "keys": [
-          "error",
-          "route",
-          "method"
+          "error"
         ],
         "sample": {
-          "error": "Route not found",
-          "route": "/api/v1/journal/entries",
-          "method": "GET"
+          "error": "Authentication required"
         },
         "structure": {
-          "error": "string",
-          "route": "string",
-          "method": "string"
+          "error": "string"
         }
       },
       "headers": {
         "content-type": "application/json",
-        "content-length": "76"
+        "content-length": "35"
       },
       "working": false,
-      "rawResponse": "{\"error\":\"Route not found\",\"route\":\"/api/v1/journal/entries\",\"method\":\"GET\"}"
+      "rawResponse": "{\"error\":\"Authentication required\"}"
     },
     {
       "path": "/api/v1/journal/entries?date=2025-07-04",
       "method": "GET",
       "description": "Get journal entries with date filter",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/journal/entries?date=2025-07-04",
-      "status": 404,
-      "responseTime": 41,
+      "status": 401,
+      "responseTime": 42,
       "dataType": "object",
-      "dataSize": 76,
+      "dataSize": 35,
       "sampleData": {
         "type": "object",
         "keys": [
-          "error",
-          "route",
-          "method"
+          "error"
         ],
         "sample": {
-          "error": "Route not found",
-          "route": "/api/v1/journal/entries",
-          "method": "GET"
+          "error": "Authentication required"
         },
         "structure": {
-          "error": "string",
-          "route": "string",
-          "method": "string"
+          "error": "string"
         }
       },
       "headers": {
         "content-type": "application/json",
-        "content-length": "76"
+        "content-length": "35"
       },
       "working": false,
-      "rawResponse": "{\"error\":\"Route not found\",\"route\":\"/api/v1/journal/entries\",\"method\":\"GET\"}"
+      "rawResponse": "{\"error\":\"Authentication required\"}"
     },
     {
       "path": "/api/v1/symptoms/search?search=headache",
@@ -8009,7 +7979,7 @@
       "description": "Search symptoms",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/symptoms/search?search=headache",
       "status": 200,
-      "responseTime": 42,
+      "responseTime": 53,
       "dataType": "object",
       "dataSize": 226,
       "sampleData": {
@@ -8055,7 +8025,7 @@
       "description": "Search supplements",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/supplements/search?search=vitamin",
       "status": 200,
-      "responseTime": 43,
+      "responseTime": 79,
       "dataType": "object",
       "dataSize": 780,
       "sampleData": {
@@ -8133,7 +8103,7 @@
       "description": "Search medications",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/medications/search?search=ibuprofen",
       "status": 200,
-      "responseTime": 43,
+      "responseTime": 44,
       "dataType": "object",
       "dataSize": 242,
       "sampleData": {
@@ -8179,67 +8149,141 @@
       "description": "Get exposure types",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/exposure-types",
       "status": 404,
-      "responseTime": 38,
+      "responseTime": 50,
       "dataType": "object",
-      "dataSize": 75,
+      "dataSize": 133,
       "sampleData": {
         "type": "object",
         "keys": [
           "error",
           "route",
-          "method"
+          "method",
+          "message"
         ],
         "sample": {
           "error": "Route not found",
           "route": "/api/v1/exposure-types",
-          "method": "GET"
+          "method": "GET",
+          "message": "GET /api/v1/exposure-types is not implemented"
         },
         "structure": {
           "error": "string",
           "route": "string",
-          "method": "string"
+          "method": "string",
+          "message": "string"
         }
       },
       "headers": {
         "content-type": "application/json",
-        "content-length": "75"
+        "content-length": "133"
       },
       "working": false,
-      "rawResponse": "{\"error\":\"Route not found\",\"route\":\"/api/v1/exposure-types\",\"method\":\"GET\"}"
+      "rawResponse": "{\"error\":\"Route not found\",\"route\":\"/api/v1/exposure-types\",\"method\":\"GET\",\"message\":\"GET /api/v1/exposure-types is not implemented\"}"
     },
     {
       "path": "/api/v1/detox-types",
       "method": "GET",
       "description": "Get detox types",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/detox-types",
-      "status": 404,
-      "responseTime": 38,
+      "status": 200,
+      "responseTime": 44,
       "dataType": "object",
-      "dataSize": 72,
+      "dataSize": 1595,
       "sampleData": {
         "type": "object",
         "keys": [
-          "error",
-          "route",
-          "method"
+          "detox_types",
+          "total",
+          "search_term"
         ],
         "sample": {
-          "error": "Route not found",
-          "route": "/api/v1/detox-types",
-          "method": "GET"
+          "detox_types": [
+            {
+              "id": "77637788-25e5-4633-8ef9-d79346afb962",
+              "name": "Baking Soda Bath",
+              "category": "Bath",
+              "duration_suggested": 15,
+              "description": "Alkalizing detox bath"
+            },
+            {
+              "id": "58ccd4a4-65f5-4237-8cb8-09d659cd5730",
+              "name": "Castor Oil Pack",
+              "category": "Topical",
+              "duration_suggested": 45,
+              "description": "Liver and digestive support"
+            },
+            {
+              "id": "db9b438b-1cf6-4166-9c99-3ca46d1bbd45",
+              "name": "Clay Mask",
+              "category": "Topical",
+              "duration_suggested": 20,
+              "description": "Skin detox with bentonite clay"
+            },
+            {
+              "id": "bb8c8edc-a756-4801-b2bd-b637fd8ff305",
+              "name": "Coffee Enema",
+              "category": "Internal",
+              "duration_suggested": 15,
+              "description": "Liver detox support"
+            },
+            {
+              "id": "ab731630-95c8-4c2c-b727-40c1eaa65e39",
+              "name": "Cold Plunge",
+              "category": "Cold",
+              "duration_suggested": 5,
+              "description": "Cold water immersion therapy"
+            },
+            {
+              "id": "ad8ce13c-8e69-45e2-939b-0c3fdb45cb8c",
+              "name": "Dry Brushing",
+              "category": "Manual",
+              "duration_suggested": 10,
+              "description": "Skin and lymphatic stimulation"
+            },
+            {
+              "id": "05d5541d-bb69-4445-a40d-48aa633946b3",
+              "name": "Epsom Salt Bath",
+              "category": "Bath",
+              "duration_suggested": 20,
+              "description": "Magnesium sulfate detox bath"
+            },
+            {
+              "id": "dd3355e7-cab8-4f0a-b039-e72e038b4b05",
+              "name": "Ice Bath",
+              "category": "Cold",
+              "duration_suggested": 10,
+              "description": "Cold therapy for inflammation"
+            },
+            {
+              "id": "4ca718db-7e7c-4815-97cc-9cef3ae593fc",
+              "name": "Infrared Sauna",
+              "category": "Heat",
+              "duration_suggested": 30,
+              "description": "Far infrared heat therapy"
+            },
+            {
+              "id": "9419e769-00ee-415b-8123-7a9ebaf24a6e",
+              "name": "Lymphatic Massage",
+              "category": "Manual",
+              "duration_suggested": 60,
+              "description": "Manual lymph drainage"
+            }
+          ],
+          "total": 10,
+          "search_term": ""
         },
         "structure": {
-          "error": "string",
-          "route": "string",
-          "method": "string"
+          "detox_types": "array[10]",
+          "total": "number",
+          "search_term": "string"
         }
       },
       "headers": {
         "content-type": "application/json",
-        "content-length": "72"
+        "content-length": "1595"
       },
-      "working": false,
-      "rawResponse": "{\"error\":\"Route not found\",\"route\":\"/api/v1/detox-types\",\"method\":\"GET\"}"
+      "working": true,
+      "rawResponse": null
     },
     {
       "path": "/api/v1/timeline/entries",
@@ -8247,7 +8291,7 @@
       "description": "Create timeline entry",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/timeline/entries",
       "status": 500,
-      "responseTime": 64,
+      "responseTime": 46,
       "dataType": "object",
       "dataSize": 52,
       "sampleData": {
@@ -8271,10 +8315,10 @@
     }
   ],
   "status": "healthy",
-  "timestamp": "2025-07-04T23:13:37.162Z",
+  "timestamp": "2025-07-04T23:23:21.612Z",
   "summary": {
-    "working": 13,
-    "broken": 8,
+    "working": 14,
+    "broken": 7,
     "total": 21
   }
 }
