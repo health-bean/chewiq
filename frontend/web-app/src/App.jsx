@@ -81,11 +81,11 @@ const MultiSelectProtocolDropdown = ({ protocols, selectedProtocols, onSelection
     };
 
     if (isOpen) {
-      document.addEventListener('click', handleClickOutside);
+      document.addEventListener('click', handleClickOutside, { passive: true });
     }
 
     return () => {
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener('click', handleClickOutside, { passive: true });
     };
   }, [isOpen]);
 
