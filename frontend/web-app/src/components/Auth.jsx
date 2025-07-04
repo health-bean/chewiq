@@ -132,7 +132,7 @@ const AuthPage = () => {
               <div className="relative">
                 <Mail size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <Input
-                  type="email"
+                  type="email" autocomplete="email"
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}

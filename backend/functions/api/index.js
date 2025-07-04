@@ -1,13 +1,27 @@
 const { handleLogin, handleRegister, handleLogout, handleVerify } = require('./handlers/auth');
 const { handleGetJournals, handleCreateJournal, handleUpdateJournal, handleDeleteJournal } = require('./handlers/journal');
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With'
+};
+
 exports.handler = async (event, context) => {
   try {
     const { httpMethod, path, pathParameters } = event;
     const route = path || event.resource;
     
     console.log(`Processing ${httpMethod} ${route}`);
-    console.log('Event body:', event.body);
+    
+    // Handle preflight OPTIONS requests
+    if (httpMethod === 'OPTIONS') {
+      return {
+        statusCode: 200,
+        headers: corsHeaders,
+        body: ''
+      };
+    }
     
     // Parse body if it exists
     let body = {};
@@ -18,12 +32,7 @@ exports.handler = async (event, context) => {
         console.error('Body parsing error:', e);
         return {
           statusCode: 400,
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type, Authorization'
-          },
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
           body: JSON.stringify({ error: 'Invalid JSON in request body' })
         };
       }
@@ -65,12 +74,7 @@ exports.handler = async (event, context) => {
     
     return {
       statusCode: 404,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization'
-      },
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         error: 'Route not found',
         route: route,
@@ -82,12 +86,7 @@ exports.handler = async (event, context) => {
     console.error('Lambda handler error:', error);
     return {
       statusCode: 500,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization'
-      },
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         error: 'Internal server error',
         message: error.message
