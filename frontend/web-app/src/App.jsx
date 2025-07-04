@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Clock, Calendar, CheckCircle2, X, Loader2, Search, TrendingUp, ChevronDown } from 'lucide-react';
 
 // Import shared auth context
-import { AuthProvider, useAuth } from '../../shared/contexts/AuthProvider.jsx';
+import { AuthProvider, useAuth } from '../../shared/contexts/AuthProvider';
 
 // Import web-specific auth page
 import AuthPage from './components/Auth';
@@ -81,11 +81,11 @@ const MultiSelectProtocolDropdown = ({ protocols, selectedProtocols, onSelection
     };
 
     if (isOpen) {
-      document.addEventListener('click', handleClickOutside, { passive: true });
+      document.addEventListener('click', handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('click', handleClickOutside, { passive: true });
+      document.removeEventListener('click', handleClickOutside);
     };
   }, [isOpen]);
 
@@ -309,6 +309,7 @@ function HealthApp() {
   const [showAddEntry, setShowAddEntry] = useState(false);
   const [activeView, setActiveView] = useState('timeline');
   const [showSetup, setShowSetup] = useState(false);
+  const [selectedProtocolId, setSelectedProtocolId] = useState(null);
   
   // Auth hook
   const { user, logout } = useAuth();
@@ -332,6 +333,13 @@ function HealthApp() {
   // Timeline entries (API-driven)
   const [dailyEntries, setDailyEntries] = useState([]);
   const [loadingEntries, setLoadingEntries] = useState(true);
+
+  // Set default protocol when preferences load
+  useEffect(() => {
+    if (preferences?.protocols?.length > 0 && !selectedProtocolId) {
+      setSelectedProtocolId(preferences.protocols[0]);
+    }
+  }, [preferences, selectedProtocolId]);
 
   // Load timeline entries
   useEffect(() => {
@@ -665,9 +673,8 @@ useEffect(() => {
         )}
       </div>
 
-      {/* All your existing main content stays exactly the same */}
+      {/* Main Content */}
       <div className="p-4">
-        {/* I'm keeping all the existing content sections exactly as they were */}
         {activeView === 'timeline' && (
           <div className="space-y-4">
             <Button
@@ -915,7 +922,6 @@ useEffect(() => {
           </div>
         )}
 
-        {/* All other sections stay exactly the same - reflect, insights, protocol */}
         {activeView === 'reflect' && (
           <div className="space-y-6 pb-8">
             <div className="flex items-center justify-between mb-4">
@@ -930,7 +936,6 @@ useEffect(() => {
               )}
             </div>
 
-            {/* All reflection content stays exactly the same */}
             <Card variant="primary" title="Sleep & Recovery">
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-3">
@@ -981,7 +986,6 @@ useEffect(() => {
               </div>
             </Card>
 
-            {/* All other reflection cards stay the same */}
             <Card variant="warning" title="Overall Feeling - End of Day">
               <div className="space-y-4">
                 <div>
@@ -1053,8 +1057,6 @@ useEffect(() => {
                 </div>
               </div>
             </Card>
-
-            {/* I'm truncating here but all other reflection cards stay exactly the same */}
             
             <Button 
               variant="success" 
@@ -1076,11 +1078,37 @@ useEffect(() => {
 
         {/* Protocol Foods Browser */}
         {activeView === 'protocol' && (
-          <ProtocolFoods protocolId={preferences.protocols[0]} />
+          <div className="space-y-4">
+            {/* Protocol Selector */}
+            {preferences?.protocols?.length > 1 && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Select Protocol
+                </label>
+                <select
+                  value={selectedProtocolId || ''}
+                  onChange={(e) => setSelectedProtocolId(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  {preferences.protocols.map(protocolId => {
+                    const protocol = protocols.find(p => p.id === protocolId);
+                    return (
+                      <option key={protocolId} value={protocolId}>
+                        {protocol?.name || 'Unknown Protocol'}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+            )}
+            
+            {/* Protocol Foods Component */}
+            <ProtocolFoods protocolId={selectedProtocolId || preferences?.protocols?.[0]} />
+          </div>
         )}
       </div>
 
-      {/* Welcome message stays the same */}
+      {/* Welcome message */}
       {preferences && !preferences.setup_complete && !showSetup && (
         <div className="fixed bottom-4 left-4 right-4 max-w-md mx-auto">
           <Alert variant="info" dismissible onDismiss={() => {}}>
@@ -1123,7 +1151,7 @@ function AppContent() {
   return <HealthApp />;
 }
 
-// Main App component with AuthProvider.jsx
+// Main App component with AuthProvider
 function App() {
   return (
     <AuthProvider>
