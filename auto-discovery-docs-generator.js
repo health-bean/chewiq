@@ -1013,14 +1013,10 @@ Configure your environment variables before deployment.`;
     items: ['deployment/overview']
   });
 
-  // Export as a proper Docusaurus sidebar configuration
-  // Option 1: Export as array (simpler)
-  const sidebarConfig = sidebarItems;
-  
-  // Option 2: Export as object with sidebar ID (more flexible)
-  // const sidebarConfig = {
-  //   docs: sidebarItems
-  // };
+  // Export as proper Docusaurus sidebar configuration (object approach - recommended)
+  const sidebarConfig = {
+    docs: sidebarItems
+  };
 
   this.writeDocFile('../sidebars.js', `module.exports = ${JSON.stringify(sidebarConfig, null, 2)};`);
 }
