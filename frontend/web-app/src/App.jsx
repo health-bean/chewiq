@@ -314,12 +314,15 @@ function HealthApp() {
   // Auth hook
   const { user, logout } = useAuth();
   
+  // 🔧 FIX: Pass userId to hooks that need it
+  const userId = user?.id || user?.userId || 'temp-user-id';
+  
   // Hooks
   const { protocols, loading: protocolsLoading, error: protocolsError } = useProtocols();
-  const { preferences, updatePreferences, loading: preferencesLoading, error: preferencesError, isReady } = useUserPreferences();
+  const { preferences, updatePreferences, loading: preferencesLoading, error: preferencesError, isReady } = useUserPreferences(userId);
   const { exposureTypes } = useExposureTypes();
   const { detoxTypes } = useDetoxTypes();
-  const { reflectionData, updateReflectionData, saveReflectionData, loading: reflectionLoading, hasUnsavedChanges } = useReflectionData(selectedDate);
+  const { reflectionData, updateReflectionData, saveReflectionData, loading: reflectionLoading, hasUnsavedChanges } = useReflectionData(selectedDate, userId);
   
   // Entry state
   const [newEntry, setNewEntry] = useState({
@@ -333,6 +336,9 @@ function HealthApp() {
   // Timeline entries (API-driven)
   const [dailyEntries, setDailyEntries] = useState([]);
   const [loadingEntries, setLoadingEntries] = useState(true);
+
+  // Debug: Log the userId being used
+  console.log('🔍 Debug: userId being passed to hooks:', userId);
 
   // Set default protocol when preferences load
   useEffect(() => {
@@ -407,6 +413,7 @@ useEffect(() => {
         <div className="text-center">
           <Loader2 size={32} className="animate-spin mx-auto mb-4 text-blue-600" />
           <p className="text-gray-600">Loading your health journey...</p>
+          <p className="text-xs text-gray-500 mt-2">userId: {userId}</p>
         </div>
       </div>
     );
