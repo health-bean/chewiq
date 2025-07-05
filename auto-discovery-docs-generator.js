@@ -21,8 +21,43 @@ class AutoDiscoveryDocsGenerator {
     };
   }
 
+  cleanDocsDirectory() {
+    console.log('🧹 Cleaning old documentation...');
+    
+    const docsDir = path.join(this.rootPath, 'docs', 'docs');
+    
+    if (fs.existsSync(docsDir)) {
+      // Remove all .md files and subdirectories
+      const items = fs.readdirSync(docsDir);
+      
+      items.forEach(item => {
+        const itemPath = path.join(docsDir, item);
+        const stat = fs.statSync(itemPath);
+        
+        if (stat.isDirectory()) {
+          // Remove directory and all contents
+          fs.rmSync(itemPath, { recursive: true, force: true });
+        } else if (item.endsWith('.md')) {
+          // Remove markdown files
+          fs.unlinkSync(itemPath);
+        }
+      });
+    }
+    
+    // Also clean the sidebars.js file
+    const sidebarPath = path.join(this.rootPath, 'docs', 'sidebars.js');
+    if (fs.existsSync(sidebarPath)) {
+      fs.unlinkSync(sidebarPath);
+    }
+    
+    console.log('   ✅ Old documentation cleaned');
+  }
+
   async generateComplete() {
     console.log('🔍 Auto-Discovering FILO Health Platform Implementation...\n');
+    
+    // Clean old documentation first
+    this.cleanDocsDirectory();
     
     // Auto-discover everything that's actually implemented
     await this.discoverAPIs();
@@ -976,66 +1011,49 @@ Configure your environment variables before deployment.`;
   }
 
   generateSidebar() {
-  // Create the sidebar items array instead of a single category object
-  const sidebarItems = [
-    'intro',
-    'quick-start',
-    {
-      type: 'category',
-      label: 'API Reference',
-      items: ['api/overview']
-    },
-    {
-      type: 'category', 
-      label: 'Components',
-      items: ['components/overview']
-    },
-    {
-      type: 'category',
-      label: 'Architecture',
-      items: ['architecture/overview']
-    }
-  ];
+    // Create the sidebar items array
+    const sidebarItems = [
+      'intro',
+      'quick-start',
+      {
+        type: 'category',
+        label: 'API Reference',
+        items: ['api/overview']
+      },
+      {
+        type: 'category', 
+        label: 'Components',
+        items: ['components/overview']
+      },
+      {
+        type: 'category',
+        label: 'Architecture',
+        items: ['architecture/overview']
+      }
+    ];
 
-  // Add authentication section if implemented
-  if (this.discovered.auth.implemented) {
-    sidebarItems.splice(3, 0, {
-      type: 'category',
-      label: 'Authentication',
-      items: ['authentication/overview']
-    });
-  }
-
-  // Add deployment section
-  sidebarItems.push({
-    type: 'category',
-    label: 'Deployment',
-    items: ['deployment/overview']
-  });
-
-  // Export as proper Docusaurus sidebar configuration (object approach - recommended)
-  const sidebarConfig = {
-    docs: sidebarItems
-  };
-
-  this.writeDocFile('../sidebars.js', `module.exports = ${JSON.stringify(sidebarConfig, null, 2)};`);
-}
-
+    // Add authentication section if implemented
     if (this.discovered.auth.implemented) {
-      sidebar.items.splice(3, 0, {
+      sidebarItems.splice(3, 0, {
         type: 'category',
         label: 'Authentication',
         items: ['authentication/overview']
       });
     }
 
-    sidebar.items.push({
+    // Add deployment section
+    sidebarItems.push({
       type: 'category',
       label: 'Deployment',
       items: ['deployment/overview']
     });
 
-    this.writeDocFile('../sidebars.js', `module.exports = ${JSON.stringify(sidebar, null, 2)};`);
+    // Export as proper Docusaurus sidebar configuration (object approach - recommended)
+    const sidebarConfig = {
+      docs: sidebarItems
+    };
+
+    this.writeDocFile('../sidebars.js', `module.exports = ${JSON.stringify(sidebarConfig, null, 2)};`);
   }
 
   writeDocFile(filename, content) {
