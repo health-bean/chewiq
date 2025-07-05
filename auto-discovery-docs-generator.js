@@ -976,29 +976,54 @@ Configure your environment variables before deployment.`;
   }
 
   generateSidebar() {
-    const sidebar = {
+  // Create the sidebar items array instead of a single category object
+  const sidebarItems = [
+    'intro',
+    'quick-start',
+    {
       type: 'category',
-      label: 'FILO Health Platform',
-      items: [
-        'intro',
-        'quick-start',
-        {
-          type: 'category',
-          label: 'API Reference',
-          items: ['api/overview']
-        },
-        {
-          type: 'category', 
-          label: 'Components',
-          items: ['components/overview']
-        },
-        {
-          type: 'category',
-          label: 'Architecture',
-          items: ['architecture/overview']
-        }
-      ]
-    };
+      label: 'API Reference',
+      items: ['api/overview']
+    },
+    {
+      type: 'category', 
+      label: 'Components',
+      items: ['components/overview']
+    },
+    {
+      type: 'category',
+      label: 'Architecture',
+      items: ['architecture/overview']
+    }
+  ];
+
+  // Add authentication section if implemented
+  if (this.discovered.auth.implemented) {
+    sidebarItems.splice(3, 0, {
+      type: 'category',
+      label: 'Authentication',
+      items: ['authentication/overview']
+    });
+  }
+
+  // Add deployment section
+  sidebarItems.push({
+    type: 'category',
+    label: 'Deployment',
+    items: ['deployment/overview']
+  });
+
+  // Export as a proper Docusaurus sidebar configuration
+  // Option 1: Export as array (simpler)
+  const sidebarConfig = sidebarItems;
+  
+  // Option 2: Export as object with sidebar ID (more flexible)
+  // const sidebarConfig = {
+  //   docs: sidebarItems
+  // };
+
+  this.writeDocFile('../sidebars.js', `module.exports = ${JSON.stringify(sidebarConfig, null, 2)};`);
+}
 
     if (this.discovered.auth.implemented) {
       sidebar.items.splice(3, 0, {
