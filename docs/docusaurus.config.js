@@ -64,6 +64,7 @@ const config = {
         logo: {
           alt: 'Web App Logo',
           src: 'img/logo.svg',
+          href: '/intro',
         },
         items: [
           {
