@@ -1,0 +1,54 @@
+{
+  "timestamp": "2025-07-05T00:46:45.438Z",
+  "infrastructure": {
+    "apiGateway": "AWS API Gateway with proxy integration",
+    "lambdaFunction": "health-platform-dev",
+    "authMiddleware": "Development mode with demo user fallback",
+    "corsEnabled": true,
+    "environment": "Development",
+    "deploymentDate": "2025-07-05T00:46:45.434Z",
+    "baseURL": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev"
+  },
+  "summary": {
+    "discovered": 26,
+    "working": 26,
+    "broken": 7,
+    "total": 33
+  },
+  "status": "needs-attention",
+  "successRate": 79,
+  "categories": {
+    "Core": {
+      "working": 1,
+      "total": 1
+    },
+    "AI": {
+      "working": 2,
+      "total": 2
+    },
+    "Foods": {
+      "working": 4,
+      "total": 4
+    },
+    "Timeline": {
+      "working": 4,
+      "total": 4
+    },
+    "Users": {
+      "working": 3,
+      "total": 3
+    },
+    "Journal": {
+      "working": 2,
+      "total": 2
+    },
+    "Search": {
+      "working": 4,
+      "total": 4
+    },
+    "Discovered": {
+      "working": 6,
+      "total": 13
+    }
+  }
+}

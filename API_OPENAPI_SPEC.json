@@ -1,0 +1,468 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "FILO Health Platform API",
+    "version": "1.0.0",
+    "description": "AI-powered health intelligence platform with proxy integration",
+    "contact": {
+      "name": "FILO Health Platform",
+      "url": "https://deebyrne26.github.io/health-platform/"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev",
+      "description": "Production API Gateway (AWS Lambda Proxy)"
+    }
+  ],
+  "paths": {
+    "/api/v1/protocols": {
+      "get": {
+        "summary": "Get available health protocols",
+        "tags": [
+          "Core"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/correlations/insights": {
+      "get": {
+        "summary": "Auto-discovered: /api/v1/correlations/insights",
+        "tags": [
+          "Discovered"
+        ],
+        "responses": {
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/foods/by-protocol": {
+      "get": {
+        "summary": "Auto-discovered: /api/v1/foods/by-protocol",
+        "tags": [
+          "Discovered"
+        ],
+        "responses": {
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/foods/search": {
+      "get": {
+        "summary": "Auto-discovered: /api/v1/foods/search",
+        "tags": [
+          "Discovered"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/timeline/entries": {
+      "get": {
+        "summary": "User timeline",
+        "tags": [
+          "Timeline"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      },
+      "post": {
+        "summary": "Create timeline entry (dev mode)",
+        "tags": [
+          "Timeline"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/users": {
+      "get": {
+        "summary": "User profile (dev mode)",
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/user/protocols": {
+      "get": {
+        "summary": "User protocols (dev mode)",
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/user/preferences": {
+      "get": {
+        "summary": "User preferences (dev mode)",
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/journal/entries": {
+      "get": {
+        "summary": "Journal by date (dev mode)",
+        "tags": [
+          "Journal"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/symptoms/search": {
+      "get": {
+        "summary": "Auto-discovered: /api/v1/symptoms/search",
+        "tags": [
+          "Discovered"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/supplements/search": {
+      "get": {
+        "summary": "Auto-discovered: /api/v1/supplements/search",
+        "tags": [
+          "Discovered"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/medications/search": {
+      "get": {
+        "summary": "Auto-discovered: /api/v1/medications/search",
+        "tags": [
+          "Discovered"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/detox-types": {
+      "get": {
+        "summary": "Detox types",
+        "tags": [
+          "Search"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/auth/login": {
+      "get": {
+        "summary": "Auto-discovered: /api/v1/auth/login",
+        "tags": [
+          "Discovered"
+        ],
+        "responses": {
+          "404": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/auth/register": {
+      "get": {
+        "summary": "Auto-discovered: /api/v1/auth/register",
+        "tags": [
+          "Discovered"
+        ],
+        "responses": {
+          "404": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/auth/logout": {
+      "get": {
+        "summary": "Auto-discovered: /api/v1/auth/logout",
+        "tags": [
+          "Discovered"
+        ],
+        "responses": {
+          "404": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/auth/verify": {
+      "get": {
+        "summary": "Auto-discovered: /api/v1/auth/verify",
+        "tags": [
+          "Discovered"
+        ],
+        "responses": {
+          "401": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/journals": {
+      "get": {
+        "summary": "Auto-discovered: /api/v1/journals",
+        "tags": [
+          "Discovered"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/journals/": {
+      "get": {
+        "summary": "Auto-discovered: /api/v1/journals/",
+        "tags": [
+          "Discovered"
+        ],
+        "responses": {
+          "404": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/detox/search": {
+      "get": {
+        "summary": "Auto-discovered: /api/v1/detox/search",
+        "tags": [
+          "Discovered"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "JWT token (dev mode: optional - falls back to demo user)"
+      }
+    }
+  }
+}

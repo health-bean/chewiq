@@ -1,0 +1,1136 @@
+{
+  "infrastructure": {
+    "apiGateway": "AWS API Gateway with proxy integration",
+    "lambdaFunction": "health-platform-dev",
+    "authMiddleware": "Development mode with demo user fallback",
+    "corsEnabled": true,
+    "environment": "Development",
+    "deploymentDate": "2025-07-05T00:46:45.434Z",
+    "baseURL": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev"
+  },
+  "endpoints": [
+    {
+      "path": "/api/v1/protocols",
+      "method": "GET",
+      "description": "Get available health protocols",
+      "category": "Core",
+      "requiresAuth": false,
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/protocols",
+      "status": 200,
+      "responseTime": 522,
+      "dataType": "object",
+      "dataSize": 2385,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "protocols",
+          "total"
+        ],
+        "structure": {
+          "protocols": "array[10]",
+          "total": "number"
+        }
+      },
+      "working": true,
+      "error": null
+    },
+    {
+      "path": "/api/v1/correlations/insights?userId=8e8a568a-c2f8-43a8-abf2-4e54408dbdc0",
+      "method": "GET",
+      "description": "AI correlation insights",
+      "category": "AI",
+      "requiresAuth": false,
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/correlations/insights?userId=8e8a568a-c2f8-43a8-abf2-4e54408dbdc0",
+      "status": 200,
+      "responseTime": 23944,
+      "dataType": "object",
+      "dataSize": 42028,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "insights",
+          "summary",
+          "timeframe_days",
+          "confidence_threshold"
+        ],
+        "structure": {
+          "insights": "array[117]",
+          "summary": "object",
+          "timeframe_days": "number",
+          "confidence_threshold": "number"
+        }
+      },
+      "working": true,
+      "error": null
+    },
+    {
+      "path": "/api/v1/correlations/insights?userId=8e8a568a-c2f8-43a8-abf2-4e54408dbdc0&confidence_threshold=0.7",
+      "method": "GET",
+      "description": "Filtered AI correlations",
+      "category": "AI",
+      "requiresAuth": false,
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/correlations/insights?userId=8e8a568a-c2f8-43a8-abf2-4e54408dbdc0&confidence_threshold=0.7",
+      "status": 200,
+      "responseTime": 23860,
+      "dataType": "object",
+      "dataSize": 25177,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "insights",
+          "summary",
+          "timeframe_days",
+          "confidence_threshold"
+        ],
+        "structure": {
+          "insights": "array[69]",
+          "summary": "object",
+          "timeframe_days": "number",
+          "confidence_threshold": "number"
+        }
+      },
+      "working": true,
+      "error": null
+    },
+    {
+      "path": "/api/v1/foods/by-protocol?protocol_id=1495844a-19de-404c-a288-7660eda0cbe1",
+      "method": "GET",
+      "description": "AIP protocol foods",
+      "category": "Foods",
+      "requiresAuth": false,
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/foods/by-protocol?protocol_id=1495844a-19de-404c-a288-7660eda0cbe1",
+      "status": 200,
+      "responseTime": 619,
+      "dataType": "object",
+      "dataSize": 50636,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "protocol",
+          "foods",
+          "foodsByCategory",
+          "stats",
+          "filters",
+          "categories"
+        ],
+        "structure": {
+          "protocol": "object",
+          "foods": "array[75]",
+          "foodsByCategory": "object",
+          "stats": "object",
+          "filters": "object",
+          "categories": "array[10]"
+        }
+      },
+      "working": true,
+      "error": null
+    },
+    {
+      "path": "/api/v1/foods/by-protocol?protocol_id=51ca7a24-4691-4629-8ee5-c20876e68c29",
+      "method": "GET",
+      "description": "Low Histamine foods",
+      "category": "Foods",
+      "requiresAuth": false,
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/foods/by-protocol?protocol_id=51ca7a24-4691-4629-8ee5-c20876e68c29",
+      "status": 200,
+      "responseTime": 58,
+      "dataType": "object",
+      "dataSize": 50655,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "protocol",
+          "foods",
+          "foodsByCategory",
+          "stats",
+          "filters",
+          "categories"
+        ],
+        "structure": {
+          "protocol": "object",
+          "foods": "array[75]",
+          "foodsByCategory": "object",
+          "stats": "object",
+          "filters": "object",
+          "categories": "array[10]"
+        }
+      },
+      "working": true,
+      "error": null
+    },
+    {
+      "path": "/api/v1/foods/search?search=chicken",
+      "method": "GET",
+      "description": "Food search",
+      "category": "Foods",
+      "requiresAuth": false,
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/foods/search?search=chicken",
+      "status": 200,
+      "responseTime": 69,
+      "dataType": "object",
+      "dataSize": 250,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "foods",
+          "total",
+          "search_term",
+          "protocol_id"
+        ],
+        "structure": {
+          "foods": "array[1]",
+          "total": "number",
+          "search_term": "string",
+          "protocol_id": "object"
+        }
+      },
+      "working": true,
+      "error": null
+    },
+    {
+      "path": "/api/v1/foods/search?search=broccoli&protocol_id=1495844a-19de-404c-a288-7660eda0cbe1",
+      "method": "GET",
+      "description": "Protocol food search",
+      "category": "Foods",
+      "requiresAuth": false,
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/foods/search?search=broccoli&protocol_id=1495844a-19de-404c-a288-7660eda0cbe1",
+      "status": 200,
+      "responseTime": 43,
+      "dataType": "object",
+      "dataSize": 419,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "foods",
+          "total",
+          "search_term",
+          "protocol_id"
+        ],
+        "structure": {
+          "foods": "array[1]",
+          "total": "number",
+          "search_term": "string",
+          "protocol_id": "string"
+        }
+      },
+      "working": true,
+      "error": null
+    },
+    {
+      "path": "/api/v1/timeline/entries",
+      "method": "GET",
+      "description": "Timeline entries",
+      "category": "Timeline",
+      "requiresAuth": false,
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/timeline/entries",
+      "status": 200,
+      "responseTime": 53,
+      "dataType": "object",
+      "dataSize": 24,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "entries",
+          "total"
+        ],
+        "structure": {
+          "entries": "array[0]",
+          "total": "number"
+        }
+      },
+      "working": true,
+      "error": null
+    },
+    {
+      "path": "/api/v1/timeline/entries?date=2025-07-04",
+      "method": "GET",
+      "description": "Timeline by date",
+      "category": "Timeline",
+      "requiresAuth": false,
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/timeline/entries?date=2025-07-04",
+      "status": 200,
+      "responseTime": 44,
+      "dataType": "object",
+      "dataSize": 24,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "entries",
+          "total"
+        ],
+        "structure": {
+          "entries": "array[0]",
+          "total": "number"
+        }
+      },
+      "working": true,
+      "error": null
+    },
+    {
+      "path": "/api/v1/timeline/entries?userId=8e8a568a-c2f8-43a8-abf2-4e54408dbdc0",
+      "method": "GET",
+      "description": "User timeline",
+      "category": "Timeline",
+      "requiresAuth": false,
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/timeline/entries?userId=8e8a568a-c2f8-43a8-abf2-4e54408dbdc0",
+      "status": 200,
+      "responseTime": 42,
+      "dataType": "object",
+      "dataSize": 24,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "entries",
+          "total"
+        ],
+        "structure": {
+          "entries": "array[0]",
+          "total": "number"
+        }
+      },
+      "working": true,
+      "error": null
+    },
+    {
+      "path": "/api/v1/users",
+      "method": "GET",
+      "description": "User profile (dev mode)",
+      "category": "Users",
+      "requiresAuth": false,
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/users",
+      "status": 200,
+      "responseTime": 40,
+      "dataType": "object",
+      "dataSize": 165,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "user"
+        ],
+        "structure": {
+          "user": "object"
+        }
+      },
+      "working": true,
+      "error": null
+    },
+    {
+      "path": "/api/v1/user/protocols",
+      "method": "GET",
+      "description": "User protocols (dev mode)",
+      "category": "Users",
+      "requiresAuth": false,
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/user/protocols",
+      "status": 200,
+      "responseTime": 40,
+      "dataType": "object",
+      "dataSize": 16,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "protocols"
+        ],
+        "structure": {
+          "protocols": "array[0]"
+        }
+      },
+      "working": true,
+      "error": null
+    },
+    {
+      "path": "/api/v1/user/preferences",
+      "method": "GET",
+      "description": "User preferences (dev mode)",
+      "category": "Users",
+      "requiresAuth": false,
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/user/preferences",
+      "status": 200,
+      "responseTime": 37,
+      "dataType": "object",
+      "dataSize": 18,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "preferences"
+        ],
+        "structure": {
+          "preferences": "object"
+        }
+      },
+      "working": true,
+      "error": null
+    },
+    {
+      "path": "/api/v1/journal/entries",
+      "method": "GET",
+      "description": "Journal entries (dev mode)",
+      "category": "Journal",
+      "requiresAuth": false,
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/journal/entries",
+      "status": 200,
+      "responseTime": 43,
+      "dataType": "object",
+      "dataSize": 24,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "entries",
+          "total"
+        ],
+        "structure": {
+          "entries": "array[0]",
+          "total": "number"
+        }
+      },
+      "working": true,
+      "error": null
+    },
+    {
+      "path": "/api/v1/journal/entries?date=2025-07-04",
+      "method": "GET",
+      "description": "Journal by date (dev mode)",
+      "category": "Journal",
+      "requiresAuth": false,
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/journal/entries?date=2025-07-04",
+      "status": 200,
+      "responseTime": 38,
+      "dataType": "object",
+      "dataSize": 24,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "entries",
+          "total"
+        ],
+        "structure": {
+          "entries": "array[0]",
+          "total": "number"
+        }
+      },
+      "working": true,
+      "error": null
+    },
+    {
+      "path": "/api/v1/symptoms/search?search=headache",
+      "method": "GET",
+      "description": "Symptom search",
+      "category": "Search",
+      "requiresAuth": false,
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/symptoms/search?search=headache",
+      "status": 200,
+      "responseTime": 44,
+      "dataType": "object",
+      "dataSize": 226,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "symptoms",
+          "total",
+          "search_term"
+        ],
+        "structure": {
+          "symptoms": "array[1]",
+          "total": "number",
+          "search_term": "string"
+        }
+      },
+      "working": true,
+      "error": null
+    },
+    {
+      "path": "/api/v1/supplements/search?search=vitamin",
+      "method": "GET",
+      "description": "Supplement search",
+      "category": "Search",
+      "requiresAuth": false,
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/supplements/search?search=vitamin",
+      "status": 200,
+      "responseTime": 52,
+      "dataType": "object",
+      "dataSize": 780,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "supplements",
+          "total",
+          "search_term"
+        ],
+        "structure": {
+          "supplements": "array[4]",
+          "total": "number",
+          "search_term": "string"
+        }
+      },
+      "working": true,
+      "error": null
+    },
+    {
+      "path": "/api/v1/medications/search?search=ibuprofen",
+      "method": "GET",
+      "description": "Medication search",
+      "category": "Search",
+      "requiresAuth": false,
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/medications/search?search=ibuprofen",
+      "status": 200,
+      "responseTime": 41,
+      "dataType": "object",
+      "dataSize": 242,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "medications",
+          "total",
+          "search_term"
+        ],
+        "structure": {
+          "medications": "array[1]",
+          "total": "number",
+          "search_term": "string"
+        }
+      },
+      "working": true,
+      "error": null
+    },
+    {
+      "path": "/api/v1/detox-types",
+      "method": "GET",
+      "description": "Detox types",
+      "category": "Search",
+      "requiresAuth": false,
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/detox-types",
+      "status": 200,
+      "responseTime": 40,
+      "dataType": "object",
+      "dataSize": 1595,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "detox_types",
+          "total",
+          "search_term"
+        ],
+        "structure": {
+          "detox_types": "array[10]",
+          "total": "number",
+          "search_term": "string"
+        }
+      },
+      "working": true,
+      "error": null
+    },
+    {
+      "path": "/api/v1/timeline/entries",
+      "method": "POST",
+      "description": "Create timeline entry (dev mode)",
+      "category": "Timeline",
+      "requiresAuth": false,
+      "body": {
+        "userId": "8e8a568a-c2f8-43a8-abf2-4e54408dbdc0",
+        "entryDate": "2025-07-04",
+        "entryType": "food",
+        "content": "API analyzer test entry",
+        "selectedFoods": [
+          "test food"
+        ]
+      },
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/timeline/entries",
+      "status": 200,
+      "responseTime": 40,
+      "dataType": "object",
+      "dataSize": 110,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "id",
+          "message",
+          "user"
+        ],
+        "structure": {
+          "id": "string",
+          "message": "string",
+          "user": "string"
+        }
+      },
+      "working": true,
+      "error": null
+    },
+    {
+      "path": "/api/v1/auth/login",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/auth/login",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js",
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/auth/login",
+      "status": 404,
+      "responseTime": 48,
+      "dataType": "object",
+      "dataSize": 125,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "error",
+          "route",
+          "method",
+          "message"
+        ],
+        "structure": {
+          "error": "string",
+          "route": "string",
+          "method": "string",
+          "message": "string"
+        }
+      },
+      "working": false,
+      "error": "{\"error\":\"Route not found\",\"route\":\"/api/v1/auth/login\",\"method\":\"GET\",\"message\":\"GET /api/v1/auth/login is not implemented\"}"
+    },
+    {
+      "path": "/api/v1/auth/register",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/auth/register",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js",
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/auth/register",
+      "status": 404,
+      "responseTime": 39,
+      "dataType": "object",
+      "dataSize": 131,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "error",
+          "route",
+          "method",
+          "message"
+        ],
+        "structure": {
+          "error": "string",
+          "route": "string",
+          "method": "string",
+          "message": "string"
+        }
+      },
+      "working": false,
+      "error": "{\"error\":\"Route not found\",\"route\":\"/api/v1/auth/register\",\"method\":\"GET\",\"message\":\"GET /api/v1/auth/register is not implemented\"}"
+    },
+    {
+      "path": "/api/v1/auth/logout",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/auth/logout",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js",
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/auth/logout",
+      "status": 404,
+      "responseTime": 102,
+      "dataType": "object",
+      "dataSize": 127,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "error",
+          "route",
+          "method",
+          "message"
+        ],
+        "structure": {
+          "error": "string",
+          "route": "string",
+          "method": "string",
+          "message": "string"
+        }
+      },
+      "working": false,
+      "error": "{\"error\":\"Route not found\",\"route\":\"/api/v1/auth/logout\",\"method\":\"GET\",\"message\":\"GET /api/v1/auth/logout is not implemented\"}"
+    },
+    {
+      "path": "/api/v1/auth/verify",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/auth/verify",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js",
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/auth/verify",
+      "status": 401,
+      "responseTime": 42,
+      "dataType": "object",
+      "dataSize": 35,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "error"
+        ],
+        "structure": {
+          "error": "string"
+        }
+      },
+      "working": false,
+      "error": "{\"error\":\"No authorization header\"}"
+    },
+    {
+      "path": "/api/v1/journals",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/journals",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js",
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/journals",
+      "status": 200,
+      "responseTime": 38,
+      "dataType": "object",
+      "dataSize": 24,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "entries",
+          "total"
+        ],
+        "structure": {
+          "entries": "array[0]",
+          "total": "number"
+        }
+      },
+      "working": true,
+      "error": null
+    },
+    {
+      "path": "/api/v1/journals/",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/journals/",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js",
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/journals/",
+      "status": 404,
+      "responseTime": 44,
+      "dataType": "object",
+      "dataSize": 123,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "error",
+          "route",
+          "method",
+          "message"
+        ],
+        "structure": {
+          "error": "string",
+          "route": "string",
+          "method": "string",
+          "message": "string"
+        }
+      },
+      "working": false,
+      "error": "{\"error\":\"Route not found\",\"route\":\"/api/v1/journals/\",\"method\":\"GET\",\"message\":\"GET /api/v1/journals/ is not implemented\"}"
+    },
+    {
+      "path": "/api/v1/foods/search",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/foods/search",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js",
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/foods/search",
+      "status": 200,
+      "responseTime": 43,
+      "dataType": "object",
+      "dataSize": 9804,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "foods",
+          "total",
+          "search_term",
+          "protocol_id"
+        ],
+        "structure": {
+          "foods": "array[50]",
+          "total": "number",
+          "search_term": "string",
+          "protocol_id": "object"
+        }
+      },
+      "working": true,
+      "error": null
+    },
+    {
+      "path": "/api/v1/foods/by-protocol",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/foods/by-protocol",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js",
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/foods/by-protocol",
+      "status": 400,
+      "responseTime": 42,
+      "dataType": "object",
+      "dataSize": 35,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "error"
+        ],
+        "structure": {
+          "error": "string"
+        }
+      },
+      "working": false,
+      "error": "{\"error\":\"Protocol ID is required\"}"
+    },
+    {
+      "path": "/api/v1/symptoms/search",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/symptoms/search",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js",
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/symptoms/search",
+      "status": 200,
+      "responseTime": 192,
+      "dataType": "object",
+      "dataSize": 1904,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "symptoms",
+          "total",
+          "search_term"
+        ],
+        "structure": {
+          "symptoms": "array[10]",
+          "total": "number",
+          "search_term": "string"
+        }
+      },
+      "working": true,
+      "error": null
+    },
+    {
+      "path": "/api/v1/supplements/search",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/supplements/search",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js",
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/supplements/search",
+      "status": 200,
+      "responseTime": 42,
+      "dataType": "object",
+      "dataSize": 1786,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "supplements",
+          "total",
+          "search_term"
+        ],
+        "structure": {
+          "supplements": "array[10]",
+          "total": "number",
+          "search_term": "string"
+        }
+      },
+      "working": true,
+      "error": null
+    },
+    {
+      "path": "/api/v1/medications/search",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/medications/search",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js",
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/medications/search",
+      "status": 200,
+      "responseTime": 43,
+      "dataType": "object",
+      "dataSize": 2020,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "medications",
+          "total",
+          "search_term"
+        ],
+        "structure": {
+          "medications": "array[10]",
+          "total": "number",
+          "search_term": "string"
+        }
+      },
+      "working": true,
+      "error": null
+    },
+    {
+      "path": "/api/v1/detox/search",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/detox/search",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js",
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/detox/search",
+      "status": 200,
+      "responseTime": 44,
+      "dataType": "object",
+      "dataSize": 1595,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "detox_types",
+          "total",
+          "search_term"
+        ],
+        "structure": {
+          "detox_types": "array[10]",
+          "total": "number",
+          "search_term": "string"
+        }
+      },
+      "working": true,
+      "error": null
+    },
+    {
+      "path": "/api/v1/correlations/insights",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/correlations/insights",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js",
+      "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/correlations/insights",
+      "status": 400,
+      "responseTime": 37,
+      "dataType": "object",
+      "dataSize": 41,
+      "sampleData": {
+        "type": "object",
+        "keys": [
+          "error"
+        ],
+        "structure": {
+          "error": "string"
+        }
+      },
+      "working": false,
+      "error": "{\"error\":\"user_id parameter is required\"}"
+    }
+  ],
+  "discoveredRoutes": [
+    {
+      "path": "/api/v1/auth/login",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/auth/login",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js"
+    },
+    {
+      "path": "/api/v1/auth/register",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/auth/register",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js"
+    },
+    {
+      "path": "/api/v1/auth/logout",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/auth/logout",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js"
+    },
+    {
+      "path": "/api/v1/auth/verify",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/auth/verify",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js"
+    },
+    {
+      "path": "/api/v1/users",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/users",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js"
+    },
+    {
+      "path": "/api/v1/users",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/users",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js"
+    },
+    {
+      "path": "/api/v1/user/protocols",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/user/protocols",
+      "category": "Discovered",
+      "requiresAuth": true,
+      "source": "index.js"
+    },
+    {
+      "path": "/api/v1/user/preferences",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/user/preferences",
+      "category": "Discovered",
+      "requiresAuth": true,
+      "source": "index.js"
+    },
+    {
+      "path": "/api/v1/user/preferences",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/user/preferences",
+      "category": "Discovered",
+      "requiresAuth": true,
+      "source": "index.js"
+    },
+    {
+      "path": "/api/v1/journals",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/journals",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js"
+    },
+    {
+      "path": "/api/v1/journal/entries",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/journal/entries",
+      "category": "Discovered",
+      "requiresAuth": true,
+      "source": "index.js"
+    },
+    {
+      "path": "/api/v1/journals",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/journals",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js"
+    },
+    {
+      "path": "/api/v1/journal/entries",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/journal/entries",
+      "category": "Discovered",
+      "requiresAuth": true,
+      "source": "index.js"
+    },
+    {
+      "path": "/api/v1/journals/",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/journals/",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js"
+    },
+    {
+      "path": "/api/v1/journals/",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/journals/",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js"
+    },
+    {
+      "path": "/api/v1/protocols",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/protocols",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js"
+    },
+    {
+      "path": "/api/v1/timeline/entries",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/timeline/entries",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js"
+    },
+    {
+      "path": "/api/v1/timeline/entries",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/timeline/entries",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js"
+    },
+    {
+      "path": "/api/v1/foods/search",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/foods/search",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js"
+    },
+    {
+      "path": "/api/v1/foods/by-protocol",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/foods/by-protocol",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js"
+    },
+    {
+      "path": "/api/v1/symptoms/search",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/symptoms/search",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js"
+    },
+    {
+      "path": "/api/v1/supplements/search",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/supplements/search",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js"
+    },
+    {
+      "path": "/api/v1/medications/search",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/medications/search",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js"
+    },
+    {
+      "path": "/api/v1/detox/search",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/detox/search",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js"
+    },
+    {
+      "path": "/api/v1/detox-types",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/detox-types",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js"
+    },
+    {
+      "path": "/api/v1/correlations/insights",
+      "method": "GET",
+      "description": "Auto-discovered: /api/v1/correlations/insights",
+      "category": "Discovered",
+      "requiresAuth": false,
+      "source": "index.js"
+    }
+  ],
+  "status": "needs-attention",
+  "timestamp": "2025-07-05T00:46:45.438Z",
+  "summary": {
+    "discovered": 26,
+    "working": 26,
+    "broken": 7,
+    "total": 33
+  }
+}

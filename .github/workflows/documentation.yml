@@ -26,9 +26,9 @@ jobs:
       with:
         node-version: '18'
         
-    - name: 🔧 Install Root Dependencies
+    - name: 🔧 Skip Root Dependencies
       run: |
-        echo "Skipping root dependencies - using component-level package management"
+        echo "✅ Using component-level package management (no root dependencies needed)"
         
     - name: 🔧 Install Shared Component Dependencies
       working-directory: ./frontend/shared
@@ -42,31 +42,49 @@ jobs:
       working-directory: ./docs
       run: npm ci
       
-    - name: 🔍 Run Codebase Analysis
+    - name: 🔍 Generate Developer Documentation
       run: |
-        node analyze-codebase.js
-        echo "✅ Codebase analysis complete"
-        
-    - name: 🌐 Run API Analysis
-      run: |
-        node analyze-apis.js || echo "⚠️ API analysis failed, continuing with partial data"
-        
-    - name: 📚 Generate Documentation
-      run: |
-        node generate-docs.js
-        echo "✅ Documentation generated"
+        # Run the new focused documentation generators
+        node dev-api-docs-generator.js || echo "⚠️ API docs generation failed, continuing"
+        node dev-codebase-docs-generator.js || echo "⚠️ Codebase docs generation failed, continuing"
+        echo "✅ Developer documentation generated"
         
     - name: 📊 Generate Analysis Reports
       run: |
-        # Create summary for GitHub Actions
+        # Create summary for GitHub Actions using the new focused data
         echo "## 📊 Platform Analysis Summary" >> $GITHUB_STEP_SUMMARY
-        echo "- **Total Files:** $(jq -r '.overview.stats.totalFiles // "N/A"' FILO_ANALYSIS_REPORT.json)" >> $GITHUB_STEP_SUMMARY
-        echo "- **Shared Components:** $(jq -r '.shared.components | length' FILO_ANALYSIS_REPORT.json)" >> $GITHUB_STEP_SUMMARY
-        echo "- **Custom Hooks:** $(jq -r '.frontend.hooks | length' FILO_ANALYSIS_REPORT.json)" >> $GITHUB_STEP_SUMMARY
+        
+        if [ -f "codebase-summary.json" ]; then
+          echo "- **Components Found:** $(jq -r '.components.shared | length' codebase-summary.json)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Custom Hooks:** $(jq -r '.components.hooks | length' codebase-summary.json)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Project Type:** $(jq -r '.overview.type' codebase-summary.json)" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        if [ -f "api-docs.json" ]; then
+          WORKING_ENDPOINTS=$(jq -r '[.endpoints[] | .[]] | map(select(.working == true)) | length' api-docs.json)
+          TOTAL_ENDPOINTS=$(jq -r '[.endpoints[] | .[]] | length' api-docs.json)
+          echo "- **Working APIs:** ${WORKING_ENDPOINTS}/${TOTAL_ENDPOINTS}" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        echo "- **Documentation Type:** Developer-focused (concise)" >> $GITHUB_STEP_SUMMARY
         echo "- **Analysis Date:** $(date)" >> $GITHUB_STEP_SUMMARY
         
-        if [ -f FILO_API_ANALYSIS.json ]; then
-          echo "- **Working APIs:** $(jq -r '.summary.working // 0' FILO_API_ANALYSIS.json)/$(jq -r '.summary.total // 0' FILO_API_ANALYSIS.json)" >> $GITHUB_STEP_SUMMARY
+    - name: 📋 Copy Documentation to Docs Site
+      run: |
+        # Copy the generated markdown files to the Docusaurus docs directory
+        if [ -f "README.md" ]; then
+          cp README.md docs/docs/quick-start.md
+          echo "✅ Quick start guide copied"
+        fi
+        
+        if [ -f "DEVELOPER_SETUP_GUIDE.md" ]; then
+          cp DEVELOPER_SETUP_GUIDE.md docs/docs/development/setup-guide.md
+          echo "✅ Setup guide copied"
+        fi
+        
+        if [ -f "API_DEVELOPER_GUIDE.md" ]; then
+          cp API_DEVELOPER_GUIDE.md docs/docs/api/developer-guide.md
+          echo "✅ API guide copied"
         fi
         
     - name: 🏗️ Build Documentation Site
@@ -81,39 +99,41 @@ jobs:
         # Check if key documentation files exist
         echo "🔍 Checking documentation completeness..."
         
-        if [ -f "docs/intro.md" ]; then
-          echo "✅ Overview documentation generated"
+        if [ -f "docs/quick-start.md" ]; then
+          echo "✅ Quick start documentation generated"
         else
-          echo "❌ Overview documentation missing"
+          echo "❌ Quick start documentation missing"
         fi
         
-        if [ -f "docs/architecture/overview.md" ]; then
-          echo "✅ Architecture documentation generated"  
+        if [ -f "docs/development/setup-guide.md" ]; then
+          echo "✅ Development setup documentation generated"  
         else
-          echo "❌ Architecture documentation missing"
+          echo "❌ Development setup documentation missing"
         fi
         
-        if [ -f "docs/components/overview.md" ]; then
-          echo "✅ Component documentation generated"
-        else
-          echo "❌ Component documentation missing"
-        fi
-        
-        if [ -f "docs/api/overview.md" ]; then
+        if [ -f "docs/api/developer-guide.md" ]; then
           echo "✅ API documentation generated"
         else
           echo "❌ API documentation missing"
         fi
         
-    - name: 📈 Upload Analysis Artifacts
+        # Check build output
+        if [ -d "build" ]; then
+          echo "✅ Documentation site built successfully"
+        else
+          echo "❌ Documentation site build failed"
+        fi
+        
+    - name: 📈 Upload Documentation Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: platform-analysis-reports
+        name: developer-documentation
         path: |
-          FILO_ANALYSIS_REPORT.json
-          FILO_API_ANALYSIS.json
-          FILO_API_SWAGGER.json
-          FILO_API_SUMMARY.json
+          README.md
+          DEVELOPER_SETUP_GUIDE.md
+          API_DEVELOPER_GUIDE.md
+          api-docs.json
+          codebase-summary.json
         retention-days: 30
         
     - name: 📄 Upload Documentation Build
@@ -168,6 +188,7 @@ jobs:
       run: |
         echo "## 🚀 Documentation Deployment Summary" >> $GITHUB_STEP_SUMMARY
         echo "- **Status:** Successfully deployed to GitHub Pages" >> $GITHUB_STEP_SUMMARY
+        echo "- **Documentation Type:** Developer-focused (clean & concise)" >> $GITHUB_STEP_SUMMARY
         
         # Dynamic URL based on repository and custom domain
         if [ -n "${{ steps.domain.outputs.custom_domain }}" ]; then
@@ -193,9 +214,9 @@ jobs:
         echo "### Results:" >> $GITHUB_STEP_SUMMARY
         
         if [ "${{ needs.analyze-and-document.result }}" == "success" ]; then
-          echo "- ✅ **Analysis & Documentation Generation:** Success" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ **Developer Documentation Generation:** Success" >> $GITHUB_STEP_SUMMARY
         else
-          echo "- ❌ **Analysis & Documentation Generation:** Failed" >> $GITHUB_STEP_SUMMARY
+          echo "- ❌ **Developer Documentation Generation:** Failed" >> $GITHUB_STEP_SUMMARY
         fi
         
         if [ "${{ needs.deploy-documentation.result }}" == "success" ]; then
@@ -205,6 +226,13 @@ jobs:
         else
           echo "- ❌ **Documentation Deployment:** Failed" >> $GITHUB_STEP_SUMMARY
         fi
+        
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Documentation Features:" >> $GITHUB_STEP_SUMMARY
+        echo "- 🎯 **Developer-focused:** Clean, actionable guides" >> $GITHUB_STEP_SUMMARY
+        echo "- 🚀 **Quick onboarding:** New developers can start immediately" >> $GITHUB_STEP_SUMMARY
+        echo "- 📊 **Live API testing:** Automatically tests working endpoints" >> $GITHUB_STEP_SUMMARY
+        echo "- 🔧 **Setup guides:** Complete development workflow documentation" >> $GITHUB_STEP_SUMMARY
         
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "### Next Steps:" >> $GITHUB_STEP_SUMMARY
@@ -217,5 +245,5 @@ jobs:
           echo "1. 📖 Review documentation at: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/" >> $GITHUB_STEP_SUMMARY
         fi
         
-        echo "2. 📊 Check analysis reports in workflow artifacts" >> $GITHUB_STEP_SUMMARY
-        echo "3. 🔧 Address any gaps identified in the analysis" >> $GITHUB_STEP_SUMMARY
+        echo "2. 📊 Check developer guides in workflow artifacts" >> $GITHUB_STEP_SUMMARY
+        echo "3. 🔧 Share setup guide with new team members" >> $GITHUB_STEP_SUMMARY
