@@ -99,7 +99,7 @@
       "post": {
         "summary": "Create timeline entry (test auth)",
         "responses": {
-          "500": {
+          "401": {
             "description": "Error",
             "content": {
               "application/json": {
@@ -121,8 +121,8 @@
       "get": {
         "summary": "Get user data (dev mode: returns demo user)",
         "responses": {
-          "401": {
-            "description": "Error",
+          "200": {
+            "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
@@ -138,8 +138,8 @@
       "get": {
         "summary": "Get user active protocols (dev mode)",
         "responses": {
-          "401": {
-            "description": "Error",
+          "200": {
+            "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
@@ -155,8 +155,8 @@
       "get": {
         "summary": "Get user preferences (dev mode)",
         "responses": {
-          "401": {
-            "description": "Error",
+          "200": {
+            "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
@@ -172,7 +172,7 @@
       "get": {
         "summary": "Get journal entries with date filter (dev mode)",
         "responses": {
-          "401": {
+          "500": {
             "description": "Error",
             "content": {
               "application/json": {

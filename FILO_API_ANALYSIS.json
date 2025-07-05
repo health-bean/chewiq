@@ -6,7 +6,7 @@
       "description": "Get available health protocols",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/protocols",
       "status": 200,
-      "responseTime": 1359,
+      "responseTime": 763,
       "dataType": "object",
       "dataSize": 2385,
       "sampleData": {
@@ -130,7 +130,7 @@
       "description": "Get AI correlation insights",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/correlations/insights?userId=8e8a568a-c2f8-43a8-abf2-4e54408dbdc0",
       "status": 200,
-      "responseTime": 27078,
+      "responseTime": 25277,
       "dataType": "object",
       "dataSize": 42028,
       "sampleData": {
@@ -1696,7 +1696,7 @@
       "description": "Get filtered correlation insights",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/correlations/insights?userId=8e8a568a-c2f8-43a8-abf2-4e54408dbdc0&confidence_threshold=0.7",
       "status": 200,
-      "responseTime": 25504,
+      "responseTime": 23657,
       "dataType": "object",
       "dataSize": 25177,
       "sampleData": {
@@ -2638,7 +2638,7 @@
       "description": "Get AIP Core protocol foods",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/foods/by-protocol?protocol_id=1495844a-19de-404c-a288-7660eda0cbe1",
       "status": 200,
-      "responseTime": 303,
+      "responseTime": 309,
       "dataType": "object",
       "dataSize": 50636,
       "sampleData": {
@@ -5139,7 +5139,7 @@
       "description": "Get Low Histamine protocol foods",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/foods/by-protocol?protocol_id=51ca7a24-4691-4629-8ee5-c20876e68c29",
       "status": 200,
-      "responseTime": 75,
+      "responseTime": 95,
       "dataType": "object",
       "dataSize": 50655,
       "sampleData": {
@@ -7640,7 +7640,7 @@
       "description": "Search foods - chicken",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/foods/search?search=chicken",
       "status": 200,
-      "responseTime": 51,
+      "responseTime": 59,
       "dataType": "object",
       "dataSize": 250,
       "sampleData": {
@@ -7691,7 +7691,7 @@
       "description": "Search foods with protocol context",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/foods/search?search=broccoli&protocol_id=1495844a-19de-404c-a288-7660eda0cbe1",
       "status": 200,
-      "responseTime": 43,
+      "responseTime": 49,
       "dataType": "object",
       "dataSize": 419,
       "sampleData": {
@@ -7749,7 +7749,7 @@
       "status": 200,
       "responseTime": 49,
       "dataType": "object",
-      "dataSize": 24,
+      "dataSize": 1753,
       "sampleData": {
         "type": "object",
         "keys": [
@@ -7757,17 +7757,84 @@
           "total"
         ],
         "sample": {
-          "entries": [],
-          "total": 0
+          "entries": [
+            {
+              "id": "3d32ec96-f820-441b-b780-abe81dfdf20f",
+              "entry_time": "11:24:00",
+              "entry_type": "food",
+              "content": "chicken",
+              "severity": null,
+              "protocol_compliant": true,
+              "created_at": "2025-07-02T15:35:59.005Z",
+              "entry_date": "2025-07-02T00:00:00.000Z",
+              "user_id": "8e8a568a-c2f8-43a8-abf2-4e54408dbdc0"
+            },
+            {
+              "id": "f7b4d5ef-d614-41fe-b16e-93794501ed47",
+              "entry_time": "23:12:00",
+              "entry_type": "food",
+              "content": "bell peppers",
+              "severity": null,
+              "protocol_compliant": true,
+              "created_at": "2025-07-01T03:13:16.417Z",
+              "entry_date": "2025-07-01T00:00:00.000Z",
+              "user_id": "8e8a568a-c2f8-43a8-abf2-4e54408dbdc0"
+            },
+            {
+              "id": "a47a2ba8-0674-4474-a0f8-9033ca662f5c",
+              "entry_time": "22:17:00",
+              "entry_type": "food",
+              "content": "chicken",
+              "severity": null,
+              "protocol_compliant": true,
+              "created_at": "2025-07-01T02:17:42.036Z",
+              "entry_date": "2025-07-01T00:00:00.000Z",
+              "user_id": "8e8a568a-c2f8-43a8-abf2-4e54408dbdc0"
+            },
+            {
+              "id": "04dfaedd-49b1-4da0-8637-a19ab1ee55b7",
+              "entry_time": "01:55:00",
+              "entry_type": "food",
+              "content": "{\"name\":\"apple\"}",
+              "severity": null,
+              "protocol_compliant": null,
+              "created_at": "2025-07-01T02:16:52.482Z",
+              "entry_date": "2025-07-01T00:00:00.000Z",
+              "user_id": "8e8a568a-c2f8-43a8-abf2-4e54408dbdc0"
+            },
+            {
+              "id": "f30f34a8-54a2-4d81-bdc0-721000bcf5b5",
+              "entry_time": "01:55:00",
+              "entry_type": "food",
+              "content": "{\"name\":\"apple\"}",
+              "severity": null,
+              "protocol_compliant": null,
+              "created_at": "2025-07-01T02:17:23.400Z",
+              "entry_date": "2025-07-01T00:00:00.000Z",
+              "user_id": "8e8a568a-c2f8-43a8-abf2-4e54408dbdc0"
+            },
+            {
+              "id": "1994e566-cdf1-4f63-a818-a858f25385ed",
+              "entry_time": "01:55:00",
+              "entry_type": "food",
+              "content": "{\"name\":\"apple\"}",
+              "severity": null,
+              "protocol_compliant": null,
+              "created_at": "2025-07-01T02:25:27.141Z",
+              "entry_date": "2025-07-01T00:00:00.000Z",
+              "user_id": "8e8a568a-c2f8-43a8-abf2-4e54408dbdc0"
+            }
+          ],
+          "total": 6
         },
         "structure": {
-          "entries": "array[0]",
+          "entries": "array[6]",
           "total": "number"
         }
       },
       "headers": {
         "content-type": "application/json",
-        "content-length": "24"
+        "content-length": "1753"
       },
       "working": true,
       "requiresAuth": false,
@@ -7780,7 +7847,7 @@
       "description": "Get timeline entries with date filter",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/timeline/entries?date=2025-07-04",
       "status": 200,
-      "responseTime": 49,
+      "responseTime": 52,
       "dataType": "object",
       "dataSize": 24,
       "sampleData": {
@@ -7813,9 +7880,9 @@
       "description": "Get user timeline entries",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/timeline/entries?userId=8e8a568a-c2f8-43a8-abf2-4e54408dbdc0",
       "status": 200,
-      "responseTime": 50,
+      "responseTime": 68,
       "dataType": "object",
-      "dataSize": 24,
+      "dataSize": 1753,
       "sampleData": {
         "type": "object",
         "keys": [
@@ -7823,17 +7890,84 @@
           "total"
         ],
         "sample": {
-          "entries": [],
-          "total": 0
+          "entries": [
+            {
+              "id": "3d32ec96-f820-441b-b780-abe81dfdf20f",
+              "entry_time": "11:24:00",
+              "entry_type": "food",
+              "content": "chicken",
+              "severity": null,
+              "protocol_compliant": true,
+              "created_at": "2025-07-02T15:35:59.005Z",
+              "entry_date": "2025-07-02T00:00:00.000Z",
+              "user_id": "8e8a568a-c2f8-43a8-abf2-4e54408dbdc0"
+            },
+            {
+              "id": "f7b4d5ef-d614-41fe-b16e-93794501ed47",
+              "entry_time": "23:12:00",
+              "entry_type": "food",
+              "content": "bell peppers",
+              "severity": null,
+              "protocol_compliant": true,
+              "created_at": "2025-07-01T03:13:16.417Z",
+              "entry_date": "2025-07-01T00:00:00.000Z",
+              "user_id": "8e8a568a-c2f8-43a8-abf2-4e54408dbdc0"
+            },
+            {
+              "id": "a47a2ba8-0674-4474-a0f8-9033ca662f5c",
+              "entry_time": "22:17:00",
+              "entry_type": "food",
+              "content": "chicken",
+              "severity": null,
+              "protocol_compliant": true,
+              "created_at": "2025-07-01T02:17:42.036Z",
+              "entry_date": "2025-07-01T00:00:00.000Z",
+              "user_id": "8e8a568a-c2f8-43a8-abf2-4e54408dbdc0"
+            },
+            {
+              "id": "04dfaedd-49b1-4da0-8637-a19ab1ee55b7",
+              "entry_time": "01:55:00",
+              "entry_type": "food",
+              "content": "{\"name\":\"apple\"}",
+              "severity": null,
+              "protocol_compliant": null,
+              "created_at": "2025-07-01T02:16:52.482Z",
+              "entry_date": "2025-07-01T00:00:00.000Z",
+              "user_id": "8e8a568a-c2f8-43a8-abf2-4e54408dbdc0"
+            },
+            {
+              "id": "f30f34a8-54a2-4d81-bdc0-721000bcf5b5",
+              "entry_time": "01:55:00",
+              "entry_type": "food",
+              "content": "{\"name\":\"apple\"}",
+              "severity": null,
+              "protocol_compliant": null,
+              "created_at": "2025-07-01T02:17:23.400Z",
+              "entry_date": "2025-07-01T00:00:00.000Z",
+              "user_id": "8e8a568a-c2f8-43a8-abf2-4e54408dbdc0"
+            },
+            {
+              "id": "1994e566-cdf1-4f63-a818-a858f25385ed",
+              "entry_time": "01:55:00",
+              "entry_type": "food",
+              "content": "{\"name\":\"apple\"}",
+              "severity": null,
+              "protocol_compliant": null,
+              "created_at": "2025-07-01T02:25:27.141Z",
+              "entry_date": "2025-07-01T00:00:00.000Z",
+              "user_id": "8e8a568a-c2f8-43a8-abf2-4e54408dbdc0"
+            }
+          ],
+          "total": 6
         },
         "structure": {
-          "entries": "array[0]",
+          "entries": "array[6]",
           "total": "number"
         }
       },
       "headers": {
         "content-type": "application/json",
-        "content-length": "24"
+        "content-length": "1753"
       },
       "working": true,
       "requiresAuth": false,
@@ -7845,107 +7979,114 @@
       "method": "GET",
       "description": "Get user data (dev mode: returns demo user)",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/users",
-      "status": 401,
-      "responseTime": 41,
+      "status": 200,
+      "responseTime": 42,
       "dataType": "object",
-      "dataSize": 35,
+      "dataSize": 165,
       "sampleData": {
         "type": "object",
         "keys": [
-          "error"
+          "user"
         ],
         "sample": {
-          "error": "Authentication required"
+          "user": {
+            "id": "8e8a568a-c2f8-43a8-abf2-4e54408dbdc0",
+            "email": "patient@example.com",
+            "first_name": "Patient",
+            "last_name": "Demo",
+            "user_type": "patient",
+            "is_active": true
+          }
         },
         "structure": {
-          "error": "string"
+          "user": "object"
         }
       },
       "headers": {
         "content-type": "application/json",
-        "content-length": "35"
+        "content-length": "165"
       },
-      "working": false,
+      "working": true,
       "requiresAuth": false,
       "testedWithAuth": false,
-      "rawResponse": "{\"error\":\"Authentication required\"}"
+      "rawResponse": null
     },
     {
       "path": "/api/v1/user/protocols",
       "method": "GET",
       "description": "Get user active protocols (dev mode)",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/user/protocols",
-      "status": 401,
-      "responseTime": 46,
+      "status": 200,
+      "responseTime": 38,
       "dataType": "object",
-      "dataSize": 35,
+      "dataSize": 16,
       "sampleData": {
         "type": "object",
         "keys": [
-          "error"
+          "protocols"
         ],
         "sample": {
-          "error": "Authentication required"
+          "protocols": []
         },
         "structure": {
-          "error": "string"
+          "protocols": "array[0]"
         }
       },
       "headers": {
         "content-type": "application/json",
-        "content-length": "35"
+        "content-length": "16"
       },
-      "working": false,
+      "working": true,
       "requiresAuth": false,
       "testedWithAuth": false,
-      "rawResponse": "{\"error\":\"Authentication required\"}"
+      "rawResponse": null
     },
     {
       "path": "/api/v1/user/preferences",
       "method": "GET",
       "description": "Get user preferences (dev mode)",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/user/preferences",
-      "status": 401,
-      "responseTime": 42,
+      "status": 200,
+      "responseTime": 37,
       "dataType": "object",
-      "dataSize": 35,
+      "dataSize": 18,
       "sampleData": {
         "type": "object",
         "keys": [
-          "error"
+          "preferences"
         ],
         "sample": {
-          "error": "Authentication required"
+          "preferences": {}
         },
         "structure": {
-          "error": "string"
+          "preferences": "object"
         }
       },
       "headers": {
         "content-type": "application/json",
-        "content-length": "35"
+        "content-length": "18"
       },
-      "working": false,
+      "working": true,
       "requiresAuth": false,
       "testedWithAuth": false,
-      "rawResponse": "{\"error\":\"Authentication required\"}"
+      "rawResponse": null
     },
     {
       "path": "/api/v1/journal/entries",
       "method": "GET",
       "description": "Get journal entries (dev mode)",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/journal/entries",
-      "status": 401,
-      "responseTime": 41,
+      "status": 500,
+      "responseTime": 45,
       "dataType": "object",
-      "dataSize": 35,
+      "dataSize": 52,
       "sampleData": {
         "type": "object",
         "keys": [
           "error"
         ],
         "sample": {
-          "error": "Authentication required"
+          "error": "Failed to complete fetch journal entries"
         },
         "structure": {
           "error": "string"
@@ -7953,29 +8094,29 @@
       },
       "headers": {
         "content-type": "application/json",
-        "content-length": "35"
+        "content-length": "52"
       },
       "working": false,
       "requiresAuth": false,
       "testedWithAuth": false,
-      "rawResponse": "{\"error\":\"Authentication required\"}"
+      "rawResponse": "{\"error\":\"Failed to complete fetch journal entries\"}"
     },
     {
       "path": "/api/v1/journal/entries?date=2025-07-04",
       "method": "GET",
       "description": "Get journal entries with date filter (dev mode)",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/journal/entries?date=2025-07-04",
-      "status": 401,
-      "responseTime": 44,
+      "status": 500,
+      "responseTime": 198,
       "dataType": "object",
-      "dataSize": 35,
+      "dataSize": 52,
       "sampleData": {
         "type": "object",
         "keys": [
           "error"
         ],
         "sample": {
-          "error": "Authentication required"
+          "error": "Failed to complete fetch journal entries"
         },
         "structure": {
           "error": "string"
@@ -7983,12 +8124,12 @@
       },
       "headers": {
         "content-type": "application/json",
-        "content-length": "35"
+        "content-length": "52"
       },
       "working": false,
       "requiresAuth": false,
       "testedWithAuth": false,
-      "rawResponse": "{\"error\":\"Authentication required\"}"
+      "rawResponse": "{\"error\":\"Failed to complete fetch journal entries\"}"
     },
     {
       "path": "/api/v1/symptoms/search?search=headache",
@@ -7996,7 +8137,7 @@
       "description": "Search symptoms",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/symptoms/search?search=headache",
       "status": 200,
-      "responseTime": 48,
+      "responseTime": 206,
       "dataType": "object",
       "dataSize": 226,
       "sampleData": {
@@ -8124,7 +8265,7 @@
       "description": "Search medications",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/medications/search?search=ibuprofen",
       "status": 200,
-      "responseTime": 44,
+      "responseTime": 48,
       "dataType": "object",
       "dataSize": 242,
       "sampleData": {
@@ -8172,7 +8313,7 @@
       "description": "Get detox types",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/detox-types",
       "status": 200,
-      "responseTime": 66,
+      "responseTime": 54,
       "dataType": "object",
       "dataSize": 1595,
       "sampleData": {
@@ -8278,17 +8419,17 @@
       "method": "POST",
       "description": "Create timeline entry (test auth)",
       "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/timeline/entries",
-      "status": 500,
-      "responseTime": 79,
+      "status": 401,
+      "responseTime": 40,
       "dataType": "object",
-      "dataSize": 52,
+      "dataSize": 24,
       "sampleData": {
         "type": "object",
         "keys": [
           "error"
         ],
         "sample": {
-          "error": "Failed to complete create timeline entry"
+          "error": "Unauthorized"
         },
         "structure": {
           "error": "string"
@@ -8296,21 +8437,21 @@
       },
       "headers": {
         "content-type": "application/json",
-        "content-length": "52"
+        "content-length": "24"
       },
       "working": false,
       "requiresAuth": true,
       "testedWithAuth": false,
-      "rawResponse": "{\"error\":\"Failed to complete create timeline entry\"}"
+      "rawResponse": "{\"error\":\"Unauthorized\"}"
     }
   ],
   "status": "healthy",
-  "timestamp": "2025-07-05T00:03:15.009Z",
+  "timestamp": "2025-07-05T00:33:26.925Z",
   "summary": {
-    "working": 14,
-    "broken": 6,
+    "working": 17,
+    "broken": 3,
     "total": 20,
     "authRequired": 0,
-    "authFailed": 0
+    "authFailed": 1
   }
 }

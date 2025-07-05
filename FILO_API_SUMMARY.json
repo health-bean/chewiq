@@ -1,20 +1,20 @@
 {
-  "timestamp": "2025-07-05T00:03:15.009Z",
+  "timestamp": "2025-07-05T00:33:26.925Z",
   "baseURL": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev",
   "summary": {
-    "working": 14,
-    "broken": 6,
+    "working": 17,
+    "broken": 3,
     "total": 20,
     "authRequired": 0,
-    "authFailed": 0
+    "authFailed": 1
   },
   "status": "healthy",
-  "workingEndpoints": 14,
+  "workingEndpoints": 17,
   "totalEndpoints": 20,
   "authEndpoints": 1,
   "troubleshooting": {
-    "errors401": 5,
+    "errors401": 1,
     "errors404": 0,
-    "errors500": 1
+    "errors500": 2
   }
 }
