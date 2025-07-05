@@ -620,7 +620,7 @@ ${this.generateRecentFeatures()}
 *Auto-generated from live system analysis on ${new Date().toLocaleDateString()}*
 `;
 
-    this.writeDocFile('intro.md', intro);
+    this.writeDocFile('index.md', intro);
   }
 
   generateRecentFeatures() {
@@ -1124,7 +1124,7 @@ Configure your environment variables before deployment.`;
 
   generateSidebar() {
     const sidebarItems = [
-      'intro',
+      'index',
       'quick-start',
       {
         type: 'category',
