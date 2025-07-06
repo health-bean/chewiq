@@ -1,5 +1,5 @@
-# .github/workflows/documentation.yml
-name: 📚 Auto-Discovery Documentation & Backend Deployment
+# .github/workflows/deploymentyml
+name: 📚Platform Deployment - Documentation & Backend Deployment
 
 on:
   push:
