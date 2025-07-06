@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Plus, Clock, Calendar, CheckCircle2, X, Loader2, Search, TrendingUp, ChevronDown } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Plus, Clock, Calendar, CheckCircle2, Loader2, Search, ChevronDown } from 'lucide-react';
 
 // Import shared auth context
 import { AuthProvider, useAuth } from '../../shared/contexts/AuthProvider';
@@ -26,44 +26,59 @@ import ProtocolFoods from './components/ProtocolFoods';
 // API CONFIGURATION
 // =================
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+
+// =================
+// HELPER FUNCTIONS
+// =================
+
+const safeArrayAccess = (arr, defaultValue = []) => {
+  return Array.isArray(arr) ? arr : defaultValue;
+};
+
+const safeObjectAccess = (obj, key, defaultValue = null) => {
+  return obj && obj[key] !== undefined ? obj[key] : defaultValue;
+};
 
 // =================
 // MULTI-SELECT PROTOCOL DROPDOWN
 // =================
 
-const MultiSelectProtocolDropdown = ({ protocols, selectedProtocols, onSelectionChange }) => {
+const MultiSelectProtocolDropdown = ({ protocols = [], selectedProtocols = [], onSelectionChange }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
 
-  const getDisplayText = () => {
-    if (selectedProtocols.length === 0) return 'Select Protocols...';
+  const safeProtocols = safeArrayAccess(protocols);
+  const safeSelectedProtocols = safeArrayAccess(selectedProtocols);
+
+  const getDisplayText = useCallback(() => {
+    if (safeSelectedProtocols.length === 0) return 'Select Protocols...';
     
-    if (selectedProtocols.length === 1) {
-      const protocol = protocols.find(p => p.id === selectedProtocols[0]);
+    if (safeSelectedProtocols.length === 1) {
+      const protocol = safeProtocols.find(p => p.id === safeSelectedProtocols[0]);
       return protocol?.name || 'Protocol';
     }
     
-    if (selectedProtocols.length === 2) {
-      const names = selectedProtocols.map(id => {
-        const protocol = protocols.find(p => p.id === id);
+    if (safeSelectedProtocols.length === 2) {
+      const names = safeSelectedProtocols.map(id => {
+        const protocol = safeProtocols.find(p => p.id === id);
         return protocol?.name?.split(' ')[0] || 'Protocol';
       });
       return names.join(' + ');
     }
     
-    return `${selectedProtocols.length} Active Protocols`;
-  };
+    return `${safeSelectedProtocols.length} Active Protocols`;
+  }, [safeProtocols, safeSelectedProtocols]);
 
   const toggleProtocol = async (protocolId) => {
-    if (isUpdating) return;
+    if (isUpdating || !onSelectionChange) return;
     
     setIsUpdating(true);
     
     try {
-      const newSelection = selectedProtocols.includes(protocolId)
-        ? selectedProtocols.filter(id => id !== protocolId)
-        : [...selectedProtocols, protocolId];
+      const newSelection = safeSelectedProtocols.includes(protocolId)
+        ? safeSelectedProtocols.filter(id => id !== protocolId)
+        : [...safeSelectedProtocols, protocolId];
       
       await onSelectionChange(newSelection);
     } catch (error) {
@@ -108,14 +123,14 @@ const MultiSelectProtocolDropdown = ({ protocols, selectedProtocols, onSelection
 
       {isOpen && (
         <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
-          {protocols.map((protocol) => (
+          {safeProtocols.map((protocol) => (
             <label
               key={protocol.id}
               className="flex items-center space-x-3 p-3 hover:bg-blue-50 cursor-pointer border-b border-gray-100 last:border-b-0"
             >
               <input
                 type="checkbox"
-                checked={selectedProtocols.includes(protocol.id)}
+                checked={safeSelectedProtocols.includes(protocol.id)}
                 onChange={() => toggleProtocol(protocol.id)}
                 disabled={isUpdating}
                 className="rounded text-blue-600 focus:ring-blue-500"
@@ -145,10 +160,13 @@ const MultiSelectProtocolDropdown = ({ protocols, selectedProtocols, onSelection
 // SMART FOOD SELECTOR
 // =================
 
-const SmartFoodSelector = ({ selectedItems, onToggleItem, selectedProtocols = [] }) => {
+const SmartFoodSelector = ({ selectedItems = [], onToggleItem, selectedProtocols = [] }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [foods, setFoods] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const safeSelectedItems = safeArrayAccess(selectedItems);
+  const safeSelectedProtocols = safeArrayAccess(selectedProtocols);
 
   useEffect(() => {
     const loadFoods = async () => {
@@ -159,7 +177,7 @@ const SmartFoodSelector = ({ selectedItems, onToggleItem, selectedProtocols = []
 
       setLoading(true);
       try {
-        const protocolId = selectedProtocols[0];
+        const protocolId = safeSelectedProtocols[0];
         let url = `${API_BASE_URL}/api/v1/foods/search?search=${encodeURIComponent(searchTerm)}`;
         if (protocolId) {
           url += `&protocol_id=${protocolId}`;
@@ -172,10 +190,16 @@ const SmartFoodSelector = ({ selectedItems, onToggleItem, selectedProtocols = []
             'Content-Type': 'application/json'
           }
         });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const data = await response.json();
-        setFoods(data.foods || []);
+        setFoods(safeArrayAccess(data.foods));
       } catch (err) {
         console.error('Failed to load foods:', err);
+        setFoods([]);
       } finally {
         setLoading(false);
       }
@@ -183,7 +207,13 @@ const SmartFoodSelector = ({ selectedItems, onToggleItem, selectedProtocols = []
 
     const timer = setTimeout(loadFoods, 300);
     return () => clearTimeout(timer);
-  }, [searchTerm, selectedProtocols]);
+  }, [searchTerm, safeSelectedProtocols]);
+
+  const handleToggleItem = useCallback((food) => {
+    if (onToggleItem) {
+      onToggleItem(food);
+    }
+  }, [onToggleItem]);
 
   return (
     <div className="space-y-4">
@@ -201,17 +231,17 @@ const SmartFoodSelector = ({ selectedItems, onToggleItem, selectedProtocols = []
 
       <div className="max-h-64 overflow-y-auto space-y-2">
         {foods.map((food) => {
-          const isSelected = selectedItems.includes(food.name);
+          const isSelected = safeSelectedItems.includes(food.name);
           
           return (
             <div key={food.id} className={`p-3 border rounded-lg cursor-pointer transition-all ${
               isSelected ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
-            }`} onClick={() => onToggleItem(food.name)}>
+            }`} onClick={() => handleToggleItem(food.name)}>
               <div className="flex items-center space-x-2 mb-2">
                 <input
                   type="checkbox"
                   checked={isSelected}
-                  onChange={() => onToggleItem(food.name)}
+                  onChange={() => handleToggleItem(food.name)}
                   className="rounded text-blue-600 focus:ring-blue-500"
                 />
                 <span className="font-medium capitalize">{food.name}</span>
@@ -262,17 +292,19 @@ const SmartFoodSelector = ({ selectedItems, onToggleItem, selectedProtocols = []
 // QUICK CHECKS COMPONENT
 // =================
 
-const QuickChecks = ({ type, preferences, onQuickSelect }) => {
-  const getQuickItems = () => {
+const QuickChecks = ({ type, preferences = {}, onQuickSelect }) => {
+  const getQuickItems = useCallback(() => {
+    if (!preferences) return [];
+    
     switch(type) {
-      case 'supplement': return preferences.quick_supplements || [];
-      case 'medication': return preferences.quick_medications || [];
-      case 'food': return preferences.quick_foods || [];
-      case 'symptom': return preferences.quick_symptoms || [];
-      case 'detox': return preferences.quick_detox || [];
+      case 'supplement': return safeArrayAccess(preferences.quick_supplements);
+      case 'medication': return safeArrayAccess(preferences.quick_medications);
+      case 'food': return safeArrayAccess(preferences.quick_foods);
+      case 'symptom': return safeArrayAccess(preferences.quick_symptoms);
+      case 'detox': return safeArrayAccess(preferences.quick_detox);
       default: return [];
     }
-  };
+  }, [type, preferences]);
 
   const quickItems = getQuickItems();
 
@@ -285,7 +317,7 @@ const QuickChecks = ({ type, preferences, onQuickSelect }) => {
         {quickItems.map((item) => (
           <button
             key={item.id}
-            onClick={() => onQuickSelect(item.name)}
+            onClick={() => onQuickSelect && onQuickSelect(item.name)}
             className={`px-3 py-1.5 text-sm rounded-full hover:opacity-80 transition-colors ${
               type === 'detox' 
                 ? 'bg-purple-100 text-purple-800 hover:bg-purple-200'
@@ -314,15 +346,15 @@ function HealthApp() {
   // Auth hook
   const { user, logout } = useAuth();
   
-  // 🔧 FIX: Pass userId to hooks that need it
+  // Safe user ID extraction
   const userId = user?.id || user?.userId || 'temp-user-id';
   
-  // Hooks
-  const { protocols, loading: protocolsLoading, error: protocolsError } = useProtocols();
-  const { preferences, updatePreferences, loading: preferencesLoading, error: preferencesError, isReady } = useUserPreferences(userId);
-  const { exposureTypes } = useExposureTypes();
-  const { detoxTypes } = useDetoxTypes();
-  const { reflectionData, updateReflectionData, saveReflectionData, loading: reflectionLoading, hasUnsavedChanges } = useReflectionData(selectedDate, userId);
+  // Hooks with error handling
+  const { protocols = [], loading: protocolsLoading, error: protocolsError } = useProtocols() || {};
+  const { preferences = {}, updatePreferences, loading: preferencesLoading, error: preferencesError, isReady } = useUserPreferences(userId) || {};
+  const { exposureTypes = [] } = useExposureTypes() || {};
+  const { detoxTypes = [] } = useDetoxTypes() || {};
+  const { reflectionData = {}, updateReflectionData, saveReflectionData, loading: reflectionLoading, hasUnsavedChanges } = useReflectionData(selectedDate, userId) || {};
   
   // Entry state
   const [newEntry, setNewEntry] = useState({
@@ -342,69 +374,56 @@ function HealthApp() {
 
   // Set default protocol when preferences load
   useEffect(() => {
-    if (preferences?.protocols?.length > 0 && !selectedProtocolId) {
-      setSelectedProtocolId(preferences.protocols[0]);
+    const safeProtocols = safeArrayAccess(preferences?.protocols);
+    if (safeProtocols.length > 0 && !selectedProtocolId) {
+      setSelectedProtocolId(safeProtocols[0]);
     }
   }, [preferences, selectedProtocolId]);
 
-  // Load timeline entries
-  useEffect(() => {
-    const loadTimelineEntries = async () => {
-      try {
-        const token = localStorage.getItem('authToken');
-        const response = await fetch(`${API_BASE_URL}/api/v1/timeline/entries?date=${selectedDate}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-        const data = await response.json();
-        setDailyEntries(data.entries || []);
-      } catch (error) {
-        console.error('Failed to load timeline entries:', error);
-      } finally {
-        setLoadingEntries(false);
-      }
-    };
-
-    loadTimelineEntries();
-  }, [selectedDate]);
-
- // Show setup if not completed OR manually triggered
-useEffect(() => {
-  if (isReady && preferences) {
-    // Auto-show setup for new users
-    if (!preferences.setup_complete) {
-      setShowSetup(true);
-    }
-  }
-}, [preferences, isReady]);
-
-// Load timeline entries when date changes
-useEffect(() => {
-  const loadTimelineEntries = async () => {
+  // Load timeline entries function
+  const loadTimelineEntries = useCallback(async () => {
+    if (!selectedDate) return;
+    
     try {
       setLoadingEntries(true);
       const token = localStorage.getItem('authToken');
+      
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+
       const response = await fetch(`${API_BASE_URL}/api/v1/timeline/entries?date=${selectedDate}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         }
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
-      setDailyEntries(data.entries || []);
+      setDailyEntries(safeArrayAccess(data.entries));
     } catch (error) {
       console.error('Failed to load timeline entries:', error);
+      setDailyEntries([]);
     } finally {
       setLoadingEntries(false);
     }
-  };
+  }, [selectedDate]);
 
-  if (selectedDate) {
+  // Load timeline entries when date changes
+  useEffect(() => {
     loadTimelineEntries();
-  }
-}, [selectedDate]); // Reload when selectedDate changes
+  }, [loadTimelineEntries]);
+
+  // Show setup if not completed OR manually triggered
+  useEffect(() => {
+    if (isReady && preferences && !preferences.setup_complete) {
+      setShowSetup(true);
+    }
+  }, [preferences, isReady]);
 
   // Show loading while preferences are loading
   if (preferencesLoading || !isReady) {
@@ -437,25 +456,31 @@ useEffect(() => {
     );
   }
 
-  const selectedProtocolObjects = protocols.filter(p => 
-    preferences.protocols.includes(p.id)
+  // Safe access to protocols and preferences
+  const safeProtocols = safeArrayAccess(protocols);
+  const safePreferencesProtocols = safeArrayAccess(preferences?.protocols);
+  
+  const selectedProtocolObjects = safeProtocols.filter(p => 
+    safePreferencesProtocols.includes(p.id)
   );
 
-  const getProtocolDisplayText = () => {
-    if (preferences.protocols.length === 0) return 'No protocols selected';
-    if (preferences.protocols.length === 1) {
+  const getProtocolDisplayText = useCallback(() => {
+    if (safePreferencesProtocols.length === 0) return 'No protocols selected';
+    if (safePreferencesProtocols.length === 1) {
       return selectedProtocolObjects[0]?.name || 'Protocol';
     }
-    if (preferences.protocols.length === 2) {
+    if (safePreferencesProtocols.length === 2) {
       const names = selectedProtocolObjects.map(p => p.name.split(' ')[0]);
       return names.join(' + ');
     }
-    return `${preferences.protocols.length} Active Protocols`;
-  };
+    return `${safePreferencesProtocols.length} Active Protocols`;
+  }, [safePreferencesProtocols, selectedProtocolObjects]);
 
   const addEntry = async () => {
-    const allItems = [...newEntry.selectedFoods];
-    if (newEntry.customText.trim()) {
+    const safeSelectedFoods = safeArrayAccess(newEntry.selectedFoods);
+    const allItems = [...safeSelectedFoods];
+    
+    if (newEntry.customText?.trim()) {
       allItems.push(newEntry.customText.trim());
     }
     
@@ -466,12 +491,17 @@ useEffect(() => {
       entryTime: newEntry.time,
       entryType: newEntry.type,
       content: allItems.join(', '),
-      selectedFoods: newEntry.selectedFoods,
+      selectedFoods: safeSelectedFoods,
       severity: newEntry.type === 'symptom' ? newEntry.severity : null
     };
 
     try {
       const token = localStorage.getItem('authToken');
+      
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+
       const response = await fetch(`${API_BASE_URL}/api/v1/timeline/entries`, {
         method: 'POST',
         headers: { 
@@ -481,16 +511,12 @@ useEffect(() => {
         body: JSON.stringify(entryData)
       });
 
-      if (response.ok) {
-        const timelineResponse = await fetch(`${API_BASE_URL}/api/v1/timeline/entries?date=${selectedDate}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-        const timelineData = await timelineResponse.json();
-        setDailyEntries(timelineData.entries || []);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+
+      // Reload timeline entries
+      await loadTimelineEntries();
     } catch (error) {
       console.error('Failed to add entry:', error);
     }
@@ -505,45 +531,56 @@ useEffect(() => {
     setShowAddEntry(false);
   };
 
-  const toggleSelectedFood = (food) => {
-    const isSelected = newEntry.selectedFoods.includes(food);
-    setNewEntry({
-      ...newEntry,
+  const toggleSelectedFood = useCallback((food) => {
+    const safeSelectedFoods = safeArrayAccess(newEntry.selectedFoods);
+    const isSelected = safeSelectedFoods.includes(food);
+    
+    setNewEntry(prev => ({
+      ...prev,
       selectedFoods: isSelected 
-        ? newEntry.selectedFoods.filter(f => f !== food)
-        : [...newEntry.selectedFoods, food]
-    });
-  };
+        ? safeSelectedFoods.filter(f => f !== food)
+        : [...safeSelectedFoods, food]
+    }));
+  }, [newEntry.selectedFoods]);
 
-  const handleQuickSelect = (itemName) => {
-    setNewEntry({
-      ...newEntry,
-      customText: newEntry.customText ? `${newEntry.customText}, ${itemName}` : itemName
-    });
-  };
+  const handleQuickSelect = useCallback((itemName) => {
+    setNewEntry(prev => ({
+      ...prev,
+      customText: prev.customText ? `${prev.customText}, ${itemName}` : itemName
+    }));
+  }, []);
 
-  const getEntryIcon = (type) => ({
+  const getEntryIcon = useCallback((type) => ({
     food: '🍽️',
     symptom: '⚠️',
     supplement: '💊',
     medication: '💉',
     exposure: '🏭',
     detox: '🧘'
-  }[type] || '📝');
+  }[type] || '📝'), []);
 
-  const getEntryColor = (type) => ({
+  const getEntryColor = useCallback((type) => ({
     food: 'bg-green-50 border-green-200',
     symptom: 'bg-red-50 border-red-200',
     supplement: 'bg-blue-50 border-blue-200',
     medication: 'bg-purple-50 border-purple-200',
     exposure: 'bg-orange-50 border-orange-200',
     detox: 'bg-purple-50 border-purple-200'
-  }[type] || 'bg-gray-50 border-gray-200');
+  }[type] || 'bg-gray-50 border-gray-200'), []);
 
-  const hasCriticalInsights = () => {
-    return dailyEntries.some(entry => entry.protocol_compliant === false);
-  };
+  const hasCriticalInsights = useCallback(() => {
+    return safeArrayAccess(dailyEntries).some(entry => entry.protocol_compliant === false);
+  }, [dailyEntries]);
 
+  const handleProtocolSelectionChange = useCallback(async (newSelection) => {
+    if (updatePreferences) {
+      try {
+        await updatePreferences({ protocols: newSelection });
+      } catch (error) {
+        console.error('Failed to update protocols:', error);
+      }
+    }
+  }, [updatePreferences]);
 
   if (showSetup) {
     return <SetupWizard onComplete={() => {
@@ -593,15 +630,13 @@ useEffect(() => {
         />
         
         {/* Multi-Protocol Selection */}
-        {!protocolsLoading && protocols.length > 0 && (
+        {!protocolsLoading && safeProtocols.length > 0 && (
           <div className="mt-3">
             <label className="block text-sm font-medium text-white mb-1">Active Protocols</label>
             <MultiSelectProtocolDropdown
-              protocols={protocols}
-              selectedProtocols={preferences.protocols}
-              onSelectionChange={(newSelection) => 
-                updatePreferences({ protocols: newSelection })
-              }
+              protocols={safeProtocols}
+              selectedProtocols={safePreferencesProtocols}
+              onSelectionChange={handleProtocolSelectionChange}
             />
             {selectedProtocolObjects.length > 0 && (
               <p className="text-xs text-blue-100 mt-1">
@@ -673,7 +708,7 @@ useEffect(() => {
           </Button>
         </div>
         
-        {preferences.protocols.length > 0 && (
+        {safePreferencesProtocols.length > 0 && (
           <div className="mt-2 text-xs text-gray-600">
             Following: <span className="font-medium text-blue-600">{getProtocolDisplayText()}</span>
           </div>
@@ -702,14 +737,14 @@ useEffect(() => {
                     <Input
                       type="time"
                       value={newEntry.time}
-                      onChange={(e) => setNewEntry({...newEntry, time: e.target.value})}
+                      onChange={(e) => setNewEntry(prev => ({...prev, time: e.target.value}))}
                     />
                   </div>
                   <div className="flex-1">
                     <label className="block text-sm font-medium text-gray-700 mb-1">Type</label>
                     <Select
                       value={newEntry.type}
-                      onChange={(e) => setNewEntry({...newEntry, type: e.target.value})}
+                      onChange={(e) => setNewEntry(prev => ({...prev, type: e.target.value}))}
                     >
                       <option value="food">Food</option>
                       <option value="symptom">Symptom</option>
@@ -732,7 +767,7 @@ useEffect(() => {
                       <SmartFoodSelector
                         selectedItems={newEntry.selectedFoods}
                         onToggleItem={toggleSelectedFood}
-                        selectedProtocols={preferences.protocols}
+                        selectedProtocols={safePreferencesProtocols}
                       />
                     </div>
                   )}
@@ -749,7 +784,7 @@ useEffect(() => {
                         <Select>
                           <option value="">Select exposure type...</option>
                           {Object.entries(
-                            exposureTypes.reduce((acc, exposure) => {
+                            safeArrayAccess(exposureTypes).reduce((acc, exposure) => {
                               if (!acc[exposure.category]) acc[exposure.category] = [];
                               acc[exposure.category].push(exposure);
                               return acc;
@@ -770,7 +805,7 @@ useEffect(() => {
                         <Input
                           placeholder="Describe the exposure..."
                           value={newEntry.customText}
-                          onChange={(e) => setNewEntry({...newEntry, customText: e.target.value})}
+                          onChange={(e) => setNewEntry(prev => ({...prev, customText: e.target.value}))}
                         />
                       </div>
                     </div>
@@ -788,7 +823,7 @@ useEffect(() => {
                         <Select focusColor="purple">
                           <option value="">Select detox activity...</option>
                           {Object.entries(
-                            detoxTypes.reduce((acc, detox) => {
+                            safeArrayAccess(detoxTypes).reduce((acc, detox) => {
                               if (!acc[detox.category]) acc[detox.category] = [];
                               acc[detox.category].push(detox);
                               return acc;
@@ -817,7 +852,7 @@ useEffect(() => {
                         <Input
                           placeholder="Additional details..."
                           value={newEntry.customText}
-                          onChange={(e) => setNewEntry({...newEntry, customText: e.target.value})}
+                          onChange={(e) => setNewEntry(prev => ({...prev, customText: e.target.value}))}
                           focusColor="purple"
                         />
                       </div>
@@ -836,7 +871,7 @@ useEffect(() => {
                         <Input
                           placeholder={`Enter ${newEntry.type} details...`}
                           value={newEntry.customText}
-                          onChange={(e) => setNewEntry({...newEntry, customText: e.target.value})}
+                          onChange={(e) => setNewEntry(prev => ({...prev, customText: e.target.value}))}
                         />
                       </div>
                       {newEntry.type === 'symptom' && (
@@ -849,7 +884,7 @@ useEffect(() => {
                             min="1"
                             max="10"
                             value={newEntry.severity}
-                            onChange={(e) => setNewEntry({...newEntry, severity: parseInt(e.target.value)})}
+                            onChange={(e) => setNewEntry(prev => ({...prev, severity: parseInt(e.target.value)}))}
                             className="w-full"
                           />
                         </div>
@@ -874,7 +909,7 @@ useEffect(() => {
               <h3 className="font-semibold text-gray-800 flex items-center space-x-2">
                 <Clock size={18} />
                 <span>Today's Timeline</span>
-                {preferences.protocols.length > 0 && (
+                {safePreferencesProtocols.length > 0 && (
                   <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
                     {getProtocolDisplayText()}
                   </span>
@@ -886,8 +921,8 @@ useEffect(() => {
                   <Loader2 size={32} className="animate-spin mx-auto mb-2" />
                   <p>Loading entries...</p>
                 </div>
-              ) : dailyEntries.length > 0 ? (
-                dailyEntries.map((entry) => (
+              ) : safeArrayAccess(dailyEntries).length > 0 ? (
+                safeArrayAccess(dailyEntries).map((entry) => (
                   <div key={entry.id} className={`p-3 rounded-lg border-2 ${getEntryColor(entry.entry_type)}`}>
                     <div className="flex items-start space-x-3">
                       <div className="text-lg">{getEntryIcon(entry.entry_type)}</div>
@@ -950,16 +985,16 @@ useEffect(() => {
                     <label className="block text-sm font-medium text-gray-700 mb-1">Bedtime</label>
                     <Input
                       type="time"
-                      value={reflectionData.bedtime}
-                      onChange={(e) => updateReflectionData({ bedtime: e.target.value })}
+                      value={reflectionData.bedtime || ''}
+                      onChange={(e) => updateReflectionData && updateReflectionData({ bedtime: e.target.value })}
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Wake Time</label>
                     <Input
                       type="time"
-                      value={reflectionData.wake_time}
-                      onChange={(e) => updateReflectionData({ wake_time: e.target.value })}
+                      value={reflectionData.wake_time || ''}
+                      onChange={(e) => updateReflectionData && updateReflectionData({ wake_time: e.target.value })}
                     />
                   </div>
                 </div>
@@ -973,7 +1008,7 @@ useEffect(() => {
                           name="sleepQuality"
                           value={quality}
                           checked={reflectionData.sleep_quality === quality}
-                          onChange={(e) => updateReflectionData({ sleep_quality: e.target.value })}
+                          onChange={(e) => updateReflectionData && updateReflectionData({ sleep_quality: e.target.value })}
                           className="text-blue-600 focus:ring-blue-500"
                         />
                         <span className="text-sm capitalize">{quality}</span>
@@ -985,8 +1020,8 @@ useEffect(() => {
                   <label className="block text-sm font-medium text-gray-700 mb-1">Overnight Symptoms</label>
                   <Textarea
                     placeholder="Any pain, discomfort, or symptoms during sleep..."
-                    value={reflectionData.overnight_symptoms}
-                    onChange={(e) => updateReflectionData({ overnight_symptoms: e.target.value })}
+                    value={reflectionData.overnight_symptoms || ''}
+                    onChange={(e) => updateReflectionData && updateReflectionData({ overnight_symptoms: e.target.value })}
                     rows={2}
                   />
                 </div>
@@ -997,7 +1032,7 @@ useEffect(() => {
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Energy Level: {reflectionData.energy_level}/10
+                    Energy Level: {reflectionData.energy_level || 5}/10
                   </label>
                   <div className="flex items-center space-x-2 text-xs text-gray-500 mb-1">
                     <span>Exhausted</span>
@@ -1008,15 +1043,15 @@ useEffect(() => {
                     type="range" 
                     min="1" 
                     max="10" 
-                    value={reflectionData.energy_level}
-                    onChange={(e) => updateReflectionData({ energy_level: parseInt(e.target.value) })}
+                    value={reflectionData.energy_level || 5}
+                    onChange={(e) => updateReflectionData && updateReflectionData({ energy_level: parseInt(e.target.value) })}
                     className="w-full" 
                   />
                 </div>
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Mood: {reflectionData.mood_level}/10
+                    Mood: {reflectionData.mood_level || 5}/10
                   </label>
                   <div className="flex items-center space-x-2 text-xs text-gray-500 mb-1">
                     <span>Low/Stressed</span>
@@ -1027,15 +1062,15 @@ useEffect(() => {
                     type="range" 
                     min="1" 
                     max="10" 
-                    value={reflectionData.mood_level}
-                    onChange={(e) => updateReflectionData({ mood_level: parseInt(e.target.value) })}
+                    value={reflectionData.mood_level || 5}
+                    onChange={(e) => updateReflectionData && updateReflectionData({ mood_level: parseInt(e.target.value) })}
                     className="w-full" 
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Physical Comfort: {reflectionData.physical_comfort}/10
+                    Physical Comfort: {reflectionData.physical_comfort || 5}/10
                   </label>
                   <div className="flex items-center space-x-2 text-xs text-gray-500 mb-1">
                     <span>Pain/Discomfort</span>
@@ -1046,8 +1081,8 @@ useEffect(() => {
                     type="range" 
                     min="1" 
                     max="10" 
-                    value={reflectionData.physical_comfort}
-                    onChange={(e) => updateReflectionData({ physical_comfort: parseInt(e.target.value) })}
+                    value={reflectionData.physical_comfort || 5}
+                    onChange={(e) => updateReflectionData && updateReflectionData({ physical_comfort: parseInt(e.target.value) })}
                     className="w-full" 
                   />
                 </div>
@@ -1056,8 +1091,8 @@ useEffect(() => {
                   <label className="block text-sm font-medium text-gray-700 mb-1">Overall Notes</label>
                   <Textarea
                     placeholder="How are you feeling overall today? Any patterns or insights?"
-                    value={reflectionData.overall_notes}
-                    onChange={(e) => updateReflectionData({ overall_notes: e.target.value })}
+                    value={reflectionData.overall_notes || ''}
+                    onChange={(e) => updateReflectionData && updateReflectionData({ overall_notes: e.target.value })}
                     rows={2}
                     focusColor="orange"
                   />
@@ -1087,7 +1122,7 @@ useEffect(() => {
         {activeView === 'protocol' && (
           <div className="space-y-4">
             {/* Protocol Selector */}
-            {preferences?.protocols?.length > 1 && (
+            {safePreferencesProtocols.length > 1 && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Select Protocol
@@ -1097,8 +1132,8 @@ useEffect(() => {
                   onChange={(e) => setSelectedProtocolId(e.target.value)}
                   className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
-                  {preferences.protocols.map(protocolId => {
-                    const protocol = protocols.find(p => p.id === protocolId);
+                  {safePreferencesProtocols.map(protocolId => {
+                    const protocol = safeProtocols.find(p => p.id === protocolId);
                     return (
                       <option key={protocolId} value={protocolId}>
                         {protocol?.name || 'Unknown Protocol'}
@@ -1110,7 +1145,7 @@ useEffect(() => {
             )}
             
             {/* Protocol Foods Component */}
-            <ProtocolFoods protocolId={selectedProtocolId || preferences?.protocols?.[0]} />
+            <ProtocolFoods protocolId={selectedProtocolId || safePreferencesProtocols[0]} />
           </div>
         )}
       </div>
