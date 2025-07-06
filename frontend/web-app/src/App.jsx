@@ -1,4 +1,4 @@
-// File: frontend/web-app/src/App.jsx (UPDATED WITH AUTH)
+// File: frontend/web-app/src/App.jsx (COMPLETE WITH DEBUG)
 
 import React, { useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
@@ -38,7 +38,7 @@ import { getProtocolDisplayText } from '../../shared/utils/entryHelpers';
 
 // Main App Component (Inside AuthProvider)
 const MainApp = () => {
-  const { isAuthenticated, user, loading: authLoading } = useAuth();
+  const { isAuthenticated, loading: authLoading } = useAuth();
   
   // App state
   const { 
@@ -67,14 +67,44 @@ const MainApp = () => {
   const { entries, loading: entriesLoading, addEntry, hasCriticalInsights } = useTimelineEntries(selectedDate);
   const { formData, updateFormData, toggleSelectedFood, handleQuickSelect, resetForm, buildEntryData } = useEntryForm();
 
+  // Create safe preferences with defaults
+  const safePreferences = {
+    protocols: [],
+    quick_supplements: [],
+    quick_medications: [],
+    quick_foods: [],
+    quick_symptoms: [],
+    quick_detox: [],
+    setup_complete: false,
+    ...preferences
+  };
+
+  // DEBUG: Log preferences state
+  console.log('🔍 PREFERENCES STATE:', {
+    rawPreferences: preferences,
+    setup_complete: preferences?.setup_complete,
+    safePreferences: safePreferences.setup_complete,
+    isReady,
+    showSetup
+  });
+
   // Show setup if authenticated and not completed OR manually triggered
   useEffect(() => {
+    console.log('🔍 SETUP EFFECT TRIGGERED:', {
+      isAuthenticated,
+      isReady,
+      preferences: preferences?.setup_complete,
+      showSetup,
+      manualSetupState: showSetup
+    });
+    
     if (isAuthenticated && isReady && preferences) {
-      if (!preferences.setup_complete) {
+      if (!preferences.setup_complete && !showSetup) {
+        console.log('🔍 TRIGGERING SETUP - setup_complete is:', preferences.setup_complete);
         handleSetupToggle();
       }
     }
-  }, [isAuthenticated, preferences, isReady]);
+  }, [isAuthenticated, preferences, isReady, showSetup]); // Remove handleSetupToggle
 
   // Handle auth loading
   if (authLoading) {
@@ -102,18 +132,6 @@ const MainApp = () => {
     );
   }
 
-  // Create safe preferences with defaults
-  const safePreferences = {
-    protocols: [],
-    quick_supplements: [],
-    quick_medications: [],
-    quick_foods: [],
-    quick_symptoms: [],
-    quick_detox: [],
-    setup_complete: false,
-    ...preferences
-  };
-
   // Entry form handlers
   const handleSubmitEntry = async () => {
     const allItems = [...formData.selectedFoods];
@@ -137,6 +155,25 @@ const MainApp = () => {
   const handleCancelEntry = () => {
     resetForm();
     handleAddEntryToggle();
+  };
+
+  // Enhanced setup complete handler
+  const handleSetupCompleteWithDebug = async () => {
+    console.log('🔍 SETUP COMPLETE HANDLER CALLED');
+    
+    try {
+      // First refresh preferences to get latest data
+      console.log('🔍 REFRESHING PREFERENCES...');
+      await refreshPreferences();
+      
+      // Then call the original setup complete handler
+      console.log('🔍 CALLING ORIGINAL SETUP COMPLETE...');
+      await handleSetupComplete(refreshPreferences);
+      
+      console.log('🔍 SETUP COMPLETE HANDLER FINISHED');
+    } catch (error) {
+      console.error('🔍 SETUP COMPLETE ERROR:', error);
+    }
   };
 
   // Loading states
@@ -169,15 +206,17 @@ const MainApp = () => {
     );
   }
 
-  // Setup wizard
+  // Setup wizard - with debug
   if (showSetup) {
+    console.log('🔍 SHOWING SETUP WIZARD');
     return (
       <SetupWizard 
-        onComplete={() => handleSetupComplete(refreshPreferences)} 
+        onComplete={handleSetupCompleteWithDebug}
       />
     );
   }
 
+  console.log('🔍 SHOWING MAIN APP');
   return (
     <div className="max-w-md mx-auto bg-white min-h-screen">
       <Header 
