@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2025-07-06T22:16:17.187Z",
+    "generated": "2025-07-06T23:12:35.793Z",
     "version": "1.0.0",
     "generator": "AutomatedProfessionalDocsGenerator"
   },
@@ -11,13 +11,13 @@
     "status": "Active Development"
   },
   "statistics": {
-    "totalComponents": 26,
-    "totalHooks": 11,
-    "totalFiles": 64,
+    "totalComponents": 29,
+    "totalHooks": 12,
+    "totalFiles": 68,
     "workingAPIs": 5,
     "totalAPIs": 14,
     "totalTables": 18,
-    "totalCommits": 12,
+    "totalCommits": 13,
     "contributors": 1
   },
   "discoveredInfo": {
@@ -119,13 +119,18 @@
           "description": "Health check",
           "status": 404,
           "working": false,
-          "responseTime": 613,
+          "responseTime": 587,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
               "path": "/api/v1/health",
               "method": "GET",
               "availableEndpoints": [
+                "POST /api/v1/auth/login",
+                "POST /api/v1/auth/logout",
+                "GET /api/v1/auth/verify",
+                "POST /api/v1/auth/refresh",
+                "POST /api/v1/auth/register",
                 "POST /api/v1/auth",
                 "GET /api/v1/users",
                 "POST /api/v1/users",
@@ -149,7 +154,7 @@
               ]
             }
           },
-          "responseSize": 701
+          "responseSize": 837
         },
         {
           "path": "/api/v1/protocols",
@@ -158,7 +163,7 @@
           "description": "Get all protocols",
           "status": 200,
           "working": true,
-          "responseTime": 246,
+          "responseTime": 175,
           "responseData": {
             "protocols": [
               {
@@ -254,13 +259,18 @@
           "description": "Get exposure types",
           "status": 404,
           "working": false,
-          "responseTime": 123,
+          "responseTime": 38,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
               "path": "/api/v1/exposure-types",
               "method": "GET",
               "availableEndpoints": [
+                "POST /api/v1/auth/login",
+                "POST /api/v1/auth/logout",
+                "GET /api/v1/auth/verify",
+                "POST /api/v1/auth/refresh",
+                "POST /api/v1/auth/register",
                 "POST /api/v1/auth",
                 "GET /api/v1/users",
                 "POST /api/v1/users",
@@ -284,7 +294,7 @@
               ]
             }
           },
-          "responseSize": 709
+          "responseSize": 845
         },
         {
           "path": "/api/v1/detox-types",
@@ -293,13 +303,18 @@
           "description": "Get detox types",
           "status": 404,
           "working": false,
-          "responseTime": 42,
+          "responseTime": 33,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
               "path": "/api/v1/detox-types",
               "method": "GET",
               "availableEndpoints": [
+                "POST /api/v1/auth/login",
+                "POST /api/v1/auth/logout",
+                "GET /api/v1/auth/verify",
+                "POST /api/v1/auth/refresh",
+                "POST /api/v1/auth/register",
                 "POST /api/v1/auth",
                 "GET /api/v1/users",
                 "POST /api/v1/users",
@@ -323,7 +338,7 @@
               ]
             }
           },
-          "responseSize": 706
+          "responseSize": 842
         },
         {
           "path": "/api/v1/foods/search",
@@ -338,7 +353,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 82,
+          "responseTime": 51,
           "responseData": {
             "foods": [
               {
@@ -373,7 +388,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 87,
+          "responseTime": 60,
           "responseData": {
             "foods": [
               {
@@ -4279,13 +4294,18 @@
           ],
           "status": 404,
           "working": false,
-          "responseTime": 78,
+          "responseTime": 54,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
               "path": "/api/v1/users/preferences",
               "method": "GET",
               "availableEndpoints": [
+                "POST /api/v1/auth/login",
+                "POST /api/v1/auth/logout",
+                "GET /api/v1/auth/verify",
+                "POST /api/v1/auth/refresh",
+                "POST /api/v1/auth/register",
                 "POST /api/v1/auth",
                 "GET /api/v1/users",
                 "POST /api/v1/users",
@@ -4309,7 +4329,7 @@
               ]
             }
           },
-          "responseSize": 712
+          "responseSize": 848
         },
         {
           "path": "/api/v1/users/preferences",
@@ -4318,13 +4338,18 @@
           "description": "Update user preferences",
           "status": 404,
           "working": false,
-          "responseTime": 36,
+          "responseTime": 35,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
               "path": "/api/v1/users/preferences",
               "method": "PUT",
               "availableEndpoints": [
+                "POST /api/v1/auth/login",
+                "POST /api/v1/auth/logout",
+                "GET /api/v1/auth/verify",
+                "POST /api/v1/auth/refresh",
+                "POST /api/v1/auth/register",
                 "POST /api/v1/auth",
                 "GET /api/v1/users",
                 "POST /api/v1/users",
@@ -4348,7 +4373,7 @@
               ]
             }
           },
-          "responseSize": 712
+          "responseSize": 848
         },
         {
           "path": "/api/v1/timeline/entries",
@@ -4363,7 +4388,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 49,
+          "responseTime": 42,
           "responseData": {
             "entries": [],
             "total": 0
@@ -4377,7 +4402,7 @@
           "description": "Create timeline entry",
           "status": 500,
           "working": false,
-          "responseTime": 55,
+          "responseTime": 117,
           "responseData": {
             "error": "Failed to complete create timeline entry"
           },
@@ -4400,13 +4425,18 @@
           ],
           "status": 404,
           "working": false,
-          "responseTime": 130,
+          "responseTime": 51,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
               "path": "/api/v1/reflections",
               "method": "GET",
               "availableEndpoints": [
+                "POST /api/v1/auth/login",
+                "POST /api/v1/auth/logout",
+                "GET /api/v1/auth/verify",
+                "POST /api/v1/auth/refresh",
+                "POST /api/v1/auth/register",
                 "POST /api/v1/auth",
                 "GET /api/v1/users",
                 "POST /api/v1/users",
@@ -4430,7 +4460,7 @@
               ]
             }
           },
-          "responseSize": 706
+          "responseSize": 842
         },
         {
           "path": "/api/v1/reflections",
@@ -4439,13 +4469,18 @@
           "description": "Save reflection",
           "status": 404,
           "working": false,
-          "responseTime": 49,
+          "responseTime": 57,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
               "path": "/api/v1/reflections",
               "method": "POST",
               "availableEndpoints": [
+                "POST /api/v1/auth/login",
+                "POST /api/v1/auth/logout",
+                "GET /api/v1/auth/verify",
+                "POST /api/v1/auth/refresh",
+                "POST /api/v1/auth/register",
                 "POST /api/v1/auth",
                 "GET /api/v1/users",
                 "POST /api/v1/users",
@@ -4469,7 +4504,7 @@
               ]
             }
           },
-          "responseSize": 707
+          "responseSize": 843
         },
         {
           "path": "/api/v1/correlations/insights",
@@ -4484,7 +4519,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 6220,
+          "responseTime": 5919,
           "responseData": {
             "insights": [
               {
@@ -6001,13 +6036,18 @@
           "description": "Analyze correlations",
           "status": 404,
           "working": false,
-          "responseTime": 40,
+          "responseTime": 52,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
               "path": "/api/v1/correlations/analyze",
               "method": "POST",
               "availableEndpoints": [
+                "POST /api/v1/auth/login",
+                "POST /api/v1/auth/logout",
+                "GET /api/v1/auth/verify",
+                "POST /api/v1/auth/refresh",
+                "POST /api/v1/auth/register",
                 "POST /api/v1/auth",
                 "GET /api/v1/users",
                 "POST /api/v1/users",
@@ -6031,7 +6071,7 @@
               ]
             }
           },
-          "responseSize": 716
+          "responseSize": 852
         }
       ],
       "workingCount": 5,
@@ -6147,7 +6187,7 @@
     "fileStructure": {
       "frontend": {
         "frontend/web-app": {
-          "totalFiles": 42,
+          "totalFiles": 44,
           "fileTypes": {
             ".development": 1,
             ".production": 1,
@@ -6158,16 +6198,17 @@
             ".html": 1,
             ".svg": 2,
             ".css": 2,
-            ".jsx": 21,
+            ".jsx": 23,
             ".jsx backup": 1
           },
           "components": [
             {
               "name": "App",
               "path": "frontend/web-app/src/App.jsx",
-              "size": 7218,
+              "size": 8656,
               "hooks": [
                 "useEffect",
+                "useAuth",
                 "useProtocols",
                 "useUserPreferences",
                 "useExposureTypes",
@@ -6175,7 +6216,8 @@
                 "useReflectionData",
                 "useAppState",
                 "useTimelineEntries",
-                "useEntryForm"
+                "useEntryForm",
+                "useState"
               ]
             },
             {
@@ -6205,14 +6247,36 @@
             {
               "name": "Header",
               "path": "frontend/web-app/src/components/layout/Header.jsx",
-              "size": 1791,
-              "hooks": []
+              "size": 5243,
+              "hooks": [
+                "useState",
+                "useRef",
+                "useEffect",
+                "useAuth"
+              ]
             },
             {
               "name": "Navigation",
               "path": "frontend/web-app/src/components/layout/Navigation.jsx",
               "size": 2118,
               "hooks": []
+            },
+            {
+              "name": "LoginPage",
+              "path": "frontend/web-app/src/components/pages/LoginPage.jsx",
+              "size": 6728,
+              "hooks": [
+                "useState",
+                "useAuth"
+              ]
+            },
+            {
+              "name": "PreferencesPage",
+              "path": "frontend/web-app/src/components/pages/PreferencesPage.jsx",
+              "size": 4794,
+              "hooks": [
+                "useAuth"
+              ]
             },
             {
               "name": "CorrelationInsights",
@@ -6334,17 +6398,27 @@
             }
           ],
           "utilities": [],
-          "size": "300.39 KB"
+          "size": "316.42 KB"
         },
         "frontend/shared": {
-          "totalFiles": 22,
+          "totalFiles": 24,
           "fileTypes": {
             "": 1,
-            ".jsx": 6,
-            ".js": 13,
+            ".jsx": 7,
+            ".js": 14,
             ".json": 2
           },
           "components": [
+            {
+              "name": "AuthProvider",
+              "path": "frontend/shared/components/AuthProvider.jsx",
+              "size": 3929,
+              "hooks": [
+                "useContext",
+                "useState",
+                "useEffect"
+              ]
+            },
             {
               "name": "Alert",
               "path": "frontend/shared/components/ui/Alert.jsx",
@@ -6384,6 +6458,11 @@
           ],
           "hooks": [
             {
+              "name": "useAuth",
+              "path": "frontend/shared/hooks/useAuth.js",
+              "size": 389
+            },
+            {
               "name": "useCorrelations",
               "path": "frontend/shared/hooks/useCorrelations.js",
               "size": 1772
@@ -6416,11 +6495,11 @@
             {
               "name": "useUserPreferences",
               "path": "frontend/shared/hooks/useUserPreferences.js",
-              "size": 5492
+              "size": 5747
             }
           ],
           "utilities": [],
-          "size": "39.53 KB"
+          "size": "43.99 KB"
         }
       },
       "backend": {
@@ -6440,7 +6519,7 @@
             }
           ],
           "utilities": [],
-          "size": "88.38 KB"
+          "size": "90.97 KB"
         },
         "backend/functions": {
           "totalFiles": 20,
@@ -6458,7 +6537,7 @@
             }
           ],
           "utilities": [],
-          "size": "88.38 KB"
+          "size": "90.97 KB"
         },
         "backend": {
           "totalFiles": 20,
@@ -6476,7 +6555,7 @@
             }
           ],
           "utilities": [],
-          "size": "88.38 KB"
+          "size": "90.97 KB"
         }
       },
       "shared": {},
@@ -6560,18 +6639,18 @@
       "repository": "https://github.com/deebyrne26/health-platform",
       "branch": "main",
       "lastCommit": {
-        "hash": "42b632f",
-        "message": "more docs!",
+        "hash": "55b0ba8",
+        "message": "feat: AUTH!!!",
         "author": "deebyrne26",
-        "date": "Sun Jul 6 18:15:41 2025 -0400"
+        "date": "Sun Jul 6 19:12:05 2025 -0400"
       },
       "contributors": [
         {
           "name": "deebyrne26",
-          "commits": 12
+          "commits": 13
         }
       ],
-      "totalCommits": 12
+      "totalCommits": 13
     }
   }
 }
