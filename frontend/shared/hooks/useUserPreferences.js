@@ -85,7 +85,15 @@ const useUserPreferences = () => {
       return Promise.reject(new Error('Preferences not loaded'));
     }
     
-    const updatedPreferences = { ...preferences, ...newPreferences };
+    // Preserve existing preferences and only update the specified ones
+    const updatedPreferences = { 
+      ...preferences, 
+      ...newPreferences 
+    };
+    
+    console.log('Preserving existing preferences:', preferences);
+    console.log('Merging with new preferences:', newPreferences);
+    console.log('Final preferences to save:', updatedPreferences);
     
     try {
       setSaving(true);
@@ -134,16 +142,36 @@ const useUserPreferences = () => {
     return preferences[key] !== undefined ? preferences[key] : defaultValue;
   };
 
-  return { 
-    preferences, 
-    updatePreferences, 
-    loading,
-    saving,
-    error,
-    isReady: preferences !== null,
-    hasPreference,
-    getPreference
-  };
+  // Add this new function before the return statement
+const refreshPreferences = async () => {
+  try {
+    setLoading(true);
+    console.log('Refreshing preferences from database...');
+    
+    const response = await apiClient.get('/api/v1/user/preferences');
+    
+    if (response) {
+      console.log('Refreshed preferences:', response);
+      setPreferences(response);
+    }
+  } catch (error) {
+    console.error('Failed to refresh preferences:', error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+return { 
+  preferences, 
+  updatePreferences, 
+  refreshPreferences, // Add this line
+  loading,
+  saving,
+  error,
+  isReady: preferences !== null,
+  hasPreference,
+  getPreference
+};
 };
 
 export default useUserPreferences;

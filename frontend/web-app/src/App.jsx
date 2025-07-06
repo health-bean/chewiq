@@ -302,7 +302,7 @@ function App() {
   
   // Hooks
   const { protocols, loading: protocolsLoading, error: protocolsError } = useProtocols();
-  const { preferences, updatePreferences, loading: preferencesLoading, error: preferencesError, isReady } = useUserPreferences();
+  const { preferences, updatePreferences, refreshPreferences, loading: preferencesLoading, error: preferencesError, isReady } = useUserPreferences();
   const { exposureTypes } = useExposureTypes();
   const { detoxTypes } = useDetoxTypes();
   const { reflectionData, updateReflectionData, saveReflectionData, loading: reflectionLoading, hasUnsavedChanges } = useReflectionData(selectedDate);
@@ -508,14 +508,18 @@ function App() {
   };
 
   if (showSetup) {
-    return <SetupWizard onComplete={() => {
-      setShowSetup(false);
-      // Small delay to ensure UI updates
-      setTimeout(() => {
-        setActiveView('timeline');
-      }, 100);
-    }} />;
-  }
+  return <SetupWizard onComplete={async () => {
+    // Wait for setup to complete
+    await new Promise(resolve => setTimeout(resolve, 200));
+    
+    // Refresh preferences from database
+    await refreshPreferences();
+    
+    // Hide setup wizard
+    setShowSetup(false);
+    setActiveView('timeline');
+  }} />;
+}
 
   return (
     <div className="max-w-md mx-auto bg-white min-h-screen">
