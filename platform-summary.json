@@ -2,7 +2,7 @@
   "platform": {
     "name": "FILO Health Platform",
     "version": "1.0.0",
-    "lastUpdated": "2025-07-06T16:53:29.249Z",
+    "lastUpdated": "2025-07-06T16:56:49.538Z",
     "architecture": "Full-Stack React + AWS Lambda",
     "status": "Active Development"
   },
@@ -32,7 +32,7 @@
     "platform": {
       "name": "FILO Health Platform",
       "version": "1.0.0",
-      "lastUpdated": "2025-07-06T16:53:29.249Z",
+      "lastUpdated": "2025-07-06T16:56:49.538Z",
       "architecture": "Full-Stack React + AWS Lambda",
       "status": "Active Development"
     },
@@ -45,7 +45,7 @@
           "description": "Get health protocols",
           "status": 200,
           "working": true,
-          "responseTime": 186,
+          "responseTime": 752,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -163,7 +163,7 @@
           "description": "Get exposure types",
           "status": 404,
           "working": false,
-          "responseTime": 135,
+          "responseTime": 115,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -226,7 +226,7 @@
           "description": "Get detox types",
           "status": 404,
           "working": false,
-          "responseTime": 135,
+          "responseTime": 101,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -295,7 +295,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 110,
+          "responseTime": 73,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -349,7 +349,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 183,
+          "responseTime": 121,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -4486,7 +4486,7 @@
           ],
           "status": 404,
           "working": false,
-          "responseTime": 179,
+          "responseTime": 134,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -4549,7 +4549,7 @@
           "description": "Update user preferences",
           "status": 404,
           "working": false,
-          "responseTime": 116,
+          "responseTime": 76,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -4618,7 +4618,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 123,
+          "responseTime": 108,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -4645,7 +4645,7 @@
           "description": "Create timeline entry",
           "status": 500,
           "working": false,
-          "responseTime": 119,
+          "responseTime": 118,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -4675,7 +4675,7 @@
           ],
           "status": 404,
           "working": false,
-          "responseTime": 103,
+          "responseTime": 125,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -4738,7 +4738,7 @@
           "description": "Save daily reflection",
           "status": 404,
           "working": false,
-          "responseTime": 132,
+          "responseTime": 63,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -4807,7 +4807,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 5809,
+          "responseTime": 5886,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -6357,7 +6357,7 @@
           "description": "Analyze correlations",
           "status": 404,
           "working": false,
-          "responseTime": 151,
+          "responseTime": 65,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -6420,7 +6420,7 @@
           "description": "Health check",
           "status": 404,
           "working": false,
-          "responseTime": 118,
+          "responseTime": 69,
           "responseSchema": {
             "type": "object",
             "properties": {
