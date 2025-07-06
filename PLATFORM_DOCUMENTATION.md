@@ -9,9 +9,9 @@
 
 ## 📊 Platform Statistics
 
-- **Frontend Components:** 9 shared, 0 pages
-- **Custom Hooks:** 7
-- **Utility Functions:** 2
+- **Frontend Components:** 12 shared, 0 pages
+- **Custom Hooks:** 10
+- **Utility Functions:** 3
 - **API Endpoints:** 5/14 working
 - **Database Tables:** 0 (estimated)
 - **Environment Variables:** 6 local, 3 lambda
@@ -26,7 +26,7 @@
 #### GET /api/v1/protocols
 **Status:** ✅ Working (200)  
 **Description:** Get health protocols  
-**Response Time:** 721ms
+**Response Time:** 781ms
 
 
 
@@ -132,7 +132,7 @@ curl "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/protocol
 #### GET /api/v1/foods/search
 **Status:** ✅ Working (200)  
 **Description:** Search food database  
-**Response Time:** 58ms
+**Response Time:** 248ms
 
 **Parameters:**
 - `search`: chicken
@@ -170,7 +170,7 @@ curl "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/foods/se
 #### GET /api/v1/foods/by-protocol
 **Status:** ✅ Working (200)  
 **Description:** Get protocol foods  
-**Response Time:** 94ms
+**Response Time:** 396ms
 
 **Parameters:**
 - `protocol_id`: 1495844a-19de-404c-a288-7660eda0cbe1
@@ -4072,7 +4072,7 @@ curl "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/foods/by
 #### GET /api/v1/timeline/entries
 **Status:** ✅ Working (200)  
 **Description:** Get timeline entries  
-**Response Time:** 81ms
+**Response Time:** 238ms
 
 **Parameters:**
 - `date`: 2025-07-04
@@ -4097,7 +4097,7 @@ curl "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/timeline
 #### GET /api/v1/correlations/insights
 **Status:** ✅ Working (200)  
 **Description:** Get AI insights  
-**Response Time:** 6233ms
+**Response Time:** 6176ms
 
 **Parameters:**
 - `userId`: 8e8a568a-c2f8-43a8-abf2-4e54408dbdc0
@@ -5622,7 +5622,7 @@ curl "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/correlat
 
 ## ⚛️ Components Architecture
 
-### Shared Components (9)
+### Shared Components (12)
 - **index** (Functional) - `docs/src/components/HomepageFeatures/index.js`
   - Size: 1.7KB
   - Hooks: None
@@ -5651,16 +5651,28 @@ curl "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/correlat
   - Size: 1.0KB
   - Hooks: None
   - Last Modified: 2025-07-06
-- **CorrelationInsights** (Functional (Hooks)) - `frontend/web-app/src/components/CorrelationInsights.jsx`
-  - Size: 11.4KB
-  - Hooks: useState, useCorrelations
+- **MultiSelectProtocolDropdown** (Functional (Hooks)) - `frontend/web-app/src/components/common/MultiSelectProtocolDropdown.jsx`
+  - Size: 5.6KB
+  - Hooks: useState, useEffect
   - Last Modified: 2025-07-06
-- **ProtocolFoods** (Functional (Hooks)) - `frontend/web-app/src/components/ProtocolFoods.jsx`
-  - Size: 15.4KB
-  - Hooks: useState, useProtocolFoods, useFoodSearch, useEffect
+- **QuickChecks** (Arrow Function) - `frontend/web-app/src/components/common/QuickChecks.jsx`
+  - Size: 1.3KB
+  - Hooks: None
+  - Last Modified: 2025-07-06
+- **SmartFoodSelector** (Functional (Hooks)) - `frontend/web-app/src/components/common/SmartFoodSelector.jsx`
+  - Size: 4.2KB
+  - Hooks: useState, useEffect
+  - Last Modified: 2025-07-06
+- **Header** (Arrow Function) - `frontend/web-app/src/components/layout/Header.jsx`
+  - Size: 1.7KB
+  - Hooks: None
+  - Last Modified: 2025-07-06
+- **Navigation** (Arrow Function) - `frontend/web-app/src/components/layout/Navigation.jsx`
+  - Size: 2.1KB
+  - Hooks: None
   - Last Modified: 2025-07-06
 
-### Custom Hooks (7)
+### Custom Hooks (10)
 - **useCorrelations** - API Integration
   - Path: `frontend/shared/hooks/useCorrelations.js`
   - Size: 1.7KB
@@ -5689,8 +5701,20 @@ curl "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/correlat
   - Path: `frontend/shared/hooks/useUserPreferences.js`
   - Size: 5.4KB
   - Dependencies: useState, useEffect, useUserPreferences
+- **useAppState** - State Management
+  - Path: `frontend/web-app/src/hooks/useAppState.js`
+  - Size: 1.2KB
+  - Dependencies: useState, useEffect, useAppState
+- **useEntryForm** - Custom Logic
+  - Path: `frontend/web-app/src/hooks/useEntryForm.js`
+  - Size: 1.7KB
+  - Dependencies: useState, useEntryForm
+- **useTimelineEntries** - State Management
+  - Path: `frontend/web-app/src/hooks/useTimelineEntries.js`
+  - Size: 1.3KB
+  - Dependencies: useState, useEffect, useTimelineEntries
 
-### Utility Functions (2)
+### Utility Functions (3)
 - **errors** - General Utilities
   - Path: `backend/functions/api/utils/errors.js`
   - Functions: handleDatabaseError
@@ -5698,6 +5722,10 @@ curl "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/correlat
 - **responses** - CORS Handling
   - Path: `backend/functions/api/utils/responses.js`
   - Functions: corsHeaders, createResponse, successResponse, errorResponse, const
+  - Size: 1.2KB
+- **entryHelpers** - General Utilities
+  - Path: `frontend/shared/utils/entryHelpers.js`
+  - Functions: getEntryIcon, getEntryColor, getProtocolDisplayText, selectedProtocolObjects, names
   - Size: 1.2KB
 
 ## 🗄️ Database Structure

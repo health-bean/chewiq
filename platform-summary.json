@@ -2,16 +2,16 @@
   "platform": {
     "name": "FILO Health Platform",
     "version": "1.0.0",
-    "lastUpdated": "2025-07-06T19:10:00.377Z",
+    "lastUpdated": "2025-07-06T21:28:47.375Z",
     "architecture": "Full-Stack React + AWS Lambda",
     "status": "Active Development"
   },
   "stats": {
     "components": {
-      "shared": 9,
+      "shared": 12,
       "pages": 0,
-      "hooks": 7,
-      "utilities": 2
+      "hooks": 10,
+      "utilities": 3
     },
     "apis": {
       "working": 5,
@@ -32,7 +32,7 @@
     "platform": {
       "name": "FILO Health Platform",
       "version": "1.0.0",
-      "lastUpdated": "2025-07-06T19:10:00.377Z",
+      "lastUpdated": "2025-07-06T21:28:47.375Z",
       "architecture": "Full-Stack React + AWS Lambda",
       "status": "Active Development"
     },
@@ -45,7 +45,7 @@
           "description": "Get health protocols",
           "status": 200,
           "working": true,
-          "responseTime": 721,
+          "responseTime": 781,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -154,7 +154,7 @@
           "description": "Get exposure types",
           "status": 404,
           "working": false,
-          "responseTime": 44,
+          "responseTime": 242,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -217,7 +217,7 @@
           "description": "Get detox types",
           "status": 404,
           "working": false,
-          "responseTime": 61,
+          "responseTime": 109,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -286,7 +286,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 58,
+          "responseTime": 248,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -340,7 +340,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 94,
+          "responseTime": 396,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -4477,7 +4477,7 @@
           ],
           "status": 404,
           "working": false,
-          "responseTime": 34,
+          "responseTime": 97,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -4540,7 +4540,7 @@
           "description": "Update user preferences",
           "status": 404,
           "working": false,
-          "responseTime": 105,
+          "responseTime": 104,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -4609,7 +4609,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 81,
+          "responseTime": 238,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -4636,7 +4636,7 @@
           "description": "Create timeline entry",
           "status": 500,
           "working": false,
-          "responseTime": 62,
+          "responseTime": 111,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -4666,7 +4666,7 @@
           ],
           "status": 404,
           "working": false,
-          "responseTime": 36,
+          "responseTime": 240,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -4729,7 +4729,7 @@
           "description": "Save daily reflection",
           "status": 404,
           "working": false,
-          "responseTime": 35,
+          "responseTime": 99,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -4798,7 +4798,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 6233,
+          "responseTime": 6176,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -6348,7 +6348,7 @@
           "description": "Analyze correlations",
           "status": 404,
           "working": false,
-          "responseTime": 38,
+          "responseTime": 235,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -6411,7 +6411,7 @@
           "description": "Health check",
           "status": 404,
           "working": false,
-          "responseTime": 37,
+          "responseTime": 236,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -6591,47 +6591,96 @@
           "lastModified": "2025-07-06"
         },
         {
-          "name": "CorrelationInsights",
-          "path": "frontend/web-app/src/components/CorrelationInsights.jsx",
+          "name": "MultiSelectProtocolDropdown",
+          "path": "frontend/web-app/src/components/common/MultiSelectProtocolDropdown.jsx",
           "category": "shared",
           "type": "Functional (Hooks)",
           "hooks": [
             "useState",
-            "useCorrelations"
+            "useEffect"
           ],
           "imports": [
             "react",
-            "../../../shared/hooks/useCorrelations",
             "lucide-react"
           ],
           "exports": [
-            "CorrelationInsights"
+            "MultiSelectProtocolDropdown"
           ],
           "props": [],
-          "size": "11.4KB",
+          "size": "5.6KB",
           "lastModified": "2025-07-06"
         },
         {
-          "name": "ProtocolFoods",
-          "path": "frontend/web-app/src/components/ProtocolFoods.jsx",
+          "name": "QuickChecks",
+          "path": "frontend/web-app/src/components/common/QuickChecks.jsx",
+          "category": "shared",
+          "type": "Arrow Function",
+          "hooks": [],
+          "imports": [
+            "react"
+          ],
+          "exports": [
+            "QuickChecks"
+          ],
+          "props": [],
+          "size": "1.3KB",
+          "lastModified": "2025-07-06"
+        },
+        {
+          "name": "SmartFoodSelector",
+          "path": "frontend/web-app/src/components/common/SmartFoodSelector.jsx",
           "category": "shared",
           "type": "Functional (Hooks)",
           "hooks": [
             "useState",
-            "useProtocolFoods",
-            "useFoodSearch",
             "useEffect"
           ],
           "imports": [
             "react",
             "lucide-react",
-            "../../../shared/hooks/useProtocolFoods"
+            "../../../../shared/components/ui"
           ],
           "exports": [
-            "ProtocolFoods"
+            "SmartFoodSelector"
           ],
           "props": [],
-          "size": "15.4KB",
+          "size": "4.2KB",
+          "lastModified": "2025-07-06"
+        },
+        {
+          "name": "Header",
+          "path": "frontend/web-app/src/components/layout/Header.jsx",
+          "category": "shared",
+          "type": "Arrow Function",
+          "hooks": [],
+          "imports": [
+            "react",
+            "lucide-react",
+            "../../../../shared/components/ui",
+            "../common/MultiSelectProtocolDropdown"
+          ],
+          "exports": [
+            "Header"
+          ],
+          "props": [],
+          "size": "1.7KB",
+          "lastModified": "2025-07-06"
+        },
+        {
+          "name": "Navigation",
+          "path": "frontend/web-app/src/components/layout/Navigation.jsx",
+          "category": "shared",
+          "type": "Arrow Function",
+          "hooks": [],
+          "imports": [
+            "react",
+            "../../../../shared/components/ui"
+          ],
+          "exports": [
+            "Navigation"
+          ],
+          "props": [],
+          "size": "2.1KB",
           "lastModified": "2025-07-06"
         }
       ],
@@ -6735,6 +6784,47 @@
           ],
           "purpose": "API Integration",
           "size": "5.4KB"
+        },
+        {
+          "name": "useAppState",
+          "path": "frontend/web-app/src/hooks/useAppState.js",
+          "dependencies": [
+            "useState",
+            "useEffect",
+            "useAppState"
+          ],
+          "exports": [
+            "const"
+          ],
+          "purpose": "State Management",
+          "size": "1.2KB"
+        },
+        {
+          "name": "useEntryForm",
+          "path": "frontend/web-app/src/hooks/useEntryForm.js",
+          "dependencies": [
+            "useState",
+            "useEntryForm"
+          ],
+          "exports": [
+            "const"
+          ],
+          "purpose": "Custom Logic",
+          "size": "1.7KB"
+        },
+        {
+          "name": "useTimelineEntries",
+          "path": "frontend/web-app/src/hooks/useTimelineEntries.js",
+          "dependencies": [
+            "useState",
+            "useEffect",
+            "useTimelineEntries"
+          ],
+          "exports": [
+            "const"
+          ],
+          "purpose": "State Management",
+          "size": "1.3KB"
         }
       ],
       "utilities": [
@@ -6760,6 +6850,24 @@
           ],
           "exports": [],
           "purpose": "CORS Handling",
+          "size": "1.2KB"
+        },
+        {
+          "name": "entryHelpers",
+          "path": "frontend/shared/utils/entryHelpers.js",
+          "functions": [
+            "getEntryIcon",
+            "getEntryColor",
+            "getProtocolDisplayText",
+            "selectedProtocolObjects",
+            "names"
+          ],
+          "exports": [
+            "const",
+            "const",
+            "const"
+          ],
+          "purpose": "General Utilities",
           "size": "1.2KB"
         }
       ]
