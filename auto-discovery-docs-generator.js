@@ -19,7 +19,8 @@ class AutoDiscoveryDocsGenerator {
       auth: {},
       database: {},
       deployment: {},
-      architecture: {}
+      architecture: {},
+      environment: {} // 🔥 NEW: Environment variables
     };
   }
 
@@ -110,6 +111,11 @@ class AutoDiscoveryDocsGenerator {
     await this.discoverArchitecture();
     await this.discoverDeployment();
     
+    // 🔥 NEW: Enhanced discovery methods
+    await this.discoverDatabaseSchema();
+    await this.discoverEnvironmentVariables();
+    await this.discoverDeploymentConfiguration();
+    
     this.generateIntroduction();
     this.generateQuickStart();
     this.generateDevelopmentSetup();
@@ -118,6 +124,12 @@ class AutoDiscoveryDocsGenerator {
     this.generateComponentDocs();
     this.generateArchitectureDocs();
     this.generateDeploymentDocs();
+    
+    // 🔥 NEW: Enhanced documentation
+    this.generateDatabaseDocumentation();
+    this.generateEnvironmentDocumentation();
+    this.generateConfigurationDocumentation();
+    
     this.generateSidebar();
     
     console.log('✅ Complete documentation generated from actual implementation!');
@@ -372,9 +384,14 @@ class AutoDiscoveryDocsGenerator {
     console.log('⚛️  Auto-discovering React components...');
     
     const componentPaths = [
-      'frontend/shared/components',
       'frontend/shared',
-      'frontend/web-app/src/components'
+      'frontend/shared/components',
+      'frontend/shared/hooks',
+      'frontend/shared/ui',
+      'frontend/web-app/src/components',
+      'frontend/web-app/src/features',
+      'frontend/web-app/src/features/setup',
+      'frontend/web-app/src/features/setup/steps'
     ];
 
     componentPaths.forEach(compPath => {
@@ -504,11 +521,27 @@ class AutoDiscoveryDocsGenerator {
   }
 
   inferArchitectureType() {
+    const hasGithubActions = fs.existsSync(path.join(this.rootPath, '.github/workflows'));
     const hasAmplify = fs.existsSync(path.join(this.rootPath, 'amplify.yml'));
     const hasFrontend = fs.existsSync(path.join(this.rootPath, 'frontend'));
     const hasBackend = fs.existsSync(path.join(this.rootPath, 'backend'));
     
-    if (hasAmplify) return 'AWS Amplify Fullstack';
+    // Check if GitHub Actions is being used for deployment
+    if (hasGithubActions) {
+      try {
+        const workflowFiles = fs.readdirSync(path.join(this.rootPath, '.github/workflows'));
+        const hasDeploymentWorkflow = workflowFiles.some(file => 
+          file.includes('deploy') || file.includes('deployment')
+        );
+        if (hasDeploymentWorkflow) {
+          return 'GitHub Actions Deployment';
+        }
+      } catch (error) {
+        // Error reading workflows
+      }
+    }
+    
+    if (hasAmplify && hasFrontend && hasBackend) return 'AWS Amplify Fullstack';
     if (hasFrontend && hasBackend) return 'Fullstack Application';
     return 'Web Application';
   }
@@ -583,6 +616,668 @@ class AutoDiscoveryDocsGenerator {
     console.log(`   ✅ Deployment: ${this.discovered.deployment.type}`);
   }
 
+  // 🔥 NEW: DATABASE SCHEMA DISCOVERY METHODS
+  async discoverDatabaseSchema() {
+    console.log('🗄️  Auto-discovering database schema...');
+    
+    try {
+      // Find database connection and schema files
+      const dbFiles = this.findDatabaseFiles();
+      const schemaFiles = this.findSchemaFiles();
+      const migrationFiles = this.findMigrationFiles();
+      
+      // Extract database configuration
+      const dbConfig = this.extractDatabaseConfig();
+      
+      // Parse schema from files
+      const tables = this.extractTables(schemaFiles, migrationFiles);
+      const relationships = this.extractRelationships(schemaFiles);
+      
+      // Get Lambda environment variables
+      const lambdaEnvVars = await this.extractLambdaEnvVars();
+      
+      this.discovered.database = {
+        ...this.discovered.database, // Keep existing detection
+        connectionFiles: dbFiles,
+        schemaFiles: schemaFiles,
+        migrationFiles: migrationFiles,
+        configuration: dbConfig,
+        tables: tables,
+        relationships: relationships,
+        lambdaEnvironment: lambdaEnvVars
+      };
+      
+      console.log(`   ✅ Found ${tables.length} tables, ${relationships.length} relationships`);
+    } catch (error) {
+      console.warn('   ⚠️  Database schema discovery failed:', error.message);
+    }
+  }
+
+  findDatabaseFiles() {
+    const dbPatterns = [
+      /database|db|connection/i,
+      /postgres|pg|mysql|mongo/i
+    ];
+    
+    const searchPaths = [
+      'backend/database',
+      'backend/functions/api/database',
+      'backend/functions/api/db',
+      'backend/functions/api',
+      'backend/shared',
+      'database',
+      'db'
+    ];
+    
+    const dbFiles = [];
+    searchPaths.forEach(searchPath => {
+      const fullPath = path.join(this.rootPath, searchPath);
+      if (fs.existsSync(fullPath)) {
+        dbPatterns.forEach(pattern => {
+          const files = this.findFilesRecursive(fullPath, pattern);
+          dbFiles.push(...files);
+        });
+      }
+    });
+    
+    return dbFiles;
+  }
+
+  findSchemaFiles() {
+    const schemaPatterns = [
+      /schema\.sql$/i,
+      /create.*\.sql$/i,
+      /tables.*\.sql$/i,
+      /schema\.js$/i,
+      /models.*\.js$/i,
+      /queries\.js$/i,
+      /migration.*\.sql$/i
+    ];
+    
+    const searchPaths = [
+      'backend/database',
+      'backend/functions/api/database',
+      'backend/functions/api',
+      'database',
+      'migrations',
+      'schema'
+    ];
+    
+    const schemaFiles = [];
+    searchPaths.forEach(searchPath => {
+      const fullPath = path.join(this.rootPath, searchPath);
+      if (fs.existsSync(fullPath)) {
+        schemaPatterns.forEach(pattern => {
+          const files = this.findFilesRecursive(fullPath, pattern);
+          schemaFiles.push(...files);
+        });
+      }
+    });
+    
+    return schemaFiles;
+  }
+
+  findMigrationFiles() {
+    const migrationPaths = [
+      'backend/database/migrations',
+      'backend/functions/api/database/migrations',
+      'backend/migrations',
+      'migrations',
+      'database/migrations',
+      'db/migrations'
+    ];
+    
+    const migrationFiles = [];
+    migrationPaths.forEach(migPath => {
+      const fullPath = path.join(this.rootPath, migPath);
+      if (fs.existsSync(fullPath)) {
+        const files = this.findFilesRecursive(fullPath, /\.(sql|js)$/i);
+        migrationFiles.push(...files);
+      }
+    });
+    
+    return migrationFiles;
+  }
+
+  extractDatabaseConfig() {
+    const configFiles = [
+      'backend/database/connection.js',
+      'backend/functions/api/database/connection.js',
+      'backend/functions/api/db/config.js',
+      'backend/functions/api/.env',
+      'backend/database/config.js',
+      'backend/database/queries.js',
+      'backend/functions/api/database/queries.js',
+      '.env'
+    ];
+    
+    const config = {};
+    
+    for (const configFile of configFiles) {
+      const fullPath = path.join(this.rootPath, configFile);
+      if (fs.existsSync(fullPath)) {
+        try {
+          const content = fs.readFileSync(fullPath, 'utf8');
+          
+          if (configFile.endsWith('.env')) {
+            const envVars = this.parseEnvFile(content);
+            config.environment = envVars;
+          } else if (configFile.endsWith('.js')) {
+            // Extract database connection details from JS files
+            const dbDetails = this.extractDbDetailsFromJs(content);
+            config.connection = dbDetails;
+          }
+        } catch (error) {
+          console.warn(`Could not read ${configFile}:`, error.message);
+        }
+      }
+    }
+    
+    return config;
+  }
+
+  extractDbDetailsFromJs(content) {
+    const details = {};
+    
+    // Extract host
+    const hostMatch = content.match(/host['"]?\s*:\s*['"]([^'"]+)['"]/i);
+    if (hostMatch) details.host = hostMatch[1];
+    
+    // Extract database name
+    const dbMatch = content.match(/database['"]?\s*:\s*['"]([^'"]+)['"]/i);
+    if (dbMatch) details.database = dbMatch[1];
+    
+    // Extract port
+    const portMatch = content.match(/port['"]?\s*:\s*['"]?(\d+)['"]?/i);
+    if (portMatch) details.port = portMatch[1];
+    
+    return details;
+  }
+
+  extractTables(schemaFiles, migrationFiles) {
+    const tables = [];
+    const allFiles = [...schemaFiles, ...migrationFiles];
+    
+    for (const file of allFiles) {
+      try {
+        const content = fs.readFileSync(path.join(this.rootPath, file), 'utf8');
+        const fileTables = this.parseTablesFromSql(content);
+        tables.push(...fileTables);
+      } catch (error) {
+        console.warn(`Could not parse ${file}:`, error.message);
+      }
+    }
+    
+    // Remove duplicates and merge
+    return this.mergeTableDefinitions(tables);
+  }
+
+  parseTablesFromSql(content) {
+    const tables = [];
+    
+    // Match CREATE TABLE statements
+    const tableMatches = content.match(/CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?([^\s(]+)\s*\(([\s\S]*?)\);/gi);
+    
+    if (tableMatches) {
+      tableMatches.forEach(match => {
+        const tableNameMatch = match.match(/CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?([^\s(]+)/i);
+        const columnsMatch = match.match(/\(([\s\S]*?)\);/);
+        
+        if (tableNameMatch && columnsMatch) {
+          const tableName = tableNameMatch[1].replace(/[`"']/g, '');
+          const columns = this.parseColumns(columnsMatch[1]);
+          
+          tables.push({
+            name: tableName,
+            columns: columns,
+            primaryKey: columns.find(col => col.isPrimaryKey)?.name,
+            foreignKeys: columns.filter(col => col.isForeignKey)
+          });
+        }
+      });
+    }
+    
+    return tables;
+  }
+
+  parseColumns(columnsText) {
+    const columns = [];
+    const lines = columnsText.split(',').map(line => line.trim());
+    
+    lines.forEach(line => {
+      if (line && !line.startsWith('CONSTRAINT') && !line.startsWith('PRIMARY KEY') && !line.startsWith('FOREIGN KEY')) {
+        const parts = line.trim().split(/\s+/);
+        if (parts.length >= 2) {
+          const column = {
+            name: parts[0].replace(/[`"']/g, ''),
+            type: parts[1],
+            nullable: !line.toUpperCase().includes('NOT NULL'),
+            isPrimaryKey: line.toUpperCase().includes('PRIMARY KEY'),
+            isForeignKey: line.toUpperCase().includes('REFERENCES'),
+            defaultValue: this.extractDefault(line)
+          };
+          
+          if (column.isForeignKey) {
+            const refMatch = line.match(/REFERENCES\s+([^\s(]+)/i);
+            if (refMatch) {
+              column.references = refMatch[1].replace(/[`"']/g, '');
+            }
+          }
+          
+          columns.push(column);
+        }
+      }
+    });
+    
+    return columns;
+  }
+
+  extractDefault(line) {
+    const defaultMatch = line.match(/DEFAULT\s+([^,\s]+)/i);
+    return defaultMatch ? defaultMatch[1].replace(/['"]/g, '') : null;
+  }
+
+  mergeTableDefinitions(tables) {
+    const merged = {};
+    
+    tables.forEach(table => {
+      if (!merged[table.name]) {
+        merged[table.name] = table;
+      } else {
+        // Merge columns if table appears multiple times
+        const existingColumns = merged[table.name].columns.map(col => col.name);
+        table.columns.forEach(col => {
+          if (!existingColumns.includes(col.name)) {
+            merged[table.name].columns.push(col);
+          }
+        });
+      }
+    });
+    
+    return Object.values(merged);
+  }
+
+  extractRelationships(schemaFiles) {
+    const relationships = [];
+    
+    schemaFiles.forEach(file => {
+      try {
+        const content = fs.readFileSync(path.join(this.rootPath, file), 'utf8');
+        const fileRelationships = this.parseRelationships(content);
+        relationships.push(...fileRelationships);
+      } catch (error) {
+        // File read error
+      }
+    });
+    
+    return relationships;
+  }
+
+  parseRelationships(content) {
+    const relationships = [];
+    
+    // Parse FOREIGN KEY constraints
+    const fkMatches = content.match(/FOREIGN\s+KEY\s*\([^)]+\)\s+REFERENCES\s+([^\s(]+)\s*\([^)]+\)/gi);
+    
+    if (fkMatches) {
+      fkMatches.forEach(match => {
+        const refMatch = match.match(/REFERENCES\s+([^\s(]+)/i);
+        if (refMatch) {
+          relationships.push({
+            type: 'foreign_key',
+            references: refMatch[1].replace(/[`"']/g, '')
+          });
+        }
+      });
+    }
+    
+    return relationships;
+  }
+
+  // 🔥 NEW: ENHANCED ENVIRONMENT VARIABLES DISCOVERY
+  async discoverEnvironmentVariables() {
+    console.log('🔧 Auto-discovering environment variables...');
+    
+    try {
+      // Local environment files
+      const localEnvVars = this.extractLocalEnvVars();
+      
+      // Lambda environment variables
+      const lambdaEnvVars = await this.extractLambdaEnvVars();
+      
+      // GitHub Actions secrets
+      const githubSecrets = this.extractGithubSecrets();
+      
+      // Required variables from code
+      const requiredVars = this.extractRequiredEnvVars();
+      
+      // AWS configuration
+      const awsConfig = await this.extractAWSConfig();
+      
+      this.discovered.environment = {
+        local: localEnvVars,
+        lambda: lambdaEnvVars,
+        github: githubSecrets,
+        required: requiredVars,
+        aws: awsConfig
+      };
+      
+      const totalVars = Object.keys(localEnvVars).length + Object.keys(lambdaEnvVars).length;
+      console.log(`   ✅ Found ${totalVars} environment variables`);
+    } catch (error) {
+      console.warn('   ⚠️  Environment discovery failed:', error.message);
+    }
+  }
+
+  extractLocalEnvVars() {
+    const envFiles = [
+      '.env',
+      '.env.local',
+      '.env.development',
+      '.env.production',
+      'backend/functions/api/.env',
+      'frontend/web-app/.env.development'
+    ];
+    
+    const allEnvVars = {};
+    
+    for (const envFile of envFiles) {
+      const fullPath = path.join(this.rootPath, envFile);
+      if (fs.existsSync(fullPath)) {
+        try {
+          const content = fs.readFileSync(fullPath, 'utf8');
+          const vars = this.parseEnvFile(content);
+          allEnvVars[envFile] = vars;
+        } catch (error) {
+          console.warn(`Could not read ${envFile}:`, error.message);
+        }
+      }
+    }
+    
+    return allEnvVars;
+  }
+
+  parseEnvFile(content) {
+    const vars = {};
+    const lines = content.split('\n');
+    
+    lines.forEach(line => {
+      line = line.trim();
+      if (line && !line.startsWith('#')) {
+        const [key, ...valueParts] = line.split('=');
+        if (key && valueParts.length > 0) {
+          let value = valueParts.join('=').trim();
+          // Remove surrounding quotes
+          value = value.replace(/^["']|["']$/g, '');
+          vars[key.trim()] = value;
+        }
+      }
+    });
+    
+    return vars;
+  }
+
+  async extractLambdaEnvVars() {
+    try {
+      const { execSync } = require('child_process');
+      const output = execSync('aws lambda get-function-configuration --function-name health-platform-dev --query "Environment.Variables"', { encoding: 'utf8' });
+      return JSON.parse(output);
+    } catch (error) {
+      console.warn('Could not fetch Lambda environment variables:', error.message);
+      return {};
+    }
+  }
+
+  extractGithubSecrets() {
+    // Parse from workflow files to see what secrets are expected
+    const workflowFiles = this.findFilesRecursive(path.join(this.rootPath, '.github/workflows'), /\.ya?ml$/);
+    const secrets = new Set();
+    
+    for (const workflowFile of workflowFiles) {
+      try {
+        const content = fs.readFileSync(path.join(this.rootPath, workflowFile), 'utf8');
+        const secretMatches = content.match(/\$\{\{\s*secrets\.([A-Z_]+)\s*\}\}/g);
+        
+        if (secretMatches) {
+          secretMatches.forEach(match => {
+            const secretName = match.match(/secrets\.([A-Z_]+)/)[1];
+            secrets.add(secretName);
+          });
+        }
+      } catch (error) {
+        // File read error
+      }
+    }
+    
+    return Array.from(secrets);
+  }
+
+  extractRequiredEnvVars() {
+    // Scan code files for process.env usage
+    const codeFiles = [
+      ...this.findFilesRecursive(path.join(this.rootPath, 'backend'), /\.js$/),
+      ...this.findFilesRecursive(path.join(this.rootPath, 'frontend'), /\.jsx?$/)
+    ];
+    
+    const requiredVars = new Set();
+    
+    for (const codeFile of codeFiles) {
+      try {
+        const content = fs.readFileSync(path.join(this.rootPath, codeFile), 'utf8');
+        const envMatches = content.match(/process\.env\.([A-Z_]+)/g);
+        
+        if (envMatches) {
+          envMatches.forEach(match => {
+            const varName = match.replace('process.env.', '');
+            requiredVars.add(varName);
+          });
+        }
+      } catch (error) {
+        // File read error
+      }
+    }
+    
+    return Array.from(requiredVars);
+  }
+
+  async extractAWSConfig() {
+    const awsConfig = {};
+    
+    try {
+      const { execSync } = require('child_process');
+      
+      // Get Lambda function details
+      const lambdaOutput = execSync('aws lambda list-functions --query "Functions[?contains(FunctionName, `health-platform`)]"', { encoding: 'utf8' });
+      awsConfig.lambdaFunctions = JSON.parse(lambdaOutput);
+      
+      // Get API Gateway details (if accessible)
+      try {
+        const apiOutput = execSync('aws apigateway get-rest-apis --query "items[?name==`health-platform-api`]"', { encoding: 'utf8' });
+        awsConfig.apiGateways = JSON.parse(apiOutput);
+      } catch (apiError) {
+        awsConfig.apiGateways = [];
+      }
+      
+    } catch (error) {
+      console.warn('Could not fetch AWS configuration:', error.message);
+    }
+    
+    return awsConfig;
+  }
+
+  // 🔥 NEW: ENHANCED DEPLOYMENT CONFIGURATION DISCOVERY
+  async discoverDeploymentConfiguration() {
+    console.log('🚀 Auto-discovering deployment configuration...');
+    
+    try {
+      // GitHub Actions workflows
+      const workflows = this.extractWorkflowDetails();
+      
+      // AWS resources
+      const awsResources = await this.extractAWSResources();
+      
+      // Package.json deploy scripts
+      const deployScripts = this.extractDeployScripts();
+      
+      // Environment-specific configurations
+      const envConfigs = this.extractEnvironmentConfigs();
+      
+      this.discovered.deployment = {
+        ...this.discovered.deployment, // Keep existing
+        workflows: workflows,
+        awsResources: awsResources,
+        scripts: deployScripts,
+        environments: envConfigs
+      };
+      
+      console.log(`   ✅ Found ${workflows.length} workflows, ${Object.keys(awsResources).length} AWS resources`);
+    } catch (error) {
+      console.warn('   ⚠️  Deployment discovery failed:', error.message);
+    }
+  }
+
+  extractWorkflowDetails() {
+    const workflowDir = path.join(this.rootPath, '.github/workflows');
+    if (!fs.existsSync(workflowDir)) return [];
+    
+    const workflows = [];
+    const workflowFiles = fs.readdirSync(workflowDir).filter(file => file.endsWith('.yml') || file.endsWith('.yaml'));
+    
+    for (const file of workflowFiles) {
+      try {
+        const content = fs.readFileSync(path.join(workflowDir, file), 'utf8');
+        const workflow = this.parseWorkflowFile(content);
+        workflow.filename = file;
+        workflows.push(workflow);
+      } catch (error) {
+        console.warn(`Could not parse workflow ${file}:`, error.message);
+      }
+    }
+    
+    return workflows;
+  }
+
+  parseWorkflowFile(content) {
+    const workflow = {
+      name: null,
+      triggers: [],
+      jobs: [],
+      secrets: [],
+      awsActions: []
+    };
+    
+    // Extract workflow name
+    const nameMatch = content.match(/^name:\s*(.+)$/m);
+    if (nameMatch) workflow.name = nameMatch[1].trim();
+    
+    // Extract triggers
+    const onMatch = content.match(/^on:\s*([\s\S]*?)^(?=\w)/m);
+    if (onMatch) {
+      workflow.triggers = this.parseTriggers(onMatch[1]);
+    }
+    
+    // Extract job names
+    const jobMatches = content.match(/^\s+([a-zA-Z0-9_-]+):\s*$/gm);
+    if (jobMatches) {
+      workflow.jobs = jobMatches.map(match => match.trim().replace(':', ''));
+    }
+    
+    // Extract secrets usage
+    const secretMatches = content.match(/\$\{\{\s*secrets\.([A-Z_]+)\s*\}\}/g);
+    if (secretMatches) {
+      workflow.secrets = [...new Set(secretMatches.map(match => match.match(/secrets\.([A-Z_]+)/)[1]))];
+    }
+    
+    // Check for AWS actions
+    if (content.includes('aws-actions') || content.includes('aws lambda') || content.includes('aws apigateway')) {
+      workflow.awsActions = this.extractAWSActions(content);
+    }
+    
+    return workflow;
+  }
+
+  parseTriggers(triggerText) {
+    const triggers = [];
+    
+    if (triggerText.includes('push:')) triggers.push('push');
+    if (triggerText.includes('pull_request:')) triggers.push('pull_request');
+    if (triggerText.includes('workflow_dispatch:')) triggers.push('manual');
+    if (triggerText.includes('schedule:')) triggers.push('scheduled');
+    
+    return triggers;
+  }
+
+  extractAWSActions(content) {
+    const actions = [];
+    
+    if (content.includes('aws lambda update-function-code')) actions.push('Lambda Deployment');
+    if (content.includes('aws apigateway create-deployment')) actions.push('API Gateway Deployment');
+    if (content.includes('aws-actions/configure-aws-credentials')) actions.push('AWS Authentication');
+    
+    return actions;
+  }
+
+  async extractAWSResources() {
+    const resources = {};
+    
+    try {
+      const { execSync } = require('child_process');
+      
+      // Lambda functions
+      const lambdaOutput = execSync('aws lambda list-functions --query "Functions[?contains(FunctionName, `health-platform`)].[FunctionName,Runtime,LastModified]"', { encoding: 'utf8' });
+      resources.lambda = JSON.parse(lambdaOutput);
+      
+      // API Gateways
+      try {
+        const apiOutput = execSync('aws apigateway get-rest-apis --query "items[?contains(name, `health-platform`)].[name,id,createdDate]"', { encoding: 'utf8' });
+        resources.apiGateway = JSON.parse(apiOutput);
+      } catch (error) {
+        resources.apiGateway = [];
+      }
+      
+    } catch (error) {
+      console.warn('Could not fetch AWS resources:', error.message);
+    }
+    
+    return resources;
+  }
+
+  extractDeployScripts() {
+    const scripts = {};
+    const packageFiles = this.discovered.architecture.packages;
+    
+    packageFiles.forEach(pkg => {
+      const deployRelatedScripts = pkg.scripts.filter(script => 
+        script.includes('deploy') || script.includes('build') || script.includes('start')
+      );
+      
+      if (deployRelatedScripts.length > 0) {
+        scripts[pkg.name] = deployRelatedScripts;
+      }
+    });
+    
+    return scripts;
+  }
+
+  extractEnvironmentConfigs() {
+    const configs = {};
+    
+    // Check for different environment configurations
+    const envTypes = ['development', 'staging', 'production'];
+    
+    envTypes.forEach(env => {
+      const envFile = `.env.${env}`;
+      if (fs.existsSync(path.join(this.rootPath, envFile))) {
+        configs[env] = {
+          configFile: envFile,
+          hasConfig: true
+        };
+      }
+    });
+    
+    return configs;
+  }
+
   generateIntroduction() {
     const workingAPIs = this.discovered.apis.filter(api => api.working).length;
     const authStatus = this.discovered.auth.implemented ? 'Implemented' : 'Not implemented';
@@ -601,15 +1296,17 @@ AI-powered health intelligence platform for tracking food sensitivities and heal
 - **Architecture:** ${this.discovered.architecture.type}
 - **Frontend:** ${this.discovered.architecture.frontend?.framework || 'Unknown'} with ${this.discovered.components.length} components
 - **Backend:** ${this.discovered.architecture.backend?.runtime || 'Unknown'} (${this.discovered.architecture.backend?.deployment || 'Unknown'})
-- **Database:** ${this.discovered.architecture.database?.type || 'Unknown'}
+- **Database:** ${this.discovered.architecture.database?.type || 'Unknown'} (${this.discovered.database.tables?.length || 0} tables)
 - **Authentication:** ${authStatus}
 - **Working APIs:** ${workingAPIs}/${this.discovered.apis.length}
+- **Environment Variables:** ${Object.keys(this.discovered.environment.lambda || {}).length} Lambda, ${Object.keys(this.discovered.environment.local || {}).length} Local
 
 ## Quick Start
 
 1. **[Development Setup](./development/setup)**
 2. **[API Documentation](./api/overview)**
-3. **[Component Library](./components/overview)**
+3. **[Database Schema](./database/schema)**
+4. **[Environment Configuration](./configuration/environment)**
 
 ## Recent Implementation
 
@@ -642,6 +1339,14 @@ ${this.generateRecentFeatures()}
       features.push(`- ✅ **${this.discovered.components.length} React Components**`);
     }
     
+    if (this.discovered.database.tables && this.discovered.database.tables.length > 0) {
+      features.push(`- ✅ **${this.discovered.database.tables.length} Database Tables**`);
+    }
+    
+    if (this.discovered.deployment.workflows && this.discovered.deployment.workflows.length > 0) {
+      features.push(`- ✅ **${this.discovered.deployment.workflows.length} Deployment Workflows**`);
+    }
+    
     return features.length > 0 ? features.join('\n') : '- Development in progress...';
   }
 
@@ -660,6 +1365,7 @@ Get the FILO Health Platform running locally in minutes.
 - Node.js 18+
 - npm or yarn
 ${this.discovered.deployment.type === 'AWS Amplify' ? '- AWS CLI and Amplify CLI' : ''}
+${this.discovered.database.type === 'PostgreSQL' ? '- PostgreSQL database' : ''}
 
 ## Installation
 
@@ -670,6 +1376,9 @@ cd health-platform
 
 # Install dependencies
 ${this.generateInstallationSteps()}
+
+# Configure environment variables
+${this.generateEnvironmentSetup()}
 
 # Start development
 ${this.generateDevelopmentSteps()}
@@ -687,8 +1396,10 @@ Expected response: List of health protocols
 ## Next Steps
 
 1. **[Explore the API](./api/overview)** - Test available endpoints
-2. **[Browse Components](./components/overview)** - Use shared components
-3. **[Understand Architecture](./architecture/overview)** - System design
+2. **[Configure Database](./database/schema)** - Set up database connection
+3. **[Set Environment Variables](./configuration/environment)** - Configure credentials
+4. **[Browse Components](./components/overview)** - Use shared components
+5. **[Understand Architecture](./architecture/overview)** - System design
 
 ## Development URLs
 
@@ -702,6 +1413,17 @@ Expected response: List of health protocols
 `;
 
     this.writeDocFile('quick-start.md', quickStart);
+  }
+
+  generateEnvironmentSetup() {
+    const requiredVars = this.discovered.environment.required || [];
+    if (requiredVars.length === 0) return 'No environment variables required';
+    
+    return `# Copy and configure environment variables
+cp .env.example .env.development
+
+# Required variables:
+${requiredVars.map(varName => `# ${varName}=your_value_here`).join('\n')}`;
   }
 
   generateDevelopmentSetup() {
@@ -720,6 +1442,7 @@ Complete setup guide for the FILO Health Platform development environment.
 - npm or yarn
 - Git
 ${this.discovered.deployment.type === 'AWS Amplify' ? '- AWS CLI and Amplify CLI' : ''}
+${this.discovered.database.type === 'PostgreSQL' ? '- PostgreSQL database' : ''}
 
 ## Clone Repository
 
@@ -735,6 +1458,10 @@ ${this.generateInstallationSteps()}
 ## Environment Configuration
 
 ${this.generateEnvironmentDocs()}
+
+## Database Setup
+
+${this.generateDatabaseSetupDocs()}
 
 ## Start Development
 
@@ -759,13 +1486,15 @@ ${this.generateDevelopmentSteps()}
 
 - **Port already in use:** Change port in package.json or kill existing process
 - **API connection failed:** Check if backend is running and API URL is correct
+- **Database connection failed:** Verify database credentials and server is running
 - **Build errors:** Clear node_modules and reinstall dependencies
 
 ### Getting Help
 
 - Check the [API Documentation](../api/overview) for endpoint details
+- Review [Database Schema](../database/schema) for database structure
+- Examine [Environment Configuration](../configuration/environment) for setup details
 - Review [Architecture Overview](../architecture/overview) for system understanding
-- Examine [Component Library](../components/overview) for UI components
 
 ---
 
@@ -773,6 +1502,65 @@ ${this.generateDevelopmentSteps()}
 `;
 
     this.writeDocFile('development/setup.md', setupDoc);
+  }
+
+  generateDatabaseSetupDocs() {
+    if (!this.discovered.database.tables || this.discovered.database.tables.length === 0) {
+      return 'No database setup required - schema not detected.';
+    }
+    
+    return `### Database Configuration
+
+1. **Install PostgreSQL** (if not already installed)
+2. **Create database:**
+   \`\`\`sql
+   CREATE DATABASE health_platform_dev;
+   \`\`\`
+
+3. **Configure environment variables:**
+   \`\`\`bash
+   DB_HOST=localhost
+   DB_NAME=health_platform_dev
+   DB_USER=your_username
+   DB_PASSWORD=your_password
+   DB_PORT=5432
+   \`\`\`
+
+4. **Run migrations** (if available):
+   \`\`\`bash
+   npm run migrate
+   \`\`\``;
+  }
+
+  generateEnvironmentDocs() {
+    const localEnvFiles = Object.keys(this.discovered.environment.local || {});
+    const requiredVars = this.discovered.environment.required || [];
+    
+    if (localEnvFiles.length === 0 && requiredVars.length === 0) {
+      return 'No environment configuration detected.';
+    }
+    
+    let docs = '';
+    
+    if (localEnvFiles.length > 0) {
+      docs += `**Environment Files Found:**\n`;
+      localEnvFiles.forEach(file => {
+        docs += `- \`${file}\`\n`;
+      });
+      docs += `\n`;
+    }
+    
+    if (requiredVars.length > 0) {
+      docs += `**Required Variables:**\n`;
+      requiredVars.forEach(varName => {
+        docs += `- \`${varName}\`\n`;
+      });
+      docs += `\n`;
+    }
+    
+    docs += `Configure your environment variables before starting development.`;
+    
+    return docs;
   }
 
   generateInstallationSteps() {
@@ -785,6 +1573,10 @@ ${this.generateDevelopmentSteps()}
         steps.push(`cd ${dir} && npm install`);
       }
     });
+    
+    if (steps.length === 0) {
+      return 'npm install';
+    }
     
     return steps.join('\n');
   }
@@ -802,7 +1594,7 @@ ${this.generateDevelopmentSteps()}
     
     let apiDoc = `---
 title: API Reference
-sidebar_position: 3
+sidebar_position: 4
 ---
 
 # API Reference
@@ -883,7 +1675,7 @@ ${this.generateAuthSection()}
     
     const authDoc = `---
 title: Authentication
-sidebar_position: 4
+sidebar_position: 5
 ---
 
 # Authentication System
@@ -935,7 +1727,7 @@ ${this.discovered.auth.files.map(file => `- \`${file}\``).join('\n')}
   generateComponentDocs() {
     const componentDoc = `---
 title: Component Library
-sidebar_position: 5
+sidebar_position: 6
 ---
 
 # Component Library
@@ -980,7 +1772,7 @@ All shared components are located in \`frontend/shared/components/\`.
   generateArchitectureDocs() {
     const archDoc = `---
 title: Architecture Overview
-sidebar_position: 6
+sidebar_position: 7
 ---
 
 # Architecture Overview
@@ -1007,6 +1799,14 @@ ${this.discovered.architecture.backend ? `
 - **Deployment:** ${this.discovered.architecture.backend.deployment}
 ` : 'Backend architecture not detected'}
 
+### Database
+${this.discovered.database.tables ? `
+- **Type:** ${this.discovered.database.type}
+- **Tables:** ${this.discovered.database.tables.length}
+- **Schema Files:** ${this.discovered.database.schemaFiles.length}
+- **Migration Files:** ${this.discovered.database.migrationFiles.length}
+` : 'Database architecture not detected'}
+
 ## Project Structure
 
 \`\`\`
@@ -1016,6 +1816,7 @@ health-platform/
 │   └── web-app/          # Main React application
 ├── backend/
 │   └── functions/api/    # API backend
+├── database/             # Database schema and migrations
 └── docs/                 # Documentation (this site)
 \`\`\`
 
@@ -1025,17 +1826,15 @@ ${this.discovered.architecture.packages.map(pkg =>
   `### ${pkg.name} (\`${pkg.path}\`)\n\n**Type:** ${pkg.type}\n**Dependencies:** ${pkg.dependencies.length}\n**Scripts:** ${pkg.scripts.join(', ')}\n`
 ).join('\n')}
 
-## Database
-
-${this.discovered.architecture.database.detected ? `
-**Type:** ${this.discovered.architecture.database.type}
-**Configuration Files:** ${this.discovered.architecture.database.files.join(', ')}
-` : 'Database configuration not detected'}
-
 ## Deployment
 
 **Strategy:** ${this.discovered.deployment.type}
 ${this.discovered.deployment.config ? `**Configuration:** \`${this.discovered.deployment.config}\`` : ''}
+
+${this.discovered.deployment.workflows ? `
+**Workflows:** ${this.discovered.deployment.workflows.length}
+${this.discovered.deployment.workflows.map(wf => `- ${wf.name || wf.filename}`).join('\n')}
+` : ''}
 
 ---
 
@@ -1048,7 +1847,7 @@ ${this.discovered.deployment.config ? `**Configuration:** \`${this.discovered.de
   generateDeploymentDocs() {
     const deployDoc = `---
 title: Deployment Guide
-sidebar_position: 7
+sidebar_position: 8
 ---
 
 # Deployment Guide
@@ -1064,6 +1863,29 @@ ${this.generateDeploymentInstructions()}
 ## Environment Configuration
 
 ${this.generateEnvironmentDocs()}
+
+## GitHub Actions Workflows
+
+${this.discovered.deployment.workflows ? `
+${this.discovered.deployment.workflows.map(workflow => `
+### ${workflow.name || workflow.filename}
+
+**Triggers:** ${workflow.triggers.join(', ')}
+**Jobs:** ${workflow.jobs.join(', ')}
+**AWS Actions:** ${workflow.awsActions.join(', ')}
+**Secrets Used:** ${workflow.secrets.join(', ')}
+`).join('\n')}
+` : 'No GitHub Actions workflows detected.'}
+
+## AWS Resources
+
+${this.discovered.deployment.awsResources ? `
+### Lambda Functions
+${this.discovered.deployment.awsResources.lambda?.map(func => `- **${func[0]}** (${func[1]})`).join('\n') || 'None found'}
+
+### API Gateways  
+${this.discovered.deployment.awsResources.apiGateway?.map(api => `- **${api[0]}** (${api[1]})`).join('\n') || 'None found'}
+` : 'No AWS resources discovered.'}
 
 ## Monitoring & Health Checks
 
@@ -1100,28 +1922,279 @@ amplify publish
 
 Deployment happens automatically via GitHub Actions when you push to main branch.
 
-Check \`.github/workflows/\` for configuration.`;
+Check \`.github/workflows/\` for configuration.
+
+**Required Secrets:**
+${this.discovered.environment.github.map(secret => `- \`${secret}\``).join('\n')}`;
       
       default:
         return 'Deployment configuration not detected. Manual deployment may be required.';
     }
   }
 
-  generateEnvironmentDocs() {
-    const envFiles = ['.env', '.env.local', '.env.example'].filter(file => 
-      fs.existsSync(path.join(this.rootPath, file))
-    );
-    
-    if (envFiles.length === 0) {
-      return 'No environment configuration files detected.';
+  // 🔥 NEW: Generate comprehensive database documentation
+  generateDatabaseDocumentation() {
+    if (!this.discovered.database.tables || this.discovered.database.tables.length === 0) {
+      return; // Skip if no database schema found
     }
     
-    return `**Environment Files Found:**
-${envFiles.map(file => `- \`${file}\``).join('\n')}
+    const dbDoc = `---
+title: Database Schema
+sidebar_position: 9
+---
 
-Configure your environment variables before deployment.`;
+# Database Schema
+
+Complete database schema documentation auto-discovered from implementation.
+
+## Overview
+
+- **Database Type:** ${this.discovered.database.type}
+- **Tables:** ${this.discovered.database.tables.length}
+- **Schema Files:** ${this.discovered.database.schemaFiles.length}
+- **Migration Files:** ${this.discovered.database.migrationFiles.length}
+
+## Connection Configuration
+
+${this.discovered.database.configuration ? `
+### Environment Variables
+${Object.keys(this.discovered.database.lambdaEnvironment || {}).filter(key => key.startsWith('DB_')).map(key => `- \`${key}\`: ${this.discovered.database.lambdaEnvironment[key]}`).join('\n')}
+
+### Connection Details
+${this.discovered.database.configuration.connection ? `
+- **Host:** ${this.discovered.database.configuration.connection.host || 'Not specified'}
+- **Database:** ${this.discovered.database.configuration.connection.database || 'Not specified'}
+- **Port:** ${this.discovered.database.configuration.connection.port || 'Not specified'}
+` : 'No connection configuration found.'}
+
+### Connection Files
+${this.discovered.database.connectionFiles.map(file => `- \`${file}\``).join('\n')}
+` : 'No connection configuration discovered.'}
+
+## Database Tables
+
+${this.discovered.database.tables.map(table => `
+### ${table.name}
+
+${table.columns.length > 0 ? `
+| Column | Type | Nullable | Default | Notes |
+|--------|------|----------|---------|-------|
+${table.columns.map(col => {
+  const notes = [];
+  if (col.isPrimaryKey) notes.push('Primary Key');
+  if (col.isForeignKey) notes.push(`FK → ${col.references}`);
+  
+  return `| ${col.name} | ${col.type} | ${col.nullable ? 'Yes' : 'No'} | ${col.defaultValue || '-'} | ${notes.join(', ')} |`;
+}).join('\n')}
+` : 'No columns detected.'}
+
+${table.primaryKey ? `**Primary Key:** ${table.primaryKey}` : ''}
+${table.foreignKeys.length > 0 ? `**Foreign Keys:** ${table.foreignKeys.map(fk => `${fk.name} → ${fk.references}`).join(', ')}` : ''}
+`).join('\n')}
+
+## Schema Files
+
+${this.discovered.database.schemaFiles.length > 0 ? `
+${this.discovered.database.schemaFiles.map(file => `- \`${file}\``).join('\n')}
+` : 'No schema files found.'}
+
+## Migration Files
+
+${this.discovered.database.migrationFiles.length > 0 ? `
+${this.discovered.database.migrationFiles.map(file => `- \`${file}\``).join('\n')}
+` : 'No migration files found.'}
+
+## Relationships
+
+${this.discovered.database.relationships.length > 0 ? `
+${this.discovered.database.relationships.map(rel => `- ${rel.type}: ${rel.references}`).join('\n')}
+` : 'No relationships detected.'}
+
+---
+
+*Database documentation auto-generated on ${new Date().toLocaleDateString()}*
+`;
+
+    this.writeDocFile('database/schema.md', dbDoc);
   }
 
+  // 🔥 NEW: Generate comprehensive environment documentation
+  generateEnvironmentDocumentation() {
+    const envDoc = `---
+title: Environment Configuration
+sidebar_position: 10
+---
+
+# Environment Configuration
+
+Complete environment variable documentation auto-discovered from implementation.
+
+## Overview
+
+- **Local Environment Files:** ${Object.keys(this.discovered.environment.local || {}).length}
+- **Lambda Environment Variables:** ${Object.keys(this.discovered.environment.lambda || {}).length}
+- **GitHub Secrets:** ${this.discovered.environment.github?.length || 0}
+- **Required Variables:** ${this.discovered.environment.required?.length || 0}
+
+## Required Variables
+
+${this.discovered.environment.required?.length > 0 ? `
+These variables are required for the application to function properly:
+
+${this.discovered.environment.required.map(varName => `- \`${varName}\``).join('\n')}
+` : 'No required variables detected from code analysis.'}
+
+## Local Environment Files
+
+${Object.keys(this.discovered.environment.local || {}).length > 0 ? `
+${Object.keys(this.discovered.environment.local).map(file => `
+### ${file}
+
+${Object.keys(this.discovered.environment.local[file]).map(key => `- \`${key}\`: ${this.discovered.environment.local[file][key]}`).join('\n')}
+`).join('\n')}
+` : 'No local environment files found.'}
+
+## Lambda Environment Variables
+
+${Object.keys(this.discovered.environment.lambda || {}).length > 0 ? `
+These variables are currently configured in the Lambda function:
+
+${Object.keys(this.discovered.environment.lambda).map(key => `- \`${key}\`: ${key.includes('SECRET') || key.includes('PASSWORD') ? '[HIDDEN]' : this.discovered.environment.lambda[key]}`).join('\n')}
+` : 'No Lambda environment variables found.'}
+
+## GitHub Secrets
+
+${this.discovered.environment.github?.length > 0 ? `
+These secrets are used in GitHub Actions workflows:
+
+${this.discovered.environment.github.map(secret => `- \`${secret}\``).join('\n')}
+` : 'No GitHub secrets detected.'}
+
+## Setup Instructions
+
+### Local Development
+1. Copy environment template:
+   \`\`\`bash
+   cp .env.example .env.development
+   \`\`\`
+
+2. Configure required variables:
+${this.discovered.environment.required?.map(varName => `   - \`${varName}\``).join('\n') || '   No required variables detected'}
+
+### Lambda Deployment
+Environment variables are automatically configured via GitHub Actions.
+
+### GitHub Repository Setup
+Add these secrets to your GitHub repository:
+${this.discovered.environment.github?.map(secret => `- \`${secret}\``).join('\n') || 'No secrets required'}
+
+## AWS Resources
+
+${this.discovered.environment.aws && Object.keys(this.discovered.environment.aws).length > 0 ? `
+### Lambda Functions
+${this.discovered.environment.aws.lambdaFunctions?.map(func => `- **${func.FunctionName}** (${func.Runtime})`).join('\n') || 'None found'}
+
+### API Gateways
+${this.discovered.environment.aws.apiGateways?.map(api => `- **${api.name}** (${api.id})`).join('\n') || 'None found'}
+` : 'No AWS resource information available.'}
+
+---
+
+*Environment documentation auto-generated on ${new Date().toLocaleDateString()}*
+`;
+
+    this.writeDocFile('configuration/environment.md', envDoc);
+  }
+
+  // 🔥 NEW: Generate comprehensive configuration documentation
+  generateConfigurationDocumentation() {
+    const configDoc = `---
+title: Deployment Configuration
+sidebar_position: 11
+---
+
+# Deployment Configuration
+
+Complete deployment configuration auto-discovered from implementation.
+
+## GitHub Actions Workflows
+
+${this.discovered.deployment.workflows?.length > 0 ? `
+${this.discovered.deployment.workflows.map(workflow => `
+### ${workflow.name || workflow.filename}
+
+**File:** \`${workflow.filename}\`
+**Triggers:** ${workflow.triggers.join(', ')}
+**Jobs:** ${workflow.jobs.join(', ')}
+**AWS Actions:** ${workflow.awsActions.join(', ')}
+**Secrets Used:** ${workflow.secrets.join(', ')}
+`).join('\n')}
+` : 'No GitHub Actions workflows found.'}
+
+## AWS Resources
+
+${this.discovered.deployment.awsResources && Object.keys(this.discovered.deployment.awsResources).length > 0 ? `
+### Lambda Functions
+${this.discovered.deployment.awsResources.lambda?.map(func => `- **${func[0]}** (${func[1]}) - Last Modified: ${func[2]}`).join('\n') || 'None found'}
+
+### API Gateways  
+${this.discovered.deployment.awsResources.apiGateway?.map(api => `- **${api[0]}** (${api[1]}) - Created: ${api[2]}`).join('\n') || 'None found'}
+` : 'No AWS resources discovered.'}
+
+## Deployment Scripts
+
+${this.discovered.deployment.scripts && Object.keys(this.discovered.deployment.scripts).length > 0 ? `
+${Object.keys(this.discovered.deployment.scripts).map(pkg => `
+### ${pkg}
+${this.discovered.deployment.scripts[pkg].map(script => `- \`${script}\``).join('\n')}
+`).join('\n')}
+` : 'No deployment scripts found.'}
+
+## Environment Configurations
+
+${this.discovered.deployment.environments && Object.keys(this.discovered.deployment.environments).length > 0 ? `
+${Object.keys(this.discovered.deployment.environments).map(env => `
+### ${env}
+- Configuration file: \`${this.discovered.deployment.environments[env].configFile}\`
+- Status: ${this.discovered.deployment.environments[env].hasConfig ? '✅ Configured' : '❌ Not configured'}
+`).join('\n')}
+` : 'No environment-specific configurations found.'}
+
+## Deployment Process
+
+### Manual Deployment
+\`\`\`bash
+# Backend (Lambda)
+cd backend/functions/api
+npm install
+zip -r deploy.zip .
+aws lambda update-function-code --function-name health-platform-dev --zip-file fileb://deploy.zip
+
+# Frontend (if applicable)
+cd frontend/web-app
+npm run build
+npm run deploy
+\`\`\`
+
+### Automated Deployment
+${this.discovered.deployment.type === 'GitHub Actions' ? `
+Deployment happens automatically when you push to the main branch.
+
+**Required Setup:**
+1. Add AWS credentials to GitHub Secrets
+2. Configure environment variables
+3. Push changes to trigger deployment
+` : 'No automated deployment configured.'}
+
+---
+
+*Configuration documentation auto-generated on ${new Date().toLocaleDateString()}*
+`;
+
+    this.writeDocFile('configuration/deployment.md', configDoc);
+  }
+
+  // 🔥 UPDATED: Generate enhanced sidebar
   generateSidebar() {
     const sidebarItems = [
       'index',
@@ -1135,26 +2208,43 @@ Configure your environment variables before deployment.`;
         type: 'category',
         label: 'API Reference',
         items: ['api/overview']
-      },
-      {
-        type: 'category', 
-        label: 'Components',
-        items: ['components/overview']
-      },
-      {
-        type: 'category',
-        label: 'Architecture',
-        items: ['architecture/overview']
       }
     ];
 
     if (this.discovered.auth.implemented) {
-      sidebarItems.splice(3, 0, {
+      sidebarItems.push({
         type: 'category',
         label: 'Authentication',
         items: ['authentication/overview']
       });
     }
+
+    sidebarItems.push({
+      type: 'category', 
+      label: 'Components',
+      items: ['components/overview']
+    });
+
+    sidebarItems.push({
+      type: 'category',
+      label: 'Architecture',
+      items: ['architecture/overview']
+    });
+
+    // 🔥 NEW: Database and Configuration sections
+    if (this.discovered.database.tables && this.discovered.database.tables.length > 0) {
+      sidebarItems.push({
+        type: 'category',
+        label: 'Database',
+        items: ['database/schema']
+      });
+    }
+
+    sidebarItems.push({
+      type: 'category',
+      label: 'Configuration',
+      items: ['configuration/environment', 'configuration/deployment']
+    });
 
     sidebarItems.push({
       type: 'category',

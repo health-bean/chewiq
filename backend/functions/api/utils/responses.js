@@ -78,3 +78,22 @@ module.exports = {
   corsHeaders,
   errorResponse
 };
+// 🔧 FIX: Add missing successResponse alias
+const successResponse = success;
+
+module.exports = {
+  // Original exports (keep all existing functionality)
+  success,
+  error,
+  unauthorized,
+  notFound,
+  badRequest,
+  options,
+  CORS_HEADERS,
+  
+  // 🔧 FIX: Add missing exports for handler compatibility
+  handleCors,
+  corsHeaders,
+  errorResponse,
+  successResponse  // ← ADD THIS LINE
+};
