@@ -31,7 +31,7 @@ const MultiSelectProtocolDropdown = ({ protocols, selectedProtocols, onSelection
   const [isUpdating, setIsUpdating] = useState(false);
 
   const getDisplayText = () => {
-    if (selectedProtocols.length === 0) return 'Select Protocols...';
+    if (!selectedProtocols || selectedProtocols.length === 0) return 'Select Protocols...';
     
     if (selectedProtocols.length === 1) {
       const protocol = protocols.find(p => p.id === selectedProtocols[0]);
@@ -109,7 +109,7 @@ const MultiSelectProtocolDropdown = ({ protocols, selectedProtocols, onSelection
             >
               <input
                 type="checkbox"
-                checked={selectedProtocols.includes(protocol.id)}
+                checked={selectedProtocols && selectedProtocols.includes(protocol.id)}
                 onChange={() => toggleProtocol(protocol.id)}
                 disabled={isUpdating}
                 className="rounded text-blue-600 focus:ring-blue-500"
@@ -252,6 +252,8 @@ const SmartFoodSelector = ({ selectedItems, onToggleItem, selectedProtocols = []
 
 const QuickChecks = ({ type, preferences, onQuickSelect }) => {
   const getQuickItems = () => {
+    if (!preferences) return [];
+    
     switch(type) {
       case 'supplement': return preferences.quick_supplements || [];
       case 'medication': return preferences.quick_medications || [];
@@ -321,52 +323,52 @@ function App() {
   // Load timeline entries
   useEffect(() => {
     const loadTimelineEntries = async () => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/api/v1/timeline/entries?date=${selectedDate}`);
-    const data = await response.json();
-    setDailyEntries(data.entries || []);
-  } catch (error) {
-    console.error('Failed to load timeline entries:', error);
-  } finally {
-    setLoadingEntries(false);
-  }
-};
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/v1/timeline/entries?date=${selectedDate}`);
+        const data = await response.json();
+        setDailyEntries(data.entries || []);
+      } catch (error) {
+        console.error('Failed to load timeline entries:', error);
+      } finally {
+        setLoadingEntries(false);
+      }
+    };
 
     loadTimelineEntries();
   }, [selectedDate]);
 
- // Show setup if not completed OR manually triggered
-useEffect(() => {
-  if (isReady && preferences) {
-    // Auto-show setup for new users
-    if (!preferences.setup_complete) {
-      setShowSetup(true);
+  // Show setup if not completed OR manually triggered
+  useEffect(() => {
+    if (isReady && preferences) {
+      // Auto-show setup for new users
+      if (!preferences.setup_complete) {
+        setShowSetup(true);
+      }
     }
-  }
-}, [preferences, isReady]);
+  }, [preferences, isReady]);
 
-// Load timeline entries when date changes
-useEffect(() => {
-  const loadTimelineEntries = async () => {
-    try {
-      setLoadingEntries(true);
-      const response = await fetch(`${API_BASE_URL}/api/v1/timeline/entries?date=${selectedDate}`);
-      const data = await response.json();
-      setDailyEntries(data.entries || []);
-    } catch (error) {
-      console.error('Failed to load timeline entries:', error);
-    } finally {
-      setLoadingEntries(false);
+  // Load timeline entries when date changes
+  useEffect(() => {
+    const loadTimelineEntries = async () => {
+      try {
+        setLoadingEntries(true);
+        const response = await fetch(`${API_BASE_URL}/api/v1/timeline/entries?date=${selectedDate}`);
+        const data = await response.json();
+        setDailyEntries(data.entries || []);
+      } catch (error) {
+        console.error('Failed to load timeline entries:', error);
+      } finally {
+        setLoadingEntries(false);
+      }
+    };
+
+    if (selectedDate) {
+      loadTimelineEntries();
     }
-  };
-
-  if (selectedDate) {
-    loadTimelineEntries();
-  }
-}, [selectedDate]); // Reload when selectedDate changes
+  }, [selectedDate]); // Reload when selectedDate changes
 
   // Show loading while preferences are loading
-  if (preferencesLoading || !isReady) {
+  if (preferencesLoading || !isReady || !preferences) {
     return (
       <div className="max-w-md mx-auto bg-white min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -395,20 +397,32 @@ useEffect(() => {
     );
   }
 
+  // Create safe preferences with defaults
+  const safePreferences = {
+    protocols: [],
+    quick_supplements: [],
+    quick_medications: [],
+    quick_foods: [],
+    quick_symptoms: [],
+    quick_detox: [],
+    setup_complete: false,
+    ...preferences // Override with actual preferences if they exist
+  };
+
   const selectedProtocolObjects = protocols.filter(p => 
-    preferences.protocols.includes(p.id)
+    safePreferences.protocols && safePreferences.protocols.includes(p.id)
   );
 
   const getProtocolDisplayText = () => {
-    if (preferences.protocols.length === 0) return 'No protocols selected';
-    if (preferences.protocols.length === 1) {
+    if (!safePreferences.protocols || safePreferences.protocols.length === 0) return 'No protocols selected';
+    if (safePreferences.protocols.length === 1) {
       return selectedProtocolObjects[0]?.name || 'Protocol';
     }
-    if (preferences.protocols.length === 2) {
+    if (safePreferences.protocols.length === 2) {
       const names = selectedProtocolObjects.map(p => p.name.split(' ')[0]);
       return names.join(' + ');
     }
-    return `${preferences.protocols.length} Active Protocols`;
+    return `${safePreferences.protocols.length} Active Protocols`;
   };
 
   const addEntry = async () => {
@@ -493,7 +507,6 @@ useEffect(() => {
     return dailyEntries.some(entry => entry.protocol_compliant === false);
   };
 
-
   if (showSetup) {
     return <SetupWizard onComplete={() => {
       setShowSetup(false);
@@ -526,7 +539,7 @@ useEffect(() => {
             <label className="block text-sm font-medium text-white mb-1">Active Protocols</label>
             <MultiSelectProtocolDropdown
               protocols={protocols}
-              selectedProtocols={preferences.protocols}
+              selectedProtocols={safePreferences.protocols}
               onSelectionChange={(newSelection) => 
                 updatePreferences({ protocols: newSelection })
               }
@@ -601,7 +614,7 @@ useEffect(() => {
           </Button>
         </div>
         
-        {preferences.protocols.length > 0 && (
+        {safePreferences.protocols.length > 0 && (
           <div className="mt-2 text-xs text-gray-600">
             Following: <span className="font-medium text-blue-600">{getProtocolDisplayText()}</span>
           </div>
@@ -654,13 +667,13 @@ useEffect(() => {
                     <div className="space-y-3">
                       <QuickChecks 
                         type="food" 
-                        preferences={preferences} 
+                        preferences={safePreferences} 
                         onQuickSelect={handleQuickSelect}
                       />
                       <SmartFoodSelector
                         selectedItems={newEntry.selectedFoods}
                         onToggleItem={toggleSelectedFood}
-                        selectedProtocols={preferences.protocols}
+                        selectedProtocols={safePreferences.protocols}
                       />
                     </div>
                   )}
@@ -669,7 +682,7 @@ useEffect(() => {
                     <div className="space-y-3">
                       <QuickChecks 
                         type="exposure" 
-                        preferences={preferences} 
+                        preferences={safePreferences} 
                         onQuickSelect={handleQuickSelect}
                       />
                       <div>
@@ -708,7 +721,7 @@ useEffect(() => {
                     <div className="space-y-3">
                       <QuickChecks 
                         type="detox" 
-                        preferences={preferences} 
+                        preferences={safePreferences} 
                         onQuickSelect={handleQuickSelect}
                       />
                       <div>
@@ -756,7 +769,7 @@ useEffect(() => {
                     <div className="space-y-3">
                       <QuickChecks 
                         type={newEntry.type} 
-                        preferences={preferences} 
+                        preferences={safePreferences} 
                         onQuickSelect={handleQuickSelect}
                       />
                       <div>
@@ -802,7 +815,7 @@ useEffect(() => {
               <h3 className="font-semibold text-gray-800 flex items-center space-x-2">
                 <Clock size={18} />
                 <span>Today's Timeline</span>
-                {preferences.protocols.length > 0 && (
+                {safePreferences.protocols.length > 0 && (
                   <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
                     {getProtocolDisplayText()}
                   </span>
@@ -1131,12 +1144,12 @@ useEffect(() => {
 
         {/* Protocol Foods Browser */}
         {activeView === 'protocol' && (
-          <ProtocolFoods protocolId={preferences.protocols[0]} />
+          <ProtocolFoods protocolId={safePreferences.protocols[0]} />
         )}
       </div>
 
       {/* Optional: Welcome message for new users who haven't started setup */}
-      {preferences && !preferences.setup_complete && !showSetup && (
+      {safePreferences && !safePreferences.setup_complete && !showSetup && (
         <div className="fixed bottom-4 left-4 right-4 max-w-md mx-auto">
           <Alert variant="info" dismissible onDismiss={() => {}}>
             <div className="flex items-center justify-between">
