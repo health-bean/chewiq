@@ -2,7 +2,7 @@
   "platform": {
     "name": "FILO Health Platform",
     "version": "1.0.0",
-    "lastUpdated": "2025-07-06T16:56:49.538Z",
+    "lastUpdated": "2025-07-06T17:58:45.236Z",
     "architecture": "Full-Stack React + AWS Lambda",
     "status": "Active Development"
   },
@@ -32,7 +32,7 @@
     "platform": {
       "name": "FILO Health Platform",
       "version": "1.0.0",
-      "lastUpdated": "2025-07-06T16:56:49.538Z",
+      "lastUpdated": "2025-07-06T17:58:45.236Z",
       "architecture": "Full-Stack React + AWS Lambda",
       "status": "Active Development"
     },
@@ -45,7 +45,7 @@
           "description": "Get health protocols",
           "status": 200,
           "working": true,
-          "responseTime": 752,
+          "responseTime": 740,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -163,7 +163,7 @@
           "description": "Get exposure types",
           "status": 404,
           "working": false,
-          "responseTime": 115,
+          "responseTime": 88,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -226,7 +226,7 @@
           "description": "Get detox types",
           "status": 404,
           "working": false,
-          "responseTime": 101,
+          "responseTime": 81,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -295,7 +295,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 73,
+          "responseTime": 112,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -349,7 +349,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 121,
+          "responseTime": 157,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -4486,7 +4486,7 @@
           ],
           "status": 404,
           "working": false,
-          "responseTime": 134,
+          "responseTime": 51,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -4549,7 +4549,7 @@
           "description": "Update user preferences",
           "status": 404,
           "working": false,
-          "responseTime": 76,
+          "responseTime": 57,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -4618,7 +4618,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 108,
+          "responseTime": 58,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -4645,7 +4645,7 @@
           "description": "Create timeline entry",
           "status": 500,
           "working": false,
-          "responseTime": 118,
+          "responseTime": 57,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -4675,7 +4675,7 @@
           ],
           "status": 404,
           "working": false,
-          "responseTime": 125,
+          "responseTime": 89,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -4738,7 +4738,7 @@
           "description": "Save daily reflection",
           "status": 404,
           "working": false,
-          "responseTime": 63,
+          "responseTime": 53,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -4807,7 +4807,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 5886,
+          "responseTime": 6101,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -4850,10 +4850,10 @@
                 "effect": "swelling",
                 "timeWindow": 72,
                 "timeWindowDescription": "within 72 hours",
-                "confidence": 0.65,
-                "frequency": "32/49 times",
+                "confidence": 0.63,
+                "frequency": "32/51 times",
                 "occurrences": 32,
-                "totalOpportunities": 49,
+                "totalOpportunities": 51,
                 "description": "nightshade foods appear to trigger swelling within 72 hours",
                 "recommendation": "Monitor nightshade foods consumption and swelling symptoms"
               },
@@ -4863,12 +4863,12 @@
                 "effect": "joint pain",
                 "timeWindow": 72,
                 "timeWindowDescription": "within 72 hours",
-                "confidence": 0.71,
-                "frequency": "35/49 times",
+                "confidence": 0.69,
+                "frequency": "35/51 times",
                 "occurrences": 35,
-                "totalOpportunities": 49,
+                "totalOpportunities": 51,
                 "description": "nightshade foods appear to trigger joint pain within 72 hours",
-                "recommendation": "Consider avoiding nightshade foods for 2-4 weeks to test sensitivity"
+                "recommendation": "Monitor nightshade foods consumption and joint pain symptoms"
               },
               {
                 "type": "food-symptom",
@@ -5019,12 +5019,12 @@
                 "effect": "swelling",
                 "timeWindow": 72,
                 "timeWindowDescription": "within 72 hours",
-                "confidence": 0.71,
-                "frequency": "27/38 times",
+                "confidence": 0.69,
+                "frequency": "27/39 times",
                 "occurrences": 27,
-                "totalOpportunities": 38,
+                "totalOpportunities": 39,
                 "description": "chicken appears to trigger swelling within 72 hours",
-                "recommendation": "Consider avoiding chicken for 2-4 weeks to test sensitivity"
+                "recommendation": "Monitor chicken consumption and swelling symptoms"
               },
               {
                 "type": "food-symptom",
@@ -5032,10 +5032,10 @@
                 "effect": "joint pain",
                 "timeWindow": 72,
                 "timeWindowDescription": "within 72 hours",
-                "confidence": 0.63,
-                "frequency": "24/38 times",
+                "confidence": 0.62,
+                "frequency": "24/39 times",
                 "occurrences": 24,
-                "totalOpportunities": 38,
+                "totalOpportunities": 39,
                 "description": "chicken appears to trigger joint pain within 72 hours",
                 "recommendation": "Monitor chicken consumption and joint pain symptoms"
               },
@@ -6357,7 +6357,7 @@
           "description": "Analyze correlations",
           "status": 404,
           "working": false,
-          "responseTime": 65,
+          "responseTime": 52,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -6420,7 +6420,7 @@
           "description": "Health check",
           "status": 404,
           "working": false,
-          "responseTime": 69,
+          "responseTime": 53,
           "responseSchema": {
             "type": "object",
             "properties": {
@@ -6532,7 +6532,7 @@
             "Button"
           ],
           "props": [],
-          "size": "1.4KB",
+          "size": "2.7KB",
           "lastModified": "2025-07-06"
         },
         {

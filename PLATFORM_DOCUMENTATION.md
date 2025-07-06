@@ -26,7 +26,7 @@
 #### GET /api/v1/protocols
 **Status:** ✅ Working (200)  
 **Description:** Get health protocols  
-**Response Time:** 752ms
+**Response Time:** 740ms
 
 
 
@@ -141,7 +141,7 @@ curl "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/protocol
 #### GET /api/v1/foods/search
 **Status:** ✅ Working (200)  
 **Description:** Search food database  
-**Response Time:** 73ms
+**Response Time:** 112ms
 
 **Parameters:**
 - `search`: chicken
@@ -179,7 +179,7 @@ curl "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/foods/se
 #### GET /api/v1/foods/by-protocol
 **Status:** ✅ Working (200)  
 **Description:** Get protocol foods  
-**Response Time:** 121ms
+**Response Time:** 157ms
 
 **Parameters:**
 - `protocol_id`: 1495844a-19de-404c-a288-7660eda0cbe1
@@ -4081,7 +4081,7 @@ curl "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/foods/by
 #### GET /api/v1/timeline/entries
 **Status:** ✅ Working (200)  
 **Description:** Get timeline entries  
-**Response Time:** 108ms
+**Response Time:** 58ms
 
 **Parameters:**
 - `date`: 2025-07-04
@@ -4106,7 +4106,7 @@ curl "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/timeline
 #### GET /api/v1/correlations/insights
 **Status:** ✅ Working (200)  
 **Description:** Get AI insights  
-**Response Time:** 5886ms
+**Response Time:** 6101ms
 
 **Parameters:**
 - `userId`: 8e8a568a-c2f8-43a8-abf2-4e54408dbdc0
@@ -4126,10 +4126,10 @@ curl "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/correlat
       "effect": "swelling",
       "timeWindow": 72,
       "timeWindowDescription": "within 72 hours",
-      "confidence": 0.65,
-      "frequency": "32/49 times",
+      "confidence": 0.63,
+      "frequency": "32/51 times",
       "occurrences": 32,
-      "totalOpportunities": 49,
+      "totalOpportunities": 51,
       "description": "nightshade foods appear to trigger swelling within 72 hours",
       "recommendation": "Monitor nightshade foods consumption and swelling symptoms"
     },
@@ -4139,12 +4139,12 @@ curl "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/correlat
       "effect": "joint pain",
       "timeWindow": 72,
       "timeWindowDescription": "within 72 hours",
-      "confidence": 0.71,
-      "frequency": "35/49 times",
+      "confidence": 0.69,
+      "frequency": "35/51 times",
       "occurrences": 35,
-      "totalOpportunities": 49,
+      "totalOpportunities": 51,
       "description": "nightshade foods appear to trigger joint pain within 72 hours",
-      "recommendation": "Consider avoiding nightshade foods for 2-4 weeks to test sensitivity"
+      "recommendation": "Monitor nightshade foods consumption and joint pain symptoms"
     },
     {
       "type": "food-symptom",
@@ -4295,12 +4295,12 @@ curl "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/correlat
       "effect": "swelling",
       "timeWindow": 72,
       "timeWindowDescription": "within 72 hours",
-      "confidence": 0.71,
-      "frequency": "27/38 times",
+      "confidence": 0.69,
+      "frequency": "27/39 times",
       "occurrences": 27,
-      "totalOpportunities": 38,
+      "totalOpportunities": 39,
       "description": "chicken appears to trigger swelling within 72 hours",
-      "recommendation": "Consider avoiding chicken for 2-4 weeks to test sensitivity"
+      "recommendation": "Monitor chicken consumption and swelling symptoms"
     },
     {
       "type": "food-symptom",
@@ -4308,10 +4308,10 @@ curl "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/correlat
       "effect": "joint pain",
       "timeWindow": 72,
       "timeWindowDescription": "within 72 hours",
-      "confidence": 0.63,
-      "frequency": "24/38 times",
+      "confidence": 0.62,
+      "frequency": "24/39 times",
       "occurrences": 24,
-      "totalOpportunities": 38,
+      "totalOpportunities": 39,
       "description": "chicken appears to trigger joint pain within 72 hours",
       "recommendation": "Monitor chicken consumption and joint pain symptoms"
     },
@@ -5641,7 +5641,7 @@ curl "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/correlat
   - Hooks: None
   - Last Modified: 2025-07-06
 - **Button** (Arrow Function) - `frontend/shared/components/ui/Button.jsx`
-  - Size: 1.4KB
+  - Size: 2.7KB
   - Hooks: None
   - Last Modified: 2025-07-06
 - **Card** (Arrow Function) - `frontend/shared/components/ui/Card.jsx`
