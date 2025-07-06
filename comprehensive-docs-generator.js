@@ -736,6 +736,8 @@ class AutomatedProfessionalDocsGenerator {
   }
 
   async discoverApiBaseUrl() {
+    console.log('🔍 Discovering API base URL...');
+    
     // Check environment files first
     const envFiles = this.findFiles(this.rootPath, '.env*');
     for (const envFile of envFiles) {
@@ -743,7 +745,9 @@ class AutomatedProfessionalDocsGenerator {
         const content = fs.readFileSync(path.join(this.rootPath, envFile), 'utf8');
         const apiUrlMatch = content.match(/VITE_API_BASE_URL=(.+)/);
         if (apiUrlMatch) {
-          return apiUrlMatch[1].trim().replace(/['"]/g, '');
+          const url = apiUrlMatch[1].trim().replace(/['"]/g, '');
+          console.log(`  Found in ${envFile}: ${url}`);
+          return url;
         }
       } catch (error) {
         // Env file read error
@@ -755,17 +759,48 @@ class AutomatedProfessionalDocsGenerator {
     for (const jsFile of jsFiles) {
       try {
         const content = fs.readFileSync(path.join(this.rootPath, jsFile), 'utf8');
-        const apiMatch = content.match(/https?:\/\/[^'"\s]+\.execute-api\.[^'"\s]+\.amazonaws\.com\/[^'"\s\/]+/);
-        if (apiMatch) {
-          return apiMatch[0];
+        const apiMatches = [
+          /https?:\/\/[^'"\s]+\.execute-api\.[^'"\s]+\.amazonaws\.com\/[^'"\s\/]+/g,
+          /const\s+API_BASE_URL\s*=\s*['"`]([^'"`]+)['"`]/g,
+          /API_BASE_URL\s*:\s*['"`]([^'"`]+)['"`]/g,
+          /baseURL\s*:\s*['"`]([^'"`]+)['"`]/g
+        ];
+        
+        for (const pattern of apiMatches) {
+          const match = content.match(pattern);
+          if (match) {
+            const url = match[1] || match[0];
+            console.log(`  Found in ${jsFile}: ${url}`);
+            return url;
+          }
         }
       } catch (error) {
         // File read error
       }
     }
 
-    // Default fallback
-    return 'https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev';
+    // Check for serverless.yml or other config files
+    const configFiles = ['serverless.yml', 'amplify.yml', 'aws-exports.js'];
+    for (const configFile of configFiles) {
+      const configPath = path.join(this.rootPath, configFile);
+      if (fs.existsSync(configPath)) {
+        try {
+          const content = fs.readFileSync(configPath, 'utf8');
+          const apiMatch = content.match(/https?:\/\/[^'"\s]+\.execute-api\.[^'"\s]+\.amazonaws\.com\/[^'"\s\/]+/);
+          if (apiMatch) {
+            console.log(`  Found in ${configFile}: ${apiMatch[0]}`);
+            return apiMatch[0];
+          }
+        } catch (error) {
+          // Config file read error
+        }
+      }
+    }
+
+    // Default fallback - your known API URL
+    const defaultUrl = 'https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev';
+    console.log(`  Using default: ${defaultUrl}`);
+    return defaultUrl;
   }
 
   async discoverEndpointsFromCode() {
@@ -879,38 +914,129 @@ class AutomatedProfessionalDocsGenerator {
 
   async testAPIEndpoint(baseUrl, endpoint) {
     return new Promise((resolve) => {
-      const testUrl = `${baseUrl}${endpoint.path}`;
+      let testUrl = `${baseUrl}${endpoint.path}`;
+      
+      // Add query parameters for GET requests
+      if (endpoint.method === 'GET' && endpoint.params) {
+        const queryParams = endpoint.params.map(p => `${p.name}=${encodeURIComponent(p.value)}`).join('&');
+        testUrl += `?${queryParams}`;
+      }
+
+      console.log(`Testing: ${endpoint.method} ${testUrl}`);
+      
       const startTime = Date.now();
       
-      const req = https.get(testUrl, (res) => {
-        const responseTime = Date.now() - startTime;
-        resolve({
-          ...endpoint,
-          status: res.statusCode,
-          working: res.statusCode >= 200 && res.statusCode < 300,
-          responseTime: responseTime
+      const options = {
+        method: endpoint.method,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'User-Agent': 'Health-Platform-Documentation-Generator'
+        },
+        timeout: 15000
+      };
+
+      let body = '';
+      const req = https.request(testUrl, options, (res) => {
+        res.on('data', chunk => body += chunk);
+        res.on('end', () => {
+          const responseTime = Date.now() - startTime;
+          const isWorking = res.statusCode >= 200 && res.statusCode < 400; // Allow redirects
+          
+          console.log(`  Result: ${res.statusCode} (${isWorking ? 'Working' : 'Failed'}) - ${responseTime}ms`);
+          
+          let responseData = null;
+          try {
+            responseData = JSON.parse(body);
+          } catch (e) {
+            // Not JSON, that's okay
+            responseData = body.substring(0, 200); // First 200 chars
+          }
+          
+          resolve({
+            ...endpoint,
+            status: res.statusCode,
+            working: isWorking,
+            responseTime: responseTime,
+            responseData: responseData,
+            responseSize: body.length
+          });
         });
       });
 
-      req.on('error', () => {
+      req.on('error', (error) => {
+        console.log(`  Error: ${error.message}`);
         resolve({
           ...endpoint,
           status: 500,
           working: false,
-          error: 'Connection failed'
+          error: error.message,
+          responseTime: Date.now() - startTime
         });
       });
 
-      req.setTimeout(5000, () => {
+      req.setTimeout(15000, () => {
+        console.log(`  Timeout after 15 seconds`);
         req.destroy();
         resolve({
           ...endpoint,
           status: 408,
           working: false,
-          error: 'Timeout'
+          error: 'Request timeout (15s)',
+          responseTime: Date.now() - startTime
         });
       });
+
+      // Add test data for POST/PUT requests
+      if (['POST', 'PUT'].includes(endpoint.method)) {
+        const testData = this.generateTestData(endpoint);
+        req.write(JSON.stringify(testData));
+      }
+
+      req.end();
     });
+  }
+
+  generateTestData(endpoint) {
+    const baseTestData = {
+      userId: '8e8a568a-c2f8-43a8-abf2-4e54408dbdc0',
+      date: '2024-07-06'
+    };
+
+    if (endpoint.path.includes('timeline')) {
+      return {
+        ...baseTestData,
+        entryType: 'food',
+        content: 'Test food entry',
+        entryTime: '12:00'
+      };
+    }
+
+    if (endpoint.path.includes('reflection')) {
+      return {
+        ...baseTestData,
+        energy_level: 7,
+        mood_level: 8,
+        sleep_quality: 'good'
+      };
+    }
+
+    if (endpoint.path.includes('preferences')) {
+      return {
+        ...baseTestData,
+        protocols: ['1495844a-19de-404c-a288-7660eda0cbe1']
+      };
+    }
+
+    if (endpoint.path.includes('correlation')) {
+      return {
+        ...baseTestData,
+        confidence: 0.8,
+        timeframe: 30
+      };
+    }
+
+    return baseTestData;
   }
 
   async discoverDevelopmentSetup() {
