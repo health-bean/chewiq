@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2025-07-06T21:42:10.073Z",
+    "generated": "2025-07-06T22:06:55.444Z",
     "version": "1.0.0",
     "generator": "AutomatedProfessionalDocsGenerator"
   },
@@ -14,17 +14,26 @@
     "totalComponents": 26,
     "totalHooks": 11,
     "totalFiles": 64,
-    "workingAPIs": 0,
-    "totalAPIs": 5,
-    "totalTables": 0,
-    "totalCommits": 10,
+    "workingAPIs": 4,
+    "totalAPIs": 14,
+    "totalTables": 18,
+    "totalCommits": 11,
     "contributors": 1
   },
   "discoveredInfo": {
     "urls": {
-      "frontend": null,
-      "backend": null,
-      "api": null,
+      "frontend": {
+        "url": "https://main.d45x824boqj7y.amplifyapp.com",
+        "live": true
+      },
+      "backend": {
+        "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev",
+        "live": false
+      },
+      "api": {
+        "url": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev",
+        "live": false
+      },
       "docs": {
         "url": "https://deebyrne26.github.io/health-platform/",
         "live": true
@@ -33,76 +42,273 @@
     "architecture": {},
     "database": {
       "type": "Unknown",
-      "tables": [],
-      "relationships": [],
-      "connectionInfo": {}
+      "tables": [
+        "users",
+        "user_sessions",
+        "last",
+        "journal_entries",
+        "timeline_entries",
+        "user",
+        "user_preferences",
+        "SET",
+        "protocols",
+        "foods",
+        "reflections",
+        "correlations",
+        "exposure_types",
+        "detox_types",
+        "protocol_foods",
+        "symptoms",
+        "supplements",
+        "medications"
+      ],
+      "relationships": [
+        {
+          "from": "timeline_entries",
+          "to": "users",
+          "type": "many-to-one",
+          "foreignKey": "user_id"
+        },
+        {
+          "from": "reflections",
+          "to": "users",
+          "type": "many-to-one",
+          "foreignKey": "user_id"
+        },
+        {
+          "from": "correlations",
+          "to": "users",
+          "type": "many-to-one",
+          "foreignKey": "user_id"
+        },
+        {
+          "from": "user_preferences",
+          "to": "users",
+          "type": "one-to-one",
+          "foreignKey": "user_id"
+        },
+        {
+          "from": "protocol_foods",
+          "to": "protocols",
+          "type": "many-to-one",
+          "foreignKey": "protocol_id"
+        },
+        {
+          "from": "protocol_foods",
+          "to": "foods",
+          "type": "many-to-one",
+          "foreignKey": "food_id"
+        },
+        {
+          "from": "timeline_entries",
+          "to": "foods",
+          "type": "many-to-many",
+          "via": "entry_foods"
+        }
+      ],
+      "connectionInfo": {},
+      "schema": []
     },
     "apis": {
-      "baseUrl": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/protocols",
+      "baseUrl": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev",
       "endpoints": [
         {
           "path": "/api/v1/health",
           "method": "GET",
           "category": "System",
+          "description": "Health check",
           "status": 404,
           "working": false,
-          "responseTime": 677
+          "responseTime": 674
         },
         {
           "path": "/api/v1/protocols",
           "method": "GET",
           "category": "Core",
+          "description": "Get all protocols",
+          "status": 200,
+          "working": true,
+          "responseTime": 256
+        },
+        {
+          "path": "/api/v1/exposure-types",
+          "method": "GET",
+          "category": "Core",
+          "description": "Get exposure types",
           "status": 404,
           "working": false,
-          "responseTime": 121
+          "responseTime": 116
+        },
+        {
+          "path": "/api/v1/detox-types",
+          "method": "GET",
+          "category": "Core",
+          "description": "Get detox types",
+          "status": 404,
+          "working": false,
+          "responseTime": 118
         },
         {
           "path": "/api/v1/foods/search",
           "method": "GET",
           "category": "Foods",
+          "description": "Search foods",
+          "params": [
+            {
+              "name": "search",
+              "value": "chicken"
+            }
+          ],
+          "status": 200,
+          "working": true,
+          "responseTime": 99
+        },
+        {
+          "path": "/api/v1/foods/by-protocol",
+          "method": "GET",
+          "category": "Foods",
+          "description": "Get foods by protocol",
+          "params": [
+            {
+              "name": "protocol_id",
+              "value": "1495844a-19de-404c-a288-7660eda0cbe1"
+            }
+          ],
+          "status": 400,
+          "working": false,
+          "responseTime": 113
+        },
+        {
+          "path": "/api/v1/users/preferences",
+          "method": "GET",
+          "category": "User",
+          "description": "Get user preferences",
+          "params": [
+            {
+              "name": "userId",
+              "value": "8e8a568a-c2f8-43a8-abf2-4e54408dbdc0"
+            }
+          ],
           "status": 404,
           "working": false,
-          "responseTime": 76
+          "responseTime": 92
+        },
+        {
+          "path": "/api/v1/users/preferences",
+          "method": "PUT",
+          "category": "User",
+          "description": "Update user preferences",
+          "status": 404,
+          "working": false,
+          "responseTime": 92
         },
         {
           "path": "/api/v1/timeline/entries",
           "method": "GET",
           "category": "Timeline",
+          "description": "Get timeline entries",
+          "params": [
+            {
+              "name": "date",
+              "value": "2024-07-06"
+            }
+          ],
+          "status": 200,
+          "working": true,
+          "responseTime": 137
+        },
+        {
+          "path": "/api/v1/timeline/entries",
+          "method": "POST",
+          "category": "Timeline",
+          "description": "Create timeline entry",
+          "status": 200,
+          "working": true,
+          "responseTime": 103
+        },
+        {
+          "path": "/api/v1/reflections",
+          "method": "GET",
+          "category": "Reflection",
+          "description": "Get reflections",
+          "params": [
+            {
+              "name": "date",
+              "value": "2024-07-06"
+            },
+            {
+              "name": "userId",
+              "value": "8e8a568a-c2f8-43a8-abf2-4e54408dbdc0"
+            }
+          ],
           "status": 404,
           "working": false,
-          "responseTime": 128
+          "responseTime": 122
+        },
+        {
+          "path": "/api/v1/reflections",
+          "method": "POST",
+          "category": "Reflection",
+          "description": "Save reflection",
+          "status": 404,
+          "working": false,
+          "responseTime": 91
         },
         {
           "path": "/api/v1/correlations/insights",
           "method": "GET",
           "category": "AI",
+          "description": "Get AI insights",
+          "params": [
+            {
+              "name": "userId",
+              "value": "8e8a568a-c2f8-43a8-abf2-4e54408dbdc0"
+            }
+          ],
+          "status": 400,
+          "working": false,
+          "responseTime": 224
+        },
+        {
+          "path": "/api/v1/correlations/analyze",
+          "method": "POST",
+          "category": "AI",
+          "description": "Analyze correlations",
           "status": 404,
           "working": false,
-          "responseTime": 85
+          "responseTime": 91
         }
       ],
-      "workingCount": 0,
-      "totalCount": 5,
+      "workingCount": 4,
+      "totalCount": 14,
       "categories": {
         "System": {
           "working": 0,
           "total": 1
         },
         "Core": {
-          "working": 0,
-          "total": 1
+          "working": 1,
+          "total": 3
         },
         "Foods": {
+          "working": 1,
+          "total": 2
+        },
+        "User": {
           "working": 0,
-          "total": 1
+          "total": 2
         },
         "Timeline": {
+          "working": 2,
+          "total": 2
+        },
+        "Reflection": {
           "working": 0,
-          "total": 1
+          "total": 2
         },
         "AI": {
           "working": 0,
-          "total": 1
+          "total": 2
         }
       }
     },
@@ -599,18 +805,18 @@
       "repository": "https://github.com/deebyrne26/health-platform",
       "branch": "main",
       "lastCommit": {
-        "hash": "c1cb5d4",
-        "message": "More docs fun",
+        "hash": "62804f6",
+        "message": "More doc fun",
         "author": "deebyrne26",
-        "date": "Sun Jul 6 17:39:36 2025 -0400"
+        "date": "Sun Jul 6 18:06:29 2025 -0400"
       },
       "contributors": [
         {
           "name": "deebyrne26",
-          "commits": 10
+          "commits": 11
         }
       ],
-      "totalCommits": 10
+      "totalCommits": 11
     }
   }
 }

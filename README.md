@@ -14,8 +14,8 @@ npm run dev
 
 ## Links
 
-- **Live Application:** TBD
-- **API Endpoints:** TBD
+- **Live Application:** https://main.d45x824boqj7y.amplifyapp.com
+- **API Endpoints:** https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev
 - **Documentation:** [object Object]
 
 ## Architecture
@@ -52,14 +52,14 @@ npm run dev
 
 ## API Status
 
-- **Base URL:** https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/protocols
-- **Working Endpoints:** 0/5
-- **Categories:** System, Core, Foods, Timeline, AI
+- **Base URL:** https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev
+- **Working Endpoints:** 4/14
+- **Categories:** System, Core, Foods, User, Timeline, Reflection, AI
 
 ## Database
 
 - **Type:** Unknown
-- **Tables:** 0 discovered
+- **Tables:** 18 discovered
 - **Connection:** Configured via environment
 
 ---
