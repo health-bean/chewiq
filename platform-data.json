@@ -1,0 +1,616 @@
+{
+  "meta": {
+    "generated": "2025-07-06T21:42:10.073Z",
+    "version": "1.0.0",
+    "generator": "AutomatedProfessionalDocsGenerator"
+  },
+  "platform": {
+    "name": "FILO Health Platform",
+    "description": "AI-Powered Health Tracking & Correlation Discovery",
+    "version": "1.0.0",
+    "status": "Active Development"
+  },
+  "statistics": {
+    "totalComponents": 26,
+    "totalHooks": 11,
+    "totalFiles": 64,
+    "workingAPIs": 0,
+    "totalAPIs": 5,
+    "totalTables": 0,
+    "totalCommits": 10,
+    "contributors": 1
+  },
+  "discoveredInfo": {
+    "urls": {
+      "frontend": null,
+      "backend": null,
+      "api": null,
+      "docs": {
+        "url": "https://deebyrne26.github.io/health-platform/",
+        "live": true
+      }
+    },
+    "architecture": {},
+    "database": {
+      "type": "Unknown",
+      "tables": [],
+      "relationships": [],
+      "connectionInfo": {}
+    },
+    "apis": {
+      "baseUrl": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/protocols",
+      "endpoints": [
+        {
+          "path": "/api/v1/health",
+          "method": "GET",
+          "category": "System",
+          "status": 404,
+          "working": false,
+          "responseTime": 677
+        },
+        {
+          "path": "/api/v1/protocols",
+          "method": "GET",
+          "category": "Core",
+          "status": 404,
+          "working": false,
+          "responseTime": 121
+        },
+        {
+          "path": "/api/v1/foods/search",
+          "method": "GET",
+          "category": "Foods",
+          "status": 404,
+          "working": false,
+          "responseTime": 76
+        },
+        {
+          "path": "/api/v1/timeline/entries",
+          "method": "GET",
+          "category": "Timeline",
+          "status": 404,
+          "working": false,
+          "responseTime": 128
+        },
+        {
+          "path": "/api/v1/correlations/insights",
+          "method": "GET",
+          "category": "AI",
+          "status": 404,
+          "working": false,
+          "responseTime": 85
+        }
+      ],
+      "workingCount": 0,
+      "totalCount": 5,
+      "categories": {
+        "System": {
+          "working": 0,
+          "total": 1
+        },
+        "Core": {
+          "working": 0,
+          "total": 1
+        },
+        "Foods": {
+          "working": 0,
+          "total": 1
+        },
+        "Timeline": {
+          "working": 0,
+          "total": 1
+        },
+        "AI": {
+          "working": 0,
+          "total": 1
+        }
+      }
+    },
+    "deployment": {
+      "frontend": {
+        "service": "AWS Amplify",
+        "config": "amplify.yml",
+        "buildCommand": "npm run build\n      artifacts:\n        baseDirectory: dist\n        files:\n          - '**/*'"
+      },
+      "backend": {},
+      "database": {},
+      "cdn": {}
+    },
+    "development": {
+      "nodeVersion": ">=18.0",
+      "packageManager": "npm",
+      "scripts": {
+        "docs/package.json": {
+          "docusaurus": "docusaurus",
+          "start": "docusaurus start",
+          "build": "docusaurus build",
+          "swizzle": "docusaurus swizzle",
+          "deploy": "docusaurus deploy",
+          "clear": "docusaurus clear",
+          "serve": "docusaurus serve",
+          "write-translations": "docusaurus write-translations",
+          "write-heading-ids": "docusaurus write-heading-ids"
+        },
+        "frontend/shared/package.json": {
+          "test": "echo \"Error: no test specified\" && exit 1"
+        },
+        "frontend/web-app/package.json": {
+          "dev": "vite --mode development",
+          "dev:local": "vite --mode local",
+          "build": "vite build --mode production",
+          "build:dev": "vite build --mode development",
+          "lint": "eslint .",
+          "preview": "vite preview"
+        }
+      },
+      "environmentVariables": [
+        "VITE_APP_ENV",
+        "VITE_API_URL",
+        "VITE_AUTH_ENABLED"
+      ],
+      "ports": {},
+      "prerequisites": [],
+      "setupSteps": [
+        {
+          "step": 1,
+          "title": "Clone Repository",
+          "command": "git clone <repository-url>",
+          "description": "Clone the repository to your local machine"
+        },
+        {
+          "step": 2,
+          "title": "Install Node.js",
+          "command": "Use Node.js >=18.0",
+          "description": "Install the required Node.js version"
+        },
+        {
+          "step": 3,
+          "title": "Install Dependencies",
+          "command": "npm install",
+          "description": "Install all project dependencies"
+        },
+        {
+          "step": 4,
+          "title": "Setup Environment Variables",
+          "command": "Copy .env.example to .env and fill in values",
+          "description": "Configure: VITE_APP_ENV, VITE_API_URL, VITE_AUTH_ENABLED"
+        },
+        {
+          "step": 5,
+          "title": "Start Development Server",
+          "command": "npm run dev",
+          "description": "Start the development server"
+        }
+      ]
+    },
+    "fileStructure": {
+      "frontend": {
+        "frontend/web-app": {
+          "totalFiles": 42,
+          "fileTypes": {
+            ".development": 1,
+            ".production": 1,
+            "": 1,
+            ".md": 1,
+            ".json": 3,
+            ".js": 8,
+            ".html": 1,
+            ".svg": 2,
+            ".css": 2,
+            ".jsx": 21,
+            ".jsx backup": 1
+          },
+          "components": [
+            {
+              "name": "App",
+              "path": "frontend/web-app/src/App.jsx",
+              "size": 7218,
+              "hooks": [
+                "useEffect",
+                "useProtocols",
+                "useUserPreferences",
+                "useExposureTypes",
+                "useDetoxTypes",
+                "useReflectionData",
+                "useAppState",
+                "useTimelineEntries",
+                "useEntryForm"
+              ]
+            },
+            {
+              "name": "MultiSelectProtocolDropdown",
+              "path": "frontend/web-app/src/components/common/MultiSelectProtocolDropdown.jsx",
+              "size": 5735,
+              "hooks": [
+                "useState",
+                "useEffect"
+              ]
+            },
+            {
+              "name": "QuickChecks",
+              "path": "frontend/web-app/src/components/common/QuickChecks.jsx",
+              "size": 1323,
+              "hooks": []
+            },
+            {
+              "name": "SmartFoodSelector",
+              "path": "frontend/web-app/src/components/common/SmartFoodSelector.jsx",
+              "size": 4256,
+              "hooks": [
+                "useState",
+                "useEffect"
+              ]
+            },
+            {
+              "name": "Header",
+              "path": "frontend/web-app/src/components/layout/Header.jsx",
+              "size": 1791,
+              "hooks": []
+            },
+            {
+              "name": "Navigation",
+              "path": "frontend/web-app/src/components/layout/Navigation.jsx",
+              "size": 2118,
+              "hooks": []
+            },
+            {
+              "name": "CorrelationInsights",
+              "path": "frontend/web-app/src/features/insights/CorrelationInsights.jsx",
+              "size": 11710,
+              "hooks": [
+                "useState",
+                "useCorrelations"
+              ]
+            },
+            {
+              "name": "ProtocolFoods",
+              "path": "frontend/web-app/src/features/protocol/ProtocolFoods.jsx",
+              "size": 15798,
+              "hooks": [
+                "useState",
+                "useProtocolFoods",
+                "useFoodSearch",
+                "useEffect"
+              ]
+            },
+            {
+              "name": "ReflectionView",
+              "path": "frontend/web-app/src/features/reflection/ReflectionView.jsx",
+              "size": 10798,
+              "hooks": []
+            },
+            {
+              "name": "SetupWizard",
+              "path": "frontend/web-app/src/features/setup/SetupWizard.jsx",
+              "size": 4272,
+              "hooks": [
+                "useProtocols",
+                "useUserPreferences",
+                "useSetupWizard"
+              ]
+            },
+            {
+              "name": "DetoxStep",
+              "path": "frontend/web-app/src/features/setup/steps/DetoxStep.jsx",
+              "size": 2378,
+              "hooks": []
+            },
+            {
+              "name": "FoodsStep",
+              "path": "frontend/web-app/src/features/setup/steps/FoodsStep.jsx",
+              "size": 2201,
+              "hooks": []
+            },
+            {
+              "name": "MedicationsStep",
+              "path": "frontend/web-app/src/features/setup/steps/MedicationsStep.jsx",
+              "size": 958,
+              "hooks": []
+            },
+            {
+              "name": "ProtocolsStep",
+              "path": "frontend/web-app/src/features/setup/steps/ProtocolsStep.jsx",
+              "size": 5477,
+              "hooks": []
+            },
+            {
+              "name": "SupplementsStep",
+              "path": "frontend/web-app/src/features/setup/steps/SupplementsStep.jsx",
+              "size": 2286,
+              "hooks": []
+            },
+            {
+              "name": "SymptomsStep",
+              "path": "frontend/web-app/src/features/setup/steps/SymptomsStep.jsx",
+              "size": 2140,
+              "hooks": []
+            },
+            {
+              "name": "WelcomeStep",
+              "path": "frontend/web-app/src/features/setup/steps/WelcomeStep.jsx",
+              "size": 1261,
+              "hooks": []
+            },
+            {
+              "name": "AddEntryForm",
+              "path": "frontend/web-app/src/features/timeline/AddEntryForm.jsx",
+              "size": 7090,
+              "hooks": []
+            },
+            {
+              "name": "TimelineEntry",
+              "path": "frontend/web-app/src/features/timeline/TimelineEntry.jsx",
+              "size": 1426,
+              "hooks": []
+            },
+            {
+              "name": "TimelineView",
+              "path": "frontend/web-app/src/features/timeline/TimelineView.jsx",
+              "size": 2429,
+              "hooks": []
+            }
+          ],
+          "hooks": [
+            {
+              "name": "useSetupWizard",
+              "path": "frontend/web-app/src/features/setup/useSetupWizard.js",
+              "size": 2904
+            },
+            {
+              "name": "useAppState",
+              "path": "frontend/web-app/src/hooks/useAppState.js",
+              "size": 1210
+            },
+            {
+              "name": "useEntryForm",
+              "path": "frontend/web-app/src/hooks/useEntryForm.js",
+              "size": 1740
+            },
+            {
+              "name": "useTimelineEntries",
+              "path": "frontend/web-app/src/hooks/useTimelineEntries.js",
+              "size": 1305
+            }
+          ],
+          "utilities": [],
+          "size": "300.39 KB"
+        },
+        "frontend/shared": {
+          "totalFiles": 22,
+          "fileTypes": {
+            "": 1,
+            ".jsx": 6,
+            ".js": 13,
+            ".json": 2
+          },
+          "components": [
+            {
+              "name": "Alert",
+              "path": "frontend/shared/components/ui/Alert.jsx",
+              "size": 1383,
+              "hooks": []
+            },
+            {
+              "name": "Button",
+              "path": "frontend/shared/components/ui/Button.jsx",
+              "size": 2752,
+              "hooks": []
+            },
+            {
+              "name": "Card",
+              "path": "frontend/shared/components/ui/Card.jsx",
+              "size": 1044,
+              "hooks": []
+            },
+            {
+              "name": "Input",
+              "path": "frontend/shared/components/ui/Input.jsx",
+              "size": 1038,
+              "hooks": []
+            },
+            {
+              "name": "Select",
+              "path": "frontend/shared/components/ui/Select.jsx",
+              "size": 996,
+              "hooks": []
+            },
+            {
+              "name": "Textarea",
+              "path": "frontend/shared/components/ui/Textarea.jsx",
+              "size": 1042,
+              "hooks": []
+            }
+          ],
+          "hooks": [
+            {
+              "name": "useCorrelations",
+              "path": "frontend/shared/hooks/useCorrelations.js",
+              "size": 1772
+            },
+            {
+              "name": "useDetoxTypes",
+              "path": "frontend/shared/hooks/useDetoxTypes.js",
+              "size": 811
+            },
+            {
+              "name": "useExposureTypes",
+              "path": "frontend/shared/hooks/useExposureTypes.js",
+              "size": 641
+            },
+            {
+              "name": "useProtocolFoods",
+              "path": "frontend/shared/hooks/useProtocolFoods.js",
+              "size": 2836
+            },
+            {
+              "name": "useProtocols",
+              "path": "frontend/shared/hooks/useProtocols.js",
+              "size": 728
+            },
+            {
+              "name": "useReflectionData",
+              "path": "frontend/shared/hooks/useReflectionData.js",
+              "size": 2694
+            },
+            {
+              "name": "useUserPreferences",
+              "path": "frontend/shared/hooks/useUserPreferences.js",
+              "size": 5492
+            }
+          ],
+          "utilities": [],
+          "size": "39.53 KB"
+        }
+      },
+      "backend": {
+        "backend/functions/api": {
+          "totalFiles": 20,
+          "fileTypes": {
+            ".js": 17,
+            "": 1,
+            ".json": 2
+          },
+          "components": [],
+          "hooks": [
+            {
+              "name": "users",
+              "path": "backend/functions/api/handlers/users.js",
+              "size": 8228
+            }
+          ],
+          "utilities": [],
+          "size": "88.38 KB"
+        },
+        "backend/functions": {
+          "totalFiles": 20,
+          "fileTypes": {
+            ".js": 17,
+            "": 1,
+            ".json": 2
+          },
+          "components": [],
+          "hooks": [
+            {
+              "name": "users",
+              "path": "backend/functions/api/handlers/users.js",
+              "size": 8228
+            }
+          ],
+          "utilities": [],
+          "size": "88.38 KB"
+        },
+        "backend": {
+          "totalFiles": 20,
+          "fileTypes": {
+            ".js": 17,
+            "": 1,
+            ".json": 2
+          },
+          "components": [],
+          "hooks": [
+            {
+              "name": "users",
+              "path": "backend/functions/api/handlers/users.js",
+              "size": 8228
+            }
+          ],
+          "utilities": [],
+          "size": "88.38 KB"
+        }
+      },
+      "shared": {},
+      "configs": {
+        "package.json": [
+          "backend/functions/api/package.json",
+          "docs/package.json",
+          "frontend/shared/package.json",
+          "frontend/web-app/package.json"
+        ],
+        "vite.config.js": [
+          "frontend/web-app/vite.config.js"
+        ],
+        "tailwind.config.js": [
+          "frontend/web-app/tailwind.config.js"
+        ],
+        ".env*": [
+          "frontend/web-app/.env.development",
+          "frontend/web-app/.env.production"
+        ],
+        "amplify.yml": [
+          "amplify.yml"
+        ]
+      },
+      "docs": {}
+    },
+    "packages": {
+      "backend/functions/api/package.json": {
+        "name": "health-platform-test-db",
+        "version": "1.0.0",
+        "scripts": [],
+        "dependencies": 3,
+        "devDependencies": 0
+      },
+      "docs/package.json": {
+        "name": "docs",
+        "version": "0.0.0",
+        "scripts": [
+          "docusaurus",
+          "start",
+          "build",
+          "swizzle",
+          "deploy",
+          "clear",
+          "serve",
+          "write-translations",
+          "write-heading-ids"
+        ],
+        "dependencies": 7,
+        "devDependencies": 2,
+        "engines": {
+          "node": ">=18.0"
+        }
+      },
+      "frontend/shared/package.json": {
+        "name": "shared",
+        "version": "1.0.0",
+        "description": "",
+        "scripts": [
+          "test"
+        ],
+        "dependencies": 1,
+        "devDependencies": 0
+      },
+      "frontend/web-app/package.json": {
+        "name": "web-app",
+        "version": "0.0.0",
+        "scripts": [
+          "dev",
+          "dev:local",
+          "build",
+          "build:dev",
+          "lint",
+          "preview"
+        ],
+        "dependencies": 5,
+        "devDependencies": 12
+      }
+    },
+    "git": {
+      "repository": "https://github.com/deebyrne26/health-platform",
+      "branch": "main",
+      "lastCommit": {
+        "hash": "c1cb5d4",
+        "message": "More docs fun",
+        "author": "deebyrne26",
+        "date": "Sun Jul 6 17:39:36 2025 -0400"
+      },
+      "contributors": [
+        {
+          "name": "deebyrne26",
+          "commits": 10
+        }
+      ],
+      "totalCommits": 10
+    }
+  }
+}

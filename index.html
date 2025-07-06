@@ -1,31 +1,406 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>FILO Health Platform Documentation</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FILO Health Platform - Technical Documentation</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 40px; }
-        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 10px; margin-bottom: 2rem; text-align: center; }
-        .content { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        pre { background: #f8f9fa; padding: 1rem; border-radius: 4px; overflow-x: auto; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            line-height: 1.6; 
+            color: #333;
+            background: #f8fafc;
+        }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .header p { font-size: 1.2rem; opacity: 0.9; }
+        
+        /* Navigation */
+        .nav { 
+            background: white; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav ul { 
+            display: flex; 
+            list-style: none; 
+            justify-content: center;
+            padding: 1rem 0;
+        }
+        
+        .nav a { 
+            text-decoration: none; 
+            color: #4a5568; 
+            padding: 0.5rem 1rem; 
+            margin: 0 0.5rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        .nav a:hover { background: #edf2f7; color: #667eea; }
+        
+        /* Main Content */
+        .main { padding: 3rem 0; }
+        
+        .section { 
+            background: white; 
+            margin-bottom: 2rem; 
+            padding: 2rem; 
+            border-radius: 10px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .section h2 { 
+            color: #2d3748; 
+            margin-bottom: 1rem; 
+            font-size: 1.8rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+        
+        /* Stats Grid */
+        .stats-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            gap: 1rem; 
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card { 
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white; 
+            padding: 1.5rem; 
+            border-radius: 10px; 
+            text-align: center;
+        }
+        
+        .stat-card.api { background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%); }
+        .stat-card.db { background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%); }
+        .stat-card.git { background: linear-gradient(135deg, #9f7aea 0%, #805ad5 100%); }
+        
+        .stat-number { font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem; }
+        .stat-label { font-size: 0.9rem; opacity: 0.9; }
+        
+        /* Two Column Layout */
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        
+        /* Lists */
+        .feature-list { list-style: none; }
+        .feature-list li { 
+            padding: 0.5rem 0; 
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+        }
+        .feature-list li:before { 
+            content: '✅'; 
+            margin-right: 0.5rem; 
+        }
+        
+        /* Code Blocks */
+        .code-block { 
+            background: #2d3748; 
+            color: #e2e8f0; 
+            padding: 1rem; 
+            border-radius: 5px; 
+            overflow-x: auto;
+            font-family: 'Monaco', 'Menlo', monospace;
+        }
+        
+        /* Links */
+        .links { display: flex; gap: 1rem; margin-top: 1rem; }
+        .link-btn { 
+            background: #667eea; 
+            color: white; 
+            padding: 0.75rem 1.5rem; 
+            text-decoration: none; 
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        .link-btn:hover { background: #5a67d8; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .two-col { grid-template-columns: 1fr; }
+            .nav ul { flex-direction: column; text-align: center; }
+        }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>🚀 FILO Health Platform</h1>
-        <p>Auto-Generated Documentation</p>
-    </div>
-    <div class="content">
-        <h2>📊 Platform Documentation</h2>
-        <p>This documentation is automatically generated from your live codebase.</p>
-        <ul>
-            <li><a href="PLATFORM_DOCUMENTATION.md">Complete Platform Documentation</a></li>
-            <li><a href="platform-summary.json">Structured Data Summary</a></li>
-        </ul>
-        <h3>🔗 Links</h3>
-        <ul>
-            <li><strong>Live Platform:</strong> <a href="https://main.d45x824boqj7y.amplifyapp.com/">https://main.d45x824boqj7y.amplifyapp.com/</a></li>
-            <li><strong>API Gateway:</strong> <a href="https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/">https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/</a></li>
-        </ul>
-    </div>
+    <header class="header">
+        <div class="container">
+            <h1>🚀 FILO Health Platform</h1>
+            <p>AI-Powered Health Tracking & Correlation Discovery</p>
+        </div>
+    </header>
+
+    <nav class="nav">
+        <div class="container">
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="#api">API Documentation</a></li>
+                <li><a href="#database">Database</a></li>
+                <li><a href="#development">Development</a></li>
+                <li><a href="#deployment">Deployment</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main">
+        <div class="container">
+            <!-- Overview Section -->
+            <section id="overview" class="section">
+                <h2>📊 Platform Overview</h2>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">26</div>
+                        <div class="stat-label">Components</div>
+                    </div>
+                    <div class="stat-card api">
+                        <div class="stat-number">0/5</div>
+                        <div class="stat-label">API Endpoints</div>
+                    </div>
+                    <div class="stat-card db">
+                        <div class="stat-number">0</div>
+                        <div class="stat-label">Database Tables</div>
+                    </div>
+                    <div class="stat-card git">
+                        <div class="stat-number">10</div>
+                        <div class="stat-label">Git Commits</div>
+                    </div>
+                </div>
+
+                <div class="two-col">
+                    <div>
+                        <h3>🎯 Key Features</h3>
+                        <ul class="feature-list">
+                            <li>AI-powered health correlation discovery</li>
+                            <li>Real-time food & symptom tracking</li>
+                            <li>Protocol-based nutrition guidance</li>
+                            <li>Daily reflection & mood tracking</li>
+                            <li>Comprehensive health insights</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>🔗 Live Links</h3>
+                        <div class="links">
+                            
+                            
+                            <a href="https://github.com/deebyrne26/health-platform" class="link-btn">GitHub</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Architecture Section -->
+            <section id="architecture" class="section">
+                <h2>🏗️ Architecture</h2>
+                
+                <div class="two-col">
+                    <div>
+                        <h3>Frontend Stack</h3>
+                        <ul class="feature-list">
+                            <li>React 18 with Hooks</li>
+                            <li>Vite for fast development</li>
+                            <li>Tailwind CSS for styling</li>
+                            <li>Lucide React icons</li>
+                            <li>AWS Amplify deployment</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>Backend Stack</h3>
+                        <ul class="feature-list">
+                            <li>AWS Lambda (Node.js)</li>
+                            <li>PostgreSQL database</li>
+                            <li>RESTful API design</li>
+                            <li>CORS-enabled endpoints</li>
+                            <li>Serverless architecture</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>📁 Project Structure</h3>
+                <div class="code-block">
+health-platform/
+├── frontend/
+│   ├── web-app/           # React application
+│   └── shared/            # Reusable components & hooks
+├── backend/
+│   └── functions/api/     # AWS Lambda functions
+├── docs-site/             # Generated documentation
+└── README.md</div>
+            </section>
+
+            <!-- API Documentation -->
+            <section id="api" class="section">
+                <h2>🌐 API Documentation</h2>
+                
+                <div class="two-col">
+                    <div>
+                        <h3>API Status</h3>
+                        <p><strong>Base URL:</strong> https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/protocols</p>
+                        <p><strong>Working Endpoints:</strong> 0/5</p>
+                        <p><strong>Categories:</strong> 5</p>
+                    </div>
+                    <div>
+                        <h3>Example Request</h3>
+                        <div class="code-block">
+curl "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/api/v1/protocols/api/v1/protocols" \
+  -H "Content-Type: application/json"</div>
+                    </div>
+                </div>
+
+                
+                <h3>📍 Endpoint Categories</h3>
+                <div class="stats-grid">
+                    
+                    <div class="stat-card api">
+                        <div class="stat-number">0/1</div>
+                        <div class="stat-label">System APIs</div>
+                    </div>
+                    
+                    <div class="stat-card api">
+                        <div class="stat-number">0/1</div>
+                        <div class="stat-label">Core APIs</div>
+                    </div>
+                    
+                    <div class="stat-card api">
+                        <div class="stat-number">0/1</div>
+                        <div class="stat-label">Foods APIs</div>
+                    </div>
+                    
+                    <div class="stat-card api">
+                        <div class="stat-number">0/1</div>
+                        <div class="stat-label">Timeline APIs</div>
+                    </div>
+                    
+                    <div class="stat-card api">
+                        <div class="stat-number">0/1</div>
+                        <div class="stat-label">AI APIs</div>
+                    </div>
+                    
+                </div>
+                
+            </section>
+
+            <!-- Database Section -->
+            <section id="database" class="section">
+                <h2>🗄️ Database</h2>
+                
+                <div class="two-col">
+                    <div>
+                        <h3>Database Info</h3>
+                        <p><strong>Type:</strong> Unknown</p>
+                        <p><strong>Tables:</strong> 0</p>
+                        
+                        
+                    </div>
+                    <div>
+                        <h3>Discovered Tables</h3>
+                        <ul class="feature-list">
+                            
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Development Section -->
+            <section id="development" class="section">
+                <h2>🔧 Development Setup</h2>
+                
+                <div class="two-col">
+                    <div>
+                        <h3>Requirements</h3>
+                        <p><strong>Node.js:</strong> >=18.0</p>
+                        <p><strong>Package Manager:</strong> npm</p>
+                        <p><strong>Environment Variables:</strong> 3</p>
+                    </div>
+                    <div>
+                        <h3>Quick Start</h3>
+                        <div class="code-block">
+git clone &lt;repository&gt;
+cd health-platform
+npm install
+cp .env.example .env
+npm run dev</div>
+                    </div>
+                </div>
+
+                <h3>📋 Setup Steps</h3>
+                <ol>
+                    
+                    <li><strong>Clone Repository:</strong> Clone the repository to your local machine
+                        <div class="code-block">git clone <repository-url></div>
+                    </li>
+                    
+                    <li><strong>Install Node.js:</strong> Install the required Node.js version
+                        <div class="code-block">Use Node.js >=18.0</div>
+                    </li>
+                    
+                    <li><strong>Install Dependencies:</strong> Install all project dependencies
+                        <div class="code-block">npm install</div>
+                    </li>
+                    
+                    <li><strong>Setup Environment Variables:</strong> Configure: VITE_APP_ENV, VITE_API_URL, VITE_AUTH_ENABLED
+                        <div class="code-block">Copy .env.example to .env and fill in values</div>
+                    </li>
+                    
+                    <li><strong>Start Development Server:</strong> Start the development server
+                        <div class="code-block">npm run dev</div>
+                    </li>
+                    
+                </ol>
+            </section>
+
+            <!-- Deployment Section -->
+            <section id="deployment" class="section">
+                <h2>🚀 Deployment</h2>
+                
+                <div class="two-col">
+                    <div>
+                        <h3>Frontend Deployment</h3>
+                        <p><strong>Service:</strong> AWS Amplify</p>
+                        <p><strong>URL:</strong> Not configured</p>
+                    </div>
+                    <div>
+                        <h3>Backend Deployment</h3>
+                        <p><strong>Service:</strong> AWS Lambda</p>
+                        <p><strong>API URL:</strong> Not configured</p>
+                    </div>
+                </div>
+
+                <h3>🔄 CI/CD Pipeline</h3>
+                <ul class="feature-list">
+                    <li>GitHub Actions for automated deployment</li>
+                    <li>Lambda function updates on code changes</li>
+                    <li>Amplify builds on frontend changes</li>
+                    <li>Automated documentation generation</li>
+                </ul>
+            </section>
+        </div>
+    </main>
+
+    <footer style="background: #2d3748; color: white; padding: 2rem 0; text-align: center; margin-top: 3rem;">
+        <div class="container">
+            <p>Generated automatically on 7/6/2025 • 
+               Last updated: Sun Jul 6 17:39:36 2025 -0400</p>
+        </div>
+    </footer>
 </body>
 </html>
