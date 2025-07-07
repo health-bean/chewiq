@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2025-07-06T23:54:36.363Z",
+    "generated": "2025-07-07T02:11:53.376Z",
     "version": "1.0.0",
     "generator": "AutomatedProfessionalDocsGenerator"
   },
@@ -17,7 +17,7 @@
     "workingAPIs": 12,
     "totalAPIs": 28,
     "totalTables": 21,
-    "totalCommits": 15,
+    "totalCommits": 16,
     "contributors": 1
   },
   "discoveredInfo": {
@@ -129,7 +129,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 6984,
+          "responseTime": 6922,
           "responseData": {
             "insights": [
               {
@@ -303,240 +303,6 @@
               },
               {
                 "type": "food-symptom",
-                "trigger": "chicken",
-                "effect": "swelling",
-                "timeWindow": 72,
-                "timeWindowDescription": "within 72 hours",
-                "confidence": 0.68,
-                "frequency": "27/40 times",
-                "occurrences": 27,
-                "totalOpportunities": 40,
-                "description": "chicken appears to trigger swelling within 72 hours",
-                "recommendation": "Monitor chicken consumption and swelling symptoms"
-              },
-              {
-                "type": "food-symptom",
-                "trigger": "chicken",
-                "effect": "joint pain",
-                "timeWindow": 72,
-                "timeWindowDescription": "within 72 hours",
-                "confidence": 0.6,
-                "frequency": "24/40 times",
-                "occurrences": 24,
-                "totalOpportunities": 40,
-                "description": "chicken appears to trigger joint pain within 72 hours",
-                "recommendation": "Monitor chicken consumption and joint pain symptoms"
-              },
-              {
-                "type": "food-symptom",
-                "trigger": "kale",
-                "effect": "swelling",
-                "timeWindow": 48,
-                "timeWindowDescription": "within 48 hours",
-                "confidence": 0.63,
-                "frequency": "25/40 times",
-                "occurrences": 25,
-                "totalOpportunities": 40,
-                "description": "kale appears to trigger swelling within 48 hours",
-                "recommendation": "Monitor kale consumption and swelling symptoms"
-              },
-              {
-                "type": "food-symptom",
-                "trigger": "kale",
-                "effect": "swelling",
-                "timeWindow": 72,
-                "timeWindowDescription": "within 72 hours",
-                "confidence": 0.83,
-                "frequency": "33/40 times",
-                "occurrences": 33,
-                "totalOpportunities": 40,
-                "description": "kale appears to trigger swelling within 72 hours",
-                "recommendation": "Consider avoiding kale for 2-4 weeks to test sensitivity"
-              },
-              {
-                "type": "food-symptom",
-                "trigger": "kale",
-                "effect": "joint pain",
-                "timeWindow": 72,
-                "timeWindowDescription": "within 72 hours",
-                "confidence": 0.75,
-                "frequency": "30/40 times",
-                "occurrences": 30,
-                "totalOpportunities": 40,
-                "description": "kale appears to trigger joint pain within 72 hours",
-                "recommendation": "Consider avoiding kale for 2-4 weeks to test sensitivity"
-              },
-              {
-                "type": "food-symptom",
-                "trigger": "cucumber",
-                "effect": "swelling",
-                "timeWindow": 48,
-                "timeWindowDescription": "within 48 hours",
-                "confidence": 0.61,
-                "frequency": "27/44 times",
-                "occurrences": 27,
-                "totalOpportunities": 44,
-                "description": "cucumber appears to trigger swelling within 48 hours",
-                "recommendation": "Monitor cucumber consumption and swelling symptoms"
-              },
-              {
-                "type": "food-symptom",
-                "trigger": "cucumber",
-                "effect": "swelling",
-                "timeWindow": 72,
-                "timeWindowDescription": "within 72 hours",
-                "confidence": 0.68,
-                "frequency": "30/44 times",
-                "occurrences": 30,
-                "totalOpportunities": 44,
-                "description": "cucumber appears to trigger swelling within 72 hours",
-                "recommendation": "Monitor cucumber consumption and swelling symptoms"
-              },
-              {
-                "type": "food-symptom",
-                "trigger": "cucumber",
-                "effect": "joint pain",
-                "timeWindow": 72,
-                "timeWindowDescription": "within 72 hours",
-                "confidence": 0.77,
-                "frequency": "34/44 times",
-                "occurrences": 34,
-                "totalOpportunities": 44,
-                "description": "cucumber appears to trigger joint pain within 72 hours",
-                "recommendation": "Consider avoiding cucumber for 2-4 weeks to test sensitivity"
-              },
-              {
-                "type": "food-symptom",
-                "trigger": "onions",
-                "effect": "joint pain",
-                "timeWindow": 72,
-                "timeWindowDescription": "within 72 hours",
-                "confidence": 0.64,
-                "frequency": "30/47 times",
-                "occurrences": 30,
-                "totalOpportunities": 47,
-                "description": "onions appears to trigger joint pain within 72 hours",
-                "recommendation": "Monitor onions consumption and joint pain symptoms"
-              },
-              {
-                "type": "food-symptom",
-                "trigger": "berries",
-                "effect": "swelling",
-                "timeWindow": 48,
-                "timeWindowDescription": "within 48 hours",
-                "confidence": 0.61,
-                "frequency": "34/56 times",
-                "occurrences": 34,
-                "totalOpportunities": 56,
-                "description": "berries appears to trigger swelling within 48 hours",
-                "recommendation": "Monitor berries consumption and swelling symptoms"
-              },
-              {
-                "type": "food-symptom",
-                "trigger": "berries",
-                "effect": "swelling",
-                "timeWindow": 72,
-                "timeWindowDescription": "within 72 hours",
-                "confidence": 0.7,
-                "frequency": "39/56 times",
-                "occurrences": 39,
-                "totalOpportunities": 56,
-                "description": "berries appears to trigger swelling within 72 hours",
-                "recommendation": "Monitor berries consumption and swelling symptoms"
-              },
-              {
-                "type": "food-symptom",
-                "trigger": "berries",
-                "effect": "joint pain",
-                "timeWindow": 72,
-                "timeWindowDescription": "within 72 hours",
-                "confidence": 0.79,
-                "frequency": "44/56 times",
-                "occurrences": 44,
-                "totalOpportunities": 56,
-                "description": "berries appears to trigger joint pain within 72 hours",
-                "recommendation": "Consider avoiding berries for 2-4 weeks to test sensitivity"
-              },
-              {
-                "type": "food-symptom",
-                "trigger": "broccoli",
-                "effect": "swelling",
-                "timeWindow": 48,
-                "timeWindowDescription": "within 48 hours",
-                "confidence": 0.65,
-                "frequency": "34/52 times",
-                "occurrences": 34,
-                "totalOpportunities": 52,
-                "description": "broccoli appears to trigger swelling within 48 hours",
-                "recommendation": "Monitor broccoli consumption and swelling symptoms"
-              },
-              {
-                "type": "food-symptom",
-                "trigger": "broccoli",
-                "effect": "swelling",
-                "timeWindow": 72,
-                "timeWindowDescription": "within 72 hours",
-                "confidence": 0.77,
-                "frequency": "40/52 times",
-                "occurrences": 40,
-                "totalOpportunities": 52,
-                "description": "broccoli appears to trigger swelling within 72 hours",
-                "recommendation": "Consider avoiding broccoli for 2-4 weeks to test sensitivity"
-              },
-              {
-                "type": "food-symptom",
-                "trigger": "broccoli",
-                "effect": "joint pain",
-                "timeWindow": 72,
-                "timeWindowDescription": "within 72 hours",
-                "confidence": 0.71,
-                "frequency": "37/52 times",
-                "occurrences": 37,
-                "totalOpportunities": 52,
-                "description": "broccoli appears to trigger joint pain within 72 hours",
-                "recommendation": "Consider avoiding broccoli for 2-4 weeks to test sensitivity"
-              },
-              {
-                "type": "food-symptom",
-                "trigger": "orange",
-                "effect": "joint pain",
-                "timeWindow": 48,
-                "timeWindowDescription": "within 48 hours",
-                "confidence": 0.68,
-                "frequency": "41/60 times",
-                "occurrences": 41,
-                "totalOpportunities": 60,
-                "description": "orange appears to trigger joint pain within 48 hours",
-                "recommendation": "Monitor orange consumption and joint pain symptoms"
-              },
-              {
-                "type": "food-symptom",
-                "trigger": "orange",
-                "effect": "swelling",
-                "timeWindow": 72,
-                "timeWindowDescription": "within 72 hours",
-                "confidence": 0.67,
-                "frequency": "40/60 times",
-                "occurrences": 40,
-                "totalOpportunities": 60,
-                "description": "orange appears to trigger swelling within 72 hours",
-                "recommendation": "Monitor orange consumption and swelling symptoms"
-              },
-              {
-                "type": "food-symptom",
-                "trigger": "orange",
-                "effect": "joint pain",
-                "timeWindow": 72,
-                "timeWindowDescription": "within 72 hours",
-                "confidence": 0.75,
-                "frequency": "45/60 times",
-                "occurrences": 45,
-                "totalOpportunities": 60,
-                "description": "orange appears to trigger joint pain within 72 hours",
-                "recommendation": "Consider avoiding orange for 2-4 weeks to test sensitivity"
-              },
-              {
-                "type": "food-symptom",
                 "trigger": "beef",
                 "effect": "swelling",
                 "timeWindow": 72,
@@ -560,6 +326,32 @@
                 "totalOpportunities": 39,
                 "description": "beef appears to trigger joint pain within 72 hours",
                 "recommendation": "Consider avoiding beef for 2-4 weeks to test sensitivity"
+              },
+              {
+                "type": "food-symptom",
+                "trigger": "berries",
+                "effect": "swelling",
+                "timeWindow": 72,
+                "timeWindowDescription": "within 72 hours",
+                "confidence": 0.69,
+                "frequency": "37/54 times",
+                "occurrences": 37,
+                "totalOpportunities": 54,
+                "description": "berries appears to trigger swelling within 72 hours",
+                "recommendation": "Monitor berries consumption and swelling symptoms"
+              },
+              {
+                "type": "food-symptom",
+                "trigger": "berries",
+                "effect": "joint pain",
+                "timeWindow": 72,
+                "timeWindowDescription": "within 72 hours",
+                "confidence": 0.78,
+                "frequency": "42/54 times",
+                "occurrences": 42,
+                "totalOpportunities": 54,
+                "description": "berries appears to trigger joint pain within 72 hours",
+                "recommendation": "Consider avoiding berries for 2-4 weeks to test sensitivity"
               },
               {
                 "type": "food-symptom",
@@ -677,6 +469,45 @@
                 "totalOpportunities": 58,
                 "description": "shellfish appears to trigger joint pain within 72 hours",
                 "recommendation": "Consider avoiding shellfish for 2-4 weeks to test sensitivity"
+              },
+              {
+                "type": "food-symptom",
+                "trigger": "cucumber",
+                "effect": "swelling",
+                "timeWindow": 48,
+                "timeWindowDescription": "within 48 hours",
+                "confidence": 0.6,
+                "frequency": "26/43 times",
+                "occurrences": 26,
+                "totalOpportunities": 43,
+                "description": "cucumber appears to trigger swelling within 48 hours",
+                "recommendation": "Monitor cucumber consumption and swelling symptoms"
+              },
+              {
+                "type": "food-symptom",
+                "trigger": "cucumber",
+                "effect": "swelling",
+                "timeWindow": 72,
+                "timeWindowDescription": "within 72 hours",
+                "confidence": 0.67,
+                "frequency": "29/43 times",
+                "occurrences": 29,
+                "totalOpportunities": 43,
+                "description": "cucumber appears to trigger swelling within 72 hours",
+                "recommendation": "Monitor cucumber consumption and swelling symptoms"
+              },
+              {
+                "type": "food-symptom",
+                "trigger": "cucumber",
+                "effect": "joint pain",
+                "timeWindow": 72,
+                "timeWindowDescription": "within 72 hours",
+                "confidence": 0.77,
+                "frequency": "33/43 times",
+                "occurrences": 33,
+                "totalOpportunities": 43,
+                "description": "cucumber appears to trigger joint pain within 72 hours",
+                "recommendation": "Consider avoiding cucumber for 2-4 weeks to test sensitivity"
               },
               {
                 "type": "food-symptom",
@@ -937,6 +768,45 @@
                 "totalOpportunities": 46,
                 "description": "avocado appears to trigger joint pain within 72 hours",
                 "recommendation": "Monitor avocado consumption and joint pain symptoms"
+              },
+              {
+                "type": "food-symptom",
+                "trigger": "orange",
+                "effect": "joint pain",
+                "timeWindow": 48,
+                "timeWindowDescription": "within 48 hours",
+                "confidence": 0.68,
+                "frequency": "40/59 times",
+                "occurrences": 40,
+                "totalOpportunities": 59,
+                "description": "orange appears to trigger joint pain within 48 hours",
+                "recommendation": "Monitor orange consumption and joint pain symptoms"
+              },
+              {
+                "type": "food-symptom",
+                "trigger": "orange",
+                "effect": "swelling",
+                "timeWindow": 72,
+                "timeWindowDescription": "within 72 hours",
+                "confidence": 0.66,
+                "frequency": "39/59 times",
+                "occurrences": 39,
+                "totalOpportunities": 59,
+                "description": "orange appears to trigger swelling within 72 hours",
+                "recommendation": "Monitor orange consumption and swelling symptoms"
+              },
+              {
+                "type": "food-symptom",
+                "trigger": "orange",
+                "effect": "joint pain",
+                "timeWindow": 72,
+                "timeWindowDescription": "within 72 hours",
+                "confidence": 0.75,
+                "frequency": "44/59 times",
+                "occurrences": 44,
+                "totalOpportunities": 59,
+                "description": "orange appears to trigger joint pain within 72 hours",
+                "recommendation": "Consider avoiding orange for 2-4 weeks to test sensitivity"
               },
               {
                 "type": "food-symptom",
@@ -1330,6 +1200,58 @@
               },
               {
                 "type": "food-symptom",
+                "trigger": "broccoli",
+                "effect": "swelling",
+                "timeWindow": 48,
+                "timeWindowDescription": "within 48 hours",
+                "confidence": 0.65,
+                "frequency": "33/51 times",
+                "occurrences": 33,
+                "totalOpportunities": 51,
+                "description": "broccoli appears to trigger swelling within 48 hours",
+                "recommendation": "Monitor broccoli consumption and swelling symptoms"
+              },
+              {
+                "type": "food-symptom",
+                "trigger": "broccoli",
+                "effect": "swelling",
+                "timeWindow": 72,
+                "timeWindowDescription": "within 72 hours",
+                "confidence": 0.76,
+                "frequency": "39/51 times",
+                "occurrences": 39,
+                "totalOpportunities": 51,
+                "description": "broccoli appears to trigger swelling within 72 hours",
+                "recommendation": "Consider avoiding broccoli for 2-4 weeks to test sensitivity"
+              },
+              {
+                "type": "food-symptom",
+                "trigger": "broccoli",
+                "effect": "joint pain",
+                "timeWindow": 72,
+                "timeWindowDescription": "within 72 hours",
+                "confidence": 0.71,
+                "frequency": "36/51 times",
+                "occurrences": 36,
+                "totalOpportunities": 51,
+                "description": "broccoli appears to trigger joint pain within 72 hours",
+                "recommendation": "Consider avoiding broccoli for 2-4 weeks to test sensitivity"
+              },
+              {
+                "type": "food-symptom",
+                "trigger": "onions",
+                "effect": "joint pain",
+                "timeWindow": 72,
+                "timeWindowDescription": "within 72 hours",
+                "confidence": 0.63,
+                "frequency": "29/46 times",
+                "occurrences": 29,
+                "totalOpportunities": 46,
+                "description": "onions appears to trigger joint pain within 72 hours",
+                "recommendation": "Monitor onions consumption and joint pain symptoms"
+              },
+              {
+                "type": "food-symptom",
                 "trigger": "eggs",
                 "effect": "digestive issues",
                 "timeWindow": 24,
@@ -1486,6 +1408,45 @@
               },
               {
                 "type": "food-symptom",
+                "trigger": "kale",
+                "effect": "swelling",
+                "timeWindow": 48,
+                "timeWindowDescription": "within 48 hours",
+                "confidence": 0.61,
+                "frequency": "23/38 times",
+                "occurrences": 23,
+                "totalOpportunities": 38,
+                "description": "kale appears to trigger swelling within 48 hours",
+                "recommendation": "Monitor kale consumption and swelling symptoms"
+              },
+              {
+                "type": "food-symptom",
+                "trigger": "kale",
+                "effect": "swelling",
+                "timeWindow": 72,
+                "timeWindowDescription": "within 72 hours",
+                "confidence": 0.82,
+                "frequency": "31/38 times",
+                "occurrences": 31,
+                "totalOpportunities": 38,
+                "description": "kale appears to trigger swelling within 72 hours",
+                "recommendation": "Consider avoiding kale for 2-4 weeks to test sensitivity"
+              },
+              {
+                "type": "food-symptom",
+                "trigger": "kale",
+                "effect": "joint pain",
+                "timeWindow": 72,
+                "timeWindowDescription": "within 72 hours",
+                "confidence": 0.74,
+                "frequency": "28/38 times",
+                "occurrences": 28,
+                "totalOpportunities": 38,
+                "description": "kale appears to trigger joint pain within 72 hours",
+                "recommendation": "Consider avoiding kale for 2-4 weeks to test sensitivity"
+              },
+              {
+                "type": "food-symptom",
                 "trigger": "brussels sprouts",
                 "effect": "swelling",
                 "timeWindow": 72,
@@ -1564,6 +1525,19 @@
               },
               {
                 "type": "food-symptom",
+                "trigger": "chicken",
+                "effect": "swelling",
+                "timeWindow": 72,
+                "timeWindowDescription": "within 72 hours",
+                "confidence": 0.67,
+                "frequency": "26/39 times",
+                "occurrences": 26,
+                "totalOpportunities": 39,
+                "description": "chicken appears to trigger swelling within 72 hours",
+                "recommendation": "Monitor chicken consumption and swelling symptoms"
+              },
+              {
+                "type": "food-symptom",
                 "trigger": "eggplant",
                 "effect": "digestive issues",
                 "timeWindow": 24,
@@ -1629,15 +1603,15 @@
               }
             ],
             "summary": {
-              "totalCorrelations": 115,
-              "triggers": 115,
+              "totalCorrelations": 113,
+              "triggers": 113,
               "improvements": 0,
               "protocolEffects": 0
             },
             "timeframe_days": 180,
             "confidence_threshold": 0.6
           },
-          "responseSize": 41255
+          "responseSize": 40562
         },
         {
           "path": "/api/v1/correlations/analyze",
@@ -1653,7 +1627,7 @@
           ],
           "status": 404,
           "working": false,
-          "responseTime": 177,
+          "responseTime": 37,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -1699,7 +1673,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 145,
+          "responseTime": 52,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -1750,7 +1724,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 105,
+          "responseTime": 72,
           "responseData": {
             "foods": [
               {
@@ -1786,7 +1760,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 118,
+          "responseTime": 90,
           "responseData": {
             "protocols": [
               {
@@ -1889,7 +1863,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 97,
+          "responseTime": 91,
           "responseData": {
             "entries": [],
             "total": 0
@@ -1910,7 +1884,7 @@
           ],
           "status": 500,
           "working": false,
-          "responseTime": 144,
+          "responseTime": 48,
           "responseData": {
             "error": "Failed to complete create timeline entry"
           },
@@ -1930,7 +1904,7 @@
           ],
           "status": 404,
           "working": false,
-          "responseTime": 127,
+          "responseTime": 36,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -1981,7 +1955,7 @@
           ],
           "status": 404,
           "working": false,
-          "responseTime": 174,
+          "responseTime": 67,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -2027,7 +2001,7 @@
           "params": [],
           "status": 400,
           "working": false,
-          "responseTime": 90,
+          "responseTime": 78,
           "responseData": {
             "error": "Email and password required"
           },
@@ -2042,7 +2016,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 89,
+          "responseTime": 69,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -2088,7 +2062,7 @@
           "params": [],
           "status": 401,
           "working": false,
-          "responseTime": 134,
+          "responseTime": 58,
           "responseData": {
             "error": "No authorization header"
           },
@@ -2103,7 +2077,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 89,
+          "responseTime": 59,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -2149,7 +2123,7 @@
           "params": [],
           "status": 400,
           "working": false,
-          "responseTime": 98,
+          "responseTime": 35,
           "responseData": {
             "error": "Missing required fields"
           },
@@ -2164,7 +2138,7 @@
           "params": [],
           "status": 400,
           "working": false,
-          "responseTime": 124,
+          "responseTime": 32,
           "responseData": {
             "error": "Email and password required"
           },
@@ -2179,7 +2153,7 @@
           "params": [],
           "status": 200,
           "working": true,
-          "responseTime": 118,
+          "responseTime": 70,
           "responseData": {
             "user": {
               "id": "8e8a568a-c2f8-43a8-abf2-4e54408dbdc0",
@@ -2205,7 +2179,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 180,
+          "responseTime": 100,
           "responseData": {
             "protocols": [],
             "total": 0
@@ -2226,7 +2200,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 185,
+          "responseTime": 44,
           "responseData": {
             "protocols": [
               "1495844a-19de-404c-a288-7660eda0cbe1"
@@ -2234,11 +2208,11 @@
             "quick_detox": [],
             "quick_foods": [],
             "quick_symptoms": [],
-            "setup_complete": false,
+            "setup_complete": true,
             "quick_medications": [],
             "quick_supplements": []
           },
-          "responseSize": 177
+          "responseSize": 176
         },
         {
           "path": "/api/v1/foods/by-protocol",
@@ -2254,7 +2228,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 164,
+          "responseTime": 66,
           "responseData": {
             "foods": [
               {
@@ -6161,7 +6135,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 84,
+          "responseTime": 37,
           "responseData": {
             "symptoms": [],
             "total": 0,
@@ -6183,7 +6157,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 149,
+          "responseTime": 44,
           "responseData": {
             "supplements": [],
             "total": 0,
@@ -6205,7 +6179,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 84,
+          "responseTime": 47,
           "responseData": {
             "medications": [],
             "total": 0,
@@ -6227,7 +6201,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 106,
+          "responseTime": 33,
           "responseData": {
             "detox_types": [],
             "total": 0,
@@ -6244,7 +6218,7 @@
           "params": [],
           "status": 500,
           "working": false,
-          "responseTime": 92,
+          "responseTime": 72,
           "responseData": {
             "error": "Internal server error: handleGetJournalEntries is not a function"
           },
@@ -6259,7 +6233,7 @@
           "params": [],
           "status": 500,
           "working": false,
-          "responseTime": 89,
+          "responseTime": 34,
           "responseData": {
             "error": "Internal server error: handleGetJournalEntry is not a function"
           },
@@ -6274,7 +6248,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 93,
+          "responseTime": 40,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -6320,7 +6294,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 98,
+          "responseTime": 56,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -6366,7 +6340,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 87,
+          "responseTime": 62,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -6539,7 +6513,7 @@
             {
               "name": "App",
               "path": "frontend/web-app/src/App.jsx",
-              "size": 9963,
+              "size": 14164,
               "hooks": [
                 "useEffect",
                 "useAuth",
@@ -6669,7 +6643,7 @@
             {
               "name": "ProtocolsStep",
               "path": "frontend/web-app/src/features/setup/steps/ProtocolsStep.jsx",
-              "size": 5477,
+              "size": 6211,
               "hooks": []
             },
             {
@@ -6713,7 +6687,7 @@
             {
               "name": "useSetupWizard",
               "path": "frontend/web-app/src/features/setup/useSetupWizard.js",
-              "size": 2904
+              "size": 3406
             },
             {
               "name": "useAppState",
@@ -6732,7 +6706,7 @@
             }
           ],
           "utilities": [],
-          "size": "317.7 KB"
+          "size": "323 KB"
         },
         "frontend/shared": {
           "totalFiles": 24,
@@ -6829,11 +6803,11 @@
             {
               "name": "useUserPreferences",
               "path": "frontend/shared/hooks/useUserPreferences.js",
-              "size": 5747
+              "size": 9640
             }
           ],
           "utilities": [],
-          "size": "43.99 KB"
+          "size": "47.79 KB"
         }
       },
       "backend": {
@@ -6973,18 +6947,18 @@
       "repository": "https://github.com/deebyrne26/health-platform",
       "branch": "main",
       "lastCommit": {
-        "hash": "2708bae",
-        "message": "App.jsx fixes",
+        "hash": "ee9daab",
+        "message": "auth fixes - user states",
         "author": "deebyrne26",
-        "date": "Sun Jul 6 19:53:52 2025 -0400"
+        "date": "Sun Jul 6 22:11:15 2025 -0400"
       },
       "contributors": [
         {
           "name": "deebyrne26",
-          "commits": 15
+          "commits": 16
         }
       ],
-      "totalCommits": 15
+      "totalCommits": 16
     }
   }
 }
