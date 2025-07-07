@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2025-07-07T03:49:42.106Z",
+    "generated": "2025-07-07T11:30:14.784Z",
     "version": "1.0.0",
     "generator": "AutomatedProfessionalDocsGenerator"
   },
@@ -15,9 +15,9 @@
     "totalHooks": 12,
     "totalFiles": 68,
     "workingAPIs": 0,
-    "totalAPIs": 30,
-    "totalTables": 19,
-    "totalCommits": 23,
+    "totalAPIs": 28,
+    "totalTables": 21,
+    "totalCommits": 24,
     "contributors": 1
   },
   "discoveredInfo": {
@@ -43,9 +43,11 @@
     "database": {
       "type": "Unknown",
       "tables": [
+        "users",
+        "user_sessions",
+        "last",
         "protocols",
         "protocol_food_rules",
-        "users",
         "journal_entries",
         "timeline_entries",
         "user_protocols",
@@ -114,80 +116,6 @@
       "baseUrl": "https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev",
       "endpoints": [
         {
-          "path": "/api/v1/foods/by-protocol",
-          "method": "GET",
-          "category": "Protocols",
-          "description": "Get by-protocol",
-          "source": "backend/functions/api/handlers/auth.js",
-          "params": [
-            {
-              "name": "protocol_id",
-              "value": "1495844a-19de-404c-a288-7660eda0cbe1"
-            }
-          ],
-          "status": 502,
-          "working": false,
-          "responseTime": 880,
-          "responseData": {
-            "message": "Internal server error"
-          },
-          "responseSize": 36
-        },
-        {
-          "path": "/api/v1/reflections",
-          "method": "POST",
-          "category": "Reflections",
-          "description": "Create reflections",
-          "source": "backend/functions/api/handlers/auth.js",
-          "params": [
-            {
-              "name": "userId",
-              "value": "8e8a568a-c2f8-43a8-abf2-4e54408dbdc0"
-            },
-            {
-              "name": "date",
-              "value": "2024-07-06"
-            }
-          ],
-          "status": 502,
-          "working": false,
-          "responseTime": 334,
-          "responseData": {
-            "message": "Internal server error"
-          },
-          "responseSize": 36
-        },
-        {
-          "path": "/api/v1/exposure-types",
-          "method": "GET",
-          "category": "Lookup Data",
-          "description": "Get exposure-types",
-          "source": "backend/functions/api/handlers/auth.js",
-          "params": [],
-          "status": 502,
-          "working": false,
-          "responseTime": 319,
-          "responseData": {
-            "message": "Internal server error"
-          },
-          "responseSize": 36
-        },
-        {
-          "path": "/api/v1/detox-types",
-          "method": "GET",
-          "category": "Lookup Data",
-          "description": "Get detox-types",
-          "source": "backend/functions/api/handlers/auth.js",
-          "params": [],
-          "status": 502,
-          "working": false,
-          "responseTime": 347,
-          "responseData": {
-            "message": "Internal server error"
-          },
-          "responseSize": 36
-        },
-        {
           "path": "/api/v1/correlations/insights",
           "method": "GET",
           "category": "AI",
@@ -199,13 +127,13 @@
               "value": "8e8a568a-c2f8-43a8-abf2-4e54408dbdc0"
             }
           ],
-          "status": 502,
+          "status": 500,
           "working": false,
-          "responseTime": 318,
+          "responseTime": 6569,
           "responseData": {
-            "message": "Internal server error"
+            "error": "Failed to analyze correlations"
           },
-          "responseSize": 36
+          "responseSize": 42
         },
         {
           "path": "/api/v1/correlations/analyze",
@@ -221,7 +149,22 @@
           ],
           "status": 502,
           "working": false,
-          "responseTime": 315,
+          "responseTime": 103,
+          "responseData": {
+            "message": "Internal server error"
+          },
+          "responseSize": 36
+        },
+        {
+          "path": "/api/v1/detox-types",
+          "method": "GET",
+          "category": "Lookup Data",
+          "description": "Get detox-types",
+          "source": "backend/functions/api/handlers/detox.js",
+          "params": [],
+          "status": 502,
+          "working": false,
+          "responseTime": 160,
           "responseData": {
             "message": "Internal server error"
           },
@@ -239,13 +182,13 @@
               "value": "chicken"
             }
           ],
-          "status": 502,
+          "status": 500,
           "working": false,
-          "responseTime": 313,
+          "responseTime": 240,
           "responseData": {
-            "message": "Internal server error"
+            "error": "Failed to complete search foods"
           },
-          "responseSize": 36
+          "responseSize": 43
         },
         {
           "path": "/api/v1/protocols",
@@ -259,13 +202,13 @@
               "value": "1495844a-19de-404c-a288-7660eda0cbe1"
             }
           ],
-          "status": 502,
+          "status": 500,
           "working": false,
-          "responseTime": 337,
+          "responseTime": 100,
           "responseData": {
-            "message": "Internal server error"
+            "error": "Failed to complete fetch protocols"
           },
-          "responseSize": 36
+          "responseSize": 46
         },
         {
           "path": "/api/v1/timeline/entries",
@@ -279,13 +222,13 @@
               "value": "2024-07-06"
             }
           ],
-          "status": 502,
+          "status": 500,
           "working": false,
-          "responseTime": 316,
+          "responseTime": 106,
           "responseData": {
-            "message": "Internal server error"
+            "error": "Failed to complete fetch timeline entries"
           },
-          "responseSize": 36
+          "responseSize": 53
         },
         {
           "path": "/api/v1/timeline/entries",
@@ -299,13 +242,13 @@
               "value": "2024-07-06"
             }
           ],
-          "status": 502,
+          "status": 500,
           "working": false,
-          "responseTime": 388,
+          "responseTime": 118,
           "responseData": {
-            "message": "Internal server error"
+            "error": "Failed to complete create timeline entry"
           },
-          "responseSize": 36
+          "responseSize": 52
         },
         {
           "path": "/api/v1/users/preferences",
@@ -321,7 +264,7 @@
           ],
           "status": 502,
           "working": false,
-          "responseTime": 312,
+          "responseTime": 101,
           "responseData": {
             "message": "Internal server error"
           },
@@ -341,7 +284,7 @@
           ],
           "status": 502,
           "working": false,
-          "responseTime": 337,
+          "responseTime": 99,
           "responseData": {
             "message": "Internal server error"
           },
@@ -354,13 +297,13 @@
           "description": "Create login",
           "source": "backend/functions/api/index.js",
           "params": [],
-          "status": 502,
+          "status": 500,
           "working": false,
-          "responseTime": 316,
+          "responseTime": 132,
           "responseData": {
-            "message": "Internal server error"
+            "error": "Email and password required"
           },
-          "responseSize": 36
+          "responseSize": 39
         },
         {
           "path": "/api/v1/auth/logout",
@@ -371,7 +314,7 @@
           "params": [],
           "status": 502,
           "working": false,
-          "responseTime": 313,
+          "responseTime": 228,
           "responseData": {
             "message": "Internal server error"
           },
@@ -384,13 +327,13 @@
           "description": "Get verify",
           "source": "backend/functions/api/index.js",
           "params": [],
-          "status": 502,
+          "status": 500,
           "working": false,
-          "responseTime": 318,
+          "responseTime": 105,
           "responseData": {
-            "message": "Internal server error"
+            "error": "No authorization header"
           },
-          "responseSize": 36
+          "responseSize": 35
         },
         {
           "path": "/api/v1/auth/refresh",
@@ -401,7 +344,7 @@
           "params": [],
           "status": 502,
           "working": false,
-          "responseTime": 306,
+          "responseTime": 97,
           "responseData": {
             "message": "Internal server error"
           },
@@ -414,13 +357,13 @@
           "description": "Create register",
           "source": "backend/functions/api/index.js",
           "params": [],
-          "status": 502,
+          "status": 500,
           "working": false,
-          "responseTime": 309,
+          "responseTime": 102,
           "responseData": {
-            "message": "Internal server error"
+            "error": "Missing required fields"
           },
-          "responseSize": 36
+          "responseSize": 35
         },
         {
           "path": "/api/v1/auth",
@@ -429,13 +372,13 @@
           "description": "Create auth",
           "source": "backend/functions/api/index.js",
           "params": [],
-          "status": 502,
+          "status": 500,
           "working": false,
-          "responseTime": 321,
+          "responseTime": 98,
           "responseData": {
-            "message": "Internal server error"
+            "error": "Email and password required"
           },
-          "responseSize": 36
+          "responseSize": 39
         },
         {
           "path": "/api/v1/users",
@@ -444,13 +387,13 @@
           "description": "Get users",
           "source": "backend/functions/api/index.js",
           "params": [],
-          "status": 502,
+          "status": 500,
           "working": false,
-          "responseTime": 304,
+          "responseTime": 124,
           "responseData": {
-            "message": "Internal server error"
+            "error": "Failed to complete fetch user"
           },
-          "responseSize": 36
+          "responseSize": 41
         },
         {
           "path": "/api/v1/user/protocols",
@@ -464,13 +407,13 @@
               "value": "1495844a-19de-404c-a288-7660eda0cbe1"
             }
           ],
-          "status": 502,
+          "status": 500,
           "working": false,
-          "responseTime": 321,
+          "responseTime": 266,
           "responseData": {
-            "message": "Internal server error"
+            "error": "Failed to complete fetch user protocols"
           },
-          "responseSize": 36
+          "responseSize": 51
         },
         {
           "path": "/api/v1/user/preferences",
@@ -484,13 +427,33 @@
               "value": "8e8a568a-c2f8-43a8-abf2-4e54408dbdc0"
             }
           ],
-          "status": 502,
+          "status": 500,
           "working": false,
-          "responseTime": 314,
+          "responseTime": 237,
           "responseData": {
-            "message": "Internal server error"
+            "error": "Failed to complete fetch user preferences"
           },
-          "responseSize": 36
+          "responseSize": 53
+        },
+        {
+          "path": "/api/v1/foods/by-protocol",
+          "method": "GET",
+          "category": "Protocols",
+          "description": "Get by-protocol",
+          "source": "backend/functions/api/index.js",
+          "params": [
+            {
+              "name": "protocol_id",
+              "value": "1495844a-19de-404c-a288-7660eda0cbe1"
+            }
+          ],
+          "status": 500,
+          "working": false,
+          "responseTime": 105,
+          "responseData": {
+            "error": "Failed to complete fetch protocol foods"
+          },
+          "responseSize": 51
         },
         {
           "path": "/api/v1/symptoms/search",
@@ -504,13 +467,13 @@
               "value": "chicken"
             }
           ],
-          "status": 502,
+          "status": 500,
           "working": false,
-          "responseTime": 335,
+          "responseTime": 97,
           "responseData": {
-            "message": "Internal server error"
+            "error": "Failed to complete search symptoms"
           },
-          "responseSize": 36
+          "responseSize": 46
         },
         {
           "path": "/api/v1/supplements/search",
@@ -524,13 +487,13 @@
               "value": "chicken"
             }
           ],
-          "status": 502,
+          "status": 500,
           "working": false,
-          "responseTime": 321,
+          "responseTime": 230,
           "responseData": {
-            "message": "Internal server error"
+            "error": "Failed to complete search supplements"
           },
-          "responseSize": 36
+          "responseSize": 49
         },
         {
           "path": "/api/v1/medications/search",
@@ -544,13 +507,13 @@
               "value": "chicken"
             }
           ],
-          "status": 502,
+          "status": 500,
           "working": false,
-          "responseTime": 307,
+          "responseTime": 234,
           "responseData": {
-            "message": "Internal server error"
+            "error": "Failed to complete search medications"
           },
-          "responseSize": 36
+          "responseSize": 49
         },
         {
           "path": "/api/v1/detox-types/search",
@@ -564,13 +527,13 @@
               "value": "chicken"
             }
           ],
-          "status": 502,
+          "status": 500,
           "working": false,
-          "responseTime": 312,
+          "responseTime": 101,
           "responseData": {
-            "message": "Internal server error"
+            "error": "Failed to complete search detox types"
           },
-          "responseSize": 36
+          "responseSize": 49
         },
         {
           "path": "/api/v1/journal/entries",
@@ -579,13 +542,13 @@
           "description": "Get entries",
           "source": "backend/functions/api/index.js",
           "params": [],
-          "status": 502,
+          "status": 500,
           "working": false,
-          "responseTime": 314,
+          "responseTime": 96,
           "responseData": {
-            "message": "Internal server error"
+            "error": "Internal server error: handleGetJournalEntries is not a function"
           },
-          "responseSize": 36
+          "responseSize": 76
         },
         {
           "path": "/api/v1/journal/entries/",
@@ -594,13 +557,13 @@
           "description": "Get resource",
           "source": "backend/functions/api/index.js",
           "params": [],
-          "status": 502,
+          "status": 500,
           "working": false,
-          "responseTime": 305,
+          "responseTime": 102,
           "responseData": {
-            "message": "Internal server error"
+            "error": "Internal server error: handleGetJournalEntry is not a function"
           },
-          "responseSize": 36
+          "responseSize": 74
         },
         {
           "path": "/api/v1/symptoms",
@@ -611,7 +574,7 @@
           "params": [],
           "status": 502,
           "working": false,
-          "responseTime": 306,
+          "responseTime": 106,
           "responseData": {
             "message": "Internal server error"
           },
@@ -626,7 +589,7 @@
           "params": [],
           "status": 502,
           "working": false,
-          "responseTime": 312,
+          "responseTime": 146,
           "responseData": {
             "message": "Internal server error"
           },
@@ -641,7 +604,7 @@
           "params": [],
           "status": 502,
           "working": false,
-          "responseTime": 310,
+          "responseTime": 100,
           "responseData": {
             "message": "Internal server error"
           },
@@ -649,27 +612,23 @@
         }
       ],
       "workingCount": 0,
-      "totalCount": 30,
+      "totalCount": 28,
       "categories": {
-        "Protocols": {
+        "AI": {
           "working": 0,
-          "total": 3
-        },
-        "Reflections": {
-          "working": 0,
-          "total": 1
+          "total": 2
         },
         "Lookup Data": {
-          "working": 0,
-          "total": 3
-        },
-        "AI": {
           "working": 0,
           "total": 2
         },
         "Foods": {
           "working": 0,
           "total": 1
+        },
+        "Protocols": {
+          "working": 0,
+          "total": 3
         },
         "Timeline": {
           "working": 0,
@@ -1101,7 +1060,7 @@
             }
           ],
           "utilities": [],
-          "size": "95.14 KB"
+          "size": "91.55 KB"
         },
         "backend/functions": {
           "totalFiles": 20,
@@ -1119,7 +1078,7 @@
             }
           ],
           "utilities": [],
-          "size": "95.14 KB"
+          "size": "91.55 KB"
         },
         "backend": {
           "totalFiles": 20,
@@ -1137,7 +1096,7 @@
             }
           ],
           "utilities": [],
-          "size": "95.14 KB"
+          "size": "91.55 KB"
         }
       },
       "shared": {},
@@ -1221,18 +1180,18 @@
       "repository": "https://github.com/deebyrne26/health-platform",
       "branch": "main",
       "lastCommit": {
-        "hash": "40fd272",
-        "message": "desperation",
+        "hash": "0c892a2",
+        "message": "Update auth.js",
         "author": "deebyrne26",
-        "date": "Sun Jul 6 23:48:44 2025 -0400"
+        "date": "Mon Jul 7 07:29:33 2025 -0400"
       },
       "contributors": [
         {
           "name": "deebyrne26",
-          "commits": 23
+          "commits": 24
         }
       ],
-      "totalCommits": 23
+      "totalCommits": 24
     }
   }
 }
