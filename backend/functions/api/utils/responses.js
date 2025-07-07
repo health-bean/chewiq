@@ -1,42 +1,69 @@
-const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Requested-With',
-    'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS',
-    'Access-Control-Allow-Credentials': 'false',
-    'Content-Type': 'application/json'
+// backend/functions/api/utils/responses.js
+
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://main.d45x824boqj7y.amplifyapp.com'
+];
+
+const getCorsHeaders = (origin) => {
+  if (allowedOrigins.includes(origin)) {
+    return {
+      'Access-Control-Allow-Origin': origin,
+      'Access-Control-Allow-Headers': 'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Requested-With',
+      'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS',
+      'Access-Control-Allow-Credentials': 'true',
+      'Content-Type': 'application/json'
+    };
+  } else {
+    return {
+      'Access-Control-Allow-Origin': 'null', // Or omit to reject
+      'Content-Type': 'application/json'
+    };
+  }
 };
 
-const createResponse = (statusCode, data, headers = {}) => ({
+const createResponse = (statusCode, data, event) => {
+  const origin = event.headers?.origin || event.headers?.Origin || '';
+  const corsHeaders = getCorsHeaders(origin);
+
+  return {
     statusCode,
-    headers: { ...corsHeaders, ...headers },
+    headers: corsHeaders,
     body: JSON.stringify(data)
-});
+  };
+};
 
-const successResponse = (data, statusCode = 200) => 
-    createResponse(statusCode, data);
+const successResponse = (data, event, statusCode = 200) => 
+  createResponse(statusCode, data, event);
 
-const errorResponse = (message, statusCode = 500, details = null) => 
-    createResponse(statusCode, {
-        error: message,
-        ...(details && { details })
-    });
+const errorResponse = (message, event, statusCode = 500, details = null) => 
+  createResponse(statusCode, {
+    error: message,
+    ...(details && { details })
+  }, event);
 
-// CORS handling function
+// Handle OPTIONS preflight requests
 const handleCors = (event) => {
-    if (event.httpMethod === 'OPTIONS') {
-        return {
-            statusCode: 200,
-            headers: corsHeaders,
-            body: JSON.stringify({ message: 'CORS preflight successful' })
-        };
+  if (event.httpMethod === 'OPTIONS') {
+    const origin = event.headers?.origin || event.headers?.Origin || '';
+    if (allowedOrigins.includes(origin)) {
+      return {
+        statusCode: 200,
+        headers: getCorsHeaders(origin),
+        body: JSON.stringify({ message: 'CORS preflight successful' })
+      };
+    } else {
+      return {
+        statusCode: 403,
+        body: JSON.stringify({ message: 'CORS origin not allowed' })
+      };
     }
-    return null;
+  }
+  return null;
 };
 
 module.exports = {
-    corsHeaders,
-    createResponse,
-    successResponse,
-    errorResponse,
-    handleCors
+  successResponse,
+  errorResponse,
+  handleCors
 };

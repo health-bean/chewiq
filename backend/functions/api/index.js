@@ -1,21 +1,22 @@
-// backend/functions/api/index.js (UPDATED WITH ES6 IMPORTS)
-import { handleGetCorrelationInsights } from './handlers/correlations.js';
-import { handleCors, successResponse, errorResponse } from './utils/responses.js';
-// Import specific auth handlers instead of generic handleAuth
-import { handleLogin, handleLogout, handleVerify, handleRefresh, handleRegister } from './handlers/auth.js';
-import { handleGetUser, handleUpdateUser, handleGetUserProtocols, handleGetUserPreferences, handleUpdateUserPreferences } from './handlers/users.js';
-import { handleGetJournalEntries, handleCreateJournalEntry, handleGetJournalEntry, handleUpdateJournalEntry } from './handlers/journal.js';
-import { handleGetTimelineEntries, handleCreateTimelineEntry } from './handlers/timeline.js';
-import { handleGetProtocols } from './handlers/protocols.js';
-import { handleSearchFoods, handleGetProtocolFoods } from './handlers/foods.js';
-import { handleSearchSymptoms } from './handlers/symptoms.js';
-import { handleSearchSupplements } from './handlers/supplements.js';
-import { handleSearchMedications } from './handlers/medications.js';
-import { handleSearchDetoxTypes } from './handlers/detox.js';
+// backend/functions/api/index.js (COMMONJS)
+const { handleGetCorrelationInsights } = require('./handlers/correlations');
+const { handleCors, successResponse, errorResponse } = require('./utils/responses');
+// Import specific auth handlers
+const { handleLogin, handleLogout, handleVerify, handleRefresh, handleRegister } = require('./handlers/auth');
+const { handleGetUser, handleUpdateUser, handleGetUserProtocols, handleGetUserPreferences, handleUpdateUserPreferences } = require('./handlers/users');
+const { handleGetJournalEntries, handleCreateJournalEntry, handleGetJournalEntry, handleUpdateJournalEntry } = require('./handlers/journal');
+const { handleGetTimelineEntries, handleCreateTimelineEntry } = require('./handlers/timeline');
+const { handleGetProtocols } = require('./handlers/protocols');
+const { handleSearchFoods, handleGetProtocolFoods } = require('./handlers/foods');
+const { handleSearchSymptoms } = require('./handlers/symptoms');
+const { handleSearchSupplements } = require('./handlers/supplements');
+const { handleSearchMedications } = require('./handlers/medications');
+const { handleSearchDetoxTypes } = require('./handlers/detox');
 
-export const handler = async (event) => {
+exports.handler = async (event) => {
     console.log('Event:', JSON.stringify(event, null, 2));
     
+    // Handle CORS preflight request
     const corsResponse = handleCors(event);
     if (corsResponse) return corsResponse;
     
@@ -30,7 +31,7 @@ export const handler = async (event) => {
         
         let response;
         
-        // Auth routes - specific endpoints
+        // Auth routes
         if (path === '/api/v1/auth/login' && method === 'POST') {
             response = await handleLogin(body, event);
         }
@@ -46,9 +47,8 @@ export const handler = async (event) => {
         else if (path === '/api/v1/auth/register' && method === 'POST') {
             response = await handleRegister(body, event);
         }
-        // Keep the generic auth route for backward compatibility
         else if (path === '/api/v1/auth' && method === 'POST') {
-            response = await handleLogin(body, event); // Default to login
+            response = await handleLogin(body, event); // Legacy route defaulting to login
         }
         // User routes
         else if (path === '/api/v1/users' && method === 'GET') {
@@ -131,8 +131,8 @@ export const handler = async (event) => {
 
 const handleNotFound = (path, method) => {
     return errorResponse('Endpoint not found', 404, {
-        path: path,
-        method: method,
+        path,
+        method,
         availableEndpoints: [
             // Auth endpoints
             'POST /api/v1/auth/login',
