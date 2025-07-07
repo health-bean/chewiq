@@ -170,96 +170,23 @@ const CorrelationInsights = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6 border border-blue-200">
+      <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4 border border-blue-200">
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <h2 className="text-2xl font-bold text-gray-900 flex items-center space-x-2">
-              <Target className="w-7 h-7 text-blue-600" />
-              <span>Health Pattern Insights</span>
+            <h2 className="text-xl font-bold text-gray-900 flex items-center space-x-2">
+              <Target className="w-6 h-6 text-blue-600" />
+              <span>Health Insights</span>
             </h2>
-            <p className="text-gray-600 mt-1 max-w-md">
-              Identify patterns that may be affecting your health and recovery
+            <p className="text-gray-600 mt-1">
+              {criticalInsightsCount} critical insights are available that you should review
             </p>
           </div>
           <div className="text-right flex-shrink-0 ml-4">
-            <div className="text-3xl font-bold text-blue-600">
-              {activeChip === 'all' ? baseCorrelations.length : filteredCorrelations.length}
-            </div>
-            <div className="text-sm text-gray-500">
-              {activeChip === 'strong' ? 'Strong Patterns' :
-               activeChip === 'moderate' ? 'Moderate Patterns' :
-               activeChip === 'emerging' ? 'Emerging Patterns' :
-               activeChip === 'positive' ? 'Positive Patterns' :
-               'Total Patterns'}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Filters */}
-      <div className="bg-white rounded-lg border border-gray-200 p-4">
-        <div className="space-y-4">
-          {/* Category Chips */}
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => setActiveChip('all')}
-              className={`px-3 py-1 rounded-full text-sm font-medium border transition-colors ${
-                activeChip === 'all'
-                  ? 'bg-blue-500 text-white border-blue-500'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-              }`}
-            >
-              All ({baseCorrelations.length})
-            </button>
-            <button
-              onClick={() => setActiveChip('strong')}
-              className={`px-3 py-1 rounded-full text-sm font-medium border transition-colors ${
-                activeChip === 'strong'
-                  ? 'bg-red-500 text-white border-red-500'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-              }`}
-            >
-              🔥 Strong ({categoryStats.strong})
-            </button>
-            <button
-              onClick={() => setActiveChip('moderate')}
-              className={`px-3 py-1 rounded-full text-sm font-medium border transition-colors ${
-                activeChip === 'moderate'
-                  ? 'bg-orange-500 text-white border-orange-500'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-              }`}
-            >
-              ⚡ Moderate ({categoryStats.moderate})
-            </button>
-            <button
-              onClick={() => setActiveChip('emerging')}
-              className={`px-3 py-1 rounded-full text-sm font-medium border transition-colors ${
-                activeChip === 'emerging'
-                  ? 'bg-yellow-500 text-white border-yellow-500'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-              }`}
-            >
-              👀 Emerging ({categoryStats.emerging})
-            </button>
-            <button
-              onClick={() => setActiveChip('positive')}
-              className={`px-3 py-1 rounded-full text-sm font-medium border transition-colors ${
-                activeChip === 'positive'
-                  ? 'bg-green-500 text-white border-green-500'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-              }`}
-            >
-              ✅ Positive ({categoryStats.positive})
-            </button>
-          </div>
-          
-          {/* Time Period Filter */}
-          <div className="flex items-center space-x-2">
-            <label className="text-sm font-medium text-gray-700">Time Period:</label>
+            <div className="text-sm text-gray-600 mb-1">Time Period</div>
             <select 
               value={timeframeFilter} 
               onChange={(e) => setTimeframeFilter(parseInt(e.target.value))}
-              className="border border-gray-300 rounded px-3 py-1 text-sm"
+              className="border border-gray-300 rounded px-2 py-1 text-sm bg-white"
             >
               <option value={30}>30 days</option>
               <option value={90}>3 months</option>
@@ -270,16 +197,48 @@ const CorrelationInsights = () => {
         </div>
       </div>
 
+      {/* Navigation Tabs */}
+      <div className="flex space-x-2">
+        <button
+          onClick={() => setActiveTab('all')}
+          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            activeTab === 'all'
+              ? 'bg-blue-500 text-white'
+              : 'bg-white text-gray-700 hover:bg-gray-50'
+          }`}
+        >
+          All
+        </button>
+        <button
+          onClick={() => setActiveTab('critical')}
+          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            activeTab === 'critical'
+              ? 'bg-blue-500 text-white'
+              : 'bg-white text-gray-700 hover:bg-gray-50'
+          }`}
+        >
+          Critical
+        </button>
+        <button
+          onClick={() => setActiveTab('positive')}
+          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            activeTab === 'positive'
+              ? 'bg-blue-500 text-white'
+              : 'bg-white text-gray-700 hover:bg-gray-50'
+          }`}
+        >
+          Positive
+        </button>
+      </div>
+
       {/* Patterns Display */}
       <div className="bg-white rounded-lg border border-gray-200">
         <div className="p-4 border-b border-gray-200">
           <h3 className="text-lg font-semibold text-gray-900 flex items-center space-x-2">
             <TrendingUp className="w-5 h-5 text-blue-500" />
             <span>
-              {activeChip === 'strong' ? 'Strong Patterns' : 
-               activeChip === 'moderate' ? 'Moderate Patterns' :
-               activeChip === 'emerging' ? 'Emerging Patterns' :
-               activeChip === 'positive' ? 'Positive Patterns' :
+              {activeTab === 'critical' ? 'Critical Insights' : 
+               activeTab === 'positive' ? 'Positive Patterns' :
                'All Patterns'}
             </span>
             <span className="text-sm text-gray-500">({filteredCorrelations.length} total)</span>
@@ -290,10 +249,12 @@ const CorrelationInsights = () => {
           <div className="p-8 text-center">
             <Activity className="w-12 h-12 text-gray-400 mx-auto mb-3" />
             <p className="text-gray-500">
-              No patterns found in this category.
+              {activeTab === 'critical' ? 'No critical insights found.' :
+               activeTab === 'positive' ? 'No positive patterns found.' :
+               'No patterns found.'}
             </p>
             <p className="text-sm text-gray-400 mt-1">
-              Try selecting a different category or adjusting the time period.
+              Try adjusting the time period or switching to a different tab.
             </p>
           </div>
         ) : (
@@ -312,7 +273,7 @@ const CorrelationInsights = () => {
                       </div>
                       {correlation.description && (
                         <div className="text-sm text-blue-600 mt-1">
-                          {activeChip === 'positive' ? '💡' : '🔍'} {correlation.description}
+                          {activeTab === 'positive' ? '💡' : '🔍'} {correlation.description}
                         </div>
                       )}
                     </div>
@@ -351,7 +312,7 @@ const CorrelationInsights = () => {
             <AlertTriangle className="w-8 h-8 text-red-600" />
             <div>
               <div className="text-2xl font-bold text-red-600">
-                {baseCorrelations.filter(c => c.type === 'food-symptom').length}
+                {correlations.filter(c => c.confidence >= 0.5 && c.type === 'food-symptom').length}
               </div>
               <div className="text-sm text-red-700">Food Triggers</div>
             </div>
@@ -363,7 +324,7 @@ const CorrelationInsights = () => {
             <Pill className="w-8 h-8 text-orange-600" />
             <div>
               <div className="text-2xl font-bold text-orange-600">
-                {baseCorrelations.filter(c => c.type === 'medication-effect').length}
+                {correlations.filter(c => c.confidence >= 0.5 && c.type === 'medication-effect').length}
               </div>
               <div className="text-sm text-orange-700">Medication Effects</div>
             </div>
@@ -375,7 +336,7 @@ const CorrelationInsights = () => {
             <Brain className="w-8 h-8 text-purple-600" />
             <div>
               <div className="text-2xl font-bold text-purple-600">
-                {baseCorrelations.filter(c => c.type === 'stress-symptom').length}
+                {correlations.filter(c => c.confidence >= 0.5 && c.type === 'stress-symptom').length}
               </div>
               <div className="text-sm text-purple-700">Stress Factors</div>
             </div>
@@ -387,9 +348,9 @@ const CorrelationInsights = () => {
             <Heart className="w-8 h-8 text-green-600" />
             <div>
               <div className="text-2xl font-bold text-green-600">
-                {baseCorrelations.filter(c => c.type === 'supplement-improvement' || c.type === 'sleep-quality').length}
+                {correlations.filter(c => c.confidence >= 0.5 && isPositiveCorrelation(c)).length}
               </div>
-              <div className="text-sm text-green-700">What's Working</div>
+              <div className="text-sm text-green-700">Positive Patterns</div>
             </div>
           </div>
         </div>
