@@ -1,19 +1,24 @@
 import React, { useState } from 'react';
 import { useCorrelations } from '../../../../shared/hooks/useCorrelations';
+import useAuth from '../../../../shared/hooks/useAuth';
 import { AlertTriangle, TrendingUp, Clock, Target, Activity, Pill, Moon, Dumbbell, Brain, Heart } from 'lucide-react';
-
-const DEMO_USER_ID = '8e8a568a-c2f8-43a8-abf2-4e54408dbdc0';
 
 const CorrelationInsights = () => {
   const [timeframeFilter, setTimeframeFilter] = useState(180);
   const [activeTab, setActiveTab] = useState('critical');
   const [showMore, setShowMore] = useState(false);
   
+  // Get current user from auth context
+  const { user, loading: authLoading } = useAuth();
+  
+  // Debug: Log which user we're loading data for
+  console.log('🔍 INSIGHTS: Loading correlations for user:', user?.id, user?.email);
+  
   const { 
     correlations,  
-    loading, 
+    loading: correlationsLoading, 
     error
-  } = useCorrelations(DEMO_USER_ID, 0.3, timeframeFilter);
+  } = useCorrelations(user?.id, 0.3, timeframeFilter);
 
   // Helper function to determine if correlation is positive
   const isPositiveCorrelation = (correlation) => {
@@ -132,12 +137,32 @@ const CorrelationInsights = () => {
   const sortedCorrelations = [...filteredCorrelations].sort((a, b) => b.confidence - a.confidence);
   const displayedCorrelations = showMore ? sortedCorrelations : sortedCorrelations.slice(0, 5);
 
-  if (loading) {
+  // Combined loading state
+  const loading = authLoading || correlationsLoading;
+
+  // Show loading if auth is loading or if we have a user but correlations are loading
+  // Show loading if auth is loading or if we have a user but correlations are loading
+  if (loading || (user && correlationsLoading)) {
     return (
       <div className="flex items-center justify-center p-8">
         <div className="flex items-center space-x-3">
           <Activity className="w-6 h-6 animate-spin text-blue-500" />
           <span className="text-lg text-gray-600">Analyzing health patterns...</span>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error if no user is authenticated
+  if (!user) {
+    return (
+      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+        <div className="flex items-center space-x-3">
+          <AlertTriangle className="w-6 h-6 text-yellow-500" />
+          <div>
+            <h3 className="text-yellow-800 font-semibold">Authentication Required</h3>
+            <p className="text-yellow-600">Please log in to view your health insights.</p>
+          </div>
         </div>
       </div>
     );
