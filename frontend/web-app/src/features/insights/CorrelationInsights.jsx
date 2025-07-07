@@ -5,7 +5,7 @@ import { AlertTriangle, TrendingUp, Clock, Target, Zap, Activity, Pill, Moon, Du
 const DEMO_USER_ID = '8e8a568a-c2f8-43a8-abf2-4e54408dbdc0'; // Sarah's ID for demo
 
 const CorrelationInsights = () => {
-  const [confidenceFilter, setConfidenceFilter] = useState(0.3); // Lower default to show more correlations
+  const [confidenceFilter, setConfidenceFilter] = useState(0.7); // Default to Strong patterns
   const [timeframeFilter, setTimeframeFilter] = useState(180); // Longer timeframe for more data
   
   const { 
@@ -152,14 +152,34 @@ const CorrelationInsights = () => {
           icon: getCorrelationIcon(pattern),
           typeLabel: getCorrelationTypeLabel(pattern.type),
           typeColor: getCorrelationTypeColor(pattern.type),
-          isPositive: isPositiveCorrelation(pattern)
+          isPositive: isPositiveCorrelation(pattern),
+          seenDescriptions: new Set(),
+          seenRecommendations: new Set()
         };
+      }
+      
+      // Filter out duplicate descriptions and medical advice recommendations
+      const shouldIncludeDescription = pattern.description && 
+        !grouped[key].seenDescriptions.has(pattern.description.toLowerCase());
+      
+      const shouldIncludeRecommendation = pattern.recommendation && 
+        !grouped[key].seenRecommendations.has(pattern.recommendation.toLowerCase()) &&
+        !pattern.recommendation.toLowerCase().includes('continue') &&
+        !pattern.recommendation.toLowerCase().includes('keep taking') &&
+        !pattern.recommendation.toLowerCase().includes('maintain');
+      
+      if (shouldIncludeDescription) {
+        grouped[key].seenDescriptions.add(pattern.description.toLowerCase());
+      }
+      
+      if (shouldIncludeRecommendation) {
+        grouped[key].seenRecommendations.add(pattern.recommendation.toLowerCase());
       }
       
       grouped[key].effects.push({
         effect: pattern.effect,
-        description: pattern.description,
-        recommendation: pattern.recommendation,
+        description: shouldIncludeDescription ? pattern.description : null,
+        recommendation: shouldIncludeRecommendation ? pattern.recommendation : null,
         timeWindowDescription: pattern.timeWindowDescription,
         frequency: pattern.frequency,
         confidence: pattern.confidence
@@ -171,7 +191,12 @@ const CorrelationInsights = () => {
       }
     });
     
-    return Object.values(grouped).sort((a, b) => b.confidence - a.confidence);
+    // Clean up the helper sets before returning
+    return Object.values(grouped).map(group => {
+      delete group.seenDescriptions;
+      delete group.seenRecommendations;
+      return group;
+    }).sort((a, b) => b.confidence - a.confidence);
   };
 
   // ENHANCED: Filter for very high confidence patterns (90%+)
@@ -234,8 +259,6 @@ const CorrelationInsights = () => {
               onChange={(e) => setConfidenceFilter(parseFloat(e.target.value))}
               className="border border-gray-300 rounded px-2 py-1 text-xs flex-1 sm:flex-none sm:w-40"
             >
-              <option value={0.1}>All (10%+)</option>
-              <option value={0.3}>Emerging (30%+)</option>
               <option value={0.5}>Moderate (50%+)</option>
               <option value={0.7}>Strong (70%+)</option>
               <option value={0.9}>Very Strong (90%+)</option>
@@ -336,15 +359,15 @@ const CorrelationInsights = () => {
           </h3>
         </div>
         
-        {sortedCorrelations.length === 0 ? (
+        {sortedCorrelations.filter(c => c.confidence >= 0.5).length === 0 ? (
           <div className="p-8 text-center">
             <Activity className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-            <p className="text-gray-500">No patterns found with current filters.</p>
-            <p className="text-sm text-gray-400 mt-1">Try lowering the pattern strength threshold.</p>
+            <p className="text-gray-500">No patterns found with 50%+ strength and current filters.</p>
+            <p className="text-sm text-gray-400 mt-1">Try lowering the pattern strength threshold to Moderate (50%+).</p>
           </div>
         ) : (
           <div className="divide-y divide-gray-100">
-            {sortedCorrelations.map((correlation, index) => (
+            {sortedCorrelations.filter(c => c.confidence >= 0.5).map((correlation, index) => (
               <div key={index} className="p-4 hover:bg-gray-50 transition-colors">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">

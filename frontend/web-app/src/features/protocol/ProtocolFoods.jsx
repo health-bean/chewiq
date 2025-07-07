@@ -6,8 +6,7 @@ import { useProtocolFoods, useFoodSearch } from '../../../../shared/hooks/usePro
 
 const ProtocolFoods = ({ protocolId }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [activeFilter, setActiveFilter] = useState('all');
-  const [showStats, setShowStats] = useState(true);
+  const [showStats, setShowStats] = useState(false);
   
   // Only call useProtocolFoods hook if we have a valid protocol
   const hasValidProtocol = protocolId && protocolId !== 'no_protocol';
@@ -77,9 +76,9 @@ const ProtocolFoods = ({ protocolId }) => {
     return 'bg-blue-100 text-blue-800';
   };
 
-  const filterFoods = (foods, filter) => {
-    if (filter === 'all') return foods;
-    return foods.filter(food => food.compliance_status === filter);
+  // Filter to only show allowed foods for default view
+  const filterAllowedFoods = (foods) => {
+    return foods.filter(food => food.compliance_status === 'allowed');
   };
 
   // Smart search result analysis
@@ -188,19 +187,19 @@ const ProtocolFoods = ({ protocolId }) => {
           <div>
             <h2 className="text-2xl font-bold text-gray-900 flex items-center space-x-2">
               <Filter className="w-7 h-7 text-green-600" />
-              <span>{hasValidProtocol ? 'Protocol Foods' : 'Food Database'}</span>
+              <span>{hasValidProtocol ? 'Allowed Foods' : 'Food Database'}</span>
             </h2>
             <p className="text-gray-600 mt-1">
               {hasValidProtocol 
-                ? 'Color-coded food guidance for your protocol'
+                ? 'Foods that are approved for your protocol'
                 : 'Search our comprehensive food database'
               }
             </p>
           </div>
           {hasValidProtocol && (
             <div className="text-right">
-              <div className="text-3xl font-bold text-green-600">{totalFoods}</div>
-              <div className="text-sm text-gray-500">Foods Analyzed</div>
+              <div className="text-3xl font-bold text-green-600">{complianceStats.allowed || 0}</div>
+              <div className="text-sm text-gray-500">Allowed Foods</div>
             </div>
           )}
         </div>
@@ -212,7 +211,7 @@ const ProtocolFoods = ({ protocolId }) => {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
           <input
             type="text"
-            placeholder={hasValidProtocol ? "Search protocol foods..." : "Search foods..."}
+            placeholder={hasValidProtocol ? "Search to check if foods are allowed..." : "Search foods..."}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -221,12 +220,12 @@ const ProtocolFoods = ({ protocolId }) => {
         {hasValidProtocol && (
           <div className="mt-2 text-sm text-gray-600">
             <Info className="w-4 h-4 inline mr-1" />
-            Search to see if foods are included in your protocol
+            Search any food to see if it's allowed, avoided, or not in your protocol
           </div>
         )}
       </div>
 
-      {/* Search Results */}
+      {/* Search Results - Directly under search */}
       {searchTerm.trim() && (
         <div className="bg-white rounded-lg border border-gray-200">
           <div className="p-4 border-b border-gray-200">
@@ -282,7 +281,7 @@ const ProtocolFoods = ({ protocolId }) => {
           
           {searchAnalysis.type === 'results' && (
             <div className="divide-y divide-gray-100">
-              {filterFoods(searchAnalysis.foods, activeFilter).map((food, index) => (
+              {searchAnalysis.foods.map((food, index) => (
                 <FoodItem 
                   key={index} 
                   food={food} 
@@ -323,38 +322,20 @@ const ProtocolFoods = ({ protocolId }) => {
         </div>
       )}
 
-      {/* Protocol-specific content (filters, stats, categories) */}
+      {/* Protocol-specific content (only allowed foods) */}
       {hasValidProtocol && !searchTerm.trim() && (
         <>
-          {/* Filters */}
+          {/* Stats Toggle */}
           <div className="flex items-center justify-between">
-            <div className="flex space-x-2">
-              {[
-                { key: 'all', label: 'All Foods', count: totalFoods },
-                { key: 'allowed', label: 'Allowed', count: complianceStats.allowed || 0 },
-                { key: 'avoid', label: 'Avoid', count: complianceStats.avoid || 0 },
-                { key: 'reintroduction', label: 'Reintroduction', count: complianceStats.reintroduction || 0 }
-              ].map(filter => (
-                <button
-                  key={filter.key}
-                  onClick={() => setActiveFilter(filter.key)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium border transition-colors ${
-                    activeFilter === filter.key
-                      ? 'bg-blue-500 text-white border-blue-500'
-                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-                  }`}
-                >
-                  {filter.label} ({filter.count})
-                </button>
-              ))}
+            <div className="text-sm text-gray-600">
+              Showing {complianceStats.allowed || 0} allowed foods from your protocol
             </div>
-            
             <button
               onClick={() => setShowStats(!showStats)}
               className="flex items-center space-x-2 text-gray-600 hover:text-gray-800"
             >
               {showStats ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              <span className="text-sm">Stats</span>
+              <span className="text-sm">Protocol Stats</span>
             </button>
           </div>
 
@@ -393,12 +374,12 @@ const ProtocolFoods = ({ protocolId }) => {
             </div>
           )}
 
-          {/* Category Foods */}
+          {/* Allowed Foods by Category */}
           <div className="space-y-6">
             {Object.entries(foodsByCategory).map(([category, foods]) => {
-              const filteredFoods = filterFoods(foods, activeFilter);
+              const allowedFoods = filterAllowedFoods(foods);
               
-              if (filteredFoods.length === 0) return null;
+              if (allowedFoods.length === 0) return null;
               
               return (
                 <div key={category} className="bg-white rounded-lg border border-gray-200">
@@ -406,12 +387,12 @@ const ProtocolFoods = ({ protocolId }) => {
                     <h3 className="text-lg font-semibold text-gray-900 flex items-center space-x-2">
                       <TrendingUp className="w-5 h-5 text-green-500" />
                       <span className="capitalize">{category}</span>
-                      <span className="text-sm text-gray-500">({filteredFoods.length})</span>
+                      <span className="text-sm text-gray-500">({allowedFoods.length} allowed)</span>
                     </h3>
                   </div>
                   
                   <div className="divide-y divide-gray-100">
-                    {filteredFoods.map((food, index) => (
+                    {allowedFoods.map((food, index) => (
                       <FoodItem key={index} food={food} />
                     ))}
                   </div>
@@ -426,7 +407,7 @@ const ProtocolFoods = ({ protocolId }) => {
               <div className="text-gray-400 mb-4">
                 <Filter className="w-12 h-12 mx-auto" />
               </div>
-              <p className="text-gray-600">No foods available for this protocol</p>
+              <p className="text-gray-600">No allowed foods available for this protocol</p>
             </div>
           )}
         </>
