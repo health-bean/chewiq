@@ -5,7 +5,7 @@ import { AlertTriangle, TrendingUp, Clock, Target, Zap, Activity, Pill, Moon, Du
 const DEMO_USER_ID = '8e8a568a-c2f8-43a8-abf2-4e54408dbdc0'; // Sarah's ID for demo
 
 const CorrelationInsights = () => {
-  const [confidenceFilter, setConfidenceFilter] = useState(0.7); // Default to Strong patterns
+  const [viewFilter, setViewFilter] = useState('triggers'); // Default to Potential Triggers
   const [timeframeFilter, setTimeframeFilter] = useState(180); // Longer timeframe for more data
   
   const { 
@@ -15,7 +15,7 @@ const CorrelationInsights = () => {
     loading, 
     error,
     correlationStats
-  } = useCorrelations(DEMO_USER_ID, confidenceFilter, timeframeFilter);
+  } = useCorrelations(DEMO_USER_ID, 0.3, timeframeFilter); // Use low threshold, filter in UI
 
   // ENHANCED: Determine if correlation is positive or negative
   const isPositiveCorrelation = (correlation) => {
@@ -199,9 +199,36 @@ const CorrelationInsights = () => {
     }).sort((a, b) => b.confidence - a.confidence);
   };
 
-  // ENHANCED: Filter for very high confidence patterns (90%+)
-  const veryHighConfidencePatterns = correlations.filter(c => c.confidence >= 0.9);
-  const consolidatedHighConfidence = consolidateByTrigger(veryHighConfidencePatterns);
+  // ENHANCED: Filter correlations based on view
+  const getFilteredCorrelations = () => {
+    switch (viewFilter) {
+      case 'triggers':
+        return correlations.filter(c => 
+          c.type === 'food-symptom' || 
+          c.type === 'medication-effect' || 
+          c.type === 'stress-symptom'
+        );
+      case 'working':
+        return correlations.filter(c => 
+          c.type === 'supplement-improvement' || 
+          c.type === 'sleep-quality' || 
+          (c.type === 'exercise-energy' && isPositiveCorrelation(c))
+        );
+      case 'all':
+      default:
+        return correlations;
+    }
+  };
+
+  const filteredCorrelations = getFilteredCorrelations();
+  
+  // ENHANCED: Top 5 highest confidence triggers only for priority section
+  const topTriggers = correlations
+    .filter(c => c.type === 'food-symptom' || c.type === 'medication-effect' || c.type === 'stress-symptom')
+    .sort((a, b) => b.confidence - a.confidence)
+    .slice(0, 5);
+
+  const consolidatedTopTriggers = consolidateByTrigger(topTriggers);
 
   if (loading) {
     return (
@@ -236,15 +263,19 @@ const CorrelationInsights = () => {
           <div>
             <h2 className="text-2xl font-bold text-gray-900 flex items-center space-x-2">
               <Target className="w-7 h-7 text-blue-600" />
-              <span>Health Pattern Analysis</span>
+              <span>Health Pattern Insights</span>
             </h2>
             <p className="text-gray-600 mt-1">
-              Patterns observed from your comprehensive health tracking data
+              Identify patterns that may be affecting your health and recovery
             </p>
           </div>
           <div className="text-right">
-            <div className="text-3xl font-bold text-blue-600">{correlationStats?.total || 0}</div>
-            <div className="text-sm text-gray-500">Patterns Observed</div>
+            <div className="text-3xl font-bold text-blue-600">{filteredCorrelations.length}</div>
+            <div className="text-sm text-gray-500">
+              {viewFilter === 'triggers' ? 'Potential Triggers' :
+               viewFilter === 'working' ? 'Positive Patterns' :
+               'Total Patterns'}
+            </div>
           </div>
         </div>
       </div>
@@ -253,15 +284,15 @@ const CorrelationInsights = () => {
       <div className="bg-white rounded-lg border border-gray-200 p-4">
         <div className="space-y-3 sm:space-y-0 sm:flex sm:items-center sm:space-x-6">
           <div className="flex items-center space-x-2">
-            <label className="text-xs font-medium text-gray-700 min-w-0 flex-shrink-0">Pattern Strength:</label>
+            <label className="text-xs font-medium text-gray-700 min-w-0 flex-shrink-0">Show:</label>
             <select 
-              value={confidenceFilter} 
-              onChange={(e) => setConfidenceFilter(parseFloat(e.target.value))}
+              value={viewFilter} 
+              onChange={(e) => setViewFilter(e.target.value)}
               className="border border-gray-300 rounded px-2 py-1 text-xs flex-1 sm:flex-none sm:w-40"
             >
-              <option value={0.5}>Moderate (50%+)</option>
-              <option value={0.7}>Strong (70%+)</option>
-              <option value={0.9}>Very Strong (90%+)</option>
+              <option value="triggers">Potential Triggers</option>
+              <option value="all">All Patterns</option>
+              <option value="working">What's Working</option>
             </select>
           </div>
           <div className="flex items-center space-x-2">
@@ -280,18 +311,19 @@ const CorrelationInsights = () => {
         </div>
       </div>
 
-      {/* Very Strong Patterns (90%+) - ENHANCED */}
-      {consolidatedHighConfidence.length > 0 && (
-        <div className="bg-white border border-gray-200 rounded-lg">
-          <div className="p-4 border-b border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900 flex items-center space-x-2">
-              <CheckCircle className="w-5 h-5 text-green-500" />
-              <span>Very Strong Patterns (90%+ Observed)</span>
-              <span className="text-sm font-normal text-gray-500">({consolidatedHighConfidence.length} found)</span>
+      {/* Priority Triggers (Top 5) - Only show when viewing triggers or all */}
+      {(viewFilter === 'triggers' || viewFilter === 'all') && consolidatedTopTriggers.length > 0 && (
+        <div className="bg-red-50 border border-red-200 rounded-lg">
+          <div className="p-4 border-b border-red-200">
+            <h3 className="text-lg font-semibold text-red-800 flex items-center space-x-2">
+              <AlertTriangle className="w-5 h-5" />
+              <span>Priority Review</span>
+              <span className="text-sm font-normal text-red-600">({consolidatedTopTriggers.length} patterns)</span>
             </h3>
+            <p className="text-sm text-red-700 mt-1">These patterns may be worth investigating further</p>
           </div>
           <div className="divide-y divide-gray-100">
-            {consolidatedHighConfidence.map((group, index) => (
+            {consolidatedTopTriggers.map((group, index) => (
               <div key={index} className="p-4">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center space-x-3">
@@ -308,37 +340,25 @@ const CorrelationInsights = () => {
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border ${getPatternStrengthColor(group)}`}>
-                      {Math.round(group.confidence * 100)}%
-                    </div>
-                    <div className="text-xs text-gray-500 mt-1">
-                      {getPatternStrengthLabel(group.confidence)} Pattern
+                    <div className="text-sm text-gray-600">
+                      Pattern Observed
                     </div>
                   </div>
                 </div>
                 
                 <div className="ml-8 space-y-2">
                   {group.effects.map((effect, effectIndex) => (
-                    <div key={effectIndex} className="border-l-2 border-gray-200 pl-4">
+                    <div key={effectIndex} className="border-l-2 border-red-200 pl-4">
                       <div className="flex items-center space-x-2">
-                        {group.isPositive ? (
-                          <CheckCircle className="w-4 h-4 text-green-500" />
-                        ) : (
-                          <AlertCircle className="w-4 h-4 text-red-500" />
-                        )}
+                        <AlertCircle className="w-4 h-4 text-red-500" />
                         <span className="font-medium text-gray-900">{effect.effect}</span>
                       </div>
                       <div className="text-sm text-gray-600 mt-1">
                         {effect.timeWindowDescription} • {effect.frequency}
                       </div>
                       {effect.description && (
-                        <div className="text-sm text-blue-600 mt-1">
-                          💡 {effect.description}
-                        </div>
-                      )}
-                      {effect.recommendation && (
-                        <div className="text-sm text-green-600 mt-1">
-                          🎯 {effect.recommendation}
+                        <div className="text-sm text-red-600 mt-1">
+                          🔍 {effect.description}
                         </div>
                       )}
                     </div>
@@ -355,19 +375,33 @@ const CorrelationInsights = () => {
         <div className="p-4 border-b border-gray-200">
           <h3 className="text-lg font-semibold text-gray-900 flex items-center space-x-2">
             <TrendingUp className="w-5 h-5 text-blue-500" />
-            <span>All Observed Patterns (Sorted by Strength)</span>
+            <span>
+              {viewFilter === 'triggers' ? 'All Potential Triggers' : 
+               viewFilter === 'working' ? 'What\'s Working For You' : 
+               'All Observed Patterns'}
+            </span>
           </h3>
         </div>
         
-        {sortedCorrelations.filter(c => c.confidence >= 0.5).length === 0 ? (
+        {filteredCorrelations.length === 0 ? (
           <div className="p-8 text-center">
             <Activity className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-            <p className="text-gray-500">No patterns found with 50%+ strength and current filters.</p>
-            <p className="text-sm text-gray-400 mt-1">Try lowering the pattern strength threshold to Moderate (50%+).</p>
+            <p className="text-gray-500">
+              {viewFilter === 'triggers' ? 'No trigger patterns found.' :
+               viewFilter === 'working' ? 'No positive patterns found.' :
+               'No patterns found.'}
+            </p>
+            <p className="text-sm text-gray-400 mt-1">
+              {viewFilter === 'triggers' ? 'Try selecting "All Patterns" to see everything.' :
+               viewFilter === 'working' ? 'Try selecting "All Patterns" to see everything.' :
+               'Try adjusting your time period.'}
+            </p>
           </div>
         ) : (
           <div className="divide-y divide-gray-100">
-            {sortedCorrelations.filter(c => c.confidence >= 0.5).map((correlation, index) => (
+            {filteredCorrelations
+              .sort((a, b) => b.confidence - a.confidence)
+              .map((correlation, index) => (
               <div key={index} className="p-4 hover:bg-gray-50 transition-colors">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
@@ -403,26 +437,15 @@ const CorrelationInsights = () => {
                     {correlation.description && (
                       <div className="mt-2 ml-8">
                         <p className="text-sm text-blue-600 font-medium">
-                          💡 {correlation.description}
-                        </p>
-                      </div>
-                    )}
-                    
-                    {correlation.recommendation && (
-                      <div className="mt-1 ml-8">
-                        <p className="text-sm text-green-600">
-                          🎯 {correlation.recommendation}
+                          {viewFilter === 'triggers' ? '🔍' : '💡'} {correlation.description}
                         </p>
                       </div>
                     )}
                   </div>
                   
                   <div className="text-right ml-4">
-                    <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border ${getPatternStrengthColor(correlation)}`}>
-                      {Math.round(correlation.confidence * 100)}%
-                    </div>
-                    <div className="text-xs text-gray-500 mt-1">
-                      {getPatternStrengthLabel(correlation.confidence)} Pattern
+                    <div className="text-sm text-gray-600">
+                      Pattern Observed
                     </div>
                   </div>
                 </div>
@@ -432,34 +455,28 @@ const CorrelationInsights = () => {
         )}
       </div>
 
-      {/* Enhanced Summary Stats */}
+      {/* Summary Stats - Show based on current view */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-red-50 border border-red-200 rounded-lg p-4">
           <div className="flex items-center space-x-3">
-            <Pill className="w-8 h-8 text-red-600" />
+            <AlertTriangle className="w-8 h-8 text-red-600" />
             <div>
-              <div className="text-2xl font-bold text-red-600">{correlationStats?.byType?.medicationEffects || 0}</div>
-              <div className="text-sm text-red-700">Medication Effects</div>
+              <div className="text-2xl font-bold text-red-600">
+                {correlations.filter(c => c.type === 'food-symptom').length}
+              </div>
+              <div className="text-sm text-red-700">Food Triggers</div>
             </div>
           </div>
         </div>
         
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
           <div className="flex items-center space-x-3">
-            <Moon className="w-8 h-8 text-blue-600" />
+            <Pill className="w-8 h-8 text-orange-600" />
             <div>
-              <div className="text-2xl font-bold text-blue-600">{correlationStats?.byType?.sleepFactors || 0}</div>
-              <div className="text-sm text-blue-700">Sleep Factors</div>
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-          <div className="flex items-center space-x-3">
-            <Dumbbell className="w-8 h-8 text-green-600" />
-            <div>
-              <div className="text-2xl font-bold text-green-600">{correlationStats?.byType?.exerciseImpacts || 0}</div>
-              <div className="text-sm text-green-700">Exercise Impacts</div>
+              <div className="text-2xl font-bold text-orange-600">
+                {correlations.filter(c => c.type === 'medication-effect').length}
+              </div>
+              <div className="text-sm text-orange-700">Medication Effects</div>
             </div>
           </div>
         </div>
@@ -468,8 +485,22 @@ const CorrelationInsights = () => {
           <div className="flex items-center space-x-3">
             <Brain className="w-8 h-8 text-purple-600" />
             <div>
-              <div className="text-2xl font-bold text-purple-600">{correlationStats?.byType?.stressAmplifiers || 0}</div>
-              <div className="text-sm text-purple-700">Stress Amplifiers</div>
+              <div className="text-2xl font-bold text-purple-600">
+                {correlations.filter(c => c.type === 'stress-symptom').length}
+              </div>
+              <div className="text-sm text-purple-700">Stress Factors</div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+          <div className="flex items-center space-x-3">
+            <Heart className="w-8 h-8 text-green-600" />
+            <div>
+              <div className="text-2xl font-bold text-green-600">
+                {correlations.filter(c => c.type === 'supplement-improvement' || c.type === 'sleep-quality').length}
+              </div>
+              <div className="text-sm text-green-700">What's Working</div>
             </div>
           </div>
         </div>
