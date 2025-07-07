@@ -2,34 +2,8 @@ import React from 'react';
 import { Button } from '../../../../../shared/components/ui';
 
 const ProtocolsStep = ({ setupData, updateSetupData, protocols, onNext, onBack, isLast, disabled }) => {
-  // Process protocols: filter, rename, and add Keto
-  const processedProtocols = protocols
-    .filter(protocol => {
-      const name = protocol.name.toLowerCase();
-      return !name.includes('elimination') && !name.includes('aip modified');
-    })
-    .map(protocol => {
-      // Rename AIP Core to just AIP
-      if (protocol.name.toLowerCase().includes('aip core')) {
-        return {
-          ...protocol,
-          name: 'AIP',
-          description: 'Autoimmune Protocol for reducing inflammation and identifying triggers'
-        };
-      }
-      return protocol;
-    });
-
-  // Add Keto protocol (hardcoded since we can't modify backend yet)
-  const ketoProtocol = {
-    id: 'keto_protocol',
-    name: 'Keto',
-    description: 'High-fat, low-carb ketogenic diet for metabolic health and weight management'
-  };
-
-  // Sort protocols alphabetically and add Keto
-  const availableProtocols = [...processedProtocols, ketoProtocol]
-    .sort((a, b) => a.name.localeCompare(b.name));
+  // Just sort protocols alphabetically - no filtering or hardcoding
+  const availableProtocols = protocols.sort((a, b) => a.name.localeCompare(b.name));
 
   const handleProtocolChange = (protocolId, isChecked) => {
     // Special handling for "no protocol" option
@@ -85,7 +59,7 @@ const ProtocolsStep = ({ setupData, updateSetupData, protocols, onNext, onBack, 
           </div>
         </label>
 
-        {/* Regular Protocols - Always Clickable */}
+        {/* Regular Protocols - Direct from Database */}
         {availableProtocols.map((protocol) => (
           <label
             key={protocol.id}
