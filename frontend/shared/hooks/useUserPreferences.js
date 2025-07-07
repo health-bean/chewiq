@@ -1,4 +1,4 @@
-// File: frontend/shared/hooks/useUserPreferences.js (UPDATED)
+// File: frontend/shared/hooks/useUserPreferences.js (IMPROVED)
 
 import { useState, useEffect } from 'react';
 import { apiClient } from '../services/api.js';
@@ -13,11 +13,23 @@ const useUserPreferences = () => {
   // Get auth context
   const { user, token, isAuthenticated, getAuthHeaders } = useAuth();
 
+  // Default preferences structure
+  const getDefaultPreferences = () => ({
+    protocols: [],
+    quick_supplements: [],
+    quick_medications: [],
+    quick_foods: [],
+    quick_symptoms: [],
+    quick_detox: [],
+    setup_complete: false
+  });
+
   // Load preferences from database when user is authenticated
   useEffect(() => {
     if (!isAuthenticated || !user) {
+      console.log('🔧 PREFS: No authenticated user, using defaults');
+      setPreferences(getDefaultPreferences());
       setLoading(false);
-      setPreferences(null);
       return;
     }
 
@@ -25,60 +37,54 @@ const useUserPreferences = () => {
       try {
         setLoading(true);
         setError(null);
-        console.log('Loading preferences for user:', user.id);
+        console.log('🔧 PREFS: Loading preferences for user:', user.id);
         
-        // Make API call with auth headers
         const response = await apiClient.get('/api/v1/user/preferences', {
           headers: getAuthHeaders()
         });
         
-        if (response?.preferences) {
-          console.log('Loaded preferences from database:', response.preferences);
-          setPreferences(response.preferences);
+        console.log('🔧 PREFS: API response:', response);
+        
+        // Handle both response formats: {preferences: {...}} or {...} directly
+        let preferencesData = response;
+        
+        // If response has a preferences property, use that
+        if (response && typeof response === 'object' && response.preferences) {
+          preferencesData = response.preferences;
+        }
+        
+        // Validate preferences data
+        if (preferencesData && typeof preferencesData === 'object' && Object.keys(preferencesData).length > 0) {
+          // Merge with defaults to ensure all required fields exist
+          const mergedPreferences = { ...getDefaultPreferences(), ...preferencesData };
+          console.log('🔧 PREFS: Loaded preferences:', mergedPreferences);
+          setPreferences(mergedPreferences);
         } else {
-          // Set default preferences for new users
-          const defaultPreferences = {
-            protocols: [],
-            quick_supplements: [],
-            quick_medications: [],
-            quick_foods: [],
-            quick_symptoms: [],
-            quick_detox: [],
-            setup_complete: false
-          };
-          setPreferences(defaultPreferences);
+          console.log('🔧 PREFS: No valid preferences found, using defaults');
+          setPreferences(getDefaultPreferences());
         }
       } catch (error) {
-        console.error('Failed to load preferences from API:', error);
+        console.error('🔧 PREFS: Failed to load preferences:', error);
         setError('Failed to load preferences');
-        
-        // Fallback to default preferences
-        const defaultPreferences = {
-          protocols: [],
-          quick_supplements: [],
-          quick_medications: [],
-          quick_foods: [],
-          quick_symptoms: [],
-          quick_detox: [],
-          setup_complete: false
-        };
-        setPreferences(defaultPreferences);
+        setPreferences(getDefaultPreferences());
       } finally {
         setLoading(false);
       }
     };
 
     loadPreferences();
-  }, [isAuthenticated, user, token, getAuthHeaders]);
+  }, [isAuthenticated, user, token]);
 
   const updatePreferences = async (newPreferences) => {
+    console.log('🔧 PREFS: Starting updatePreferences with:', newPreferences);
+
     if (!isAuthenticated || !user) {
-      console.error('Cannot update preferences - user not authenticated');
+      console.error('🔧 PREFS: Cannot update preferences - user not authenticated');
       return Promise.reject(new Error('User not authenticated'));
     }
 
     if (!preferences) {
-      console.error('Cannot update preferences - not loaded yet');
+      console.error('🔧 PREFS: Cannot update preferences - not loaded yet');
       return Promise.reject(new Error('Preferences not loaded'));
     }
     
@@ -88,38 +94,35 @@ const useUserPreferences = () => {
       ...newPreferences 
     };
     
-    console.log('Updating preferences for user:', user.id);
-    console.log('Preserving existing preferences:', preferences);
-    console.log('Merging with new preferences:', newPreferences);
-    console.log('Final preferences to save:', updatedPreferences);
+    console.log('🔧 PREFS: Final preferences to save:', updatedPreferences);
     
     try {
       setSaving(true);
       setError(null);
       
-      // Save to database with auth headers
+      // Save to database
+      console.log('🔧 PREFS: Making API call to save preferences...');
       const response = await apiClient.post('/api/v1/user/preferences', updatedPreferences, {
         headers: getAuthHeaders()
       });
       
-      if (response) {
-        console.log('Preferences saved to database successfully');
-        // Update local state with server response
-        setPreferences(response.preferences || updatedPreferences);
-        
-        // In production, also save to localStorage as backup
-        // localStorage.setItem('user_preferences', JSON.stringify(updatedPreferences));
-        
-        return updatedPreferences;
-      } else {
-        throw new Error('Invalid response from server');
+      console.log('🔧 PREFS: Save response:', response);
+      
+      // Handle response
+      let savedPreferences = updatedPreferences;
+      if (response && response.preferences) {
+        savedPreferences = response.preferences;
       }
       
-    } catch (error) {
-      console.error('Failed to update preferences:', error);
-      setError('Failed to save preferences');
+      // Update local state
+      setPreferences(savedPreferences);
+      console.log('🔧 PREFS: Preferences saved successfully');
       
-      // Don't update local state if API call failed
+      return savedPreferences;
+      
+    } catch (error) {
+      console.error('🔧 PREFS: Update failed:', error);
+      setError('Failed to save preferences');
       throw error;
     } finally {
       setSaving(false);
@@ -127,26 +130,38 @@ const useUserPreferences = () => {
   };
 
   const refreshPreferences = async () => {
+    console.log('🔧 PREFS: Refreshing preferences');
+
     if (!isAuthenticated || !user) {
-      console.log('Cannot refresh preferences - user not authenticated');
+      console.log('🔧 PREFS: Cannot refresh - user not authenticated');
       return;
     }
 
     try {
       setLoading(true);
       setError(null);
-      console.log('Refreshing preferences for user:', user.id);
       
       const response = await apiClient.get('/api/v1/user/preferences', {
         headers: getAuthHeaders()
       });
       
-      if (response?.preferences) {
-        console.log('Refreshed preferences:', response.preferences);
-        setPreferences(response.preferences);
+      console.log('🔧 PREFS: Refresh response:', response);
+      
+      // Handle response format
+      let preferencesData = response;
+      if (response && response.preferences) {
+        preferencesData = response.preferences;
+      }
+      
+      if (preferencesData && typeof preferencesData === 'object' && Object.keys(preferencesData).length > 0) {
+        const mergedPreferences = { ...getDefaultPreferences(), ...preferencesData };
+        setPreferences(mergedPreferences);
+        console.log('🔧 PREFS: Preferences refreshed successfully');
+      } else {
+        console.log('🔧 PREFS: No valid preferences in refresh response');
       }
     } catch (error) {
-      console.error('Failed to refresh preferences:', error);
+      console.error('🔧 PREFS: Refresh failed:', error);
       setError('Failed to refresh preferences');
     } finally {
       setLoading(false);
