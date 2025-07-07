@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2025-07-07T18:37:16.709Z",
+    "generated": "2025-07-07T18:54:50.743Z",
     "version": "1.0.0",
     "generator": "AutomatedProfessionalDocsGenerator"
   },
@@ -17,7 +17,7 @@
     "workingAPIs": 12,
     "totalAPIs": 27,
     "totalTables": 22,
-    "totalCommits": 31,
+    "totalCommits": 32,
     "contributors": 1
   },
   "discoveredInfo": {
@@ -130,7 +130,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 4040,
+          "responseTime": 4479,
           "responseData": {
             "insights": [
               {
@@ -653,7 +653,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 109,
+          "responseTime": 64,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -704,7 +704,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 66,
+          "responseTime": 131,
           "responseData": {
             "foods": [
               {
@@ -752,7 +752,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 64,
+          "responseTime": 97,
           "responseData": {
             "protocols": [
               {
@@ -926,7 +926,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 112,
+          "responseTime": 59,
           "responseData": {
             "entries": [],
             "total": 0
@@ -947,7 +947,7 @@
           ],
           "status": 500,
           "working": false,
-          "responseTime": 69,
+          "responseTime": 51,
           "responseData": {
             "error": "Failed to complete create timeline entry"
           },
@@ -967,7 +967,7 @@
           ],
           "status": 404,
           "working": false,
-          "responseTime": 108,
+          "responseTime": 37,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -1018,7 +1018,7 @@
           ],
           "status": 404,
           "working": false,
-          "responseTime": 60,
+          "responseTime": 73,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -1064,7 +1064,7 @@
           "params": [],
           "status": 400,
           "working": false,
-          "responseTime": 66,
+          "responseTime": 72,
           "responseData": {
             "error": "Email and password required"
           },
@@ -1079,7 +1079,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 70,
+          "responseTime": 52,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -1125,7 +1125,7 @@
           "params": [],
           "status": 401,
           "working": false,
-          "responseTime": 73,
+          "responseTime": 39,
           "responseData": {
             "error": "No authorization header"
           },
@@ -1140,7 +1140,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 106,
+          "responseTime": 45,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -1186,7 +1186,7 @@
           "params": [],
           "status": 400,
           "working": false,
-          "responseTime": 115,
+          "responseTime": 61,
           "responseData": {
             "error": "Missing required fields"
           },
@@ -1201,7 +1201,7 @@
           "params": [],
           "status": 400,
           "working": false,
-          "responseTime": 63,
+          "responseTime": 48,
           "responseData": {
             "error": "Email and password required"
           },
@@ -1216,7 +1216,7 @@
           "params": [],
           "status": 200,
           "working": true,
-          "responseTime": 112,
+          "responseTime": 30,
           "responseData": {
             "user": {
               "id": "8e8a568a-c2f8-43a8-abf2-4e54408dbdc0",
@@ -1242,7 +1242,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 104,
+          "responseTime": 157,
           "responseData": {
             "protocols": [],
             "total": 0
@@ -1263,10 +1263,10 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 65,
+          "responseTime": 39,
           "responseData": {
             "protocols": [
-              "no_protocol"
+              "1495844a-19de-404c-a288-7660eda0cbe1"
             ],
             "quick_detox": [],
             "quick_foods": [],
@@ -1275,7 +1275,7 @@
             "quick_medications": [],
             "quick_supplements": []
           },
-          "responseSize": 151
+          "responseSize": 176
         },
         {
           "path": "/api/v1/foods/by-protocol",
@@ -1291,7 +1291,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 120,
+          "responseTime": 61,
           "responseData": {
             "foods": [
               {
@@ -5198,7 +5198,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 116,
+          "responseTime": 44,
           "responseData": {
             "symptoms": [],
             "total": 0,
@@ -5220,7 +5220,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 61,
+          "responseTime": 36,
           "responseData": {
             "supplements": [],
             "total": 0,
@@ -5242,7 +5242,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 64,
+          "responseTime": 35,
           "responseData": {
             "medications": [],
             "total": 0,
@@ -5264,7 +5264,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 60,
+          "responseTime": 45,
           "responseData": {
             "detox_types": [],
             "total": 0,
@@ -5281,7 +5281,7 @@
           "params": [],
           "status": 500,
           "working": false,
-          "responseTime": 61,
+          "responseTime": 34,
           "responseData": {
             "error": "Internal server error: handleGetJournalEntries is not a function"
           },
@@ -5296,7 +5296,7 @@
           "params": [],
           "status": 500,
           "working": false,
-          "responseTime": 59,
+          "responseTime": 33,
           "responseData": {
             "error": "Internal server error: handleGetJournalEntry is not a function"
           },
@@ -5311,7 +5311,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 62,
+          "responseTime": 44,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -5357,7 +5357,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 63,
+          "responseTime": 36,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -5403,7 +5403,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 115,
+          "responseTime": 30,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -5652,7 +5652,7 @@
             {
               "name": "CorrelationInsights",
               "path": "frontend/web-app/src/features/insights/CorrelationInsights.jsx",
-              "size": 16216,
+              "size": 19286,
               "hooks": [
                 "useState",
                 "useCorrelations"
@@ -5769,7 +5769,7 @@
             }
           ],
           "utilities": [],
-          "size": "322.4 KB"
+          "size": "325.4 KB"
         },
         "frontend/shared": {
           "totalFiles": 24,
@@ -6007,18 +6007,18 @@
       "repository": "https://github.com/deebyrne26/health-platform",
       "branch": "main",
       "lastCommit": {
-        "hash": "b549f1e",
-        "message": "feat: Insight improvements",
+        "hash": "6c5b3cd",
+        "message": "feat: Insights enhanced",
         "author": "deebyrne26",
-        "date": "Mon Jul 7 14:36:37 2025 -0400"
+        "date": "Mon Jul 7 14:54:17 2025 -0400"
       },
       "contributors": [
         {
           "name": "deebyrne26",
-          "commits": 31
+          "commits": 32
         }
       ],
-      "totalCommits": 31
+      "totalCommits": 32
     }
   }
 }
