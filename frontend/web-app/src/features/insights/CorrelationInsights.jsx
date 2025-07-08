@@ -244,27 +244,22 @@ const CorrelationInsights = () => {
 
   return (
     <div className="space-y-6">
-      {/* Compact Header */}
-      <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-3 border border-blue-200">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Target className="w-5 h-5 text-blue-600" />
-            <span className="text-lg font-bold text-gray-900">FILO Insights</span>
-          </div>
-          <div className="text-right">
-            <div className="text-xs text-gray-500 mb-1">Time period</div>
-            <Select
-              value={timeframeFilter}
-              onChange={(e) => setTimeframeFilter(parseInt(e.target.value))}
-              className="text-sm w-20"
-            >
-              <option value={30}>30d</option>
-              <option value={90}>3m</option>
-              <option value={180}>6m</option>
-              <option value={365}>1y</option>
-            </Select>
-          </div>
+      {/* Header - Match ReflectionView Style */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center space-x-2">
+          <Target size={20} className="text-blue-600" />
+          <h2 className="text-lg font-semibold">FILO Insights</h2>
         </div>
+        <Select
+          value={timeframeFilter}
+          onChange={(e) => setTimeframeFilter(parseInt(e.target.value))}
+          className="text-sm w-20"
+        >
+          <option value={30}>30d</option>
+          <option value={90}>3m</option>
+          <option value={180}>6m</option>
+          <option value={365}>1y</option>
+        </Select>
       </div>
 
       {/* Navigation Tabs */}
