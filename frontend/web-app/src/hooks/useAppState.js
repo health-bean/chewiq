@@ -28,7 +28,7 @@ export const useAppState = () => {
     
     // Call the completion callback (usually refreshes preferences)
     if (onComplete) {
-      await onComplete();
+      await onComplete();  // ← Amazon Q flags this as "code injection" - FALSE POSITIVE
     }
     
     // Hide setup wizard

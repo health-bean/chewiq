@@ -20,8 +20,8 @@ jobs:
     - name: Deploy Lambda
       working-directory: backend/functions/api
       run: |
-        npm ci --only=production
-        zip -r deploy.zip . -x "*.git*" "node_modules/.cache/*" "tests/*"
+        npm ci --only=production || { echo "❌ npm install failed"; exit 1; }
+        zip -r deploy.zip . -x "*.git*" "node_modules/.cache/*" "tests/*" || { echo "❌ zip creation failed"; exit 1; }
         
     - name: Configure AWS
       uses: aws-actions/configure-aws-credentials@v4
@@ -36,7 +36,7 @@ jobs:
         aws lambda update-function-code \
           --function-name health-platform-dev \
           --zip-file fileb://deploy.zip \
-          --publish
+          --publish || { echo "❌ Lambda deployment failed"; exit 1; }
 
   generate-professional-docs:
     needs: deploy-backend
@@ -53,13 +53,13 @@ jobs:
     - name: Generate Professional Documentation
       run: |
         # Make the documentation generator executable
-        chmod +x comprehensive-docs-generator.js
+        chmod +x comprehensive-docs-generator.js || { echo "❌ chmod failed"; exit 1; }
         
         # Run the enhanced documentation generator
-        node comprehensive-docs-generator.js
+        node comprehensive-docs-generator.js || { echo "❌ documentation generation failed"; exit 1; }
         
         # Verify generated files
-        ls -la docs-site/
+        ls -la docs-site/ || { echo "❌ docs-site directory not found"; exit 1; }
         
         # Display summary
         if [ -f "docs-site/platform-data.json" ]; then
@@ -86,17 +86,22 @@ jobs:
     if: always()
     steps:
     - name: Deployment Summary
+      env:
+        REPO_OWNER: ${{ github.repository_owner }}
+        REPO_NAME: ${{ github.event.repository.name }}
+        BACKEND_RESULT: ${{ needs.deploy-backend.result }}
+        DOCS_RESULT: ${{ needs.generate-professional-docs.result }}
       run: |
         echo "## 🎯 Deployment Results" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         
-        if [ "${{ needs.deploy-backend.result }}" == "success" ]; then
+        if [ "${BACKEND_RESULT}" == "success" ]; then
           echo "- ✅ **Backend:** Lambda deployed successfully" >> $GITHUB_STEP_SUMMARY
         else
           echo "- ❌ **Backend:** Lambda deployment failed" >> $GITHUB_STEP_SUMMARY
         fi
         
-        if [ "${{ needs.generate-professional-docs.result }}" == "success" ]; then
+        if [ "${DOCS_RESULT}" == "success" ]; then
           echo "- ✅ **Documentation:** Professional site generated and deployed" >> $GITHUB_STEP_SUMMARY
         else
           echo "- ❌ **Documentation:** Generation failed" >> $GITHUB_STEP_SUMMARY
@@ -106,8 +111,8 @@ jobs:
         echo "### 🔗 Links:" >> $GITHUB_STEP_SUMMARY
         echo "- **🚀 Live Application:** https://main.d45x824boqj7y.amplifyapp.com/" >> $GITHUB_STEP_SUMMARY
         echo "- **🌐 API Gateway:** https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev/" >> $GITHUB_STEP_SUMMARY
-        echo "- **📚 Professional Documentation:** https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/" >> $GITHUB_STEP_SUMMARY
-        echo "- **📊 Platform Data:** https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/platform-data.json" >> $GITHUB_STEP_SUMMARY
+        echo "- **📚 Professional Documentation:** https://${REPO_OWNER}.github.io/${REPO_NAME}/" >> $GITHUB_STEP_SUMMARY
+        echo "- **📊 Platform Data:** https://${REPO_OWNER}.github.io/${REPO_NAME}/platform-data.json" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "### 📈 Features:" >> $GITHUB_STEP_SUMMARY
         echo "- **Automated Discovery:** Project structure, APIs, database schema" >> $GITHUB_STEP_SUMMARY
