@@ -74,11 +74,14 @@ const LoginPage = () => {
   }, []);
 
   const handleDemoLogin = (demoEmail) => {
+    console.log('🔍 DEBUG: handleDemoLogin called with:', demoEmail);
+    console.log('🔍 DEBUG: Setting password to empty string');
     setEmail(demoEmail);
     // SECURITY: Don't auto-fill password - user must enter it
     setPassword('');
     setError(null);
     setShowDemoWarning(true);
+    console.log('🔍 DEBUG: Password should now be empty');
   };
 
   return (
