@@ -57,11 +57,15 @@ export const useFoodSearch = () => {
     setLoading(true);
     setError(null);
     
+    console.log('🔍 SEARCH API CALL:', filters);
+    
     try {
       const params = new URLSearchParams(filters);
       const data = await apiClient.get(`/api/v1/foods/search?${params}`);
+      console.log('🔍 SEARCH RESULTS:', data);
       setFoods(data.foods || []);
     } catch (err) {
+      console.error('🔍 SEARCH ERROR:', err);
       setError(err.message);
     } finally {
       setLoading(false);

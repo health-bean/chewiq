@@ -28,6 +28,16 @@ const ProtocolFoods = ({ protocolId }) => {
   // Handle search - works even without protocol
   React.useEffect(() => {
     if (searchTerm.trim()) {
+      console.log('🔍 SEARCH DEBUG:', {
+        searchTerm,
+        protocolId,
+        hasValidProtocol,
+        searchParams: { 
+          search: searchTerm, 
+          protocol_id: hasValidProtocol ? protocolId : null 
+        }
+      });
+      
       const timer = setTimeout(() => {
         searchFoods({ 
           search: searchTerm, 
@@ -151,8 +161,9 @@ const ProtocolFoods = ({ protocolId }) => {
           )}
           
           {showProtocolWarning && !food.compliance_status && (
-            <p className="text-sm text-yellow-700 mt-2">
-              💡 This food is not specifically addressed in your current protocol. Consider consulting your protocol guidelines or healthcare provider.
+            <p className="text-sm text-blue-700 mt-2 p-2 bg-blue-50 rounded">
+              <Info className="w-4 h-4 inline mr-1" />
+              <strong>Not yet categorized:</strong> We're still building our database. This food hasn't been categorized for your protocol yet, but you can still track it. Our team will review and categorize it soon.
             </p>
           )}
         </div>
@@ -253,11 +264,34 @@ const ProtocolFoods = ({ protocolId }) => {
           
           {searchAnalysis.type === 'no_results' && (
             <div className="p-8 text-center">
-              <AlertTriangle className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-              <p className="text-gray-600 font-medium">No foods found matching "{searchTerm}"</p>
+              <Search className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+              <p className="text-gray-600 font-medium">Food not found</p>
               <p className="text-sm text-gray-500 mt-1">
-                Try a different search term or check the spelling
+                "{searchTerm}" isn't in our database yet
               </p>
+              
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4 text-left">
+                <div className="flex items-start space-x-3">
+                  <Info className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                  <div className="text-sm text-blue-800">
+                    <p className="font-medium">Help us grow our database!</p>
+                    <p className="mt-1">
+                      You can still track this food in your journal. When you add it, our team will be notified to research and properly categorize it for your protocol.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              <button
+                onClick={() => {
+                  // This would integrate with the entry form to add custom food
+                  console.log('🍎 Adding custom food to be categorized:', searchTerm);
+                  // TODO: Integrate with entry form or show modal
+                }}
+                className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Track "{searchTerm}" anyway
+              </button>
             </div>
           )}
           
