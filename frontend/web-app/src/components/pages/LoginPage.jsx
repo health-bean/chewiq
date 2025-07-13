@@ -11,13 +11,10 @@ import useAuth from '../../../../shared/hooks/useAuth';
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  // Debug wrapper for setPassword to track all changes
-  const debugSetPassword = (value) => {
-    console.log('🔍 setPassword called with:', value);
-    console.log('🔍 Stack trace:', new Error().stack);
-    setPassword(value);
-  };
+  
+  // CRITICAL DEBUG: Log every render
+  console.log('🔍 RENDER: LoginPage rendered, password state:', password);
+  console.log('🔍 RENDER: Timestamp:', new Date().toISOString());
   const [isLoading, setIsLoading] = useState(false);
   const [showDemoWarning, setShowDemoWarning] = useState(false);
   const { login, error, setError, isDemoMode } = useAuth();
@@ -78,8 +75,7 @@ const LoginPage = () => {
 
   // Clear password field on mount to ensure clean state
   useEffect(() => {
-    console.log('🔍 useEffect: Clearing password on mount');
-    debugSetPassword('');
+    setPassword('');
   }, []);
 
   const handleDemoLogin = (demoEmail) => {
