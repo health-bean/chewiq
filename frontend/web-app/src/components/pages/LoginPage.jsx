@@ -125,6 +125,7 @@ const LoginPage = () => {
                 placeholder="Enter your email"
                 className="pl-10"
                 disabled={isLoading}
+                autoComplete="email"
               />
             </div>
           </FormField>
@@ -138,6 +139,7 @@ const LoginPage = () => {
                 placeholder="Enter your password"
                 className="pl-10"
                 disabled={isLoading}
+                autoComplete="current-password"
               />
             </div>
           </FormField>
@@ -186,7 +188,7 @@ const LoginPage = () => {
                       {user.entries}
                     </p>
                     <p className="text-xs text-gray-400 mt-1">
-                      Password: demo123
+                      Password: demo1234
                     </p>
                   </div>
                   <div className="flex items-center space-x-2">

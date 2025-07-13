@@ -12,6 +12,7 @@ const { handleSearchSymptoms } = require('./handlers/symptoms');
 const { handleSearchSupplements } = require('./handlers/supplements');
 const { handleSearchMedications } = require('./handlers/medications');
 const { handleSearchDetoxTypes } = require('./handlers/detox');
+const { handleSeedDemoData } = require('./handlers/admin');
 const { successResponse, errorResponse } = require('./utils/responses');
 
 exports.handler = async (event) => {
@@ -95,6 +96,10 @@ exports.handler = async (event) => {
         }
         else if (path === '/api/v1/detox-types/search' && method === 'GET') {
             response = await handleSearchDetoxTypes(queryParams, event);
+        }
+        // Admin routes (development only)
+        else if (path === '/api/v1/admin/seed-demo-data' && method === 'POST') {
+            response = await handleSeedDemoData(queryParams, event);
         }
         // Journal routes
         else if (path === '/api/v1/journal/entries' && method === 'GET') {
