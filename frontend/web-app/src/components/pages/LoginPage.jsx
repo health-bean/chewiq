@@ -157,6 +157,8 @@ const LoginPage = () => {
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
               <PasswordInput
+                data-testid="login-password-input"
+                data-debug="main-login-form"
                 value={password}
                 onChange={(e) => {
                   console.log('🔍 Password input onChange:', e.target.value);
