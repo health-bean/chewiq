@@ -5,9 +5,44 @@ const { handleDatabaseError } = require('../utils/errors');
 const handleSearchSymptoms = async (queryParams, event) => {
     try {
         const client = await pool.connect();
-        const { search = '', limit = 10 } = queryParams;
+        const { search = '', limit = 10, prioritize_user_history = 'false' } = queryParams;
+        const userId = event.user?.id;
         
-        const query = `
+        let symptoms = [];
+        
+        // If prioritizing user history and user is authenticated
+        if (prioritize_user_history === 'true' && userId) {
+            // First get user's symptom history
+            const userHistoryQuery = `
+                SELECT DISTINCT
+                    NULL as id,
+                    LOWER(TRIM(content)) as name,
+                    'user_history' as source,
+                    COUNT(*) as frequency
+                FROM timeline_entries
+                WHERE user_id = $1 
+                  AND entry_type = 'symptom'
+                  AND LOWER(TRIM(content)) ILIKE $2
+                GROUP BY LOWER(TRIM(content))
+                ORDER BY frequency DESC, name ASC
+                LIMIT $3
+            `;
+            
+            const searchPattern = `%${search.toLowerCase()}%`;
+            const userResult = await client.query(userHistoryQuery, [userId, searchPattern, Math.floor(limit / 2)]);
+            
+            symptoms = userResult.rows.map(row => ({
+                id: `user_${row.name}`,
+                name: row.name,
+                category: 'Personal History',
+                description: `You've logged this ${row.frequency} time${row.frequency > 1 ? 's' : ''}`,
+                source: 'user_history',
+                frequency: row.frequency
+            }));
+        }
+        
+        // Then get from symptoms database
+        const dbQuery = `
             SELECT 
                 id,
                 name,
@@ -15,9 +50,9 @@ const handleSearchSymptoms = async (queryParams, event) => {
                 description,
                 synonyms
             FROM symptoms_database
-            WHERE name ILIKE $1 
+            WHERE (name ILIKE $1 
                OR $2 = ANY(synonyms)
-               OR description ILIKE $1
+               OR description ILIKE $1)
             AND is_active = true
             ORDER BY 
                 CASE 
@@ -31,15 +66,29 @@ const handleSearchSymptoms = async (queryParams, event) => {
         
         const searchPattern = `%${search}%`;
         const exactMatch = `${search}%`;
-        const values = [searchPattern, search, exactMatch, limit];
+        const remainingLimit = limit - symptoms.length;
+        const values = [searchPattern, search, exactMatch, remainingLimit];
         
-        const result = await client.query(query, values);
+        const dbResult = await client.query(dbQuery, values);
+        
+        // Add database results, avoiding duplicates
+        const userSymptomNames = new Set(symptoms.map(s => s.name.toLowerCase()));
+        const dbSymptoms = dbResult.rows
+            .filter(row => !userSymptomNames.has(row.name.toLowerCase()))
+            .map(row => ({
+                ...row,
+                source: 'database'
+            }));
+        
+        symptoms = [...symptoms, ...dbSymptoms];
+        
         client.release();
         
         return successResponse({
-            symptoms: result.rows,
-            total: result.rows.length,
-            search_term: search
+            symptoms: symptoms,
+            total: symptoms.length,
+            search_term: search,
+            user_history_included: prioritize_user_history === 'true' && userId
         });
         
     } catch (error) {

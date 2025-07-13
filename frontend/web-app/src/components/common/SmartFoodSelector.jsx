@@ -101,6 +101,11 @@ const SmartFoodSelector = ({ selectedItems, onToggleItem, selectedProtocols = []
                         <p className="text-sm font-medium text-gray-900 truncate">
                           {food.name}
                         </p>
+                        {food.source === 'user_history' && (
+                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
+                            From your history
+                          </span>
+                        )}
                         {food.category && (
                           <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
                             {food.category}

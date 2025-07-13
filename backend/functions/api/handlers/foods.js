@@ -5,8 +5,56 @@ const { handleDatabaseError } = require('../utils/errors');
 const handleSearchFoods = async (queryParams, event) => {
     try {
         const client = await pool.connect();
-        const { search = '', protocol_id = null } = queryParams;
+        const { search = '', protocol_id = null, prioritize_user_history = 'true' } = queryParams;
+        const userId = event.user?.id;
         
+        let foods = [];
+        
+        // If prioritizing user history and user is authenticated
+        if (prioritize_user_history === 'true' && userId) {
+            // First get user's food history
+            const userHistoryQuery = `
+                SELECT DISTINCT
+                    NULL as id,
+                    LOWER(TRIM(content)) as name,
+                    'Personal History' as category,
+                    'user_history' as source,
+                    COUNT(*) as frequency,
+                    false as nightshade,
+                    'unknown' as histamine,
+                    'unknown' as oxalate,
+                    'unknown' as lectin,
+                    'unknown' as fodmap,
+                    'unknown' as salicylate
+                FROM timeline_entries
+                WHERE user_id = $1 
+                  AND entry_type = 'food'
+                  AND LOWER(TRIM(content)) ILIKE $2
+                GROUP BY LOWER(TRIM(content))
+                ORDER BY frequency DESC, name ASC
+                LIMIT $3
+            `;
+            
+            const searchPattern = `%${search.toLowerCase()}%`;
+            const userResult = await client.query(userHistoryQuery, [userId, searchPattern, Math.floor(25)]);
+            
+            foods = userResult.rows.map(row => ({
+                id: `user_${row.name}`,
+                name: row.name,
+                category: row.category,
+                source: 'user_history',
+                frequency: row.frequency,
+                nightshade: row.nightshade,
+                histamine: row.histamine,
+                oxalate: row.oxalate,
+                lectin: row.lectin,
+                fodmap: row.fodmap,
+                salicylate: row.salicylate,
+                protocol_status: 'unknown'
+            }));
+        }
+        
+        // Then get from food database
         let query = `
             SELECT 
                 fp.id,
@@ -32,32 +80,48 @@ const handleSearchFoods = async (queryParams, event) => {
             LEFT JOIN protocol_food_rules pfr ON fp.id = pfr.food_id AND pfr.protocol_id = $2
             WHERE fp.name ILIKE $1
             ORDER BY fp.name ASC
-            LIMIT 50
+            LIMIT $3
             `;
         } else {
             query += `
             FROM food_properties fp
             WHERE fp.name ILIKE $1
             ORDER BY fp.name ASC
-            LIMIT 50
+            LIMIT $3
             `;
         }
         
-        const values = protocol_id ? [`%${search}%`, protocol_id] : [`%${search}%`];
-        const result = await client.query(query, values);
+        const remainingLimit = 50 - foods.length;
+        const values = protocol_id ? [`%${search}%`, protocol_id, remainingLimit] : [`%${search}%`, remainingLimit];
+        const dbResult = await client.query(query, values);
+        
+        // Add database results, avoiding duplicates
+        const userFoodNames = new Set(foods.map(f => f.name.toLowerCase()));
+        const dbFoods = dbResult.rows
+            .filter(row => !userFoodNames.has(row.name.toLowerCase()))
+            .map(row => ({
+                ...row,
+                source: 'database'
+            }));
+        
+        foods = [...foods, ...dbFoods];
         
         // Add compliance_status field for frontend compatibility
-        result.rows.forEach(food => {
-            food.compliance_status = food.protocol_status || 'unknown';
+        foods.forEach(food => {
+            if (food.protocol_status) {
+                food.compliance_status = food.protocol_status;
+            } else {
+                food.compliance_status = 'unknown';
+            }
         });
         
         client.release();
         
         return successResponse({
-            foods: result.rows,
-            total: result.rows.length,
+            foods: foods,
+            total: foods.length,
             search_term: search,
-            protocol_id: protocol_id
+            user_history_included: prioritize_user_history === 'true' && userId
         });
         
     } catch (error) {
