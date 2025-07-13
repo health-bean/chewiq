@@ -13,9 +13,31 @@ export const AuthProvider = ({ children }) => {
   const [refreshToken, setRefreshToken] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isDemoMode, setIsDemoMode] = useState(false);
 
   // Check if user is authenticated
   const isAuthenticated = !!user && !!token;
+
+  // Helper function to detect demo users
+  const isDemoUser = (userData) => {
+    if (!userData || !userData.email) return false;
+    const demoEmails = [
+      'sarah.aip@test.com',
+      'mike.fodmap@test.com', 
+      'lisa.histamine@test.com',
+      'john.paleo@test.com',
+      'emma.multi@test.com'
+    ];
+    return demoEmails.includes(userData.email.toLowerCase()) || 
+           userData.email.includes('@demo.') ||
+           userData.isDemoUser === true;
+  };
+
+  // SECURITY: Always use sessionStorage for personal health data
+  // Sessions expire when browser closes - maximum privacy protection
+  const getStorage = () => {
+    return sessionStorage; // Always use sessionStorage for security
+  };
 
   // Verify existing token on app start
   useEffect(() => {
@@ -23,10 +45,16 @@ export const AuthProvider = ({ children }) => {
       try {
         console.log('Initializing auth...');
         
-        // Check for stored tokens
-        const storedToken = localStorage.getItem('auth_token');
-        const storedRefreshToken = localStorage.getItem('refresh_token');
-        const storedUser = localStorage.getItem('user');
+        // SECURITY: Only check sessionStorage for health data privacy
+        const storedToken = sessionStorage.getItem('auth_token');
+        const storedRefreshToken = sessionStorage.getItem('refresh_token');
+        const storedUser = sessionStorage.getItem('user');
+        
+        // SECURITY: Clear any localStorage remnants for privacy
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('refresh_token');
+        localStorage.removeItem('user');
+        console.log('🔒 Cleared any localStorage remnants for security');
 
         if (storedToken && storedUser) {
           console.log('Found stored auth data, verifying...');
@@ -34,6 +62,13 @@ export const AuthProvider = ({ children }) => {
           try {
             // Parse stored user
             const parsedUser = JSON.parse(storedUser);
+            
+            // Determine if this is a demo user and set mode
+            const isDemo = isDemoUser(parsedUser);
+            setIsDemoMode(isDemo);
+            
+            console.log(`🔒 SECURE SESSION: ${isDemo ? 'Demo' : 'Personal'} health data - ${parsedUser.email}`);
+            console.log('🔒 Using sessionStorage for maximum privacy protection');
             
             // Verify token is still valid
             const isValid = await verifyStoredToken(storedToken);
@@ -91,16 +126,17 @@ export const AuthProvider = ({ children }) => {
 
       if (response?.token && response?.refreshToken) {
         console.log('Token refresh successful');
-        const storedUser = JSON.parse(localStorage.getItem('user'));
+        const storedUser = JSON.parse(sessionStorage.getItem('user'));
         
         // Update tokens
         setToken(response.token);
         setRefreshToken(response.refreshToken);
         setUser(storedUser);
         
-        // Update localStorage
-        localStorage.setItem('auth_token', response.token);
-        localStorage.setItem('refresh_token', response.refreshToken);
+        // SECURITY: Always use sessionStorage for health data
+        sessionStorage.setItem('auth_token', response.token);
+        sessionStorage.setItem('refresh_token', response.refreshToken);
+        console.log('🔒 Tokens refreshed in secure sessionStorage');
         
         return true;
       } else {
@@ -113,15 +149,26 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Helper function to clear auth storage
+  // Helper function to clear auth storage - SECURITY: Clear everything
   const clearAuthStorage = () => {
+    // SECURITY: Clear sessionStorage (primary)
+    sessionStorage.removeItem('auth_token');
+    sessionStorage.removeItem('refresh_token');
+    sessionStorage.removeItem('user');
+    
+    // SECURITY: Also clear localStorage to prevent any data leakage
     localStorage.removeItem('auth_token');
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('user');
+    
+    // Clear state
     setUser(null);
     setToken(null);
     setRefreshToken(null);
     setError(null);
+    setIsDemoMode(false);
+    
+    console.log('🔒 All auth storage cleared for security');
   };
 
   // Login function
@@ -140,6 +187,14 @@ export const AuthProvider = ({ children }) => {
       if (response?.user && response?.token) {
         console.log('Login successful:', response.user);
         
+        // Determine if this is a demo user
+        const isDemo = isDemoUser(response.user);
+        setIsDemoMode(isDemo);
+        
+        // SECURITY: Always use sessionStorage for personal health data
+        console.log(`🔒 SECURE LOGIN: ${isDemo ? 'Demo' : 'Personal'} health data session`);
+        console.log('🔒 Using sessionStorage - data cleared when browser closes');
+        
         // Set state
         setUser(response.user);
         setToken(response.token);
@@ -147,12 +202,17 @@ export const AuthProvider = ({ children }) => {
           setRefreshToken(response.refreshToken);
         }
         
-        // Save to localStorage for persistence
-        localStorage.setItem('auth_token', response.token);
-        localStorage.setItem('user', JSON.stringify(response.user));
+        // SECURITY: Save to sessionStorage only
+        sessionStorage.setItem('auth_token', response.token);
+        sessionStorage.setItem('user', JSON.stringify(response.user));
         if (response.refreshToken) {
-          localStorage.setItem('refresh_token', response.refreshToken);
+          sessionStorage.setItem('refresh_token', response.refreshToken);
         }
+        
+        // SECURITY: Ensure localStorage is clean
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('refresh_token');
+        localStorage.removeItem('user');
         
         return { success: true, user: response.user };
       } else {
@@ -213,19 +273,19 @@ export const AuthProvider = ({ children }) => {
     return token ? { Authorization: `Bearer ${token}` } : {};
   };
 
-  // Auto-refresh token before it expires (optional enhancement)
+  // SECURITY: Auto-refresh tokens but let demo sessions expire naturally for privacy
   useEffect(() => {
-    if (!token || !refreshToken) return;
+    if (!token || !refreshToken || isDemoMode) return;
 
     // Set up automatic token refresh 2 minutes before expiry
     // Since your tokens expire in 15 minutes, refresh after 13 minutes
     const refreshInterval = setInterval(async () => {
-      console.log('Auto-refreshing token...');
+      console.log('🔒 Auto-refreshing token for continued secure session...');
       await attemptTokenRefresh(refreshToken);
     }, 13 * 60 * 1000); // 13 minutes
 
     return () => clearInterval(refreshInterval);
-  }, [token, refreshToken]);
+  }, [token, refreshToken, isDemoMode]);
 
   // Auth context value
   const value = {
@@ -235,6 +295,7 @@ export const AuthProvider = ({ children }) => {
     loading,
     error,
     isAuthenticated,
+    isDemoMode, // Expose demo mode status
     login,
     logout,
     verifyToken,

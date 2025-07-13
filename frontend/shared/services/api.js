@@ -23,8 +23,8 @@ class ApiConfig {
   }
 
   getAuthToken() {
-    // Will implement this when adding auth
-    return localStorage.getItem('auth_token') || null;
+    // SECURITY: Use sessionStorage for health data privacy
+    return sessionStorage.getItem('auth_token') || null;
   }
 
   async request(endpoint, options = {}) {

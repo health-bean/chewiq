@@ -39,7 +39,7 @@ import { getProtocolDisplayText } from '../../shared/utils/entryHelpers';
 
 // Main App Component (Inside AuthProvider)
 const MainApp = () => {
-  const { isAuthenticated, user, loading: authLoading } = useAuth();
+  const { isAuthenticated, user, loading: authLoading, isDemoMode } = useAuth();
   
   // App state
   const { 

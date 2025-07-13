@@ -26,8 +26,8 @@ const useReflectionData = (selectedDate) => {
   // Load reflection data for selected date
   useEffect(() => {
     const loadReflectionData = () => {
-      // Try to load from localStorage (temporary solution)
-      const saved = localStorage.getItem(`reflection_${selectedDate}`);
+      // SECURITY: Use sessionStorage for personal health data privacy
+      const saved = sessionStorage.getItem(`reflection_${selectedDate}`);
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
@@ -68,8 +68,8 @@ const useReflectionData = (selectedDate) => {
   const saveReflectionData = async () => {
     setLoading(true);
     try {
-      // Save to localStorage for now
-      localStorage.setItem(`reflection_${selectedDate}`, JSON.stringify(reflectionData));
+      // SECURITY: Save to sessionStorage for health data privacy
+      sessionStorage.setItem(`reflection_${selectedDate}`, JSON.stringify(reflectionData));
       
       // TODO: Send to API when ready
       // await apiClient.post('/api/v1/journal/entries', {

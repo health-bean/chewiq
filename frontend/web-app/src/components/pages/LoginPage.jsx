@@ -1,7 +1,7 @@
 // File: frontend/web-app/src/components/pages/LoginPage.jsx
 
 import React, { useState } from 'react';
-import { Loader2, Mail, Lock, Rocket } from 'lucide-react';
+import { Loader2, Mail, Lock, Rocket, AlertTriangle } from 'lucide-react';
 import { Button, Input, Alert, FormField, PasswordInput, Card } from '../../../../shared/components/ui';
 import { cn } from '../../../../shared/design-system';
 import useAuth from '../../../../shared/hooks/useAuth';
@@ -10,7 +10,8 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { login, error, setError } = useAuth();
+  const [showDemoWarning, setShowDemoWarning] = useState(false);
+  const { login, error, setError, isDemoMode } = useAuth();
 
   // Demo user accounts for investor presentation
   const demoUsers = [
@@ -70,6 +71,7 @@ const LoginPage = () => {
     setEmail(demoEmail);
     setPassword('demo123');
     setError(null);
+    setShowDemoWarning(true);
   };
 
   return (
@@ -92,6 +94,22 @@ const LoginPage = () => {
         {error && (
           <Alert variant="error" className="mb-4" dismissible onDismiss={() => setError(null)}>
             {error}
+          </Alert>
+        )}
+
+        {/* Security Notice for All Users */}
+        {showDemoWarning && (
+          <Alert variant="info" className="mb-4" dismissible onDismiss={() => setShowDemoWarning(false)}>
+            <div className="flex items-start space-x-2">
+              <AlertTriangle className="h-4 w-4 mt-0.5 flex-shrink-0" />
+              <div>
+                <p className="font-medium">Secure Session - Privacy Protected</p>
+                <p className="text-sm mt-1">
+                  Your health data session is temporary and will not persist after closing the browser. 
+                  This ensures maximum privacy protection for your personal medical information.
+                </p>
+              </div>
+            </div>
           </Alert>
         )}
 
@@ -167,8 +185,13 @@ const LoginPage = () => {
                       {user.entries}
                     </p>
                   </div>
-                  <div className="text-xs text-primary-600 font-medium">
-                    Try Demo
+                  <div className="flex items-center space-x-2">
+                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                      Demo
+                    </span>
+                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                      Secure
+                    </span>
                   </div>
                 </div>
               </Card>
@@ -177,7 +200,9 @@ const LoginPage = () => {
 
           <div className="mt-6 text-center">
             <p className="text-xs text-gray-500">
-              Demo accounts showcase different health protocols and data patterns
+              Demo accounts showcase different health protocols and data patterns.
+              <br />
+              <strong>All sessions are secure:</strong> Health data automatically cleared when browser closes.
             </p>
           </div>
         </div>
