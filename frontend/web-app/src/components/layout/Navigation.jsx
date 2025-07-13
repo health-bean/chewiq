@@ -1,14 +1,13 @@
 import React from 'react';
 import { Button } from '../../../../shared/components/ui';
 import { cn } from '../../../../shared/design-system';
-import { Activity, Brain, TrendingUp, Utensils, Settings, AlertCircle } from 'lucide-react';
+import { Activity, Brain, TrendingUp, Utensils, AlertCircle } from 'lucide-react';
 
 const Navigation = ({ 
   activeView, 
   onViewChange, 
   hasUnsavedChanges, 
   hasCriticalInsights,
-  onSetupClick,
   getProtocolDisplayText,
   selectedProtocols
 }) => {
@@ -74,16 +73,6 @@ const Navigation = ({
         >
           <Utensils className="w-4 h-4 mr-1" />
           Foods
-        </Button>
-
-        {/* Settings Icon */}
-        <Button
-          variant="ghost"
-          onClick={onSetupClick}
-          size="sm"
-          className="px-2"
-        >
-          <Settings className="w-4 h-4" />
         </Button>
       </div>
     </div>

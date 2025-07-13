@@ -71,17 +71,44 @@ class ApiConfig {
     return this.request(endpoint, { method: 'GET' });
   }
 
+  // Safe JSON serialization that handles circular references
+  safeStringify(data) {
+    const seen = new WeakSet();
+    return JSON.stringify(data, (key, value) => {
+      // Skip React-specific properties that cause circular references
+      if (key.startsWith('__react') || key.startsWith('_react') || key === 'stateNode') {
+        return undefined;
+      }
+      
+      // Handle circular references
+      if (typeof value === 'object' && value !== null) {
+        if (seen.has(value)) {
+          return '[Circular Reference]';
+        }
+        seen.add(value);
+      }
+      
+      // Skip functions and DOM elements
+      if (typeof value === 'function' || 
+          (value && typeof value === 'object' && value.nodeType)) {
+        return undefined;
+      }
+      
+      return value;
+    });
+  }
+
   async post(endpoint, data) {
     return this.request(endpoint, {
       method: 'POST',
-      body: JSON.stringify(data),
+      body: this.safeStringify(data),
     });
   }
 
   async put(endpoint, data) {
     return this.request(endpoint, {
       method: 'PUT', 
-      body: JSON.stringify(data),
+      body: this.safeStringify(data),
     });
   }
 

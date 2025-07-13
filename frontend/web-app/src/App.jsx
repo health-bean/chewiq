@@ -1,12 +1,13 @@
 // File: frontend/web-app/src/App.jsx (UPDATED WITH AUTH)
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Loader2 } from 'lucide-react';
 
 // Import auth components
 import { AuthProvider } from '../../shared/components/AuthProvider';
 import useAuth from '../../shared/hooks/useAuth';
 import LoginPage from './components/pages/LoginPage';
+import ErrorBoundary from './components/ErrorBoundary';
 import PreferencesPage from './components/pages/PreferencesPage';
 
 // Import shared components and hooks
@@ -67,33 +68,37 @@ const MainApp = () => {
   const { entries, loading: entriesLoading, addEntry, hasCriticalInsights } = useTimelineEntries(selectedDate);
   const { formData, updateFormData, toggleSelectedFood, handleQuickSelect, resetForm, buildEntryData } = useEntryForm();
 
-  // Show setup if authenticated and not completed OR manually triggered
-  useEffect(() => {
-    console.log('🔍 Setup Effect Debug:', {
-      isAuthenticated,
-      isReady,
-      preferences,
-      setup_complete: preferences?.setup_complete
-    });
+  // Determine setup requirement based on authentication and preferences state
+  const shouldShowSetup = useMemo(() => {
+    // Don't show setup until we have complete information
+    if (!isAuthenticated || !isReady || !preferences) {
+      return false;
+    }
     
+    // Show setup if manually triggered OR if setup is not complete
+    return showSetup || preferences.setup_complete !== true;
+  }, [isAuthenticated, isReady, preferences, showSetup]);
+
+  // Handle setup completion state changes
+  useEffect(() => {
     if (isAuthenticated && isReady && preferences) {
-      console.log('🔍 Checking setup_complete:', preferences.setup_complete);
-      if (!preferences.setup_complete) {
-        console.log('🔍 Triggering setup wizard');
+      if (preferences.setup_complete === true && showSetup) {
+        // Setup was completed, hide the wizard
         handleSetupToggle();
-      } else {
-        console.log('🔍 Setup already complete, showing main app');
       }
     }
-  }, [isAuthenticated, preferences, isReady]);
+  }, [isAuthenticated, isReady, preferences?.setup_complete]);
 
+  // Comprehensive loading state management
+  const isAppLoading = isAuthenticated && (!isReady || preferencesLoading);
+  
   // Handle auth loading
   if (authLoading) {
     return (
       <div className="max-w-md mx-auto bg-white min-h-screen flex items-center justify-center">
         <div className="text-center">
           <Loader2 size={32} className="animate-spin mx-auto mb-4 text-blue-600" />
-          <p className="text-gray-600">Loading...</p>
+          <p className="text-gray-600">Initializing...</p>
         </div>
       </div>
     );
@@ -102,6 +107,18 @@ const MainApp = () => {
   // Show login if not authenticated
   if (!isAuthenticated) {
     return <LoginPage />;
+  }
+
+  // Handle app data loading (preferences, protocols, etc.)
+  if (isAppLoading) {
+    return (
+      <div className="max-w-md mx-auto bg-white min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 size={32} className="animate-spin mx-auto mb-4 text-blue-600" />
+          <p className="text-gray-600">Loading your data...</p>
+        </div>
+      </div>
+    );
   }
 
   // Show preferences page
@@ -180,17 +197,19 @@ const MainApp = () => {
     );
   }
 
-  // Setup wizard
-  if (showSetup) {
+  // Setup wizard - show based on computed state, not just showSetup flag
+  if (shouldShowSetup) {
     return (
-      <SetupWizard 
-        onComplete={() => handleSetupComplete(refreshPreferences)} 
-      />
+      <ErrorBoundary>
+        <SetupWizard 
+          onComplete={() => handleSetupComplete(refreshPreferences)} 
+        />
+      </ErrorBoundary>
     );
   }
 
   return (
-    <div className="max-w-md mx-auto bg-white min-h-screen">
+    <div className="bg-white min-h-screen">
       <Header 
         selectedDate={selectedDate}
         onDateChange={handleDateChange}
@@ -207,7 +226,6 @@ const MainApp = () => {
         onViewChange={handleViewChange}
         hasUnsavedChanges={hasUnsavedChanges}
         hasCriticalInsights={hasCriticalInsights()}
-        onSetupClick={handleSetupToggle}
         getProtocolDisplayText={() => getProtocolDisplayText(safePreferences.protocols, protocols)}
         selectedProtocols={safePreferences.protocols}
       />

@@ -164,7 +164,10 @@ Thumbs.db
 *.zip
 backend/functions/api/*.zip
 
-# AI Analysis and Documentation
-docs/ai-analysis/
+# Local development files and sensitive documentation
+dev-notes/
+.temp/
+
+# AI Analysis and Documentation (legacy - moved to dev-notes/)
 docs/build/
 docs/.docusaurus/

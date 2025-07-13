@@ -4,56 +4,84 @@ import { cn } from '../../../../../shared/design-system';
 import { Activity, Brain, Zap, Utensils, Sparkles, Moon } from 'lucide-react';
 
 const SymptomsStep = ({ setupData, updateSetupData, onNext, onBack, isLast }) => {
+  // Helper function to render icons by name
+  const renderIcon = (iconName) => {
+    const iconProps = { className: "w-4 h-4" };
+    switch (iconName) {
+      case 'Activity': return <Activity {...iconProps} />;
+      case 'Brain': return <Brain {...iconProps} />;
+      case 'Zap': return <Zap {...iconProps} />;
+      case 'Utensils': return <Utensils {...iconProps} />;
+      case 'Sparkles': return <Sparkles {...iconProps} />;
+      case 'Moon': return <Moon {...iconProps} />;
+      default: return <Activity {...iconProps} />;
+    }
+  };
+
   const commonSymptoms = [
     { 
       id: 'joint_pain', 
       name: 'Joint Pain', 
       category: 'Pain',
-      icon: <Activity className="w-4 h-4" />,
+      iconName: 'Activity',
       color: 'text-red-600 bg-red-100'
     },
     { 
       id: 'brain_fog', 
       name: 'Brain Fog', 
       category: 'Cognitive',
-      icon: <Brain className="w-4 h-4" />,
+      iconName: 'Brain',
       color: 'text-purple-600 bg-purple-100'
     },
     { 
       id: 'fatigue', 
       name: 'Fatigue', 
       category: 'Energy',
-      icon: <Zap className="w-4 h-4" />,
+      iconName: 'Zap',
       color: 'text-orange-600 bg-orange-100'
     },
     { 
       id: 'digestive', 
       name: 'Digestive Issues', 
       category: 'Gut',
-      icon: <Utensils className="w-4 h-4" />,
+      iconName: 'Utensils',
       color: 'text-green-600 bg-green-100'
     },
     { 
       id: 'skin', 
       name: 'Skin Issues', 
       category: 'Skin',
-      icon: <Sparkles className="w-4 h-4" />,
+      iconName: 'Sparkles',
       color: 'text-pink-600 bg-pink-100'
     },
     { 
       id: 'sleep', 
       name: 'Sleep Problems', 
       category: 'Sleep',
-      icon: <Moon className="w-4 h-4" />,
+      iconName: 'Moon',
       color: 'text-indigo-600 bg-indigo-100'
     }
   ];
 
   const handleSymptomChange = (symptom, isChecked) => {
-    const newSymptoms = isChecked
-      ? [...setupData.symptoms, symptom]
-      : setupData.symptoms.filter(s => s.id !== symptom.id);
-    updateSetupData({ symptoms: newSymptoms });
+    const currentSymptoms = setupData.symptoms || [];
+    
+    if (isChecked) {
+      // Store only plain data, no React components
+      const plainSymptom = {
+        id: symptom.id,
+        name: symptom.name,
+        category: symptom.category,
+        color: symptom.color
+      };
+      updateSetupData({ 
+        symptoms: [...currentSymptoms, plainSymptom]
+      });
+    } else {
+      updateSetupData({ 
+        symptoms: currentSymptoms.filter(s => s.id !== symptom.id)
+      });
+    }
   };
 
   return (
@@ -88,7 +116,7 @@ const SymptomsStep = ({ setupData, updateSetupData, onNext, onBack, isLast }) =>
                   "w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0",
                   symptom.color
                 )}>
-                  {symptom.icon}
+                  {renderIcon(symptom.iconName)}
                 </div>
                 
                 <div className="flex-1">

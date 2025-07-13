@@ -18,8 +18,8 @@ const handleGetTimelineEntries = async (queryParams, event) => {
             console.log('User found, getting accessible user IDs...');
             accessibleUserIds = await getAccessibleUserIds(event);
         } else {
-            console.log('No authentication found, using test user ID');
-            accessibleUserIds = ['8e8a568a-c2f8-43a8-abf2-4e54408dbdc0'];
+            console.log('No user found - this should not happen with new auth system');
+            return errorResponse('Authentication required', 401);
         }
         
         console.log('Accessible user IDs:', accessibleUserIds);
@@ -102,9 +102,8 @@ const handleCreateTimelineEntry = async (body, event) => {
         if (user) {
             userId = user.id;
         } else {
-            // DEVELOPMENT: Use test user ID when no authentication
-            console.log('No authentication found, using test user ID');
-            userId = '8e8a568a-c2f8-43a8-abf2-4e54408dbdc0'; // Use the same test user ID
+            console.log('No user found - authentication required');
+            return errorResponse('Authentication required', 401);
         }
         
         const client = await pool.connect();

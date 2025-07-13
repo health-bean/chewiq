@@ -164,7 +164,9 @@ const handleGetUserPreferences = async (queryParams, event) => {
         client.release();
         
         if (result.rows.length > 0) {
-            return successResponse(result.rows[0].preferences);
+            return successResponse({
+                preferences: result.rows[0].preferences
+            });
         }
         
         // Return default preferences if none found
@@ -178,28 +180,26 @@ const handleGetUserPreferences = async (queryParams, event) => {
             setup_complete: false
         };
         
-        return successResponse(defaultPreferences);
+        return successResponse({
+            preferences: defaultPreferences
+        });
         
     } catch (error) {
         // If user_preferences table doesn't exist yet, return mock data
         if (error.code === '42P01') { // Table doesn't exist
             const mockPreferences = {
-                protocols: ['1495844a-19de-404c-a288-7660eda0cbe1'], // AIP Elimination
-                quick_supplements: [
-                    { id: 'vit_d_1', name: 'Vitamin D 5000 IU', category: 'vitamin' }
-                ],
+                protocols: [],
+                quick_supplements: [],
                 quick_medications: [],
-                quick_foods: [
-                    { id: 'chicken_1', name: 'Chicken breast', category: 'protein' }
-                ],
-                quick_symptoms: [
-                    { id: 'joint_1', name: 'Joint Pain', category: 'pain' }
-                ],
+                quick_foods: [],
+                quick_symptoms: [],
                 quick_detox: [],
-                setup_complete: true
+                setup_complete: false  // Let demo users go through setup wizard
             };
             
-            return successResponse(mockPreferences);
+            return successResponse({
+                preferences: mockPreferences
+            });
         }
         
         const appError = handleDatabaseError(error, 'fetch user preferences');

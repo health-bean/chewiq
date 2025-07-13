@@ -46,17 +46,21 @@ const getCurrentUser = async (event) => {
     client.release();
 
     if (result.rows.length === 0) {
-      console.log('User not found in database, returning demo user');
-      // Return demo user if database user not found
+      console.log('User not found in database, creating unique demo user for:', decoded.email || 'unknown');
+      
+      // Create unique demo user based on email or token
+      const userEmail = decoded.email || decoded.username || 'demo@example.com';
+      const demoUserId = generateDemoUserId(userEmail);
+      
       return {
-        id: '8e8a568a-c2f8-43a8-abf2-4e54408dbdc0',
-        email: 'patient@example.com',
-        first_name: 'Patient',
-        last_name: 'Demo',
+        id: demoUserId,
+        email: userEmail,
+        first_name: getDemoFirstName(userEmail),
+        last_name: getDemoLastName(userEmail),
         user_type: 'patient',
         is_active: true,
-        firstName: 'Patient',
-        lastName: 'Demo',
+        firstName: getDemoFirstName(userEmail),
+        lastName: getDemoLastName(userEmail),
         userType: 'patient'
       };
     }
@@ -94,6 +98,50 @@ const getCurrentUser = async (event) => {
 };
 
 /**
+ * Generate unique demo user ID based on email
+ * @param {string} email - User email
+ * @returns {string} - Unique demo user ID
+ */
+const generateDemoUserId = (email) => {
+  // Create deterministic UUID based on email
+  const crypto = require('crypto');
+  const hash = crypto.createHash('sha256').update(email).digest('hex');
+  
+  // Format as UUID (deterministic but unique per email)
+  return [
+    hash.substring(0, 8),
+    hash.substring(8, 12),
+    hash.substring(12, 16),
+    hash.substring(16, 20),
+    hash.substring(20, 32)
+  ].join('-');
+};
+
+/**
+ * Get demo first name based on email
+ * @param {string} email - User email
+ * @returns {string} - Demo first name
+ */
+const getDemoFirstName = (email) => {
+  if (email.includes('sarah')) return 'Sarah';
+  if (email.includes('john')) return 'John';
+  if (email.includes('maria')) return 'Maria';
+  return 'Demo';
+};
+
+/**
+ * Get demo last name based on email
+ * @param {string} email - User email
+ * @returns {string} - Demo last name
+ */
+const getDemoLastName = (email) => {
+  if (email.includes('sarah')) return 'Chen';
+  if (email.includes('john')) return 'Smith';
+  if (email.includes('maria')) return 'Rodriguez';
+  return 'User';
+};
+
+/**
  * Get all user IDs that the current user can access
  * This is the main function most handlers should use
  * @param {Object} event - Lambda event object
@@ -103,7 +151,7 @@ const getAccessibleUserIds = async (event) => {
   const user = await getCurrentUser(event);
   
   if (!user) {
-    // This shouldn't happen now, but just in case
+    // Fallback to original demo user ID
     return ['8e8a568a-c2f8-43a8-abf2-4e54408dbdc0'];
   }
 

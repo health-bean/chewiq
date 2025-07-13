@@ -4,56 +4,84 @@ import { cn } from '../../../../../shared/design-system';
 import { Beef, Fish, Salad, Apple, Droplets, Wheat } from 'lucide-react';
 
 const FoodsStep = ({ setupData, updateSetupData, onNext, onBack, isLast }) => {
+  // Helper function to render icons by name
+  const renderIcon = (iconName) => {
+    const iconProps = { className: "w-4 h-4" };
+    switch (iconName) {
+      case 'Beef': return <Beef {...iconProps} />;
+      case 'Fish': return <Fish {...iconProps} />;
+      case 'Salad': return <Salad {...iconProps} />;
+      case 'Apple': return <Apple {...iconProps} />;
+      case 'Droplets': return <Droplets {...iconProps} />;
+      case 'Wheat': return <Wheat {...iconProps} />;
+      default: return <Apple {...iconProps} />;
+    }
+  };
+
   const commonFoods = [
     { 
       id: 'chicken', 
       name: 'Chicken breast', 
       category: 'Protein',
-      icon: <Beef className="w-4 h-4" />,
+      iconName: 'Beef',
       color: 'text-orange-600 bg-orange-100'
     },
     { 
       id: 'beef', 
       name: 'Ground beef', 
       category: 'Protein',
-      icon: <Beef className="w-4 h-4" />,
+      iconName: 'Beef',
       color: 'text-red-600 bg-red-100'
     },
     { 
       id: 'salmon', 
       name: 'Salmon', 
       category: 'Protein',
-      icon: <Fish className="w-4 h-4" />,
+      iconName: 'Fish',
       color: 'text-pink-600 bg-pink-100'
     },
     { 
       id: 'broccoli', 
       name: 'Broccoli', 
       category: 'Vegetable',
-      icon: <Salad className="w-4 h-4" />,
+      iconName: 'Salad',
       color: 'text-green-600 bg-green-100'
     },
     { 
       id: 'avocado', 
       name: 'Avocado', 
       category: 'Fat',
-      icon: <Apple className="w-4 h-4" />,
+      iconName: 'Apple',
       color: 'text-lime-600 bg-lime-100'
     },
     { 
       id: 'bone_broth', 
       name: 'Bone broth', 
       category: 'Beverage',
-      icon: <Droplets className="w-4 h-4" />,
+      iconName: 'Droplets',
       color: 'text-amber-600 bg-amber-100'
     }
   ];
 
   const handleFoodChange = (food, isChecked) => {
-    const newFoods = isChecked
-      ? [...setupData.foods, food]
-      : setupData.foods.filter(f => f.id !== food.id);
-    updateSetupData({ foods: newFoods });
+    const currentFoods = setupData.foods || [];
+    
+    if (isChecked) {
+      // Store only plain data, no React components
+      const plainFood = {
+        id: food.id,
+        name: food.name,
+        category: food.category,
+        color: food.color
+      };
+      updateSetupData({ 
+        foods: [...currentFoods, plainFood]
+      });
+    } else {
+      updateSetupData({ 
+        foods: currentFoods.filter(f => f.id !== food.id)
+      });
+    }
   };
 
   return (
@@ -88,7 +116,7 @@ const FoodsStep = ({ setupData, updateSetupData, onNext, onBack, isLast }) => {
                   "w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0",
                   food.color
                 )}>
-                  {food.icon}
+                  {renderIcon(food.iconName)}
                 </div>
                 
                 <div className="flex-1">

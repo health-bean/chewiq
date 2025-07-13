@@ -4,56 +4,83 @@ import { cn } from '../../../../../shared/design-system';
 import { Pill, Heart, Shield, Zap, Sparkles, Brain } from 'lucide-react';
 
 const SupplementsStep = ({ setupData, updateSetupData, onNext, onBack, isLast }) => {
+  // Helper function to render icons by name
+  const renderIcon = (iconName) => {
+    const iconProps = { className: "w-4 h-4" };
+    switch (iconName) {
+      case 'Sparkles': return <Sparkles {...iconProps} />;
+      case 'Heart': return <Heart {...iconProps} />;
+      case 'Shield': return <Shield {...iconProps} />;
+      case 'Zap': return <Zap {...iconProps} />;
+      case 'Pill': return <Pill {...iconProps} />;
+      case 'Brain': return <Brain {...iconProps} />;
+      default: return <Pill {...iconProps} />;
+    }
+  };
   const commonSupplements = [
     { 
       id: 'vit_d', 
       name: 'Vitamin D', 
       category: 'Vitamin',
-      icon: <Sparkles className="w-4 h-4" />,
+      iconName: 'Sparkles',
       color: 'text-yellow-600 bg-yellow-100'
     },
     { 
       id: 'omega_3', 
       name: 'Omega-3 Fish Oil', 
       category: 'Essential Fatty Acid',
-      icon: <Heart className="w-4 h-4" />,
+      iconName: 'Heart',
       color: 'text-blue-600 bg-blue-100'
     },
     { 
       id: 'probiotic', 
       name: 'Probiotic', 
       category: 'Probiotic',
-      icon: <Shield className="w-4 h-4" />,
+      iconName: 'Shield',
       color: 'text-green-600 bg-green-100'
     },
     { 
       id: 'magnesium', 
       name: 'Magnesium', 
       category: 'Mineral',
-      icon: <Zap className="w-4 h-4" />,
+      iconName: 'Zap',
       color: 'text-purple-600 bg-purple-100'
     },
     { 
       id: 'zinc', 
       name: 'Zinc', 
       category: 'Mineral',
-      icon: <Pill className="w-4 h-4" />,
+      iconName: 'Pill',
       color: 'text-gray-600 bg-gray-100'
     },
     { 
       id: 'b_complex', 
       name: 'B-Complex', 
       category: 'Vitamin',
-      icon: <Brain className="w-4 h-4" />,
+      iconName: 'Brain',
       color: 'text-orange-600 bg-orange-100'
     }
   ];
 
   const handleSupplementChange = (supplement, isChecked) => {
-    const newSupplements = isChecked
-      ? [...setupData.supplements, supplement]
-      : setupData.supplements.filter(s => s.id !== supplement.id);
-    updateSetupData({ supplements: newSupplements });
+    const currentSupplements = setupData.supplements || [];
+    
+    if (isChecked) {
+      // Store only plain data, no React components
+      const plainSupplement = {
+        id: supplement.id,
+        name: supplement.name,
+        category: supplement.category,
+        color: supplement.color
+      };
+      updateSetupData({ 
+        supplements: [...currentSupplements, plainSupplement]
+      });
+    } else {
+      updateSetupData({ 
+        supplements: currentSupplements.filter(s => s.id !== supplement.id)
+      });
+    }
   };
 
   return (
@@ -88,7 +115,7 @@ const SupplementsStep = ({ setupData, updateSetupData, onNext, onBack, isLast })
                   "w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0",
                   supplement.color
                 )}>
-                  {supplement.icon}
+                  {renderIcon(supplement.iconName)}
                 </div>
                 
                 <div className="flex-1">
