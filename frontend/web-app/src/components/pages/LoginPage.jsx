@@ -1,4 +1,5 @@
 // File: frontend/web-app/src/components/pages/LoginPage.jsx
+// CACHE BUST: v2.0 - Clean login form without autofill interference
 
 import React, { useState, useEffect } from 'react';
 import { Loader2, Mail, Lock, Rocket, AlertTriangle } from 'lucide-react';
@@ -67,20 +68,9 @@ const LoginPage = () => {
     }
   };
 
-  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
-  const [inputId] = useState(() => `pwd-${Math.random().toString(36).substr(2, 9)}`);
-
-  // Aggressively prevent password autofill
+  // Clear password field on mount to ensure clean state
   useEffect(() => {
-    // Clear password field on mount
     setPassword('');
-    
-    // Clear any autofilled passwords after a short delay
-    const timer = setTimeout(() => {
-      setPassword('');
-    }, 100);
-    
-    return () => clearTimeout(timer);
   }, []);
 
   const handleDemoLogin = (demoEmail) => {
@@ -130,15 +120,7 @@ const LoginPage = () => {
           </Alert>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off" data-form-type="other">
-          {/* Hidden honeypot fields to confuse password managers */}
-          <input type="text" name="fakeusernameremembered" style={{display: 'none'}} tabIndex="-1" autoComplete="off" />
-          <input type="password" name="fakepasswordremembered" style={{display: 'none'}} tabIndex="-1" autoComplete="off" />
-          
-          {/* Fake visible password field that gets hidden */}
-          <div style={{position: 'absolute', left: '-9999px', opacity: 0, pointerEvents: 'none'}}>
-            <input type="password" name="password" autoComplete="current-password" tabIndex="-1" />
-          </div>
+        <form onSubmit={handleSubmit} className="space-y-6">
           <FormField label="Email Address" required>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -149,7 +131,6 @@ const LoginPage = () => {
                 placeholder="Enter your email"
                 className="pl-10"
                 disabled={isLoading}
-                autoComplete="username"
                 name="email"
               />
             </div>
@@ -159,22 +140,12 @@ const LoginPage = () => {
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
               <PasswordInput
-                id={inputId}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
                 className="pl-10"
                 disabled={isLoading}
-                autoComplete="off"
-                autoCorrect="off"
-                autoCapitalize="off"
-                spellCheck="false"
-                name={inputId}
-                data-form-type="other"
-                data-lpignore="true"
-                data-1p-ignore="true"
-                data-bwignore="true"
-                data-dashlane-ignore="true"
+                name="password"
               />
             </div>
           </FormField>
