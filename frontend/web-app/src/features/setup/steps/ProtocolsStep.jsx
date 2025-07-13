@@ -3,8 +3,17 @@ import { Button, Checkbox, Card } from '../../../../../shared/components/ui';
 import { cn } from '../../../../../shared/design-system';
 
 const ProtocolsStep = ({ setupData, updateSetupData, protocols, onNext, onBack, isLast, disabled }) => {
+  // Debug logging
+  console.log('🔧 ProtocolsStep: Received protocols:', protocols);
+  console.log('🔧 ProtocolsStep: Protocols length:', protocols?.length);
+  
+  // Safety check for protocols array
+  const protocolsArray = Array.isArray(protocols) ? protocols : [];
+  
   // Just sort protocols alphabetically - no filtering or hardcoding
-  const availableProtocols = protocols.sort((a, b) => a.name.localeCompare(b.name));
+  const availableProtocols = protocolsArray.sort((a, b) => a.name.localeCompare(b.name));
+  
+  console.log('🔧 ProtocolsStep: Available protocols after sort:', availableProtocols);
 
   const handleProtocolChange = (protocolId, isChecked) => {
     // Special handling for "no protocol" option
@@ -29,6 +38,25 @@ const ProtocolsStep = ({ setupData, updateSetupData, protocols, onNext, onBack, 
   };
 
   const isNoProtocolSelected = setupData.protocols.includes('no_protocol');
+
+  // Show loading state if no protocols are available yet
+  if (availableProtocols.length === 0) {
+    return (
+      <div className="space-y-6">
+        <div className="text-center">
+          <h3 className="text-2xl font-bold text-gray-900 mb-3">
+            Health Protocols
+          </h3>
+          <p className="text-gray-600">
+            Loading available protocols...
+          </p>
+        </div>
+        <div className="flex justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

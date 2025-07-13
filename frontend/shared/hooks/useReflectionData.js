@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { apiClient } from '../services/api.js';
 
-const useReflectionData = (selectedDate) => {
+const useReflectionData = (selectedDate, isAuthenticated = false) => {
   const [reflectionData, setReflectionData] = useState({
     bedtime: '',
     wake_time: '',

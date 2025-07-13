@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
 import { timelineService } from '../../../shared/services/timelineService';
 
-export const useTimelineEntries = (selectedDate) => {
+export const useTimelineEntries = (selectedDate, isAuthenticated = false) => {
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const loadEntries = async () => {
-    if (!selectedDate) return;
+    if (!selectedDate || !isAuthenticated) {
+      setLoading(false);
+      return;
+    }
     
     try {
       setLoading(true);
@@ -39,7 +42,7 @@ export const useTimelineEntries = (selectedDate) => {
 
   useEffect(() => {
     loadEntries();
-  }, [selectedDate]);
+  }, [selectedDate, isAuthenticated]);
 
   return {
     entries,

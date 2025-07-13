@@ -29,6 +29,7 @@ exports.handler = async (event) => {
         const queryParams = event.queryStringParameters || {};
         
         console.log(`${method} ${path}`);
+        console.log('🔍 INDEX: Processing request:', { method, path, hasQueryParams: !!queryParams });
         
         let response;
         
@@ -54,16 +55,18 @@ exports.handler = async (event) => {
         }
         // User routes
         else if (path === '/api/v1/users' && method === 'GET') {
-            response = await handleGetUser(event);
+            response = await handleGetUser(queryParams, event);
         }
         else if (path === '/api/v1/users' && method === 'POST') {
             response = await handleUpdateUser(body, event);
         }
         else if (path === '/api/v1/user/protocols' && method === 'GET') {
-            response = await handleGetUserProtocols(event);
+            response = await handleGetUserProtocols(queryParams, event);
         }
         else if (path === '/api/v1/user/preferences' && method === 'GET') {
-            response = await handleGetUserPreferences(event);
+            console.log('🔍 INDEX: Matched user preferences GET route');
+            response = await handleGetUserPreferences(queryParams, event);
+            console.log('🔍 INDEX: handleGetUserPreferences returned:', response ? 'response' : 'null');
         }
         else if (path === '/api/v1/user/preferences' && method === 'POST') {
             response = await handleUpdateUserPreferences(body, event);

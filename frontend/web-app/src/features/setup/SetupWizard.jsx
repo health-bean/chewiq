@@ -15,9 +15,12 @@ import MedicationsStep from './steps/MedicationsStep';
 import FoodsStep from './steps/FoodsStep';
 import DetoxStep from './steps/DetoxStep';
 
-const SetupWizard = ({ onComplete }) => {
-  const { protocols } = useProtocols();
-  const { updatePreferences, saving } = useUserPreferences();
+const SetupWizard = ({ onComplete, isAuthenticated }) => {
+  const { protocols } = useProtocols(isAuthenticated);
+  const { updatePreferences, saving } = useUserPreferences(isAuthenticated);
+  
+  console.log('🔧 SetupWizard: Protocols from hook:', protocols);
+  console.log('🔧 SetupWizard: isAuthenticated:', isAuthenticated);
   
   const setupWizardData = useSetupWizard(protocols, updatePreferences, onComplete);
   

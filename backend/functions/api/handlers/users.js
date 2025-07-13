@@ -145,6 +145,13 @@ const handleGetUserProtocols = async (queryParams, event) => {
 };
 
 const handleGetUserPreferences = async (queryParams, event) => {
+    console.log('🔍 USER PREFS: Function called with params:', {
+        queryParamsType: typeof queryParams,
+        eventType: typeof event,
+        eventDefined: !!event,
+        eventHasHeaders: !!(event && event.headers)
+    });
+    
     // Require authentication
     const authError = await requireAuth(event);
     if (authError) {

@@ -131,12 +131,18 @@ const useSetupWizard = (protocols, updatePreferences, onComplete) => {
       // Test serialization
       JSON.stringify(preferencesUpdate);
       
+      console.log('🔧 Setup: Saving preferences...', preferencesUpdate);
+      
       // Save preferences
       await updatePreferences(preferencesUpdate);
       
+      console.log('🔧 Setup: Preferences saved successfully');
+      
       // Call completion callback
       if (onComplete) {
+        console.log('🔧 Setup: Calling completion callback...');
         await onComplete();
+        console.log('🔧 Setup: Completion callback finished');
       }
       
     } catch (error) {

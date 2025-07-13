@@ -4,14 +4,17 @@ import { useState, useEffect } from 'react';
 import { apiClient } from '../services/api.js';
 import useAuth from './useAuth.js';
 
-const useUserPreferences = () => {
+const useUserPreferences = (isAuthenticatedParam = null) => {
   const [preferences, setPreferences] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [saving, setSaving] = useState(false);
   
   // Get auth context
-  const { user, token, isAuthenticated, getAuthHeaders } = useAuth();
+  const { user, token, isAuthenticated: authIsAuthenticated, getAuthHeaders } = useAuth();
+  
+  // Use parameter if provided, otherwise fall back to auth context
+  const isAuthenticated = isAuthenticatedParam !== null ? isAuthenticatedParam : authIsAuthenticated;
 
   // Default preferences structure
   const getDefaultPreferences = () => ({
@@ -72,7 +75,7 @@ const useUserPreferences = () => {
     };
 
     loadPreferences();
-  }, [isAuthenticated, user, token]);
+  }, [isAuthenticated, user, token, isAuthenticatedParam]);
 
   const updatePreferences = async (newPreferences) => {
 

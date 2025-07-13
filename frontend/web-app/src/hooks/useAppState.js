@@ -23,17 +23,29 @@ export const useAppState = () => {
   };
 
   const handleSetupComplete = async (onComplete) => {
-    // Wait for setup to complete
-    await new Promise(resolve => setTimeout(resolve, 200));
-    
-    // Call the completion callback (usually refreshes preferences)
-    if (onComplete) {
-      await onComplete();  // ← Amazon Q flags this as "code injection" - FALSE POSITIVE
+    try {
+      // Wait for setup to complete
+      await new Promise(resolve => setTimeout(resolve, 200));
+      
+      // Call the completion callback (usually refreshes preferences)
+      if (onComplete) {
+        try {
+          await onComplete();
+        } catch (error) {
+          console.warn('Setup completion callback failed, but continuing:', error);
+          // Don't throw - we want to complete setup even if refresh fails
+        }
+      }
+      
+      // Hide setup wizard
+      setShowSetup(false);
+      setActiveView('timeline');
+    } catch (error) {
+      console.error('Setup completion failed:', error);
+      // Still hide setup wizard to prevent infinite loop
+      setShowSetup(false);
+      setActiveView('timeline');
     }
-    
-    // Hide setup wizard
-    setShowSetup(false);
-    setActiveView('timeline');
   };
 
   return {

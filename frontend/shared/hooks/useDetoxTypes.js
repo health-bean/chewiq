@@ -1,12 +1,17 @@
 import { useState, useEffect } from 'react';
 import { apiClient } from '../services/api.js';
 
-const useDetoxTypes = () => {
+const useDetoxTypes = (isAuthenticated = false) => {
   const [detoxTypes, setDetoxTypes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const fetchDetoxTypes = async () => {
+    if (!isAuthenticated) {
+      setLoading(false);
+      return;
+    }
+    
     setLoading(true);
     setError(null);
     
@@ -23,7 +28,7 @@ const useDetoxTypes = () => {
 
   useEffect(() => {
     fetchDetoxTypes();
-  }, []);
+  }, [isAuthenticated]);
 
   return { 
     detoxTypes, 

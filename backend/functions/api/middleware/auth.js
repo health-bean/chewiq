@@ -10,7 +10,24 @@ const JWT_SECRET = process.env.JWT_SECRET || (() => {
 
 const getCurrentUser = async (event) => {
   try {
-    const authHeader = event.headers?.Authorization || event.headers?.authorization;
+    console.log('AUTH MIDDLEWARE: Event parameter:', typeof event, event ? 'defined' : 'undefined');
+    
+    if (!event) {
+      console.log('AUTH MIDDLEWARE: Event is null or undefined');
+      return null;
+    }
+    
+    console.log('AUTH MIDDLEWARE: Event structure check:', {
+      hasHeaders: !!event.headers,
+      headerKeys: event.headers ? Object.keys(event.headers) : 'no headers'
+    });
+    
+    if (!event.headers) {
+      console.log('AUTH MIDDLEWARE: No headers in event');
+      return null;
+    }
+    
+    const authHeader = event.headers.Authorization || event.headers.authorization;
     console.log('AUTH MIDDLEWARE: Authorization header:', authHeader ? 'present' : 'missing');
     
     if (!authHeader) {

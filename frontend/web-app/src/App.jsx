@@ -58,14 +58,14 @@ const MainApp = () => {
   const [showPreferences, setShowPreferences] = React.useState(false);
 
   // Data hooks (only run when authenticated)
-  const { protocols, loading: protocolsLoading, error: protocolsError } = useProtocols();
-  const { preferences, updatePreferences, refreshPreferences, loading: preferencesLoading, error: preferencesError, isReady } = useUserPreferences();
-  const { exposureTypes } = useExposureTypes();
-  const { detoxTypes } = useDetoxTypes();
-  const { reflectionData, updateReflectionData, saveReflectionData, loading: reflectionLoading, hasUnsavedChanges } = useReflectionData(selectedDate);
+  const { protocols, loading: protocolsLoading, error: protocolsError } = useProtocols(isAuthenticated);
+  const { preferences, updatePreferences, refreshPreferences, loading: preferencesLoading, error: preferencesError, isReady } = useUserPreferences(isAuthenticated);
+  const { exposureTypes } = useExposureTypes(isAuthenticated);
+  const { detoxTypes } = useDetoxTypes(isAuthenticated);
+  const { reflectionData, updateReflectionData, saveReflectionData, loading: reflectionLoading, hasUnsavedChanges } = useReflectionData(selectedDate, isAuthenticated);
 
-  // Timeline and entry form
-  const { entries, loading: entriesLoading, addEntry, hasCriticalInsights } = useTimelineEntries(selectedDate);
+  // Timeline and entry form (only when authenticated)
+  const { entries, loading: entriesLoading, addEntry, hasCriticalInsights } = useTimelineEntries(selectedDate, isAuthenticated);
   const { formData, updateFormData, toggleSelectedFood, handleQuickSelect, resetForm, buildEntryData } = useEntryForm();
 
   // Determine setup requirement based on authentication and preferences state
@@ -202,7 +202,8 @@ const MainApp = () => {
     return (
       <ErrorBoundary>
         <SetupWizard 
-          onComplete={() => handleSetupComplete(refreshPreferences)} 
+          onComplete={() => handleSetupComplete(refreshPreferences)}
+          isAuthenticated={isAuthenticated}
         />
       </ErrorBoundary>
     );

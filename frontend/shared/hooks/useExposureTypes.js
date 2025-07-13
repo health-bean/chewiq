@@ -1,12 +1,17 @@
 import { useState, useEffect } from 'react';
 import { apiClient } from '../services/api.js';
 
-const useExposureTypes = () => {
+const useExposureTypes = (isAuthenticated = false) => {
   const [exposureTypes, setExposureTypes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const fetchExposureTypes = async () => {
+    if (!isAuthenticated) {
+      setLoading(false);
+      return;
+    }
+    
     setLoading(true);
     setError(null);
     
@@ -25,7 +30,7 @@ const useExposureTypes = () => {
 
   useEffect(() => {
     fetchExposureTypes();
-  }, []);
+  }, [isAuthenticated]);
 
   return { 
     exposureTypes, 
