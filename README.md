@@ -30,7 +30,7 @@ npm run dev
 **Requirements:**
 - Node.js >=18.0
 - npm
-- Environment variables (3 required)
+- Environment variables (5 required)
 
 **Available Scripts:**
 - `npm run docusaurus` - docusaurus
@@ -53,7 +53,7 @@ npm run dev
 ## API Status
 
 - **Base URL:** https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev
-- **Working Endpoints:** 12/27
+- **Working Endpoints:** 0/27
 - **Categories:** AI, Lookup Data, Foods, Protocols, Timeline, Users, Other, Health Data
 
 ## Database
