@@ -42,6 +42,10 @@ const PasswordInput = React.forwardRef(({
           showToggle && 'pr-10',
           className
         )}
+        autoComplete="new-password"
+        data-form-type="other"
+        data-lpignore="true"
+        data-1p-ignore="true"
         {...props}
       />
       
