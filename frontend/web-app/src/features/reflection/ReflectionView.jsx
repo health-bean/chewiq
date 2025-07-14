@@ -31,11 +31,11 @@ const ReflectionView = ({
       </div>
 
       {/* Sleep & Recovery */}
-      <Card variant="primary">
-        <Card.Header>
-          <Card.Title>Sleep & Recovery</Card.Title>
-        </Card.Header>
-        <Card.Content>
+      <Card variant="outlined" className="border-blue-200">
+        <div className="p-4 border-b border-blue-100 bg-blue-50">
+          <h3 className="text-lg font-semibold text-blue-800">Sleep & Recovery</h3>
+        </div>
+        <div className="p-4">
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
               <div>
@@ -86,15 +86,15 @@ const ReflectionView = ({
               />
             </div>
           </div>
-        </Card.Content>
+        </div>
       </Card>
 
       {/* Daily Wellness Check */}
-      <Card variant="warning">
-        <Card.Header>
-          <Card.Title>Daily Wellness Check</Card.Title>
-        </Card.Header>
-        <Card.Content>
+      <Card variant="outlined" className="border-yellow-200">
+        <div className="p-4 border-b border-yellow-100 bg-yellow-50">
+          <h3 className="text-lg font-semibold text-yellow-800">Daily Wellness Check</h3>
+        </div>
+        <div className="p-4">
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -153,15 +153,15 @@ const ReflectionView = ({
               />
             </div>
           </div>
-        </Card.Content>
+        </div>
       </Card>
 
       {/* Activity Level */}
-      <Card variant="success">
-        <Card.Header>
-          <Card.Title>Activity Level</Card.Title>
-        </Card.Header>
-        <Card.Content>
+      <Card variant="outlined" className="border-green-200">
+        <div className="p-4 border-b border-green-100 bg-green-50">
+          <h3 className="text-lg font-semibold text-green-800">Activity Level</h3>
+        </div>
+        <div className="p-4">
           <div className="flex space-x-4">
             {Object.values(ACTIVITY_LEVELS).map((level) => (
               <label key={level} className="flex items-center space-x-2">
@@ -177,15 +177,15 @@ const ReflectionView = ({
               </label>
             ))}
           </div>
-        </Card.Content>
+        </div>
       </Card>
 
       {/* Mindfulness & Meditation */}
-      <Card variant="indigo">
-        <Card.Header>
-          <Card.Title>Mindfulness & Meditation</Card.Title>
-        </Card.Header>
-        <Card.Content>
+      <Card variant="outlined" className="border-purple-200">
+        <div className="p-4 border-b border-purple-100 bg-purple-50">
+          <h3 className="text-lg font-semibold text-purple-800">Mindfulness & Meditation</h3>
+        </div>
+        <div className="p-4">
           <div className="space-y-3">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Meditation Duration: {reflectionData.meditation_duration || 0} minutes
@@ -230,15 +230,15 @@ const ReflectionView = ({
               }
             </div>
           </div>
-        </Card.Content>
+        </div>
       </Card>
 
       {/* Menstrual Cycle */}
-      <Card variant="pink">
-        <Card.Header>
-          <Card.Title>Menstrual Cycle</Card.Title>
-        </Card.Header>
-        <Card.Content>
+      <Card variant="outlined" className="border-pink-200">
+        <div className="p-4 border-b border-pink-100 bg-pink-50">
+          <h3 className="text-lg font-semibold text-pink-800">Menstrual Cycle</h3>
+        </div>
+        <div className="p-4">
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Cycle Day</label>
@@ -270,15 +270,15 @@ const ReflectionView = ({
               </label>
             </div>
           </div>
-        </Card.Content>
+        </div>
       </Card>
 
       {/* Personal Reflection */}
-      <Card variant="teal">
-        <Card.Header>
-          <Card.Title>Personal Reflection</Card.Title>
-        </Card.Header>
-        <Card.Content>
+      <Card variant="outlined" className="border-teal-200">
+        <div className="p-4 border-b border-teal-100 bg-teal-50">
+          <h3 className="text-lg font-semibold text-teal-800">Personal Reflection</h3>
+        </div>
+        <div className="p-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Daily Notes</label>
             <Textarea
@@ -288,7 +288,7 @@ const ReflectionView = ({
               rows={3}
             />
           </div>
-        </Card.Content>
+        </div>
       </Card>
 
       {/* Save Button */}
