@@ -16,15 +16,27 @@ const handleSearchExposures = async (queryParams, event) => {
             const userHistoryQuery = `
                 SELECT DISTINCT
                     NULL as id,
-                    LOWER(TRIM(content)) as name,
+                    LOWER(TRIM(COALESCE(
+                        structured_content->>'exposure_type',
+                        structured_content->>'item_name',
+                        'Unknown'
+                    ))) as name,
                     'Personal History' as category,
                     'user_history' as source,
                     COUNT(*) as frequency
                 FROM timeline_entries
                 WHERE user_id = $1 
                   AND entry_type = 'exposure'
-                  AND LOWER(TRIM(content)) ILIKE $2
-                GROUP BY LOWER(TRIM(content))
+                  AND LOWER(TRIM(COALESCE(
+                      structured_content->>'exposure_type',
+                      structured_content->>'item_name',
+                      'Unknown'
+                  ))) ILIKE $2
+                GROUP BY LOWER(TRIM(COALESCE(
+                    structured_content->>'exposure_type',
+                    structured_content->>'item_name',
+                    'Unknown'
+                )))
                 ORDER BY frequency DESC, name ASC
                 LIMIT $3
             `;

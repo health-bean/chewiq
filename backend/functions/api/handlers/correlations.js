@@ -87,19 +87,46 @@ async function getTimelineData(userId, timeframeDays) {
             ? JSON.parse(row.structured_content) 
             : row.structured_content;
           
-          // Extract the main item name based on entry type
-          content = structured.item_name || 
-                   structured.food_name || 
-                   structured.symptom_name || 
-                   structured.supplement_name || 
-                   structured.medication_name || 
-                   structured.exposure_type || 
-                   structured.detox_type || 
-                   'Unknown';
+          // Extract the main item name based on entry type and structured content format
+          switch (row.entry_type) {
+            case 'food':
+              // Handle both timeline format (food_name) and journal format (foods array)
+              if (structured.food_name) {
+                content = structured.food_name;
+              } else if (structured.foods && Array.isArray(structured.foods) && structured.foods.length > 0) {
+                // For multiple foods, join the first few names
+                const foodNames = structured.foods.slice(0, 3).map(food => food.name).filter(Boolean);
+                content = foodNames.length > 0 ? foodNames.join(', ') : 'Unknown';
+              } else if (structured.name) {
+                content = structured.name;
+              } else {
+                content = structured.item_name || 'Unknown';
+              }
+              break;
+            case 'symptom':
+              content = structured.symptom_name || structured.name || structured.item_name || 'Unknown';
+              break;
+            case 'supplement':
+              content = structured.supplement_name || structured.name || structured.item_name || 'Unknown';
+              break;
+            case 'medication':
+              content = structured.medication_name || structured.name || structured.item_name || 'Unknown';
+              break;
+            case 'exposure':
+              content = structured.exposure_type || structured.name || structured.item_name || 'Unknown';
+              break;
+            case 'detox':
+              content = structured.detox_type || structured.name || structured.item_name || 'Unknown';
+              break;
+            default:
+              content = structured.name || structured.item_name || 'Unknown';
+          }
         } catch (error) {
           console.warn('Error parsing structured_content for correlation analysis:', error);
           content = 'Unknown';
         }
+      } else {
+        content = 'Unknown';
       }
       
       return {

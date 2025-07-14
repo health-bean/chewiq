@@ -16,14 +16,26 @@ const handleSearchSymptoms = async (queryParams, event) => {
             const userHistoryQuery = `
                 SELECT DISTINCT
                     NULL as id,
-                    LOWER(TRIM(content)) as name,
+                    LOWER(TRIM(COALESCE(
+                        structured_content->>'symptom_name',
+                        structured_content->>'item_name',
+                        'Unknown'
+                    ))) as name,
                     'user_history' as source,
                     COUNT(*) as frequency
                 FROM timeline_entries
                 WHERE user_id = $1 
                   AND entry_type = 'symptom'
-                  AND LOWER(TRIM(content)) ILIKE $2
-                GROUP BY LOWER(TRIM(content))
+                  AND LOWER(TRIM(COALESCE(
+                      structured_content->>'symptom_name',
+                      structured_content->>'item_name',
+                      'Unknown'
+                  ))) ILIKE $2
+                GROUP BY LOWER(TRIM(COALESCE(
+                    structured_content->>'symptom_name',
+                    structured_content->>'item_name',
+                    'Unknown'
+                )))
                 ORDER BY frequency DESC, name ASC
                 LIMIT $3
             `;
