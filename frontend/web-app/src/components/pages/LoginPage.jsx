@@ -13,10 +13,6 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showSignup, setShowSignup] = useState(false);
-
-const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   
   // CRITICAL DEBUG: Log every render
   console.log('🔍 RENDER: LoginPage rendered, password state:', password);
