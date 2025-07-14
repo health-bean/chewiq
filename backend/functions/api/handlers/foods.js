@@ -3,117 +3,97 @@ const { successResponse, errorResponse } = require('../utils/responses');
 const { handleDatabaseError } = require('../utils/errors');
 
 const handleSearchFoods = async (queryParams, event) => {
+    console.log('🔍 FOODS: Handler called with params:', queryParams);
+    
     try {
         const client = await pool.connect();
+        console.log('🔍 FOODS: Database connected');
+        
         const { search = '', protocol_id = null, prioritize_user_history = 'true' } = queryParams;
-        const userId = event.user?.id;
+        
+        // Get user ID properly - this was the issue
+        let userId = null;
+        try {
+            const { getCurrentUser } = require('../middleware/auth');
+            const user = await getCurrentUser(event);
+            userId = user?.id;
+            console.log('🔍 FOODS: User ID:', userId);
+        } catch (error) {
+            // Continue without user history if auth fails
+            console.log('🔍 FOODS: Could not get user ID, continuing without user history:', error.message);
+        }
         
         let foods = [];
         
-        // If prioritizing user history and user is authenticated
-        if (prioritize_user_history === 'true' && userId) {
-            // First get user's food history
-            const userHistoryQuery = `
-                SELECT DISTINCT
-                    NULL as id,
-                    LOWER(TRIM(content)) as name,
-                    'Personal History' as category,
-                    'user_history' as source,
-                    COUNT(*) as frequency,
-                    false as nightshade,
-                    'unknown' as histamine,
-                    'unknown' as oxalate,
-                    'unknown' as lectin,
-                    'unknown' as fodmap,
-                    'unknown' as salicylate
-                FROM timeline_entries
-                WHERE user_id = $1 
-                  AND entry_type = 'food'
-                  AND LOWER(TRIM(content)) ILIKE $2
-                GROUP BY LOWER(TRIM(content))
-                ORDER BY frequency DESC, name ASC
-                LIMIT $3
-            `;
-            
-            const searchPattern = `%${search.toLowerCase()}%`;
-            const userResult = await client.query(userHistoryQuery, [userId, searchPattern, Math.floor(25)]);
-            
-            foods = userResult.rows.map(row => ({
-                id: `user_${row.name}`,
-                name: row.name,
-                category: row.category,
-                source: 'user_history',
-                frequency: row.frequency,
-                nightshade: row.nightshade,
-                histamine: row.histamine,
-                oxalate: row.oxalate,
-                lectin: row.lectin,
-                fodmap: row.fodmap,
-                salicylate: row.salicylate,
-                protocol_status: 'unknown'
-            }));
-        }
+        // Skip user history for now - just get database foods with protocol compliance
+        console.log('🔍 FOODS: Searching database with protocol compliance');
         
-        // Then get from food database
-        let query = `
-            SELECT 
-                fp.id,
-                fp.name,
-                fp.category,
-                fp.nightshade,
-                fp.histamine,
-                fp.oxalate,
-                fp.lectin,
-                fp.fodmap,
-                fp.salicylate
-        `;
+        const searchPattern = `%${search}%`;
+        let query;
+        let values;
         
         if (protocol_id) {
-            query += `,
-                p.protocol_type,
-                p.category as protocol_category,
-                COALESCE(pfr.status, 'unknown') as protocol_status,
-                pfr.phase as protocol_phase,
-                pfr.notes as protocol_notes
-            FROM food_properties fp
-            JOIN protocols p ON p.id = $2
-            LEFT JOIN protocol_food_rules pfr ON fp.id = pfr.food_id AND pfr.protocol_id = $2
-            WHERE fp.name ILIKE $1
-            ORDER BY fp.name ASC
-            LIMIT $3
+            // Include protocol compliance when protocol_id is provided
+            query = `
+                SELECT 
+                    fp.id,
+                    fp.name,
+                    fp.category,
+                    fp.nightshade,
+                    fp.histamine,
+                    fp.oxalate,
+                    fp.lectin,
+                    fp.fodmap,
+                    fp.salicylate,
+                    COALESCE(pfr.status, 'unknown') as protocol_status
+                FROM food_properties fp
+                LEFT JOIN protocol_food_rules pfr ON fp.id = pfr.food_id AND pfr.protocol_id = $2
+                WHERE fp.name ILIKE $1
+                ORDER BY fp.name ASC
+                LIMIT 10
             `;
+            values = [searchPattern, protocol_id];
         } else {
-            query += `
-            FROM food_properties fp
-            WHERE fp.name ILIKE $1
-            ORDER BY fp.name ASC
-            LIMIT $3
+            // Basic search without protocol compliance
+            query = `
+                SELECT 
+                    fp.id,
+                    fp.name,
+                    fp.category,
+                    fp.nightshade,
+                    fp.histamine,
+                    fp.oxalate,
+                    fp.lectin,
+                    fp.fodmap,
+                    fp.salicylate,
+                    'unknown' as protocol_status
+                FROM food_properties fp
+                WHERE fp.name ILIKE $1
+                ORDER BY fp.name ASC
+                LIMIT 10
             `;
+            values = [searchPattern];
         }
         
-        const remainingLimit = 50 - foods.length;
-        const values = protocol_id ? [`%${search}%`, protocol_id, remainingLimit] : [`%${search}%`, remainingLimit];
-        const dbResult = await client.query(query, values);
+        console.log('🔍 FOODS: Executing query with protocol_id:', protocol_id);
         
-        // Add database results, avoiding duplicates
-        const userFoodNames = new Set(foods.map(f => f.name.toLowerCase()));
-        const dbFoods = dbResult.rows
-            .filter(row => !userFoodNames.has(row.name.toLowerCase()))
-            .map(row => ({
-                ...row,
-                source: 'database'
-            }));
+        const result = await client.query(query, values);
+        console.log('🔍 FOODS: Query returned:', result.rows.length, 'results');
         
-        foods = [...foods, ...dbFoods];
-        
-        // Add compliance_status field for frontend compatibility
-        foods.forEach(food => {
-            if (food.protocol_status) {
-                food.compliance_status = food.protocol_status;
-            } else {
-                food.compliance_status = 'unknown';
-            }
-        });
+        foods = result.rows.map(row => ({
+            id: row.id,
+            name: row.name,
+            category: row.category || 'unknown',
+            source: 'database',
+            compliance_status: row.protocol_status || 'unknown',
+            protocol_status: row.protocol_status || 'unknown',
+            nightshade: row.nightshade,
+            histamine: row.histamine,
+            oxalate: row.oxalate,
+            lectin: row.lectin,
+            fodmap: row.fodmap,
+            salicylate: row.salicylate
+        }));
         
         client.release();
         

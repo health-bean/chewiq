@@ -5,13 +5,27 @@ export const useEntryForm = () => {
   const [formData, setFormData] = useState({
     time: new Date().toTimeString().slice(0, 5),
     type: ENTRY_TYPES.FOOD,
+    selectedItems: [], // New unified structure
+    // Legacy support
     selectedFoods: [],
     customText: '',
     severity: SEVERITY_LEVELS.DEFAULT
   });
 
   const updateFormData = (updates) => {
-    setFormData(prev => ({ ...prev, ...updates }));
+    console.log('🔧 useEntryForm: Updating form data:', updates);
+    
+    // Clear selectedItems when type changes to prevent cross-contamination
+    if (updates.type && updates.type !== formData.type) {
+      console.log('🔧 useEntryForm: Type changed, clearing selectedItems');
+      setFormData(prev => ({ 
+        ...prev, 
+        ...updates, 
+        selectedItems: [] // Clear items when type changes
+      }));
+    } else {
+      setFormData(prev => ({ ...prev, ...updates }));
+    }
   };
 
   const toggleSelectedFood = (food) => {
@@ -33,45 +47,38 @@ export const useEntryForm = () => {
     setFormData({
       time: new Date().toTimeString().slice(0, 5),
       type: ENTRY_TYPES.FOOD,
-      selectedFoods: [],
+      selectedItems: [], // New unified structure
+      selectedFoods: [], // Legacy support
       customText: '',
       severity: SEVERITY_LEVELS.DEFAULT
     });
   };
 
   const buildEntryData = (selectedDate) => {
-    // Process foods to extract names and categories
-    const foodItems = formData.selectedFoods.map(food => {
-      if (typeof food === 'string') return food;
-      if (typeof food === 'object' && food.name) {
-        // Create proper food content structure
-        return {
-          name: food.name,
-          category: food.category || 'unknown',
-          compliance_status: food.compliance_status || food.protocol_status || 'unknown'
-        };
-      }
-      return String(food);
-    });
+    console.log('🔧 useEntryForm: Building entry data:', formData);
     
-    const allItems = [...foodItems];
-    if (formData.customText.trim()) {
-      allItems.push(formData.customText.trim());
-    }
+    // Use new selectedItems structure if available, fallback to legacy selectedFoods
+    const items = formData.selectedItems && formData.selectedItems.length > 0 
+      ? formData.selectedItems 
+      : formData.selectedFoods;
     
-    // For display, create a simple string of food names
-    const displayContent = formData.selectedFoods.map(food => {
-      if (typeof food === 'string') return food;
-      if (typeof food === 'object' && food.name) return food.name;
-      return String(food);
+    console.log('🔧 useEntryForm: Using items:', items);
+    
+    // Create display content from items
+    const displayContent = items.map(item => {
+      if (typeof item === 'string') return item;
+      if (typeof item === 'object' && item.name) return item.name;
+      return String(item);
     }).join(', ') + (formData.customText.trim() ? ', ' + formData.customText.trim() : '');
     
     return {
       entryDate: selectedDate,
       entryTime: formData.time,
       entryType: formData.type,
-      content: displayContent, // Simple string for display
-      selectedFoods: formData.selectedFoods, // Keep original objects for data
+      selectedItems: items, // New unified structure for backend
+      // Legacy support
+      content: displayContent,
+      selectedFoods: formData.selectedFoods, // Keep for backward compatibility
       severity: formData.type === ENTRY_TYPES.SYMPTOM ? formData.severity : null
     };
   };

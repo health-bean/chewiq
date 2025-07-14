@@ -8,16 +8,26 @@ const useProtocols = (isAuthenticated = false) => {
 
   useEffect(() => {
     const fetchProtocols = async () => {
-      if (!isAuthenticated) {
+      // Always try to fetch if we have a token, regardless of isAuthenticated flag
+      const hasToken = sessionStorage.getItem('authToken');
+      
+      if (!isAuthenticated && !hasToken) {
+        console.log('🔧 useProtocols: No auth, skipping fetch');
         setLoading(false);
         return;
       }
       
+      console.log('🔧 useProtocols: Fetching protocols...', { isAuthenticated, hasToken: !!hasToken });
+      
       try {
         const data = await apiClient.get('/api/v1/protocols');
+        console.log('🔧 useProtocols: Received protocols:', data.protocols?.length || 0);
         setProtocols(data.protocols || []);
+        setError(null);
       } catch (error) {
+        console.error('🔧 useProtocols: Error fetching protocols:', error);
         setError(error.message);
+        setProtocols([]);
       } finally {
         setLoading(false);
       }

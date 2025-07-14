@@ -3,6 +3,55 @@ const { successResponse, errorResponse } = require('../utils/responses');
 const { AppError, ErrorTypes, handleDatabaseError, handleAuthError } = require('../utils/errorTypes');
 const { getCurrentUser, getAccessibleUserIds, requireAuth } = require('../middleware/auth');
 
+// Helper function to create structured content for JSONB storage
+const createStructuredContent = (item, entryType) => {
+    const baseContent = {
+        entry_source: 'timed_entry',
+        item_name: item.name,
+        user_history: item.source === 'user_history'
+    };
+
+    switch (entryType) {
+        case 'food':
+            return {
+                ...baseContent,
+                food_name: item.name,
+                category: item.category,
+                protocol_compliance: item.compliance_status || 'unknown',
+                protocol_allowed: item.protocol_allowed || false
+            };
+        case 'symptom':
+            return {
+                ...baseContent,
+                symptom_name: item.name,
+                severity: item.severity || 5
+            };
+        case 'supplement':
+            return {
+                ...baseContent,
+                supplement_name: item.name
+            };
+        case 'medication':
+            return {
+                ...baseContent,
+                medication_name: item.name
+            };
+        case 'exposure':
+            return {
+                ...baseContent,
+                exposure_type: item.name
+            };
+        case 'detox':
+            return {
+                ...baseContent,
+                detox_type: item.name,
+                duration_minutes: item.duration_minutes || 15
+            };
+        default:
+            return baseContent;
+    }
+};
+
 const handleGetTimelineEntries = async (queryParams, event) => {
     console.log('=== handleGetTimelineEntries called ===');
     console.log('Query params:', queryParams);
@@ -100,35 +149,46 @@ const handleGetTimelineEntries = async (queryParams, event) => {
 };
 
 const handleCreateTimelineEntry = async (body, event) => {
-    // Require authentication (disabled for development)
-    // const authError = await requireAuth(event);
-    // if (authError) {
-    //     return authError;
-    // }
-
+    console.log('🔧 TIMELINE: handleCreateTimelineEntry called');
+    console.log('🔧 TIMELINE: Request body:', JSON.stringify(body, null, 2));
+    
     try {
         const user = await getCurrentUser(event);
         let userId;
         
         if (user) {
             userId = user.id;
+            console.log('🔧 TIMELINE: User ID:', userId);
         } else {
-            console.log('No user found - authentication required');
+            console.log('🔧 TIMELINE: No user found - authentication required');
             return errorResponse('Authentication required', 401);
         }
         
         const client = await pool.connect();
+        console.log('🔧 TIMELINE: Database connected');
         
         const {
             entryDate,
             entryTime,
             entryType,
+            selectedItems = [], // New unified structure
+            // Legacy support
             content,
             severity = null,
             selectedFoods = []
         } = body;
         
+        console.log('🔧 TIMELINE: Parsed data:', {
+            entryDate,
+            entryTime,
+            entryType,
+            selectedItems,
+            content,
+            severity
+        });
+
         await client.query('BEGIN');
+        console.log('🔧 TIMELINE: Transaction started');
         
         let journalEntryId;
         
@@ -155,30 +215,71 @@ const handleCreateTimelineEntry = async (body, event) => {
             journalEntryId = journalResult.rows[0].id;
         }
         
-        const timelineQuery = `
-            INSERT INTO timeline_entries (
-                journal_entry_id, user_id, entry_time, 
-                entry_type, content, severity, protocol_compliant
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7)
-            RETURNING *
-        `;
-        
-        const protocolCompliant = entryType === 'food' ? 
-            await checkProtocolCompliance(selectedFoods, userId, client) : null;
-        
-        const timelineValues = [
-            journalEntryId, userId, entryTime,
-            entryType, content, severity, protocolCompliant
-        ];
-        
-        const timelineResult = await client.query(timelineQuery, timelineValues);
+        // Handle new unified selectedItems structure
+        if (selectedItems && selectedItems.length > 0) {
+            console.log('🔧 TIMELINE: Processing selectedItems:', selectedItems.length, 'items');
+            
+            for (const item of selectedItems) {
+                console.log('🔧 TIMELINE: Processing item:', JSON.stringify(item, null, 2));
+                
+                const structuredContent = createStructuredContent(item, entryType);
+                console.log('🔧 TIMELINE: Structured content:', JSON.stringify(structuredContent, null, 2));
+                
+                const timelineQuery = `
+                    INSERT INTO timeline_entries (
+                        journal_entry_id, user_id, entry_date, entry_time, 
+                        entry_type, content, severity, structured_content
+                    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+                    RETURNING *
+                `;
+                
+                const timelineValues = [
+                    journalEntryId, 
+                    userId, 
+                    entryDate,
+                    entryTime,
+                    entryType, 
+                    item.name, // content field for backward compatibility
+                    item.severity || null,
+                    JSON.stringify(structuredContent)
+                ];
+                
+                console.log('🔧 TIMELINE: Timeline query values:', timelineValues);
+                
+                try {
+                    const result = await client.query(timelineQuery, timelineValues);
+                    console.log('🔧 TIMELINE: Successfully inserted timeline entry:', result.rows[0].id);
+                } catch (insertError) {
+                    console.error('🔧 TIMELINE: Timeline insert failed:', insertError);
+                    throw insertError;
+                }
+            }
+        } else {
+            // Legacy support for old structure
+            const timelineQuery = `
+                INSERT INTO timeline_entries (
+                    journal_entry_id, user_id, entry_date, entry_time, 
+                    entry_type, content, severity, protocol_compliant
+                ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+                RETURNING *
+            `;
+            
+            const protocolCompliant = entryType === 'food' ? 
+                await checkProtocolCompliance(selectedFoods, userId, client) : null;
+            
+            const timelineValues = [
+                journalEntryId, userId, entryDate, entryTime,
+                entryType, content, severity, protocolCompliant
+            ];
+            
+            await client.query(timelineQuery, timelineValues);
+        }
         
         await client.query('COMMIT');
         client.release();
         
         return successResponse({
-            message: 'Timeline entry created successfully',
-            entry: timelineResult.rows[0]
+            message: 'Timeline entry created successfully'
         }, 201);
         
     } catch (error) {

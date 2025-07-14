@@ -50,27 +50,27 @@ const ProtocolFoods = ({ protocolId }) => {
 
   const getComplianceColor = (status) => {
     switch (status) {
-      case 'allowed': return 'bg-green-100 text-green-800 border-green-200';
-      case 'avoid': return 'bg-red-100 text-red-800 border-red-200';
-      case 'reintroduction': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'included': return 'bg-green-100 text-green-800 border-green-200';
+      case 'avoid_for_now': return 'bg-red-100 text-red-800 border-red-200';
+      case 'try_in_moderation': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
       default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
 
   const getComplianceIcon = (status) => {
     switch (status) {
-      case 'allowed': return '✅';
-      case 'avoid': return '❌';
-      case 'reintroduction': return '🟡';
+      case 'included': return '✅';
+      case 'avoid_for_now': return '❌';
+      case 'try_in_moderation': return '🟡';
       default: return '❓';
     }
   };
 
   const getComplianceLabel = (status) => {
     switch (status) {
-      case 'allowed': return 'Included';
-      case 'avoid': return 'Avoid for now';
-      case 'reintroduction': return 'Try in moderation';
+      case 'included': return 'Included';
+      case 'avoid_for_now': return 'Avoid for now';
+      case 'try_in_moderation': return 'Try in moderation';
       default: return 'Not specified';
     }
   };
@@ -127,9 +127,9 @@ const ProtocolFoods = ({ protocolId }) => {
     return 'bg-blue-100 text-blue-800';
   };
 
-  // Filter to only show allowed foods for default view
+  // Filter to only show included foods for default view
   const filterAllowedFoods = (foods) => {
-    return foods.filter(food => food.compliance_status === 'allowed');
+    return foods.filter(food => food.compliance_status === 'included');
   };
 
   // Smart search result analysis

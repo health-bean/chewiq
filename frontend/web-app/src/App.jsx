@@ -144,21 +144,37 @@ const MainApp = () => {
 
   // Entry form handlers
   const handleSubmitEntry = async () => {
-    const allItems = [...formData.selectedFoods];
+    console.log('🔧 handleSubmitEntry: Form data:', formData);
+    
+    // Use the new unified selectedItems structure
+    const allItems = [...(formData.selectedItems || [])];
+    
+    // Also check legacy selectedFoods for backward compatibility
+    if (formData.selectedFoods && formData.selectedFoods.length > 0) {
+      allItems.push(...formData.selectedFoods);
+    }
+    
     if (formData.customText.trim()) {
       allItems.push(formData.customText.trim());
     }
     
-    if (allItems.length === 0) return;
+    console.log('🔧 handleSubmitEntry: All items to submit:', allItems);
+    
+    if (allItems.length === 0) {
+      console.log('🔧 handleSubmitEntry: No items to submit, returning');
+      return;
+    }
     
     const entryData = buildEntryData(selectedDate);
+    console.log('🔧 handleSubmitEntry: Entry data:', entryData);
     
     try {
       await addEntry(entryData);
       resetForm();
       handleAddEntryToggle();
+      console.log('🔧 handleSubmitEntry: Entry added successfully');
     } catch (error) {
-      console.error('Failed to add entry:', error);
+      console.error('🔧 handleSubmitEntry: Failed to add entry:', error);
     }
   };
 

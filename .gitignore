@@ -171,3 +171,5 @@ dev-notes/
 # AI Analysis and Documentation (legacy - moved to dev-notes/)
 docs/build/
 docs/.docusaurus/
+# Migration and utility scripts
+scripts/
