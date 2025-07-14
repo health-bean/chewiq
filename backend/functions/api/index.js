@@ -3,7 +3,7 @@ const { handleGetCorrelationInsights } = require('./handlers/correlations');
 const { handleCors } = require('./utils/responses');
 // Import specific auth handlers instead of generic handleAuth
 const { handleLogin, handleLogout, handleVerify, handleRefresh, handleRegister } = require('./handlers/auth');
-const { handleGetUser, handleUpdateUser, handleGetUserProtocols, handleGetUserPreferences, handleUpdateUserPreferences } = require('./handlers/users');
+const { handleGetUser, handleUpdateUser, handleGetUserProtocols, handleGetUserPreferences, handleUpdateUserPreferences, handleGetCurrentProtocol, handleGetProtocolHistory, handleChangeProtocol } = require('./handlers/users');
 const { handleGetJournalEntries, handleCreateJournalEntry, handleGetJournalEntry, handleUpdateJournalEntry } = require('./handlers/journal');
 const { handleGetTimelineEntries, handleCreateTimelineEntry } = require('./handlers/timeline');
 const { handleGetProtocols } = require('./handlers/protocols');
@@ -71,6 +71,16 @@ exports.handler = async (event) => {
         }
         else if (path === '/api/v1/user/preferences' && method === 'POST') {
             response = await handleUpdateUserPreferences(body, event);
+        }
+        // User protocol routes
+        else if (path === '/api/v1/users/current-protocol' && method === 'GET') {
+            response = await handleGetCurrentProtocol(queryParams, event);
+        }
+        else if (path === '/api/v1/users/protocol-history' && method === 'GET') {
+            response = await handleGetProtocolHistory(queryParams, event);
+        }
+        else if (path === '/api/v1/users/change-protocol' && method === 'POST') {
+            response = await handleChangeProtocol(body, event);
         }
         // Insights routes
         else if (path === '/api/v1/correlations/insights' && method === 'GET') {

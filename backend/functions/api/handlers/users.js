@@ -258,10 +258,213 @@ const handleUpdateUserPreferences = async (body, event) => {
     }
 };
 
+// Get current user protocol
+const handleGetCurrentProtocol = async (queryParams, event) => {
+  try {
+    const user = await getCurrentUser(event);
+    if (!user) {
+      return errorResponse('Authentication required', 401);
+    }
+
+    const client = await pool.connect();
+    
+    try {
+      // Use our database function to get current protocol
+      const result = await client.query(
+        'SELECT * FROM get_user_current_protocol($1)',
+        [user.id]
+      );
+
+      if (result.rows.length === 0) {
+        return successResponse({ protocol: null });
+      }
+
+      const protocol = result.rows[0];
+      return successResponse({
+        protocol: {
+          protocol_id: protocol.protocol_id,
+          protocol_name: protocol.protocol_name,
+          phase: protocol.phase,
+          compliance_score: protocol.compliance_score,
+          protocol_data: protocol.protocol_data,
+          start_date: protocol.protocol_data?.phase_history?.[0]?.started
+        }
+      });
+
+    } finally {
+      client.release();
+    }
+
+  } catch (error) {
+    console.error('Error getting current protocol:', error);
+    const appError = handleDatabaseError(error, 'get current protocol');
+    return errorResponse(appError.message, appError.statusCode);
+  }
+};
+
+// Get user protocol history
+const handleGetProtocolHistory = async (queryParams, event) => {
+  try {
+    const user = await getCurrentUser(event);
+    if (!user) {
+      return errorResponse('Authentication required', 401);
+    }
+
+    const client = await pool.connect();
+    
+    try {
+      // Get protocol change events for this user
+      const result = await client.query(`
+        SELECT 
+          pce.created_at,
+          pce.event_data,
+          p1.name as previous_protocol_name,
+          p2.name as new_protocol_name
+        FROM protocol_change_events pce
+        LEFT JOIN protocols p1 ON p1.id = (pce.event_data->'previous_protocol'->>'id')::uuid
+        LEFT JOIN protocols p2 ON p2.id = (pce.event_data->'new_protocol'->>'id')::uuid
+        WHERE pce.user_id = $1
+        ORDER BY pce.created_at DESC
+        LIMIT 20
+      `, [user.id]);
+
+      const history = result.rows.map(row => ({
+        date: row.created_at,
+        change_type: row.event_data.change_type,
+        previous_protocol: row.previous_protocol_name,
+        new_protocol: row.new_protocol_name,
+        context: row.event_data.context,
+        duration_days: row.event_data.previous_protocol?.duration_days
+      }));
+
+      return successResponse({ history });
+
+    } finally {
+      client.release();
+    }
+
+  } catch (error) {
+    console.error('Error getting protocol history:', error);
+    const appError = handleDatabaseError(error, 'get protocol history');
+    return errorResponse(appError.message, appError.statusCode);
+  }
+};
+
+// Change user protocol
+const handleChangeProtocol = async (body, event) => {
+  try {
+    const user = await getCurrentUser(event);
+    if (!user) {
+      return errorResponse('Authentication required', 401);
+    }
+
+    const { newProtocolId, reason, context = {} } = body;
+
+    if (!newProtocolId) {
+      return errorResponse('New protocol ID is required', 400);
+    }
+
+    const client = await pool.connect();
+    
+    try {
+      // Get current protocol
+      const currentResult = await client.query(
+        'SELECT * FROM get_user_current_protocol($1)',
+        [user.id]
+      );
+
+      const currentProtocol = currentResult.rows[0];
+
+      // Verify new protocol exists
+      const protocolCheck = await client.query(
+        'SELECT id, name FROM protocols WHERE id = $1',
+        [newProtocolId]
+      );
+
+      if (protocolCheck.rows.length === 0) {
+        return errorResponse('Protocol not found', 404);
+      }
+
+      const newProtocol = protocolCheck.rows[0];
+
+      // If user has a current protocol, end it
+      if (currentProtocol) {
+        await client.query(`
+          UPDATE user_protocols 
+          SET 
+            end_date = CURRENT_DATE,
+            active = false,
+            protocol_data = protocol_data || jsonb_build_object(
+              'ended_at', now()::text,
+              'end_reason', $3
+            )
+          WHERE user_id = $1 AND protocol_id = $2 AND active = true
+        `, [user.id, currentProtocol.protocol_id, reason || 'protocol_change']);
+      }
+
+      // Create new protocol assignment
+      await client.query(`
+        INSERT INTO user_protocols (user_id, protocol_id, start_date, protocol_data)
+        VALUES ($1, $2, CURRENT_DATE, $3)
+      `, [
+        user.id, 
+        newProtocolId,
+        JSON.stringify({
+          active: true,
+          current_phase: 1,
+          started_via: 'preferences_change',
+          phase_history: [{
+            phase: 1,
+            started: new Date().toISOString().split('T')[0],
+            status: 'active'
+          }]
+        })
+      ]);
+
+      // Log the protocol change using our database function
+      await client.query(
+        'SELECT log_protocol_change($1, $2, $3, $4, $5, $6)',
+        [
+          user.id,
+          currentProtocol?.protocol_id || null,
+          newProtocolId,
+          reason || 'user_preference_change',
+          JSON.stringify({
+            ...context,
+            changed_by: 'user',
+            source: 'preferences_page'
+          }),
+          user.id
+        ]
+      );
+
+      return successResponse({
+        success: true,
+        message: `Protocol changed to ${newProtocol.name}`,
+        new_protocol: {
+          id: newProtocol.id,
+          name: newProtocol.name
+        }
+      });
+
+    } finally {
+      client.release();
+    }
+
+  } catch (error) {
+    console.error('Error changing protocol:', error);
+    const appError = handleDatabaseError(error, 'change protocol');
+    return errorResponse(appError.message, appError.statusCode);
+  }
+};
+
 module.exports = {
     handleGetUser,
     handleUpdateUser,
     handleGetUserProtocols,
     handleGetUserPreferences,
-    handleUpdateUserPreferences
+    handleUpdateUserPreferences,
+    handleGetCurrentProtocol,
+    handleGetProtocolHistory,
+    handleChangeProtocol
 };
