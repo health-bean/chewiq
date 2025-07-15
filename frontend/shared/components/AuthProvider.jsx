@@ -40,6 +40,19 @@ export const AuthProvider = ({ children }) => {
     return sessionStorage; // Always use sessionStorage for security
   };
 
+  // Update API client with current auth context whenever auth state changes
+  useEffect(() => {
+    const authContext = {
+      user,
+      token,
+      refreshToken,
+      isAuthenticated,
+      isDemoMode
+    };
+    apiClient.setAuthContext(authContext);
+    safeLogger.debug('API client auth context updated', { hasToken: !!token, isAuthenticated });
+  }, [user, token, refreshToken, isAuthenticated, isDemoMode]);
+
   // Verify existing token on app start
   useEffect(() => {
     const initializeAuth = async () => {

@@ -6,6 +6,12 @@ class ApiConfig {
     this.environment = import.meta.env.VITE_APP_ENV || 'development';
     this.authEnabled = import.meta.env.VITE_AUTH_ENABLED === 'true';
     this.isLocal = this.environment === 'development' && this.baseURL.includes('localhost');
+    this.authContext = null; // Will be set by AuthProvider
+  }
+
+  // Method to set auth context from AuthProvider
+  setAuthContext(authContext) {
+    this.authContext = authContext;
   }
 
   getHeaders() {
@@ -30,9 +36,15 @@ class ApiConfig {
   }
 
   getAuthToken() {
-    // SECURITY: Use sessionStorage for health data privacy
+    // First try to get token from auth context (preferred)
+    if (this.authContext && this.authContext.token) {
+      safeLogger.debug('Auth token from context', { found: true });
+      return this.authContext.token;
+    }
+    
+    // Fallback to sessionStorage for backward compatibility
     const token = sessionStorage.getItem('auth_token');
-    safeLogger.debug('Auth token status', { found: !!token });
+    safeLogger.debug('Auth token from sessionStorage', { found: !!token });
     return token || null;
   }
 
