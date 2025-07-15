@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2025-07-15T01:40:57.641Z",
+    "generated": "2025-07-15T01:45:28.231Z",
     "version": "1.0.0",
     "generator": "AutomatedProfessionalDocsGenerator"
   },
@@ -17,7 +17,7 @@
     "workingAPIs": 9,
     "totalAPIs": 33,
     "totalTables": 24,
-    "totalCommits": 101,
+    "totalCommits": 102,
     "contributors": 1
   },
   "discoveredInfo": {
@@ -132,7 +132,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 4070,
+          "responseTime": 4204,
           "responseData": {
             "insights": [
               {
@@ -716,7 +716,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 49,
+          "responseTime": 151,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -762,7 +762,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 42,
+          "responseTime": 106,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -813,7 +813,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 70,
+          "responseTime": 112,
           "responseData": {
             "foods": [
               {
@@ -864,7 +864,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 77,
+          "responseTime": 214,
           "responseData": {
             "foods": [
               {
@@ -4771,7 +4771,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 76,
+          "responseTime": 106,
           "responseData": {
             "protocols": [
               {
@@ -4945,7 +4945,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 32,
+          "responseTime": 148,
           "responseData": {
             "error": "Authentication required"
           },
@@ -4965,7 +4965,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 75,
+          "responseTime": 128,
           "responseData": {
             "error": "Authentication required"
           },
@@ -4985,7 +4985,7 @@
           ],
           "status": 404,
           "working": false,
-          "responseTime": 44,
+          "responseTime": 79,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -5036,7 +5036,7 @@
           ],
           "status": 404,
           "working": false,
-          "responseTime": 77,
+          "responseTime": 99,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -5082,7 +5082,7 @@
           "params": [],
           "status": 400,
           "working": false,
-          "responseTime": 35,
+          "responseTime": 146,
           "responseData": {
             "error": "Email and password required"
           },
@@ -5097,7 +5097,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 40,
+          "responseTime": 98,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -5143,7 +5143,7 @@
           "params": [],
           "status": 401,
           "working": false,
-          "responseTime": 60,
+          "responseTime": 120,
           "responseData": {
             "error": "No authorization header"
           },
@@ -5158,7 +5158,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 37,
+          "responseTime": 94,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -5204,7 +5204,7 @@
           "params": [],
           "status": 400,
           "working": false,
-          "responseTime": 128,
+          "responseTime": 119,
           "responseData": {
             "error": "Missing required fields"
           },
@@ -5219,7 +5219,7 @@
           "params": [],
           "status": 400,
           "working": false,
-          "responseTime": 80,
+          "responseTime": 94,
           "responseData": {
             "error": "Email and password required"
           },
@@ -5234,7 +5234,7 @@
           "params": [],
           "status": 401,
           "working": false,
-          "responseTime": 41,
+          "responseTime": 83,
           "responseData": {
             "error": "Authentication required"
           },
@@ -5254,7 +5254,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 47,
+          "responseTime": 99,
           "responseData": {
             "error": "Authentication required"
           },
@@ -5274,7 +5274,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 34,
+          "responseTime": 121,
           "responseData": {
             "error": "Authentication required"
           },
@@ -5294,7 +5294,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 33,
+          "responseTime": 91,
           "responseData": {
             "error": "Authentication required"
           },
@@ -5314,7 +5314,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 42,
+          "responseTime": 101,
           "responseData": {
             "error": "Authentication required"
           },
@@ -5334,7 +5334,7 @@
           ],
           "status": 404,
           "working": false,
-          "responseTime": 32,
+          "responseTime": 143,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -5385,7 +5385,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 38,
+          "responseTime": 81,
           "responseData": {
             "symptoms": [],
             "total": 0,
@@ -5408,7 +5408,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 41,
+          "responseTime": 90,
           "responseData": {
             "supplements": [],
             "total": 0,
@@ -5430,7 +5430,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 69,
+          "responseTime": 84,
           "responseData": {
             "medications": [],
             "total": 0,
@@ -5452,7 +5452,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 41,
+          "responseTime": 80,
           "responseData": {
             "detox_types": [],
             "total": 0,
@@ -5474,7 +5474,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 34,
+          "responseTime": 133,
           "responseData": {
             "exposures": [],
             "total": 0,
@@ -5491,7 +5491,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 40,
+          "responseTime": 88,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -5537,7 +5537,7 @@
           "params": [],
           "status": 500,
           "working": false,
-          "responseTime": 39,
+          "responseTime": 126,
           "responseData": {
             "error": "Failed to complete get journal entries"
           },
@@ -5552,7 +5552,7 @@
           "params": [],
           "status": 500,
           "working": false,
-          "responseTime": 73,
+          "responseTime": 192,
           "responseData": {
             "error": "Failed to complete get journal entry"
           },
@@ -5567,7 +5567,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 35,
+          "responseTime": 85,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -5613,7 +5613,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 92,
+          "responseTime": 79,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -5659,7 +5659,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 51,
+          "responseTime": 90,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -6020,7 +6020,7 @@
             {
               "name": "SetupWizard",
               "path": "frontend/web-app/src/features/setup/SetupWizard.jsx",
-              "size": 6074,
+              "size": 6037,
               "hooks": [
                 "useProtocols",
                 "useUserPreferences",
@@ -6113,7 +6113,7 @@
             }
           ],
           "utilities": [],
-          "size": "384.52 KB"
+          "size": "384.48 KB"
         },
         "frontend/shared": {
           "totalFiles": 37,
@@ -6403,18 +6403,18 @@
       "repository": "https://github.com/deebyrne26/health-platform",
       "branch": "main",
       "lastCommit": {
-        "hash": "f4de341",
-        "message": "secruity fixes",
+        "hash": "62e1fcc",
+        "message": "loading fixes",
         "author": "deebyrne26",
-        "date": "Mon Jul 14 21:40:25 2025 -0400"
+        "date": "Mon Jul 14 21:44:52 2025 -0400"
       },
       "contributors": [
         {
           "name": "deebyrne26",
-          "commits": 101
+          "commits": 102
         }
       ],
-      "totalCommits": 101
+      "totalCommits": 102
     }
   }
 }
