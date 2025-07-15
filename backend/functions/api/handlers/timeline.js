@@ -95,14 +95,11 @@ const handleGetTimelineEntries = async (queryParams, event) => {
                 te.id,
                 te.entry_time,
                 te.entry_type,
-                te.severity,
-                te.protocol_compliant,
+                te.entry_date,
                 te.structured_content,
                 te.created_at,
-                je.entry_date,
                 te.user_id
             FROM timeline_entries te
-            JOIN journal_entries je ON te.journal_entry_id = je.id
             WHERE te.user_id = ANY($1)
         `;
         
@@ -110,12 +107,12 @@ const handleGetTimelineEntries = async (queryParams, event) => {
         let paramIndex = 2;
         
         if (date) {
-            query += ` AND je.entry_date = $${paramIndex}`;
+            query += ` AND te.entry_date = $${paramIndex}`;
             values.push(date);
             paramIndex++;
         }
         
-        query += ` ORDER BY je.entry_date DESC, te.entry_time DESC LIMIT $${paramIndex}`;
+        query += ` ORDER BY te.entry_date DESC, te.entry_time DESC LIMIT $${paramIndex}`;
         values.push(limit);
         
         console.log('Final query:', query);
@@ -228,8 +225,8 @@ const handleCreateTimelineEntry = async (body, event) => {
                 const timelineQuery = `
                     INSERT INTO timeline_entries (
                         journal_entry_id, user_id, entry_date, entry_time, 
-                        entry_type, severity, structured_content
-                    ) VALUES ($1, $2, $3, $4, $5, $6, $7)
+                        entry_type, structured_content
+                    ) VALUES ($1, $2, $3, $4, $5, $6)
                     RETURNING *
                 `;
                 
@@ -239,7 +236,6 @@ const handleCreateTimelineEntry = async (body, event) => {
                     entryDate,
                     entryTime,
                     entryType, 
-                    item.severity || null,
                     JSON.stringify(structuredContent)
                 ];
                 
@@ -254,21 +250,25 @@ const handleCreateTimelineEntry = async (body, event) => {
                 }
             }
         } else {
-            // Legacy support for old structure
+            // Legacy support for old structure - updated for JSONB
+            const legacyStructuredContent = {
+                entry_source: 'legacy_entry',
+                severity: severity || null,
+                protocol_compliant: entryType === 'food' ? 
+                    await checkProtocolCompliance(selectedFoods, userId, client) : null
+            };
+            
             const timelineQuery = `
                 INSERT INTO timeline_entries (
                     journal_entry_id, user_id, entry_date, entry_time, 
-                    entry_type, severity, protocol_compliant
-                ) VALUES ($1, $2, $3, $4, $5, $6, $7)
+                    entry_type, structured_content
+                ) VALUES ($1, $2, $3, $4, $5, $6)
                 RETURNING *
             `;
             
-            const protocolCompliant = entryType === 'food' ? 
-                await checkProtocolCompliance(selectedFoods, userId, client) : null;
-            
             const timelineValues = [
                 journalEntryId, userId, entryDate, entryTime,
-                entryType, severity, protocolCompliant
+                entryType, JSON.stringify(legacyStructuredContent)
             ];
             
             await client.query(timelineQuery, timelineValues);
