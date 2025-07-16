@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Loader2, Mail, Lock, User, Rocket, ArrowLeft, Shield, Heart } from 'lucide-react';
 import { Button, Input, Alert, FormField, PasswordInput, Card } from '../../../../shared/components/ui';
 import { cn } from '../../../../shared/design-system';
-import useAuth from '../../../../shared/hooks/useAuth';
+import { useSimpleAuth } from '../auth/SimpleAuthProvider';
 
 const SignupPage = ({ onBackToLogin }) => {
   const [formData, setFormData] = useState({
@@ -16,7 +16,7 @@ const SignupPage = ({ onBackToLogin }) => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
-  const { signup, error, setError } = useAuth();
+  const { signup, error, setError } = useSimpleAuth();
 
   const validateForm = () => {
     const newErrors = {};

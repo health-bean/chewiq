@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react';
 import { Loader2, Mail, Lock, Rocket, AlertTriangle } from 'lucide-react';
 import { Button, Input, Alert, FormField, PasswordInput, Card } from '../../../../shared/components/ui';
 import { cn } from '../../../../shared/design-system';
-import useAuth from '../../../../shared/hooks/useAuth';
+import { useSimpleAuth } from '../auth/SimpleAuthProvider';
 import SignupPage from './SignupPage';
 
 const LoginPage = () => {
@@ -19,7 +19,7 @@ const LoginPage = () => {
   console.log('🔍 RENDER: Timestamp:', new Date().toISOString());
   const [isLoading, setIsLoading] = useState(false);
   const [showDemoWarning, setShowDemoWarning] = useState(false);
-  const { login, error, setError, isDemoMode } = useAuth();
+  const { login, error, setError, isDemoMode } = useSimpleAuth();
 
   // Demo user accounts for investor presentation
   const demoUsers = [
