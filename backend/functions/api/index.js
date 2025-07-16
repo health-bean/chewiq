@@ -15,6 +15,7 @@ const { handleSearchDetoxTypes } = require('./handlers/detox');
 const { handleSearchExposures } = require('./handlers/exposures');
 const { handleSeedDemoData } = require('./handlers/admin');
 const { successResponse, errorResponse } = require('./utils/responses');
+const { getCurrentUser } = require('./middleware/auth');
 
 exports.handler = async (event) => {
     console.log('Event:', JSON.stringify(event, null, 2));
@@ -31,6 +32,15 @@ exports.handler = async (event) => {
         
         console.log(`${method} ${path}`);
         console.log('🔍 INDEX: Processing request:', { method, path, hasQueryParams: !!queryParams });
+        
+        // Get current user for authentication (sets event.user)
+        const currentUser = await getCurrentUser(event);
+        if (currentUser) {
+            event.user = currentUser;
+            console.log('🔍 INDEX: User authenticated:', currentUser.email || currentUser.id);
+        } else {
+            console.log('🔍 INDEX: No authenticated user found');
+        }
         
         let response;
         

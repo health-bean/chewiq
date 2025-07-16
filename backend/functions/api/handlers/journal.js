@@ -3,8 +3,9 @@ const { successResponse, errorResponse } = require('../utils/responses');
 const { handleDatabaseError } = require('../utils/errors');
 
 const handleGetJournalEntries = async (queryParams, event) => {
+    let client;
     try {
-        const client = await pool.connect();
+        client = await pool.connect();
         const userId = event.user.id;
         const { limit = 30, offset = 0 } = queryParams;
         
@@ -23,7 +24,6 @@ const handleGetJournalEntries = async (queryParams, event) => {
         `;
         
         const result = await client.query(query, [userId, limit, offset]);
-        client.release();
         
         return successResponse({
             entries: result.rows,
@@ -33,15 +33,20 @@ const handleGetJournalEntries = async (queryParams, event) => {
     } catch (error) {
         const appError = handleDatabaseError(error, 'get journal entries');
         return errorResponse(appError.message, appError.statusCode);
+    } finally {
+        if (client) {
+            client.release();
+        }
     }
 };
 
 const handleGetJournalEntry = async (date, event) => {
+    let client;
     try {
         console.log('🔍 Journal API: Getting entry for date:', date);
         console.log('🔍 Journal API: Event user:', event.user ? 'present' : 'missing');
         
-        const client = await pool.connect();
+        client = await pool.connect();
         const userId = event.user?.id;
         
         if (!userId) {
@@ -66,7 +71,6 @@ const handleGetJournalEntry = async (date, event) => {
         
         console.log('🔍 Journal API: Executing query with params:', [userId, date]);
         const result = await client.query(query, [userId, date]);
-        client.release();
         
         console.log('🔍 Journal API: Query result rows:', result.rows.length);
         
@@ -88,14 +92,19 @@ const handleGetJournalEntry = async (date, event) => {
         console.error('❌ Journal API Error stack:', error.stack);
         const appError = handleDatabaseError(error, 'get journal entry');
         return errorResponse(appError.message, appError.statusCode);
+    } finally {
+        if (client) {
+            client.release();
+        }
     }
 };
 
 const handleCreateJournalEntry = async (body, event) => {
+    let client;
     try {
         console.log('🔍 Journal API: Creating entry with body:', JSON.stringify(body, null, 2));
         
-        const client = await pool.connect();
+        client = await pool.connect();
         const userId = event.user.id;
         
         // Extract data with robust error handling
@@ -212,7 +221,6 @@ const handleCreateJournalEntry = async (body, event) => {
         }
         
         await client.query('COMMIT');
-        client.release();
         
         console.log('✅ Journal API: Entry saved successfully');
         return successResponse({
@@ -227,15 +235,20 @@ const handleCreateJournalEntry = async (body, event) => {
         console.error('❌ Journal API Error stack:', error.stack);
         console.error('❌ Journal API Request body was:', JSON.stringify(body, null, 2));
         
-        try {
-            await client.query('ROLLBACK');
-            client.release();
-        } catch (rollbackError) {
-            console.error('❌ Journal API Rollback Error:', rollbackError);
+        if (client) {
+            try {
+                await client.query('ROLLBACK');
+            } catch (rollbackError) {
+                console.error('❌ Journal API Rollback Error:', rollbackError);
+            }
         }
         
         const appError = handleDatabaseError(error, 'create journal entry');
         return errorResponse(appError.message, appError.statusCode);
+    } finally {
+        if (client) {
+            client.release();
+        }
     }
 };
 

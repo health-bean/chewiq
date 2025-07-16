@@ -15,16 +15,30 @@ const pool = new Pool({
         // Development: More lenient SSL for easier setup
         rejectUnauthorized: false
     },
-    // Connection pool settings for better performance and security
-    max: 20,
-    idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 2000,
+    // Connection pool settings optimized for Lambda
+    max: 1, // Single connection per Lambda instance
+    min: 0, // No minimum connections
+    idleTimeoutMillis: 10000, // Close idle connections quickly
+    connectionTimeoutMillis: 5000,
+    acquireTimeoutMillis: 5000, // Timeout for acquiring connections
 });
 
 // Handle connection errors gracefully
 pool.on('error', (err) => {
     console.error('Unexpected error on idle client', err);
-    process.exit(-1);
+    // Don't exit process in Lambda - just log the error
+    console.error('Pool error occurred, continuing...');
 });
 
-module.exports = { pool };
+// Graceful shutdown function for Lambda
+const closePool = async () => {
+    try {
+        await pool.end();
+        console.log('Database pool closed successfully');
+    } catch (err) {
+        console.error('Error closing database pool:', err);
+    }
+};
+
+// Export both pool and cleanup function
+module.exports = { pool, closePool };
