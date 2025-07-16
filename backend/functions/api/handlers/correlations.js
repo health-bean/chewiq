@@ -8,70 +8,16 @@ const { getCurrentUser, getAccessibleUserIds } = require('../middleware/auth');
  */
 async function handleGetCorrelationInsights(queryParams, event) {
   try {
-    console.log('CORRELATIONS DEBUG: Starting handler with event:', {
-      headers: event.headers,
-      queryParams: queryParams
-    });
-    
     const timeframeDays = parseInt(queryParams?.timeframe_days) || 180;
     const confidenceThreshold = parseFloat(queryParams?.confidence_threshold) || 0.6;
 
     // Use auth middleware to get current user (handles both demo and Cognito users)
-    console.log('CORRELATIONS DEBUG: About to call getCurrentUser');
     const user = await getCurrentUser(event);
-    console.log('CORRELATIONS DEBUG: getCurrentUser returned:', user ? 'user object' : 'null');
-    
     if (!user) {
-      console.log('CORRELATIONS DEBUG: Authentication failed - no user returned');
-      
-      // FALLBACK: Try to use query param for backward compatibility
-      const requestedUserId = queryParams?.user_id || queryParams?.userId;
-      if (requestedUserId === 'sarah-aip') {
-        console.log('CORRELATIONS DEBUG: Using fallback for sarah-aip');
-        const fallbackUser = {
-          id: '8e8a568a-c2f8-43a8-abf2-4e54408dbdc0',
-          email: 'sarah.aip@test.com',
-          isDemo: true
-        };
-        
-        // Get timeline data for the fallback user
-        const timelineData = await getTimelineData(fallbackUser.id, timeframeDays);
-        
-        if (timelineData.length === 0) {
-          return successResponse({
-            insights: [],
-            summary: { totalCorrelations: 0, triggers: 0, improvements: 0, medicationEffects: 0, exerciseImpacts: 0 }
-          });
-        }
-        
-        // Continue with fallback user
-        const correlations = await detectAllCorrelations(timelineData, confidenceThreshold);
-        
-        const summary = {
-          totalCorrelations: correlations.length,
-          triggers: correlations.filter(c => c.type === 'food-symptom').length,
-          improvements: correlations.filter(c => c.type === 'supplement-improvement').length,
-          medicationEffects: correlations.filter(c => c.type === 'medication-effect').length,
-          exerciseImpacts: correlations.filter(c => c.type === 'exercise-energy').length,
-          sleepFactors: correlations.filter(c => c.type === 'sleep-quality').length,
-          stressAmplifiers: correlations.filter(c => c.type === 'stress-symptom').length,
-          foodPatterns: correlations.filter(c => c.type === 'food-property-pattern').length
-        };
-        
-        return successResponse({
-          insights: correlations,
-          summary,
-          timeframe_days: timeframeDays,
-          confidence_threshold: confidenceThreshold,
-          user_id: requestedUserId,
-          _note: 'Using fallback authentication'
-        });
-      }
-      
       return errorResponse('Authentication required', 401);
     }
 
-    console.log('CORRELATIONS DEBUG: User authenticated successfully:', {
+    console.log('Correlation request for user:', {
       userId: user.id,
       email: user.email,
       isDemo: user.isDemo || false,

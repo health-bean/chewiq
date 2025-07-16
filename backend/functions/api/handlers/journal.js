@@ -102,22 +102,23 @@ const handleGetJournalEntry = async (date, event) => {
 const handleCreateJournalEntry = async (body, event) => {
     let client;
     try {
-        console.log('🔍 JOURNAL DEBUG: Creating entry with body:', JSON.stringify(body, null, 2));
-        console.log('🔍 JOURNAL DEBUG: Event headers:', event.headers);
+        console.log('🔍 Journal API: Creating entry with body:', JSON.stringify(body, null, 2));
         
         client = await pool.connect();
         
-        // Check if user is authenticated
-        if (!event.user) {
-            console.log('🔍 JOURNAL DEBUG: No authenticated user found in event');
-            
-            // FALLBACK: Try to use demo_user from body for backward compatibility
-            if (body.demo_user === 'sarah-aip') {
-                console.log('🔍 JOURNAL DEBUG: Using fallback for sarah-aip');
-                const fallbackUserId = '8e8a568a-c2f8-43a8-abf2-4e54408dbdc0';
-                
-                // Continue with fallback user ID
-                const userId = fallbackUserId;
+        // Get user ID from event or fallback to demo_user in body
+        let userId;
+        
+        if (event.user && event.user.id) {
+            userId = event.user.id;
+            console.log('🔍 Journal API: Using authenticated user ID:', userId);
+        } else if (body.demo_user === 'sarah-aip') {
+            userId = '8e8a568a-c2f8-43a8-abf2-4e54408dbdc0'; // Hardcoded fallback for sarah-aip
+            console.log('🔍 Journal API: Using fallback ID for sarah-aip');
+        } else {
+            console.log('🔍 Journal API: No user ID available');
+            return errorResponse('Authentication required', 401);
+        }
         
         // Extract data with robust error handling
         const entry_date = body.entry_date || body.entryDate || new Date().toISOString().split('T')[0];

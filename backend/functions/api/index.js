@@ -18,6 +18,7 @@ const { getCurrentUser } = require('./middleware/auth');
 exports.handler = async (event) => {
     console.log('Event:', JSON.stringify(event, null, 2));
     
+    // Handle CORS preflight requests first
     const corsResponse = handleCors(event);
     if (corsResponse) return corsResponse;
     
@@ -31,13 +32,16 @@ exports.handler = async (event) => {
         console.log(`${method} ${path}`);
         console.log('🔍 INDEX: Processing request:', { method, path, hasQueryParams: !!queryParams });
         
-        // Get current user for authentication (sets event.user)
-        const currentUser = await getCurrentUser(event);
-        if (currentUser) {
-            event.user = currentUser;
-            console.log('🔍 INDEX: User authenticated:', currentUser.email || currentUser.id);
-        } else {
-            console.log('🔍 INDEX: No authenticated user found');
+        // Only authenticate for non-OPTIONS requests
+        if (method !== 'OPTIONS') {
+            // Get current user for authentication (sets event.user)
+            const currentUser = await getCurrentUser(event);
+            if (currentUser) {
+                event.user = currentUser;
+                console.log('🔍 INDEX: User authenticated:', currentUser.email || currentUser.id);
+            } else {
+                console.log('🔍 INDEX: No authenticated user found');
+            }
         }
         
         let response;

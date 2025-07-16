@@ -246,13 +246,10 @@ const getCurrentUser = async (event) => {
       return null;
     }
     
-    // Priority 2: Check for demo mode (check all possible header case variations)
-    const demoMode = event.headers['X-Demo-Mode'] || event.headers['x-demo-mode'] || 
-                     event.headers['X-DEMO-MODE'] || event.headers['x-Demo-Mode'];
-    const demoUserId = event.headers['X-Demo-User-Id'] || event.headers['x-demo-user-id'] || 
-                       event.headers['X-DEMO-USER-ID'] || event.headers['x-Demo-User-Id'];
-    const demoSessionId = event.headers['X-Demo-Session-Id'] || event.headers['x-demo-session-id'] || 
-                          event.headers['X-DEMO-SESSION-ID'] || event.headers['x-Demo-Session-Id'];
+    // Priority 2: Check for demo mode
+    const demoMode = event.headers['X-Demo-Mode'] || event.headers['x-demo-mode'];
+    const demoUserId = event.headers['X-Demo-User-Id'] || event.headers['x-demo-user-id'];
+    const demoSessionId = event.headers['X-Demo-Session-Id'] || event.headers['x-demo-session-id'];
     
     if (demoMode === 'true' && demoUserId) {
       console.log('AUTH MIDDLEWARE: Demo mode detected', { 
