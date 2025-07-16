@@ -59,7 +59,7 @@ npm run dev
 ## Database
 
 - **Type:** Unknown
-- **Tables:** 24 discovered
+- **Tables:** 25 discovered
 - **Connection:** Configured via environment
 
 ---
