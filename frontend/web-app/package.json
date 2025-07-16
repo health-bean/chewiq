@@ -12,6 +12,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@aws-amplify/auth": "^6.13.3",
+    "@aws-amplify/core": "^6.12.3",
     "@headlessui/react": "^2.2.4",
     "@tailwindcss/forms": "^0.5.10",
     "lucide-react": "^0.522.0",

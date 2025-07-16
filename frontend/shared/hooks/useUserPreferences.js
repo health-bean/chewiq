@@ -1,7 +1,7 @@
 // File: frontend/shared/hooks/useUserPreferences.js (IMPROVED)
 
 import { useState, useEffect } from 'react';
-import { apiClient } from '../services/api.js';
+import { simpleApiClient } from '../services/simpleApi.js';
 import { useSimpleAuth } from '../components/SimpleAuthProvider.jsx';
 import safeLogger from '../utils/safeLogger';
 
@@ -49,7 +49,7 @@ const useUserPreferences = (isAuthenticatedParam = null) => {
         setLoading(true);
         setError(null);
         
-        const response = await apiClient.get('/api/v1/user/preferences', {
+        const response = await simpleApiClient.get('/api/v1/user/preferences', {
           headers: getAuthHeaders()
         });
         
@@ -120,7 +120,7 @@ const useUserPreferences = (isAuthenticatedParam = null) => {
       setError(null);
       
       // Save to database
-      const response = await apiClient.post('/api/v1/user/preferences', updatedPreferences, {
+      const response = await simpleApiClient.post('/api/v1/user/preferences', updatedPreferences, {
         headers: getAuthHeaders()
       });
       
@@ -154,7 +154,7 @@ const useUserPreferences = (isAuthenticatedParam = null) => {
       setLoading(true);
       setError(null);
       
-      const response = await apiClient.get('/api/v1/user/preferences', {
+      const response = await simpleApiClient.get('/api/v1/user/preferences', {
         headers: getAuthHeaders()
       });
       

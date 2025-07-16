@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { apiClient } from '../services/api.js';
+import { simpleApiClient } from '../services/simpleApi.js';
 
 const useReflectionData = (selectedDate, isAuthenticated = false) => {
   const [reflectionData, setReflectionData] = useState({
@@ -51,7 +51,7 @@ const useReflectionData = (selectedDate, isAuthenticated = false) => {
 
       try {
         setLoading(true);
-        const response = await apiClient.get(`/api/v1/journal/entries/${selectedDate}`);
+        const response = await simpleApiClient.get(`/api/v1/journal/entries/${selectedDate}`);
         
         if (!isCancelled) {
           if (response.entry && response.entry.reflection_data) {
@@ -170,7 +170,7 @@ const useReflectionData = (selectedDate, isAuthenticated = false) => {
       };
 
       // Save to API
-      const response = await apiClient.post('/api/v1/journal/entries', apiData);
+      const response = await simpleApiClient.post('/api/v1/journal/entries', apiData);
       
       if (response && response.message) {
         console.log('Reflection data saved successfully:', response.message);

@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { Loader2 } from 'lucide-react';
 
-// Import clean auth components
+// Import clean auth components (keeping existing SimpleAuth)
 import { SimpleAuthProvider, useSimpleAuth } from '../../shared/components/SimpleAuthProvider';
 import SimpleLoginPage from './components/pages/SimpleLoginPage';
 import ErrorBoundary from './components/ErrorBoundary';
