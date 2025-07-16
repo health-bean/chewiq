@@ -173,24 +173,41 @@ const handleCreateJournalEntry = async (body, event) => {
         
         // Insert or update journal entry with JSONB structure
         // Make sure we're handling JSONB properly - PostgreSQL expects JSON object, not string
-        const journalQuery = `
-            INSERT INTO journal_entries (
-                user_id, entry_date, reflection_data, consent_to_anonymize
-            ) VALUES ($1, $2, $3, $4)
-            ON CONFLICT (user_id, entry_date) 
-            DO UPDATE SET
-                reflection_data = EXCLUDED.reflection_data,
-                updated_at = CURRENT_TIMESTAMP
-            RETURNING id
+        
+        // First check if entry exists
+        const checkQuery = `
+            SELECT id FROM journal_entries
+            WHERE user_id = $1 AND entry_date = $2
         `;
         
-        // Don't stringify the JSONB data - PostgreSQL driver handles this conversion
-        const journalResult = await client.query(journalQuery, [
-            userId, 
-            entry_date, 
-            reflectionData, // Send as JavaScript object, not JSON string
-            false // Default consent_to_anonymize
-        ]);
+        const checkResult = await client.query(checkQuery, [userId, entry_date]);
+        
+        let journalQuery;
+        let journalParams;
+        
+        if (checkResult.rows.length > 0) {
+            // Update existing entry
+            journalQuery = `
+                UPDATE journal_entries
+                SET reflection_data = $3,
+                    updated_at = CURRENT_TIMESTAMP
+                WHERE user_id = $1 AND entry_date = $2
+                RETURNING id
+            `;
+            journalParams = [userId, entry_date, reflectionData];
+        } else {
+            // Insert new entry
+            journalQuery = `
+                INSERT INTO journal_entries (
+                    user_id, entry_date, reflection_data, consent_to_anonymize
+                ) VALUES ($1, $2, $3, $4)
+                RETURNING id
+            `;
+            journalParams = [userId, entry_date, reflectionData, false];
+        }
+        
+        // Use the appropriate parameters based on the query type
+        const journalResult = await client.query(journalQuery, journalParams);
         
         const journalEntryId = journalResult.rows[0].id;
         console.log('🔍 Journal API: Journal entry created/updated with ID:', journalEntryId);
@@ -217,10 +234,14 @@ const handleCreateJournalEntry = async (body, event) => {
                     ) VALUES ($1, $2, $3, $4, $5, $6)
                 `;
                 
+                // Handle both object format and string format for symptoms
+                const symptomName = typeof symptom === 'object' ? symptom.name : symptom;
+                const symptomSeverity = typeof symptom === 'object' ? (symptom.severity || 5) : 5;
+                
                 const structuredContent = {
                     entry_source: 'daily_reflection',
-                    symptom_name: symptom.name,
-                    severity: symptom.severity,
+                    symptom_name: symptomName,
+                    severity: symptomSeverity,
                     context: 'sleep_related'
                 };
                 
