@@ -95,14 +95,13 @@ async function getTimelineData(userId, timeframeDays) {
     client = await pool.connect();
     console.log('CORRELATIONS DEBUG: Database connection successful');
     
-    // Simplified query for debugging
+    // Simplified query for debugging - removed severity column which doesn't exist
     const query = `
       SELECT 
         entry_date,
         entry_time,
         entry_type,
         structured_content,
-        severity,
         protocol_compliant,
         notes,
         created_at
@@ -118,12 +117,16 @@ async function getTimelineData(userId, timeframeDays) {
     // Transform structured_content to content for backward compatibility
     const transformedRows = result.rows.map(row => {
       let content = '';
+      let severity = 5; // Default severity
       
       if (row.structured_content) {
         try {
           const structured = typeof row.structured_content === 'string' 
             ? JSON.parse(row.structured_content) 
             : row.structured_content;
+          
+          // Extract severity from structured_content
+          severity = structured.severity || structured.symptom_severity || 5;
           
           // Extract the main item name based on entry type and structured content format
           switch (row.entry_type) {
@@ -169,7 +172,8 @@ async function getTimelineData(userId, timeframeDays) {
       
       return {
         ...row,
-        content // Add content field for backward compatibility with correlation logic
+        content, // Add content field for backward compatibility with correlation logic
+        severity // Add severity field extracted from structured_content
       };
     });
     
@@ -446,10 +450,15 @@ function analyzePersonalizedFoodSymptomCorrelation(foodInstances, symptoms, time
 
     if (symptomInWindow) {
       correlationCount++;
-      if (symptomInWindow.severity) {
-        severitySum += symptomInWindow.severity;
-        severityCount++;
-      }
+      // Get severity from structured_content if available
+      const structured = symptomInWindow.structured_content ? 
+        (typeof symptomInWindow.structured_content === 'string' ? 
+          JSON.parse(symptomInWindow.structured_content) : 
+          symptomInWindow.structured_content) : {};
+      
+      const symptomSeverity = structured.severity || 5; // Default to 5 if not found
+      severitySum += symptomSeverity;
+      severityCount++;
     }
   }
 
