@@ -8,14 +8,7 @@ const COGNITO_CLIENT_ID = '20gj35c0vmamtm4qgtk3euoh27';
 const COGNITO_REGION = 'us-east-1';
 const COGNITO_ISSUER = `https://cognito-idp.${COGNITO_REGION}.amazonaws.com/${COGNITO_USER_POOL_ID}`;
 
-// For backward compatibility with existing JWT system
-const JWT_SECRET = process.env.JWT_SECRET || (() => {
-  console.warn('WARNING: JWT_SECRET not set! Using generated secret for development.');
-  console.warn('This will invalidate tokens on restart. Set JWT_SECRET environment variable.');
-  return require('crypto').randomBytes(32).toString('base64');
-})();
-
-// Demo user mapping for clean auth system (keeping for backward compatibility)
+// Demo user mapping for testing and demos
 const DEMO_USERS = {
   'sarah-aip': {
     id: '8e8a568a-c2f8-43a8-abf2-4e54408dbdc0',
@@ -103,147 +96,6 @@ const verifyCognitoToken = async (token) => {
 
   } catch (error) {
     console.error('Cognito token verification error:', error);
-    return null;
-  }
-};
-
-const getCurrentUser = async (event) => {
-  try {
-    console.log('AUTH MIDDLEWARE: Event parameter:', typeof event, event ? 'defined' : 'undefined');
-    
-    if (!event) {
-      console.log('AUTH MIDDLEWARE: Event is null or undefined');
-      return null;
-    }
-    
-    console.log('AUTH MIDDLEWARE: Event structure check:', {
-      hasHeaders: !!event.headers,
-      headerKeys: event.headers ? Object.keys(event.headers) : 'no headers'
-    });
-    
-    if (!event.headers) {
-      console.log('AUTH MIDDLEWARE: No headers in event');
-      return null;
-    }
-    
-    // Priority 1: Check for Cognito JWT token
-    const authHeader = event.headers.Authorization || event.headers.authorization;
-    if (authHeader && authHeader.startsWith('Bearer ')) {
-      console.log('AUTH MIDDLEWARE: Found Authorization header, attempting Cognito verification');
-      const token = authHeader.replace('Bearer ', '');
-      
-      const cognitoUser = await verifyCognitoToken(token);
-      if (cognitoUser) {
-        console.log('AUTH MIDDLEWARE: Cognito user verified:', cognitoUser.email || cognitoUser.sub);
-        
-        // Get or create user in database
-        const dbUser = await getOrCreateUserFromCognito(cognitoUser);
-        if (dbUser) {
-          return {
-            id: dbUser.id,
-            email: dbUser.email,
-            firstName: dbUser.first_name,
-            lastName: dbUser.last_name,
-            userType: dbUser.user_type,
-            first_name: dbUser.first_name,
-            last_name: dbUser.last_name,
-            user_type: dbUser.user_type,
-            is_active: dbUser.is_active,
-            cognitoSub: cognitoUser.sub,
-            isCognito: true
-          };
-        }
-      }
-      
-      // Fallback to legacy JWT verification
-      console.log('AUTH MIDDLEWARE: Cognito verification failed, trying legacy JWT');
-      try {
-        const decoded = jwt.verify(token, JWT_SECRET);
-        console.log('AUTH MIDDLEWARE: Legacy JWT verified, user ID:', decoded.sub);
-
-        const client = await pool.connect();
-        const userQuery = `
-          SELECT id, email, first_name, last_name, user_type, is_active
-          FROM users 
-          WHERE id = $1 AND is_active = true
-        `;
-        
-        const result = await client.query(userQuery, [decoded.sub]);
-        client.release();
-
-        if (result.rows.length === 0) {
-          console.log('User not found in database, creating unique demo user for:', decoded.email || 'unknown');
-          
-          const userEmail = decoded.email || decoded.username;
-          if (!userEmail) {
-            console.log('No email found in token - cannot create user');
-            return null;
-          }
-          
-          const demoUserId = generateDemoUserId(userEmail);
-          
-          return {
-            id: demoUserId,
-            email: userEmail,
-            first_name: getDemoFirstName(userEmail),
-            last_name: getDemoLastName(userEmail),
-            user_type: 'patient',
-            is_active: true,
-            firstName: getDemoFirstName(userEmail),
-            lastName: getDemoLastName(userEmail),
-            userType: 'patient'
-          };
-        }
-
-        const user = result.rows[0];
-        console.log('AUTH MIDDLEWARE: Legacy user found in database:', user.email);
-        return {
-          id: user.id,
-          email: user.email,
-          firstName: user.first_name,
-          lastName: user.last_name,
-          userType: user.user_type,
-          first_name: user.first_name,
-          last_name: user.last_name,
-          user_type: user.user_type,
-          is_active: user.is_active
-        };
-
-      } catch (jwtError) {
-        console.log('AUTH MIDDLEWARE: Legacy JWT verification also failed:', jwtError.message);
-      }
-    }
-    
-    // Priority 2: Check for demo mode (for backward compatibility)
-    const demoMode = event.headers['X-Demo-Mode'] || event.headers['x-demo-mode'];
-    const demoUserId = event.headers['X-Demo-User-Id'] || event.headers['x-demo-user-id'];
-    const demoSessionId = event.headers['X-Demo-Session-Id'] || event.headers['x-demo-session-id'];
-    
-    if (demoMode === 'true' && demoUserId) {
-      console.log('AUTH MIDDLEWARE: Demo mode detected', { 
-        demoUserId, 
-        sessionId: demoSessionId ? 'present' : 'missing' 
-      });
-      
-      const demoUser = DEMO_USERS[demoUserId];
-      if (demoUser) {
-        console.log('AUTH MIDDLEWARE: Demo user found:', demoUser.email);
-        return {
-          ...demoUser,
-          sessionId: demoSessionId,
-          isDemo: true
-        };
-      } else {
-        console.log('AUTH MIDDLEWARE: Demo user not found:', demoUserId);
-        return null;
-      }
-    }
-    
-    console.log('AUTH MIDDLEWARE: No valid authentication found');
-    return null;
-
-  } catch (error) {
-    console.error('Authentication error:', error);
     return null;
   }
 };
@@ -342,31 +194,93 @@ const getOrCreateUserFromCognito = async (cognitoUser) => {
   }
 };
 
-const generateDemoUserId = (email) => {
-  const crypto = require('crypto');
-  const hash = crypto.createHash('sha256').update(email).digest('hex');
-  
-  return [
-    hash.substring(0, 8),
-    hash.substring(8, 12),
-    hash.substring(12, 16),
-    hash.substring(16, 20),
-    hash.substring(20, 32)
-  ].join('-');
-};
+const getCurrentUser = async (event) => {
+  try {
+    console.log('AUTH MIDDLEWARE: Event parameter:', typeof event, event ? 'defined' : 'undefined');
+    
+    if (!event) {
+      console.log('AUTH MIDDLEWARE: Event is null or undefined');
+      return null;
+    }
+    
+    console.log('AUTH MIDDLEWARE: Event structure check:', {
+      hasHeaders: !!event.headers,
+      headerKeys: event.headers ? Object.keys(event.headers) : 'no headers'
+    });
+    
+    if (!event.headers) {
+      console.log('AUTH MIDDLEWARE: No headers in event');
+      return null;
+    }
+    
+    // Priority 1: Check for Cognito JWT token
+    const authHeader = event.headers.Authorization || event.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      console.log('AUTH MIDDLEWARE: Found Authorization header, attempting Cognito verification');
+      const token = authHeader.replace('Bearer ', '');
+      
+      const cognitoUser = await verifyCognitoToken(token);
+      if (cognitoUser) {
+        console.log('AUTH MIDDLEWARE: Cognito user verified:', cognitoUser.email || cognitoUser.sub);
+        
+        // Get or create user in database
+        const dbUser = await getOrCreateUserFromCognito(cognitoUser);
+        if (dbUser) {
+          return {
+            id: dbUser.id,
+            email: dbUser.email,
+            firstName: dbUser.first_name,
+            lastName: dbUser.last_name,
+            userType: dbUser.user_type,
+            first_name: dbUser.first_name,
+            last_name: dbUser.last_name,
+            user_type: dbUser.user_type,
+            is_active: dbUser.is_active,
+            cognitoSub: cognitoUser.sub,
+            isCognito: true
+          };
+        }
+      }
+      
+      console.log('AUTH MIDDLEWARE: Cognito verification failed');
+      return null;
+    }
+    
+    // Priority 2: Check for demo mode
+    const demoMode = event.headers['X-Demo-Mode'] || event.headers['x-demo-mode'];
+    const demoUserId = event.headers['X-Demo-User-Id'] || event.headers['x-demo-user-id'];
+    const demoSessionId = event.headers['X-Demo-Session-Id'] || event.headers['x-demo-session-id'];
+    
+    if (demoMode === 'true' && demoUserId) {
+      console.log('AUTH MIDDLEWARE: Demo mode detected', { 
+        demoUserId, 
+        sessionId: demoSessionId ? 'present' : 'missing' 
+      });
+      
+      const demoUser = DEMO_USERS[demoUserId];
+      if (demoUser) {
+        console.log('AUTH MIDDLEWARE: Demo user found:', demoUser.email);
+        return {
+          ...demoUser,
+          firstName: demoUser.first_name,
+          lastName: demoUser.last_name,
+          userType: demoUser.user_type,
+          sessionId: demoSessionId,
+          isDemo: true
+        };
+      } else {
+        console.log('AUTH MIDDLEWARE: Demo user not found:', demoUserId);
+        return null;
+      }
+    }
+    
+    console.log('AUTH MIDDLEWARE: No valid authentication found');
+    return null;
 
-const getDemoFirstName = (email) => {
-  if (email.includes('sarah')) return 'Sarah';
-  if (email.includes('john')) return 'John';
-  if (email.includes('maria')) return 'Maria';
-  return 'Demo';
-};
-
-const getDemoLastName = (email) => {
-  if (email.includes('sarah')) return 'Chen';
-  if (email.includes('john')) return 'Smith';
-  if (email.includes('maria')) return 'Rodriguez';
-  return 'User';
+  } catch (error) {
+    console.error('Authentication error:', error);
+    return null;
+  }
 };
 
 const getAccessibleUserIds = async (event) => {

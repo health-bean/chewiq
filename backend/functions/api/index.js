@@ -1,8 +1,6 @@
-// backend/functions/api/index.js (UPDATED)
+// backend/functions/api/index.js (CLEAN AUTH SYSTEM)
 const { handleGetCorrelationInsights } = require('./handlers/correlations');
 const { handleCors } = require('./utils/responses');
-// Import specific auth handlers instead of generic handleAuth
-const { handleLogin, handleLogout, handleVerify, handleRefresh, handleRegister } = require('./handlers/auth');
 const { handleGetUser, handleUpdateUser, handleGetUserProtocols, handleGetUserPreferences, handleUpdateUserPreferences, handleGetCurrentProtocol, handleGetProtocolHistory, handleChangeProtocol } = require('./handlers/users');
 const { handleGetJournalEntries, handleCreateJournalEntry, handleGetJournalEntry, handleUpdateJournalEntry } = require('./handlers/journal');
 const { handleGetTimelineEntries, handleCreateTimelineEntry } = require('./handlers/timeline');
@@ -44,28 +42,8 @@ exports.handler = async (event) => {
         
         let response;
         
-        // Auth routes - specific endpoints
-        if (path === '/api/v1/auth/login' && method === 'POST') {
-            response = await handleLogin(body, event);
-        }
-        else if (path === '/api/v1/auth/logout' && method === 'POST') {
-            response = await handleLogout(body, event);
-        }
-        else if (path === '/api/v1/auth/verify' && method === 'GET') {
-            response = await handleVerify(queryParams, event);
-        }
-        else if (path === '/api/v1/auth/refresh' && method === 'POST') {
-            response = await handleRefresh(body, event);
-        }
-        else if (path === '/api/v1/auth/register' && method === 'POST') {
-            response = await handleRegister(body, event);
-        }
-        // Keep the generic auth route for backward compatibility
-        else if (path === '/api/v1/auth' && method === 'POST') {
-            response = await handleLogin(body, event); // Default to login
-        }
         // User routes
-        else if (path === '/api/v1/users' && method === 'GET') {
+        if (path === '/api/v1/users' && method === 'GET') {
             response = await handleGetUser(queryParams, event);
         }
         else if (path === '/api/v1/users' && method === 'POST') {
