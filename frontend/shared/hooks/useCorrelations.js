@@ -1,21 +1,18 @@
 import { useState, useEffect } from 'react';
 import { simpleApiClient } from '../services/simpleApi.js';
 
-export const useCorrelations = (userId, confidenceThreshold = 0.6, timeframeDays = 180) => {
+export const useCorrelations = (confidenceThreshold = 0.6, timeframeDays = 180) => {
   const [correlations, setCorrelations] = useState([]);
   const [summary, setSummary] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const fetchCorrelations = async () => {
-    if (!userId) return;
-    
     setLoading(true);
     setError(null);
     
     try {
       const params = new URLSearchParams({
-        user_id: userId,
         confidence_threshold: confidenceThreshold,
         timeframe_days: timeframeDays
       });
@@ -33,7 +30,7 @@ export const useCorrelations = (userId, confidenceThreshold = 0.6, timeframeDays
 
   useEffect(() => {
     fetchCorrelations();
-  }, [userId, confidenceThreshold, timeframeDays]);
+  }, [confidenceThreshold, timeframeDays]);
 
   const retryFetch = () => {
     fetchCorrelations();
