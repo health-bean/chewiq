@@ -95,38 +95,50 @@ async function getTimelineData(userId, timeframeDays) {
     client = await pool.connect();
     console.log('CORRELATIONS DEBUG: Database connection successful');
     
-    // Simplified query for debugging - removed severity column which doesn't exist
+    // Updated query to include both content and severity columns which exist in the schema
+    // Also added timeframe filtering based on days parameter
     const query = `
       SELECT 
         entry_date,
         entry_time,
         entry_type,
+        content,
+        severity,
         structured_content,
         protocol_compliant,
         notes,
         created_at
       FROM timeline_entries 
       WHERE user_id = $1 
-      LIMIT 10
+        AND entry_date >= CURRENT_DATE - INTERVAL '${timeframeDays} days'
+      ORDER BY entry_date DESC, entry_time DESC
     `;
 
     console.log('CORRELATIONS DEBUG: Executing query with params:', [userId]);
     const result = await client.query(query, [userId]);
     console.log('CORRELATIONS DEBUG: Query successful, returned rows:', result.rows.length);
     
-    // Transform structured_content to content for backward compatibility
+    // Transform data for correlation analysis, prioritizing structured_content when available
     const transformedRows = result.rows.map(row => {
-      let content = '';
-      let severity = 5; // Default severity
+      // Start with existing content and severity if available
+      let content = row.content || '';
+      let severity = row.severity || 5; // Default severity if not specified
       
+      // If structured_content exists, extract more detailed information
       if (row.structured_content) {
         try {
           const structured = typeof row.structured_content === 'string' 
             ? JSON.parse(row.structured_content) 
             : row.structured_content;
           
-          // Extract severity from structured_content
-          severity = structured.severity || structured.symptom_severity || 5;
+          // Extract severity from structured_content if not already in the severity column
+          if (!row.severity) {
+            severity = structured.severity || 
+                      structured.symptom_severity || 
+                      structured.level || 
+                      structured.intensity || 
+                      5;
+          }
           
           // Extract the main item name based on entry type and structured content format
           switch (row.entry_type) {
@@ -136,44 +148,53 @@ async function getTimelineData(userId, timeframeDays) {
                 content = structured.food_name;
               } else if (structured.foods && Array.isArray(structured.foods) && structured.foods.length > 0) {
                 // For multiple foods, join the first few names
-                const foodNames = structured.foods.slice(0, 3).map(food => food.name).filter(Boolean);
-                content = foodNames.length > 0 ? foodNames.join(', ') : 'Unknown';
+                const foodNames = structured.foods.slice(0, 3).map(food => food.name || food).filter(Boolean);
+                content = foodNames.length > 0 ? foodNames.join(', ') : content;
               } else if (structured.name) {
                 content = structured.name;
-              } else {
-                content = structured.item_name || 'Unknown';
+              } else if (structured.item_name) {
+                content = structured.item_name;
               }
               break;
             case 'symptom':
-              content = structured.symptom_name || structured.name || structured.item_name || 'Unknown';
+              content = structured.symptom_name || structured.name || structured.item_name || content;
               break;
             case 'supplement':
-              content = structured.supplement_name || structured.name || structured.item_name || 'Unknown';
+              content = structured.supplement_name || structured.name || structured.item_name || content;
               break;
             case 'medication':
-              content = structured.medication_name || structured.name || structured.item_name || 'Unknown';
+              content = structured.medication_name || structured.name || structured.item_name || content;
               break;
             case 'exposure':
-              content = structured.exposure_type || structured.name || structured.item_name || 'Unknown';
+              content = structured.exposure_type || structured.name || structured.item_name || content;
               break;
             case 'detox':
-              content = structured.detox_type || structured.name || structured.item_name || 'Unknown';
+              content = structured.detox_type || structured.name || structured.item_name || content;
+              break;
+            case 'exercise':
+              content = structured.exercise_type || structured.name || structured.item_name || content;
+              break;
+            case 'mood':
+            case 'energy':
+            case 'stress':
+              content = structured[`${row.entry_type}_description`] || structured.name || structured.item_name || content;
+              break;
+            case 'sleep':
+              content = structured.sleep_description || structured.name || structured.item_name || content;
               break;
             default:
-              content = structured.name || structured.item_name || 'Unknown';
+              content = structured.name || structured.item_name || content;
           }
         } catch (error) {
           console.warn('Error parsing structured_content for correlation analysis:', error);
-          content = 'Unknown';
+          // Keep original content if parsing fails
         }
-      } else {
-        content = 'Unknown';
       }
       
       return {
         ...row,
-        content, // Add content field for backward compatibility with correlation logic
-        severity // Add severity field extracted from structured_content
+        content, // Ensure content field is available for correlation logic
+        severity // Ensure severity field is available for correlation logic
       };
     });
     

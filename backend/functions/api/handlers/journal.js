@@ -172,6 +172,7 @@ const handleCreateJournalEntry = async (body, event) => {
         await client.query('BEGIN');
         
         // Insert or update journal entry with JSONB structure
+        // Make sure we're handling JSONB properly - PostgreSQL expects JSON object, not string
         const journalQuery = `
             INSERT INTO journal_entries (
                 user_id, entry_date, reflection_data, consent_to_anonymize
@@ -183,10 +184,11 @@ const handleCreateJournalEntry = async (body, event) => {
             RETURNING id
         `;
         
+        // Don't stringify the JSONB data - PostgreSQL driver handles this conversion
         const journalResult = await client.query(journalQuery, [
             userId, 
             entry_date, 
-            JSON.stringify(reflectionData),
+            reflectionData, // Send as JavaScript object, not JSON string
             false // Default consent_to_anonymize
         ]);
         
@@ -228,7 +230,7 @@ const handleCreateJournalEntry = async (body, event) => {
                     entry_date,
                     '23:59:00', // Default end-of-day time for reflection symptoms
                     'symptom',
-                    JSON.stringify(structuredContent)
+                    structuredContent // Send as JavaScript object, not JSON string
                 ]);
             }
         }
