@@ -86,9 +86,16 @@ async function handleGetCorrelationInsights(queryParams, event) {
  * Get timeline data for correlation analysis
  */
 async function getTimelineData(userId, timeframeDays) {
-  const client = await pool.connect();
+  let client;
   
   try {
+    console.log('CORRELATIONS DEBUG: Getting timeline data for user:', userId);
+    console.log('CORRELATIONS DEBUG: Timeframe days:', timeframeDays);
+    
+    client = await pool.connect();
+    console.log('CORRELATIONS DEBUG: Database connection successful');
+    
+    // Simplified query for debugging
     const query = `
       SELECT 
         entry_date,
@@ -101,11 +108,12 @@ async function getTimelineData(userId, timeframeDays) {
         created_at
       FROM timeline_entries 
       WHERE user_id = $1 
-        AND entry_date >= CURRENT_DATE - INTERVAL '${timeframeDays} days'
-      ORDER BY entry_date, entry_time
+      LIMIT 10
     `;
 
+    console.log('CORRELATIONS DEBUG: Executing query with params:', [userId]);
     const result = await client.query(query, [userId]);
+    console.log('CORRELATIONS DEBUG: Query successful, returned rows:', result.rows.length);
     
     // Transform structured_content to content for backward compatibility
     const transformedRows = result.rows.map(row => {
