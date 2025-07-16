@@ -2,7 +2,7 @@
 // Dual-track authentication: Cognito for real users, demo mode for testing
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { signIn, signUp, signOut, getCurrentUser, fetchAuthSession } from '@aws-amplify/auth';
+import { signIn, signOut, getCurrentUser, fetchAuthSession } from '@aws-amplify/auth';
 import safeLogger from '../utils/safeLogger';
 import { simpleApiClient } from '../services/simpleApi.js';
 
@@ -109,33 +109,6 @@ export const SimpleAuthProvider = ({ children }) => {
     };
   }, [currentUser, isDemoMode, userType]);
 
-  // Initialize auth state on mount
-  useEffect(() => {
-    initializeAuth();
-  }, []);
-
-  // Connect API client when auth state changes
-  useEffect(() => {
-    if (isAuthenticated && currentUser) {
-      // Set up API client with auth headers
-      simpleApiClient.setHeaderGetter(getAuthHeaders);
-      simpleApiClient.setTokenGetter(getAuthToken);
-      
-      // Set user context for legacy support
-      const userContext = getUserContext();
-      simpleApiClient.setUserContext(userContext);
-      
-      safeLogger.debug('API client connected to auth', { 
-        userId: currentUser.id, 
-        userType 
-      });
-    } else {
-      // Clear API client auth when logged out
-      simpleApiClient.clearUserContext();
-      safeLogger.debug('API client auth cleared');
-    }
-  }, [isAuthenticated, currentUser, userType, getAuthHeaders, getAuthToken, getUserContext]);
-
   // Initialize authentication state
   const initializeAuth = async () => {
     try {
@@ -173,7 +146,7 @@ export const SimpleAuthProvider = ({ children }) => {
             // Store token for API calls
             sessionStorage.setItem('auth_token', token);
             
-            safeLogger.auth('Real user session restored', { userId: realUser.id });
+            safeLogger.debug('Real user session restored', { userId: realUser.id });
           }
         }
       } catch (cognitoError) {
@@ -188,18 +161,45 @@ export const SimpleAuthProvider = ({ children }) => {
     }
   };
 
+  // Initialize auth state on mount
+  useEffect(() => {
+    initializeAuth();
+  }, []);
+
+  // Connect API client when auth state changes
+  useEffect(() => {
+    if (isAuthenticated && currentUser) {
+      // Set up API client with auth headers
+      simpleApiClient.setHeaderGetter(getAuthHeaders);
+      simpleApiClient.setTokenGetter(getAuthToken);
+      
+      // Set user context for legacy support
+      const userContext = getUserContext();
+      simpleApiClient.setUserContext(userContext);
+      
+      safeLogger.debug('API client connected to auth', { 
+        userId: currentUser.id, 
+        userType 
+      });
+    } else {
+      // Clear API client auth when logged out
+      simpleApiClient.clearUserContext();
+      safeLogger.debug('API client auth cleared');
+    }
+  }, [isAuthenticated, currentUser, userType, getAuthHeaders, getAuthToken, getUserContext]);
+
   // Generate session ID for demo users
   const generateSessionId = () => {
-    return `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    return `session_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
   };
 
   // Demo user login
-  const loginDemo = async (email, password = 'demo123') => {
+  const loginDemo = async (email) => {
     try {
       setLoading(true);
       setError(null);
       
-      safeLogger.auth('Demo login attempt', { email });
+      safeLogger.debug('Demo login attempt', { email });
       
       // Find demo user by email
       const demoUser = DEMO_USERS.find(user => 
@@ -223,7 +223,7 @@ export const SimpleAuthProvider = ({ children }) => {
       setUserType('demo');
       sessionStorage.setItem('demo_user', JSON.stringify(sessionUser));
       
-      safeLogger.auth('Demo login successful', { 
+      safeLogger.debug('Demo login successful', { 
         userId: sessionUser.id,
         name: sessionUser.name
       });
@@ -245,7 +245,7 @@ export const SimpleAuthProvider = ({ children }) => {
       setLoading(true);
       setError(null);
       
-      safeLogger.auth('Real user login attempt', { email });
+      safeLogger.debug('Real user login attempt', { email });
       
       // Sign in with Cognito
       const { isSignedIn, nextStep } = await signIn({
@@ -273,7 +273,7 @@ export const SimpleAuthProvider = ({ children }) => {
           setUserType('real');
           sessionStorage.setItem('auth_token', token);
           
-          safeLogger.auth('Real user login successful', { userId: realUser.id });
+          safeLogger.debug('Real user login successful', { userId: realUser.id });
           
           return { success: true, user: realUser };
         }
@@ -294,7 +294,7 @@ export const SimpleAuthProvider = ({ children }) => {
   // Unified login function
   const login = async (email, password, type = 'demo') => {
     if (type === 'demo') {
-      return await loginDemo(email, password);
+      return await loginDemo(email);
     } else if (type === 'real') {
       return await loginReal(email, password);
     } else {
@@ -305,7 +305,7 @@ export const SimpleAuthProvider = ({ children }) => {
   // Unified logout function
   const logout = async () => {
     try {
-      safeLogger.auth('Logout initiated', { userId: currentUser?.id, userType });
+      safeLogger.debug('Logout initiated', { userId: currentUser?.id, userType });
       
       if (isRealUser) {
         // Sign out from Cognito
@@ -321,7 +321,7 @@ export const SimpleAuthProvider = ({ children }) => {
       setUserType(null);
       setError(null);
       
-      safeLogger.auth('Logout successful');
+      safeLogger.debug('Logout successful');
       
     } catch (error) {
       safeLogger.error('Logout failed', { error: error.message });
@@ -332,42 +332,6 @@ export const SimpleAuthProvider = ({ children }) => {
       sessionStorage.removeItem('demo_user');
     }
   };
-
-  // Get auth token for API calls
-  const getAuthToken = React.useCallback(() => {
-    if (isRealUser) {
-      return sessionStorage.getItem('auth_token');
-    }
-    return null; // Demo users don't use JWT tokens
-  }, [isRealUser]);
-
-  // Get auth headers for API calls
-  const getAuthHeaders = React.useCallback(() => {
-    if (isRealUser) {
-      const token = getAuthToken();
-      return token ? { Authorization: `Bearer ${token}` } : {};
-    } else if (isDemoMode && currentUser) {
-      // Demo users use special headers
-      return {
-        'x-demo-mode': 'true',
-        'x-demo-user-id': currentUser.id
-      };
-    }
-    return {};
-  }, [isRealUser, isDemoMode, currentUser, getAuthToken]);
-
-  // Get current user context for API calls
-  const getUserContext = React.useCallback(() => {
-    if (!currentUser) return null;
-    
-    return {
-      userId: currentUser.id,
-      email: currentUser.email,
-      sessionId: currentUser.sessionId,
-      isDemo: isDemoMode,
-      userType: userType
-    };
-  }, [currentUser, isDemoMode, userType]);
 
   // Auth context value
   const value = {
