@@ -8,8 +8,11 @@ const { getCurrentUser, getAccessibleUserIds } = require('../middleware/auth');
  */
 async function handleGetCorrelationInsights(queryParams, event) {
   try {
-    console.log('CORRELATIONS DEBUG: Starting handler with event headers:', event.headers);
-    console.log('CORRELATIONS DEBUG: Query params:', queryParams);
+    // EXTENSIVE DEBUGGING
+    console.log('CORRELATIONS DEBUG: ===== START =====');
+    console.log('CORRELATIONS DEBUG: Event:', JSON.stringify(event, null, 2));
+    console.log('CORRELATIONS DEBUG: Headers:', JSON.stringify(event.headers, null, 2));
+    console.log('CORRELATIONS DEBUG: Query params:', JSON.stringify(queryParams, null, 2));
     
     const timeframeDays = parseInt(queryParams?.timeframe_days) || 180;
     const confidenceThreshold = parseFloat(queryParams?.confidence_threshold) || 0.6;
@@ -21,33 +24,27 @@ async function handleGetCorrelationInsights(queryParams, event) {
       requestedUserId 
     });
 
+    // Check if demo headers are present
+    const demoMode = event.headers['X-Demo-Mode'] || event.headers['x-demo-mode'];
+    const demoUserId = event.headers['X-Demo-User-Id'] || event.headers['x-demo-user-id'];
+    console.log('CORRELATIONS DEBUG: Demo headers:', { demoMode, demoUserId });
+
     // Use auth middleware to get current user (handles both demo and Cognito users)
     console.log('CORRELATIONS DEBUG: About to call getCurrentUser');
     const user = await getCurrentUser(event);
-    console.log('CORRELATIONS DEBUG: getCurrentUser returned:', user ? 'user object' : 'null');
+    console.log('CORRELATIONS DEBUG: getCurrentUser returned:', user ? JSON.stringify(user, null, 2) : 'null');
     
-    // TEMPORARY FALLBACK FOR DEBUGGING - REMOVE AFTER FIXING
-    let userId;
-    
-    if (user) {
-      // Auth middleware successful
-      userId = user.id;
-      console.log('CORRELATIONS DEBUG: Using authenticated user ID:', userId);
-    } 
-    else if (requestedUserId === 'sarah-aip') {
-      // Fallback for backward compatibility during debugging
-      userId = '8e8a568a-c2f8-43a8-abf2-4e54408dbdc0'; // Hardcoded UUID for sarah-aip
-      console.log('CORRELATIONS DEBUG: Using fallback ID for sarah-aip');
-    }
-    else {
-      // No authentication
+    // No fallbacks - use proper authentication only
+    if (!user) {
       console.log('CORRELATIONS DEBUG: Authentication failed - no user found');
       return errorResponse('Authentication required', 401);
     }
     
-    console.log('CORRELATIONS DEBUG: Final user ID for query:', userId);
+    const userId = user.id;
+    console.log('CORRELATIONS DEBUG: Using authenticated user ID:', userId);
+    console.log('CORRELATIONS DEBUG: User object:', JSON.stringify(user, null, 2));
 
-    // Get timeline data for the user (authenticated or fallback)
+    // Get timeline data for the authenticated user
     const timelineData = await getTimelineData(userId, timeframeDays);
     
     if (timelineData.length === 0) {
