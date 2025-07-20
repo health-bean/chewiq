@@ -181,7 +181,8 @@ export const SimpleAuthProvider = ({ children }) => {
       
       safeLogger.debug('API client connected to auth', { 
         userId: currentUser.id, 
-        userType 
+        userType,
+        isDemo: userType === 'demo'
       });
     } else {
       // Clear API client auth when logged out

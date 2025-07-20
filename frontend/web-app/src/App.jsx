@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { Loader2 } from 'lucide-react';
 
-// Import clean auth components (keeping existing SimpleAuth)
+import HeaderDebugger from './components/debug/HeaderDebugger';// Import clean auth components (keeping existing SimpleAuth)
 import { SimpleAuthProvider, useSimpleAuth } from './components/auth/SimpleAuthProvider';
 import { apiClient } from '../../shared/services/api';
 import SimpleLoginPage from './components/pages/SimpleLoginPage';
@@ -135,9 +135,20 @@ const MainApp = () => {
           >
             Test Direct Auth
           </button>
+          <button 
+            onClick={() => window.location.href = '/debug'}
+            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 ml-2"
+          >
+            Debug Auth Headers
+          </button>
         </div>
       </div>
     );
+  }
+
+  // Special debug route
+  if (window.location.pathname === '/debug') {
+    return <HeaderDebugger />;
   }
 
   // Handle app data loading (simplified for clean auth)

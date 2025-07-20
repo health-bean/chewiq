@@ -259,6 +259,26 @@ const getCurrentUser = async (event) => {
         sessionId: demoSessionId ? 'present' : 'missing' 
       });
       
+      // Check if demoUserId is a UUID (direct user ID)
+      if (demoUserId.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)) {
+        console.log('AUTH MIDDLEWARE: Demo user ID is a UUID, using directly:', demoUserId);
+        // Create a minimal user object with the ID
+        return {
+          id: demoUserId,
+          email: `user-${demoUserId.substring(0, 8)}@example.com`,
+          firstName: 'Demo',
+          lastName: 'User',
+          userType: 'demo',
+          first_name: 'Demo',
+          last_name: 'User',
+          user_type: 'demo',
+          is_active: true,
+          sessionId: demoSessionId,
+          isDemo: true
+        };
+      }
+      
+      // Otherwise, look up the demo user by ID
       const demoUser = DEMO_USERS[demoUserId];
       if (demoUser) {
         console.log('AUTH MIDDLEWARE: Demo user found:', demoUser.email);
@@ -281,6 +301,25 @@ const getCurrentUser = async (event) => {
     if (queryParams.demo_user) {
       console.log('AUTH MIDDLEWARE: Found demo_user in query params:', queryParams.demo_user);
       
+      // Check if demo_user is a UUID (direct user ID)
+      if (queryParams.demo_user.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)) {
+        console.log('AUTH MIDDLEWARE: Demo user ID from query is a UUID, using directly:', queryParams.demo_user);
+        // Create a minimal user object with the ID
+        return {
+          id: queryParams.demo_user,
+          email: `user-${queryParams.demo_user.substring(0, 8)}@example.com`,
+          firstName: 'Demo',
+          lastName: 'User',
+          userType: 'demo',
+          first_name: 'Demo',
+          last_name: 'User',
+          user_type: 'demo',
+          is_active: true,
+          isDemo: true
+        };
+      }
+      
+      // Otherwise, look up the demo user by ID
       const demoUser = DEMO_USERS[queryParams.demo_user];
       if (demoUser) {
         console.log('AUTH MIDDLEWARE: Demo user found from query params:', demoUser.email);
