@@ -10,6 +10,9 @@ import SimpleLoginPage from './components/pages/SimpleLoginPage';
 import ErrorBoundary from './components/ErrorBoundary';
 import PreferencesPage from './components/pages/PreferencesPage';
 
+// Import direct auth test component
+import DirectAuthTest from './components/auth/DirectAuthTest';
+
 // Import shared components and hooks
 import { Button, Alert } from '../../shared/components/ui';
 import useProtocols from '../../shared/hooks/useProtocols';
@@ -122,7 +125,19 @@ const MainApp = () => {
 
   // Show login if not authenticated
   if (!isAuthenticated) {
-    return <SimpleLoginPage />;
+    return (
+      <div>
+        <SimpleLoginPage />
+        <div className="max-w-md mx-auto mt-4 text-center">
+          <button 
+            onClick={() => window.location.href = '/direct-auth-test'}
+            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          >
+            Test Direct Auth
+          </button>
+        </div>
+      </div>
+    );
   }
 
   // Handle app data loading (simplified for clean auth)

@@ -2,12 +2,12 @@
 // Dual-track authentication: Cognito for real users, demo mode for testing
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { signIn, signOut, getCurrentUser, fetchAuthSession } from '@aws-amplify/auth';
+import { signIn, signOut, getCurrentUser, fetchAuthSession } from 'aws-amplify/auth';
 import safeLogger from '../../../../shared/utils/safeLogger';
 import { simpleApiClient } from '../../../../shared/services/simpleApi.js';
 
-// Import Amplify config
-import '../../config/amplify.js';
+// Amplify is already configured in amplifyInit.js
+console.log('🔧 SimpleAuthProvider loaded - using centralized Amplify config');
 
 // Create Auth Context
 const AuthContext = createContext(null);
@@ -253,13 +253,18 @@ export const SimpleAuthProvider = ({ children }) => {
       
       safeLogger.debug('Real user login attempt', { email });
       
-      // Sign in with Cognito
-      const { isSignedIn, nextStep } = await signIn({
+      // Sign in with Cognito using USER_SRP_AUTH flow to avoid device tracking issues
+      const signInResult = await signIn({
         username: email,
-        password: password
+        password: password,
+        options: {
+          authFlowType: 'USER_SRP_AUTH'
+        }
       });
       
-      if (isSignedIn) {
+      console.log('Sign in result:', signInResult);
+      
+      if (signInResult.isSignedIn) {
         // Get user info and session
         const cognitoUser = await getCurrentUser();
         const session = await fetchAuthSession();
@@ -285,7 +290,7 @@ export const SimpleAuthProvider = ({ children }) => {
         }
       } else {
         // Handle additional auth steps (MFA, etc.)
-        throw new Error(`Additional authentication required: ${nextStep.signInStep}`);
+        throw new Error(`Additional authentication required: ${signInResult.nextStep?.signInStep}`);
       }
       
     } catch (error) {
@@ -314,8 +319,8 @@ export const SimpleAuthProvider = ({ children }) => {
       safeLogger.debug('Logout initiated', { userId: currentUser?.id, userType });
       
       if (isRealUser && signOut) {
-        // Sign out from Cognito
-        await signOut();
+        // Sign out from Cognito with global option to clear all devices
+        await signOut({ global: true });
         sessionStorage.removeItem('auth_token');
       } else if (isDemoMode) {
         // Clear demo user data

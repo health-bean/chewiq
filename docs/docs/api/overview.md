@@ -7,6 +7,12 @@ The Health Platform API provides endpoints for managing health protocols, timeli
 **Base URL:** `https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev`
 **Current Status:** Active Development
 
+## 📚 API Documentation Tools
+
+- **[🌐 Interactive API Explorer](https://deebyrne26.github.io/health-platform/api.html)** - User-friendly testing interface
+- **[📋 Swagger Documentation](https://deebyrne26.github.io/health-platform/swagger.html)** - Complete OpenAPI specification
+- **[📊 Live Dashboard](https://deebyrne26.github.io/health-platform/dashboard.html)** - Real-time API metrics
+
 ## Authentication
 
 **Current:** Development phase - mixed authentication requirements

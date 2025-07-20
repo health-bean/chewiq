@@ -2,22 +2,10 @@
 // Simplified authentication provider with AWS Amplify + Demo mode support
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { signIn, signUp, signOut, getCurrentUser, fetchAuthSession } from '@aws-amplify/auth';
-import { Amplify } from '@aws-amplify/core';
+import { signIn, signUp, signOut, getCurrentUser, fetchAuthSession } from 'aws-amplify/auth';
 
-// Configure Amplify directly here
-const amplifyConfig = {
-  Auth: {
-    Cognito: {
-      userPoolId: 'us-east-1_8lWGDfv0w',
-      userPoolClientId: '20gj35c0vmamtm4qgtk3euoh27',
-      region: 'us-east-1'
-    }
-  }
-};
-
-// Configure Amplify
-Amplify.configure(amplifyConfig);
+// Amplify is already configured in amplifyInit.js
+console.log('🔧 AmplifyAuthProvider loaded - using centralized Amplify config');
 
 // Create Auth Context
 const AuthContext = createContext(null);
