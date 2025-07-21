@@ -21,7 +21,7 @@ class SimpleApiClient {
   // Set header getter function (for both standard and demo users)
   setHeaderGetter(headerGetter) {
     this.headerGetter = headerGetter;
-    safeLogger.debug('API header getter set');
+    safeLogger.debug('API client headers getter callback set');
   }
 
   // Set user context for API calls
@@ -48,7 +48,23 @@ class SimpleApiClient {
       ...additionalHeaders
     };
 
-    // Use header getter if available (preferred method)
+    // First try to get the token directly for standard users
+    if (this.tokenGetter) {
+      const token = this.tokenGetter();
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+        console.log('🔑 API headers from token getter:', { 
+          hasToken: true, 
+          tokenLength: token.length,
+          authHeader: `Bearer ${token.substring(0, 10)}...`
+        });
+        safeLogger.debug('API headers from token', { hasToken: true });
+      } else {
+        console.log('🔑 No token available from token getter');
+      }
+    }
+    
+    // Use header getter if available (may override token)
     if (this.headerGetter) {
       const authHeaders = this.headerGetter();
       
@@ -69,17 +85,6 @@ class SimpleApiClient {
         hasAuthHeader: headerKeys.includes('Authorization'),
         hasDemoHeaders: headerKeys.includes('x-demo-mode')
       });
-    }
-    // Fallback to token getter for standard users
-    else if (this.tokenGetter) {
-      const token = this.tokenGetter();
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-        console.log('🔑 API headers from token getter:', { hasToken: !!token, tokenLength: token.length });
-        safeLogger.debug('API headers from token', { hasToken: !!token });
-      } else {
-        console.log('🔑 No token available from token getter');
-      }
     }
     // Legacy: Add user context to headers for demo mode
     else if (this.userContext && this.userContext.isDemo) {
