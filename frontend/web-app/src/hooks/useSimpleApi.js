@@ -37,20 +37,32 @@ export const useJournalApi = () => {
     const userContext = getUserContext();
     if (!userContext) throw new Error('Not authenticated');
     
-    return api.getDemoData(userContext.userId, `/api/v1/journal/entries/${date}`);
+    // Use proper API method based on user type
+    if (userContext.isDemo) {
+      return api.getDemoData(userContext.userId, `/api/v1/journal/entries/${date}`);
+    } else {
+      return api.get(`/api/v1/journal/entries/${date}`);
+    }
   };
 
   const saveJournalEntry = async (date, data) => {
     const userContext = getUserContext();
     if (!userContext) throw new Error('Not authenticated');
     
-    const entryData = {
-      entry_date: date,
-      demo_user: userContext.userId,
-      ...data
-    };
-    
-    return api.saveDemoData(userContext.userId, '/api/v1/journal/entries', entryData);
+    if (userContext.isDemo) {
+      const entryData = {
+        entry_date: date,
+        demo_user: userContext.userId,
+        ...data
+      };
+      return api.saveDemoData(userContext.userId, '/api/v1/journal/entries', entryData);
+    } else {
+      const entryData = {
+        entry_date: date,
+        ...data
+      };
+      return api.post('/api/v1/journal/entries', entryData);
+    }
   };
 
   return {
@@ -68,14 +80,23 @@ export const useTimelineApi = () => {
     const userContext = getUserContext();
     if (!userContext) throw new Error('Not authenticated');
     
-    return api.getDemoData(userContext.userId, `/api/v1/timeline/entries?date=${date}`);
+    // Use proper API method based on user type
+    if (userContext.isDemo) {
+      return api.getDemoData(userContext.userId, `/api/v1/timeline/entries?date=${date}`);
+    } else {
+      return api.get(`/api/v1/timeline/entries?date=${date}`);
+    }
   };
 
   const addTimelineEntry = async (entryData) => {
     const userContext = getUserContext();
     if (!userContext) throw new Error('Not authenticated');
     
-    return api.saveDemoData(userContext.userId, '/api/v1/timeline/entries', entryData);
+    if (userContext.isDemo) {
+      return api.saveDemoData(userContext.userId, '/api/v1/timeline/entries', entryData);
+    } else {
+      return api.post('/api/v1/timeline/entries', entryData);
+    }
   };
 
   return {
@@ -93,14 +114,23 @@ export const usePreferencesApi = () => {
     const userContext = getUserContext();
     if (!userContext) throw new Error('Not authenticated');
     
-    return api.getDemoData(userContext.userId, '/api/v1/users/preferences');
+    // Use proper API method based on user type
+    if (userContext.isDemo) {
+      return api.getDemoData(userContext.userId, '/api/v1/users/preferences');
+    } else {
+      return api.get('/api/v1/user/preferences');
+    }
   };
 
   const updatePreferences = async (preferences) => {
     const userContext = getUserContext();
     if (!userContext) throw new Error('Not authenticated');
     
-    return api.saveDemoData(userContext.userId, '/api/v1/users/preferences', preferences);
+    if (userContext.isDemo) {
+      return api.saveDemoData(userContext.userId, '/api/v1/users/preferences', preferences);
+    } else {
+      return api.post('/api/v1/user/preferences', preferences);
+    }
   };
 
   return {

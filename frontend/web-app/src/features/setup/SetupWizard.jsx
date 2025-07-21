@@ -16,13 +16,13 @@ import FoodsStep from './steps/FoodsStep';
 import DetoxStep from './steps/DetoxStep';
 
 const SetupWizard = ({ onComplete, isAuthenticated }) => {
-  const { protocols } = useProtocols(isAuthenticated);
+  const { protocols, loading: protocolsLoading } = useProtocols(isAuthenticated);
   const { updatePreferences, saving } = useUserPreferences(isAuthenticated);
-  
+
   // Debug logs removed for security - protocols and auth status are handled by safe logger in hooks
-  
+
   const setupWizardData = useSetupWizard(protocols, updatePreferences, onComplete);
-  
+
   // Add safety check
   if (!setupWizardData) {
     return (
@@ -34,7 +34,7 @@ const SetupWizard = ({ onComplete, isAuthenticated }) => {
       </div>
     );
   }
-  
+
   const {
     currentStep,
     setupData,
@@ -69,13 +69,36 @@ const SetupWizard = ({ onComplete, isAuthenticated }) => {
       <div className="bg-gray-50 min-h-screen flex items-center justify-center p-4">
         <div className="text-center">
           <p className="text-red-600">Error: Invalid setup step</p>
-          <button 
+          <button
             onClick={() => window.location.reload()}
             className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg"
           >
             Reload
           </button>
         </div>
+      </div>
+    );
+  }
+
+  // Show loading state for protocols step if protocols are still loading
+  if (steps[currentStep]?.key === 'protocols' && protocolsLoading) {
+    return (
+      <div className="bg-gray-50 min-h-screen flex items-center justify-center p-4">
+        <Card padding="lg" className="w-full max-w-md text-center">
+          <div className="space-y-6">
+            <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto">
+              <Loader2 className="w-8 h-8 text-primary-600 animate-spin" />
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                Loading Protocols
+              </h3>
+              <p className="text-gray-600">
+                Getting available health protocols...
+              </p>
+            </div>
+          </div>
+        </Card>
       </div>
     );
   }
@@ -157,10 +180,10 @@ const SetupWizard = ({ onComplete, isAuthenticated }) => {
               Step {currentStep + 1} of {maxSteps}
             </span>
           </div>
-          
+
           {/* Progress Bar */}
           <div className="w-full bg-gray-200 rounded-full h-2">
-            <div 
+            <div
               className="bg-primary-600 h-2 rounded-full transition-all duration-300"
               style={{ width: `${((currentStep + 1) / maxSteps) * 100}%` }}
             />
