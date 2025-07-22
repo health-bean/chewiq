@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from '../../../contexts/AuthProvider';
 import { apiClient } from '../../../../../shared/services/api';
 
-// API test component (must be used inside SimpleAuthProvider)
+// API test component (must be used inside AuthProvider)
 const ApiTester = () => {
   const { 
     user, 

@@ -322,7 +322,7 @@ const AuthFlowTester = () => {
   );
 };
 
-// Wrapper component that provides SimpleAuthProvider
+// Wrapper component that provides AuthProvider
 const FullAuthFlowTest = () => {
   return (
     <AuthProvider>

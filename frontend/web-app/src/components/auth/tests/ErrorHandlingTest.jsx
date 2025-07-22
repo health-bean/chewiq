@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { AuthProvider, useAuth } from '../../../contexts/AuthProvider';
 import { signIn, signOut, getCurrentUser, fetchAuthSession } from 'aws-amplify/auth';
 
-// Error handling test component (must be used inside SimpleAuthProvider)
+// Error handling test component (must be used inside AuthProvider)
 const ErrorTester = () => {
   const { 
     user, 

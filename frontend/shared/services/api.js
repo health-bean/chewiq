@@ -1,4 +1,4 @@
-// File: frontend/shared/services/simpleApi.js
+// File: frontend/shared/services/api.js
 // Clean, simple API client for health platform prototype
 
 import safeLogger from '../utils/safeLogger';
@@ -48,43 +48,57 @@ class SimpleApiClient {
       ...additionalHeaders
     };
 
-    // First try to get the token directly for standard users
+    // DIRECT APPROACH: Try to get token from sessionStorage
+    try {
+      const directToken = sessionStorage.getItem('auth_token');
+      if (directToken) {
+        console.log('🔑 DIRECT TOKEN ACCESS: Found token in sessionStorage:', directToken.length);
+        headers['Authorization'] = `Bearer ${directToken}`;
+      }
+    } catch (error) {
+      console.error('🔑 Error accessing sessionStorage:', error);
+    }
+
+    // First try to get the token via the token getter
     if (this.tokenGetter) {
-      const token = this.tokenGetter();
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-        console.log('🔑 API headers from token getter:', { 
-          hasToken: true, 
-          tokenLength: token.length,
-          authHeader: `Bearer ${token.substring(0, 10)}...`
-        });
-        safeLogger.debug('API headers from token', { hasToken: true });
-      } else {
-        console.log('🔑 No token available from token getter');
+      try {
+        const token = this.tokenGetter();
+        if (token) {
+          headers['Authorization'] = `Bearer ${token}`;
+          console.log('🔑 API headers from token getter:', { 
+            hasToken: true, 
+            tokenLength: token.length,
+            authHeader: `Bearer ${token.substring(0, 10)}...`
+          });
+        } else {
+          console.log('🔑 No token available from token getter');
+        }
+      } catch (error) {
+        console.error('🔑 Error getting token:', error);
       }
     }
     
     // Use header getter if available (may override token)
     if (this.headerGetter) {
-      const authHeaders = this.headerGetter();
-      
-      // Debug log the headers being sent (without sensitive info)
-      const headerKeys = Object.keys(authHeaders);
-      console.log('🔑 API headers from getter:', { 
-        headerCount: headerKeys.length,
-        hasAuthHeader: headerKeys.includes('Authorization'),
-        hasDemoHeaders: headerKeys.includes('x-demo-mode'),
-        headers: headerKeys.join(', ')
-      });
-      
-      // Important: Add auth headers to the request
-      Object.assign(headers, authHeaders);
-      
-      safeLogger.debug('API headers from getter', { 
-        headerCount: headerKeys.length,
-        hasAuthHeader: headerKeys.includes('Authorization'),
-        hasDemoHeaders: headerKeys.includes('x-demo-mode')
-      });
+      try {
+        const authHeaders = this.headerGetter();
+        
+        // Debug log the headers being sent (without sensitive info)
+        const headerKeys = Object.keys(authHeaders || {});
+        console.log('🔑 API headers from getter:', { 
+          headerCount: headerKeys.length,
+          hasAuthHeader: headerKeys.includes('Authorization'),
+          hasDemoHeaders: headerKeys.includes('x-demo-mode'),
+          headers: headerKeys.join(', ')
+        });
+        
+        // Important: Add auth headers to the request
+        if (authHeaders) {
+          Object.assign(headers, authHeaders);
+        }
+      } catch (error) {
+        console.error('🔑 Error getting headers:', error);
+      }
     }
     // Legacy: Add user context to headers for demo mode
     else if (this.userContext && this.userContext.isDemo) {
@@ -102,6 +116,13 @@ class SimpleApiClient {
         userId: this.userContext.userId,
         isDemo: this.userContext.isDemo
       });
+    }
+
+    // Final check - log if we have an Authorization header
+    if (headers['Authorization']) {
+      console.log('🔑 Final headers include Authorization header');
+    } else {
+      console.log('🔑 Final headers DO NOT include Authorization header');
     }
 
     return headers;

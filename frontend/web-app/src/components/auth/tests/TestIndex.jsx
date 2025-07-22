@@ -29,9 +29,9 @@ const TestIndex = () => {
       description: 'Tests basic authentication operations like signIn, signOut, getCurrentUser, and fetchAuthSession.'
     },
     {
-      name: 'SimpleAuthProvider Test',
+      name: 'AuthProvider Test',
       path: '/test/simple-auth',
-      description: 'Tests the SimpleAuthProvider component in isolation.'
+      description: 'Tests the AuthProvider component in isolation.'
     },
     {
       name: 'API Integration Test',
@@ -82,7 +82,7 @@ const TestIndex = () => {
         <ol className="list-decimal list-inside space-y-2 text-gray-700">
           <li>Start with the <strong>Amplify Initialization Test</strong> to verify your configuration.</li>
           <li>Then test <strong>Basic Auth Operations</strong> to ensure core authentication functions work.</li>
-          <li>Test the <strong>SimpleAuthProvider</strong> to verify your auth context works correctly.</li>
+          <li>Test the <strong>AuthProvider</strong> to verify your auth context works correctly.</li>
           <li>Test <strong>API Integration</strong> to ensure authenticated API calls work.</li>
           <li>Test <strong>Error Handling</strong> to verify your system handles edge cases.</li>
           <li>Finally, test the <strong>Full Authentication Flow</strong> to verify the complete user experience.</li>

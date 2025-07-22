@@ -2,7 +2,7 @@
 // Authentication provider with AWS Amplify + Demo mode support
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { signIn, signUp, signOut, getCurrentUser, fetchAuthSession } from 'aws-amplify/auth';
+import { signIn, signUp, confirmSignUp as amplifyConfirmSignUp, resendSignUpCode, signOut, getCurrentUser, fetchAuthSession } from 'aws-amplify/auth';
 
 // Amplify is already configured in amplifyInit.js
 console.log('🔧 AuthProvider loaded - using centralized Amplify config');
@@ -192,6 +192,10 @@ export const AuthProvider = ({ children }) => {
           
           return { success: true, user: user };
         } else {
+          // Check if user needs confirmation
+          if (cognitoResult.nextStep?.signInStep === 'CONFIRM_SIGN_UP') {
+            throw new Error('CONFIRMATION_REQUIRED');
+          }
           throw new Error('Sign in not completed');
         }
       } catch (cognitoError) {
@@ -263,6 +267,53 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Confirm signup with verification code
+  const confirmSignUp = async (email, code) => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const result = await amplifyConfirmSignUp({
+        username: email,
+        confirmationCode: code
+      });
+      
+      logger.info('Signup confirmation successful', { email });
+      
+      return { success: true, result };
+      
+    } catch (error) {
+      logger.error('Signup confirmation failed', { error: error.message, email, code });
+      setError(error.message);
+      return { success: false, error: error.message };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Resend confirmation code
+  const resendConfirmationCode = async (email) => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      await resendSignUpCode({
+        username: email
+      });
+      
+      logger.info('Confirmation code resent', { email });
+      
+      return { success: true };
+      
+    } catch (error) {
+      logger.error('Failed to resend confirmation code', { error: error.message, email });
+      setError(error.message);
+      return { success: false, error: error.message };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Enhanced logout - handles both Cognito and demo
   const logout = async () => {
     try {
@@ -306,17 +357,30 @@ export const AuthProvider = ({ children }) => {
 
   // Token and header getters for API client
   const getAuthToken = () => {
+    console.log('🔑 getAuthToken called - token exists:', !!authToken, authToken ? `length: ${authToken.length}` : 'no token');
     return authToken;
   };
 
   const getAuthHeaders = () => {
-    if (!authToken) {
-      return {};
+    // Debug the current state
+    console.log('🔑 getAuthHeaders called - user:', currentUser?.id, 'isDemo:', currentUser?.isDemo);
+    
+    // For standard Cognito users
+    if (authToken) {
+      console.log('🔑 Standard auth - token exists:', !!authToken, authToken ? `length: ${authToken.length}` : 'no token');
+      return { 'Authorization': `Bearer ${authToken}` };
+    } 
+    // For demo users
+    else if (currentUser?.isDemo) {
+      console.log('🔑 Adding demo headers for user:', currentUser.id);
+      return {
+        'x-demo-mode': 'true',
+        'x-demo-user-id': currentUser.id
+      };
     }
     
-    return {
-      'Authorization': `Bearer ${authToken}`
-    };
+    console.log('🔑 No auth headers added - not authenticated properly');
+    return {};
   };
 
   // Enhanced auth context value
@@ -332,6 +396,8 @@ export const AuthProvider = ({ children }) => {
     // Actions
     login,
     signup,
+    confirmSignUp,
+    resendConfirmationCode,
     logout,
     getUserContext,
     setError,
