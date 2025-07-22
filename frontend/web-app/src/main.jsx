@@ -8,7 +8,7 @@ import App from './App.jsx'
 import DirectAuthTest from './components/auth/DirectAuthTest'
 import AmplifyInitTest from './components/auth/tests/AmplifyInitTest'
 import BasicAuthTest from './components/auth/tests/BasicAuthTest'
-import SimpleAuthTest from './components/auth/tests/SimpleAuthTest'
+
 import ApiIntegrationTest from './components/auth/tests/ApiIntegrationTest'
 import ErrorHandlingTest from './components/auth/tests/ErrorHandlingTest'
 import FullAuthFlowTest from './components/auth/tests/FullAuthFlowTest'
@@ -39,7 +39,20 @@ const renderApp = () => {
   }
   
   if (path === '/test/simple-auth') {
-    return <SimpleAuthTest />;
+    return (
+      <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md mt-10">
+        <h2 className="text-2xl font-bold mb-4">Simple Auth Test</h2>
+        <p className="mb-4 text-gray-600">
+          This test has been removed. Please use the main app instead.
+        </p>
+        <a 
+          href="/"
+          className="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+        >
+          Go to Main App
+        </a>
+      </div>
+    );
   }
   
   if (path === '/test/api-integration') {

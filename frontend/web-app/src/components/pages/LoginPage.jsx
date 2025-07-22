@@ -32,7 +32,7 @@ const LoginPage = () => {
       setErrors(prev => ({ ...prev, [field]: '' }));
     }
   }; 
- const validateForm = () => {
+  const validateForm = () => {
     const newErrors = {};
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
@@ -64,8 +64,9 @@ const LoginPage = () => {
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };  const 
-handleSubmit = async (e) => {
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
     setIsLoading(true);
@@ -98,8 +99,9 @@ handleSubmit = async (e) => {
     } finally {
       setIsLoading(false);
     }
-  };  co
-nst handleDemoLogin = async (demoUser) => {
+  };
+
+  const handleDemoLogin = async (demoUser) => {
     setIsLoading(true);
     setError(null);
     try {
@@ -132,8 +134,9 @@ nst handleDemoLogin = async (demoUser) => {
     } finally {
       setIsLoading(false);
     }
-  };  r
-eturn (
+  };
+
+  return (
     <div className="bg-gray-50 min-h-screen">
       <div className="bg-gradient-to-r from-primary-600 to-primary-700 text-white p-6 text-center">
         <div className="flex items-center justify-center mb-4">
