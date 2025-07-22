@@ -2,7 +2,7 @@
 // Simple test component to verify authentication is working
 
 import React, { useState } from 'react';
-import { useSimpleAuth } from './SimpleAuthProvider.jsx';
+import { useAuth } from '../../web-app/src/contexts/AuthProvider';
 import { apiClient } from '../services/api.js';
 import { Badge, Alert, Button } from './ui';
 import safeLogger from '../utils/safeLogger';

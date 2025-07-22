@@ -1,6 +1,6 @@
 // Test for API integration with authentication
 import React, { useState, useEffect } from 'react';
-import { SimpleAuthProvider, useSimpleAuth } from '../SimpleAuthProvider';
+import { AuthProvider, useAuth } from '../../../contexts/AuthProvider';
 import { apiClient } from '../../../../../shared/services/api';
 
 // API test component (must be used inside SimpleAuthProvider)
@@ -13,7 +13,7 @@ const ApiTester = () => {
     isDemoMode,
     login, 
     logout
-  } = useSimpleAuth();
+  } = useAuth();
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -225,12 +225,12 @@ const ApiTester = () => {
   );
 };
 
-// Wrapper component that provides SimpleAuthProvider
+// Wrapper component that provides AuthProvider
 const ApiIntegrationTest = () => {
   return (
-    <SimpleAuthProvider>
+    <AuthProvider>
       <ApiTester />
-    </SimpleAuthProvider>
+    </AuthProvider>
   );
 };
 

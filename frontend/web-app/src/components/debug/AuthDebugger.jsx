@@ -2,11 +2,11 @@
 // Simple component to debug authentication issues
 
 import React, { useState, useEffect } from 'react';
-import { useSimpleAuth } from '../auth/SimpleAuthProvider';
+import { useAuth } from '../../contexts/AuthProvider';
 import { apiClient } from '../../../../shared/services/api';
 
 export const AuthDebugger = () => {
-  const auth = useSimpleAuth();
+  const auth = useAuth();
   const [token, setToken] = useState('');
   const [testResults, setTestResults] = useState({});
   const [loading, setLoading] = useState(false);

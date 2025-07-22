@@ -2,12 +2,12 @@
 // Component to debug authentication headers and API calls
 
 import React, { useState, useEffect } from 'react';
-import { useSimpleAuth } from '../auth/SimpleAuthProvider';
+import { useAuth } from '../../contexts/AuthProvider';
 import { apiClient } from '../../../../shared/services/api';
 import safeLogger from '../../../../shared/utils/safeLogger';
 
 export const HeaderDebugger = () => {
-  const auth = useSimpleAuth();
+  const auth = useAuth();
   const [authHeaders, setAuthHeaders] = useState({});
   const [testResults, setTestResults] = useState({});
   const [loading, setLoading] = useState(false);

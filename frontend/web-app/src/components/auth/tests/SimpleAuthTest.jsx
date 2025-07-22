@@ -1,8 +1,8 @@
-// Test for SimpleAuthProvider in isolation
+// Test for AuthProvider in isolation
 import React, { useState, useEffect } from 'react';
-import { SimpleAuthProvider, useSimpleAuth } from '../SimpleAuthProvider';
+import { AuthProvider, useAuth } from '../../../contexts/AuthProvider';
 
-// Auth test component (must be used inside SimpleAuthProvider)
+// Auth test component (must be used inside AuthProvider)
 const AuthTester = () => {
   const { 
     user, 
@@ -18,7 +18,7 @@ const AuthTester = () => {
     getUserContext,
     getAuthToken,
     getAuthHeaders
-  } = useSimpleAuth();
+  } = useAuth();
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -82,7 +82,7 @@ const AuthTester = () => {
   
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">SimpleAuthProvider Test</h2>
+      <h2 className="text-2xl font-bold mb-4">AuthProvider Test</h2>
       
       {/* Auth Status */}
       <div className="mb-6 p-4 bg-gray-100 rounded-md">
@@ -230,12 +230,12 @@ const AuthTester = () => {
   );
 };
 
-// Wrapper component that provides SimpleAuthProvider
+// Wrapper component that provides AuthProvider
 const SimpleAuthTest = () => {
   return (
-    <SimpleAuthProvider>
+    <AuthProvider>
       <AuthTester />
-    </SimpleAuthProvider>
+    </AuthProvider>
   );
 };
 

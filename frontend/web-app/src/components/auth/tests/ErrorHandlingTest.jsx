@@ -1,6 +1,6 @@
 // Test for error handling and edge cases
 import React, { useState } from 'react';
-import { SimpleAuthProvider, useSimpleAuth } from '../SimpleAuthProvider';
+import { AuthProvider, useAuth } from '../../../contexts/AuthProvider';
 import { signIn, signOut, getCurrentUser, fetchAuthSession } from 'aws-amplify/auth';
 
 // Error handling test component (must be used inside SimpleAuthProvider)
@@ -13,7 +13,7 @@ const ErrorTester = () => {
     setError,
     login, 
     logout
-  } = useSimpleAuth();
+  } = useAuth();
   
   const [testCase, setTestCase] = useState('invalid-credentials');
   const [email, setEmail] = useState('');
@@ -363,12 +363,12 @@ const ErrorTester = () => {
   );
 };
 
-// Wrapper component that provides SimpleAuthProvider
+// Wrapper component that provides AuthProvider
 const ErrorHandlingTest = () => {
   return (
-    <SimpleAuthProvider>
+    <AuthProvider>
       <ErrorTester />
-    </SimpleAuthProvider>
+    </AuthProvider>
   );
 };
 

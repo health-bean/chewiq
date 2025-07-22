@@ -1,6 +1,6 @@
 // Test for the full authentication flow
 import React, { useState, useEffect } from 'react';
-import { SimpleAuthProvider, useSimpleAuth } from '../SimpleAuthProvider';
+import { AuthProvider, useAuth } from '../../../contexts/AuthProvider';
 import { apiClient } from '../../../../../shared/services/api';
 
 // Protected content component
@@ -57,7 +57,7 @@ const ProtectedContent = ({ onApiCall }) => {
 
 // Login form component
 const LoginForm = ({ onLogin }) => {
-  const { login, loading, error } = useSimpleAuth();
+  const { login, loading, error } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginType, setLoginType] = useState('real');
@@ -129,7 +129,7 @@ const LoginForm = ({ onLogin }) => {
 
 // Full auth flow test component
 const AuthFlowTester = () => {
-  const { isAuthenticated, user, logout } = useSimpleAuth();
+  const { isAuthenticated, user, logout } = useAuth();
   const [flowSteps, setFlowSteps] = useState([]);
   const [currentStep, setCurrentStep] = useState(0);
   
@@ -325,9 +325,9 @@ const AuthFlowTester = () => {
 // Wrapper component that provides SimpleAuthProvider
 const FullAuthFlowTest = () => {
   return (
-    <SimpleAuthProvider>
+    <AuthProvider>
       <AuthFlowTester />
-    </SimpleAuthProvider>
+    </AuthProvider>
   );
 };
 

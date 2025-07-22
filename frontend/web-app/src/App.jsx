@@ -41,7 +41,7 @@ import SetupWizard from './features/setup/SetupWizard';
 // Import utils
 import { getProtocolDisplayText } from '../../shared/utils/entryHelpers';
 
-// Main App Component (Inside SimpleAuthProvider)
+// Main App Component (Inside AuthProvider)
 const MainApp = () => {
   const { isAuthenticated, user, loading: authLoading, isDemoMode, getAuthToken, getAuthHeaders } = useAuth();
   
@@ -178,8 +178,6 @@ const MainApp = () => {
 
   // Entry form handlers
   const handleSubmitEntry = async () => {
-    console.log('🔧 handleSubmitEntry: Form data:', formData);
-    
     // Use the new unified selectedItems structure
     const allItems = [...(formData.selectedItems || [])];
     
@@ -192,23 +190,18 @@ const MainApp = () => {
       allItems.push(formData.customText.trim());
     }
     
-    console.log('🔧 handleSubmitEntry: All items to submit:', allItems);
-    
     if (allItems.length === 0) {
-      console.log('🔧 handleSubmitEntry: No items to submit, returning');
       return;
     }
     
     const entryData = buildEntryData(selectedDate);
-    console.log('🔧 handleSubmitEntry: Entry data:', entryData);
     
     try {
       await addEntry(entryData);
       resetForm();
       handleAddEntryToggle();
-      console.log('🔧 handleSubmitEntry: Entry added successfully');
     } catch (error) {
-      console.error('🔧 handleSubmitEntry: Failed to add entry:', error);
+      console.error('Failed to add entry:', error);
     }
   };
 

@@ -1,9 +1,9 @@
 // HeaderDebugger.jsx - A component to debug authentication headers
 import React, { useState, useEffect } from 'react';
-import { SimpleAuthProvider, useSimpleAuth } from '../SimpleAuthProvider';
+import { AuthProvider, useAuth } from '../../../contexts/AuthProvider';
 
 const HeaderDebugger = () => {
-  const { isAuthenticated, getAuthToken, getAuthHeaders } = useSimpleAuth();
+  const { isAuthenticated, getAuthToken, getAuthHeaders } = useAuth();
   const [headers, setHeaders] = useState(null);
   const [token, setToken] = useState(null);
 
@@ -43,9 +43,9 @@ const HeaderDebugger = () => {
 };
 
 const WrappedHeaderDebugger = () => (
-  <SimpleAuthProvider>
+  <AuthProvider>
     <HeaderDebugger />
-  </SimpleAuthProvider>
+  </AuthProvider>
 );
 
 export default WrappedHeaderDebugger;
