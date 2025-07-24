@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2025-07-24T11:21:41.274Z",
+    "generated": "2025-07-24T16:00:08.803Z",
     "version": "1.0.0",
     "generator": "AutomatedProfessionalDocsGenerator"
   },
@@ -14,10 +14,10 @@
     "totalComponents": 55,
     "totalHooks": 13,
     "totalFiles": 107,
-    "workingAPIs": 1,
+    "workingAPIs": 8,
     "totalAPIs": 29,
     "totalTables": 25,
-    "totalCommits": 187,
+    "totalCommits": 188,
     "contributors": 1
   },
   "discoveredInfo": {
@@ -131,13 +131,52 @@
               "value": "chicken"
             }
           ],
-          "status": 500,
-          "working": false,
-          "responseTime": 846,
+          "status": 200,
+          "working": true,
+          "responseTime": 740,
           "responseData": {
-            "error": "Failed to complete search foods"
+            "foods": [
+              {
+                "id": "68aada34-c3c7-434e-bd67-f35625ff5026",
+                "name": "Chicken Breast",
+                "category": "Proteins",
+                "subcategory": "Animal Proteins",
+                "preparation_state": "raw",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "219aa6fb-d3e7-4961-ae1e-41a56792a60b",
+                "name": "Chicken Drumstick",
+                "category": "Proteins",
+                "subcategory": "Animal Proteins",
+                "preparation_state": "raw",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "c2e7bf62-159e-4555-a034-c24e205c3e51",
+                "name": "Chicken Thigh",
+                "category": "Proteins",
+                "subcategory": "Animal Proteins",
+                "preparation_state": "raw",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "7dd19d64-8f16-4d4a-b24f-531cc0dd2ec8",
+                "name": "Chicken Wing",
+                "category": "Proteins",
+                "subcategory": "Animal Proteins",
+                "preparation_state": "raw",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              }
+            ],
+            "total": 4,
+            "search_term": "chicken"
           },
-          "responseSize": 43
+          "responseSize": 833
         },
         {
           "path": "/api/v1/correlations/insights",
@@ -153,7 +192,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 113,
+          "responseTime": 58,
           "responseData": {
             "error": "Authentication required"
           },
@@ -168,7 +207,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 84,
+          "responseTime": 67,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -206,7 +245,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 91,
+          "responseTime": 374,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -249,26 +288,2741 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 104,
+          "responseTime": 80,
           "responseData": {
-            "foods": [],
-            "foods_by_category": {},
+            "foods": [
+              {
+                "id": "defae1af-0618-4441-a453-c73dcd14c79f",
+                "name": "Beer",
+                "category": "Beverages",
+                "subcategory": "Alcoholic Beverages",
+                "preparation_state": "liquid",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "987699aa-1b56-42ce-a0ef-6f6689943f4a",
+                "name": "Coffee",
+                "category": "Beverages",
+                "subcategory": "Hot Beverages",
+                "preparation_state": "hot",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "59285aa7-0d10-44eb-b945-96ea3f564aa9",
+                "name": "Light Beer",
+                "category": "Beverages",
+                "subcategory": "Alcoholic Beverages",
+                "preparation_state": "liquid",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "ca41e391-ba8f-4583-86a3-8374677bc038",
+                "name": "Red Wine",
+                "category": "Beverages",
+                "subcategory": "Alcoholic Beverages",
+                "preparation_state": "liquid",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "684bec24-4d29-4ebb-82a8-f005dcadce2a",
+                "name": "Rosé Wine",
+                "category": "Beverages",
+                "subcategory": "Alcoholic Beverages",
+                "preparation_state": "liquid",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "1b689e37-d903-45c5-818f-bc4b7117abb6",
+                "name": "Rum",
+                "category": "Beverages",
+                "subcategory": "Alcoholic Beverages",
+                "preparation_state": "liquid",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "b2b4fba9-4557-4c35-b22a-4c6142a56f00",
+                "name": "Tequila",
+                "category": "Beverages",
+                "subcategory": "Alcoholic Beverages",
+                "preparation_state": "liquid",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "44438789-6471-41bb-a00d-56960b485e54",
+                "name": "Vodka",
+                "category": "Beverages",
+                "subcategory": "Alcoholic Beverages",
+                "preparation_state": "liquid",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "ca315c8c-bf16-4133-8a1a-ae228cc5ae74",
+                "name": "Water",
+                "category": "Beverages",
+                "subcategory": "Water & Hydration",
+                "preparation_state": "liquid",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "7aab098c-40d2-4677-969e-7e4db7726c32",
+                "name": "Whiskey",
+                "category": "Beverages",
+                "subcategory": "Alcoholic Beverages",
+                "preparation_state": "liquid",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "44e5b862-223f-4a6f-b6b0-1f659afabb25",
+                "name": "White Wine",
+                "category": "Beverages",
+                "subcategory": "Alcoholic Beverages",
+                "preparation_state": "liquid",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "0ee5e339-79b8-4c39-a050-975a434788e4",
+                "name": "Wine",
+                "category": "Beverages",
+                "subcategory": "Alcoholic Beverages",
+                "preparation_state": "liquid",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "35ead611-8016-41c0-9f52-8d8e22263a74",
+                "name": "1% Milk",
+                "category": "Dairy & Alternatives",
+                "subcategory": "Fresh Dairy",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "120038c0-fe6f-4c08-a42f-d034aa139c8e",
+                "name": "2% Milk",
+                "category": "Dairy & Alternatives",
+                "subcategory": "Fresh Dairy",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "d8068a2d-9c1e-4475-b38c-dc126d0025fe",
+                "name": "Blue Cheese",
+                "category": "Dairy & Alternatives",
+                "subcategory": "Fermented Dairy",
+                "preparation_state": "fermented",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "3eba3948-e93d-49c0-a2e2-16354156986b",
+                "name": "Brie Cheese",
+                "category": "Dairy & Alternatives",
+                "subcategory": "Fermented Dairy",
+                "preparation_state": "fermented",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "3ca04486-a74a-404b-a195-c485f5783950",
+                "name": "Butter",
+                "category": "Dairy & Alternatives",
+                "subcategory": "Fresh Dairy",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "22be95f6-afd0-4343-a319-ea3c4645cbce",
+                "name": "Cheddar Cheese",
+                "category": "Dairy & Alternatives",
+                "subcategory": "Fermented Dairy",
+                "preparation_state": "fermented",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "d15b5749-0c64-41a2-afa2-13dbafe1494d",
+                "name": "Cheese, generic",
+                "category": "Dairy & Alternatives",
+                "subcategory": "Fermented Dairy",
+                "preparation_state": "fermented",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "c642403e-fb61-4414-994f-027f3e9a6893",
+                "name": "Cottage Cheese",
+                "category": "Dairy & Alternatives",
+                "subcategory": "Fermented Dairy",
+                "preparation_state": "fermented",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "101b6311-e2eb-41ac-8da8-cb5b6a84c761",
+                "name": "Cream",
+                "category": "Dairy & Alternatives",
+                "subcategory": "Fresh Dairy",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "789258b2-26b5-4be3-813e-1ee4e0465b6c",
+                "name": "Cream Cheese",
+                "category": "Dairy & Alternatives",
+                "subcategory": "Fermented Dairy",
+                "preparation_state": "fermented",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "ba340463-22fd-461e-8cde-f19d3c855dcf",
+                "name": "Feta Cheese",
+                "category": "Dairy & Alternatives",
+                "subcategory": "Fermented Dairy",
+                "preparation_state": "fermented",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "ff93d8d6-1f89-4986-b4ce-474f30c6e76d",
+                "name": "Ghee",
+                "category": "Dairy & Alternatives",
+                "subcategory": "Fresh Dairy",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "47d1598b-e573-4bc5-a366-d25f50345ac2",
+                "name": "Goat Cheese",
+                "category": "Dairy & Alternatives",
+                "subcategory": "Fermented Dairy",
+                "preparation_state": "fermented",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "db95152e-8052-4b30-9961-289e157b9e32",
+                "name": "Greek Yogurt, nonfat",
+                "category": "Dairy & Alternatives",
+                "subcategory": "Fermented Dairy",
+                "preparation_state": "fermented",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "7fb42fd6-db28-49a4-a656-030ed339bdca",
+                "name": "Half and Half",
+                "category": "Dairy & Alternatives",
+                "subcategory": "Fresh Dairy",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "81dc170c-333e-44d8-b84d-6fff1df49e48",
+                "name": "Heavy Cream",
+                "category": "Dairy & Alternatives",
+                "subcategory": "Fresh Dairy",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "fd434201-88a8-434f-8555-5360aa40cd68",
+                "name": "Kefir",
+                "category": "Dairy & Alternatives",
+                "subcategory": "Fermented Dairy",
+                "preparation_state": "fermented",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "0cb2d6a7-7ac3-4cc7-b62a-e967a50c1f89",
+                "name": "Light Cream",
+                "category": "Dairy & Alternatives",
+                "subcategory": "Fresh Dairy",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "91f7d376-eafa-4fd2-b4d8-eb008fe3ef35",
+                "name": "Milk",
+                "category": "Dairy & Alternatives",
+                "subcategory": "Fresh Dairy",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "8c23258d-9cf9-41ea-9b81-350b0db605ea",
+                "name": "Mozzarella Cheese",
+                "category": "Dairy & Alternatives",
+                "subcategory": "Fermented Dairy",
+                "preparation_state": "fermented",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "cf498842-7579-4aee-a507-9c95c5296fee",
+                "name": "Parmesan Cheese",
+                "category": "Dairy & Alternatives",
+                "subcategory": "Fermented Dairy",
+                "preparation_state": "fermented",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "f6d725a1-883d-4a95-96dd-292c7d5e47f9",
+                "name": "Plain Yogurt, nonfat",
+                "category": "Dairy & Alternatives",
+                "subcategory": "Fermented Dairy",
+                "preparation_state": "fermented",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "f327cb5e-d953-4b9a-be5c-62584916b29f",
+                "name": "Salted Butter",
+                "category": "Dairy & Alternatives",
+                "subcategory": "Fresh Dairy",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "95f481f8-3d1b-45bb-ae00-5b03c533e307",
+                "name": "Skim Milk",
+                "category": "Dairy & Alternatives",
+                "subcategory": "Fresh Dairy",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "279be980-02bf-4dc7-ae9e-191012074206",
+                "name": "Swiss Cheese",
+                "category": "Dairy & Alternatives",
+                "subcategory": "Fermented Dairy",
+                "preparation_state": "fermented",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "ee0f9ce1-c94b-4f44-ada1-8ef788d9a79a",
+                "name": "Whole Milk",
+                "category": "Dairy & Alternatives",
+                "subcategory": "Fresh Dairy",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "553f87a9-ac8e-4b0d-8757-684feb01b5ce",
+                "name": "Canola Oil",
+                "category": "Fats & Oils",
+                "subcategory": "Cooking Oils",
+                "preparation_state": "liquid",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "6cde5795-6358-42d6-8592-33536b754c22",
+                "name": "Coconut Oil",
+                "category": "Fats & Oils",
+                "subcategory": "Cooking Oils",
+                "preparation_state": "liquid",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "cc8b6ccd-ed11-4946-85e8-ba389cea8220",
+                "name": "Fish Oil",
+                "category": "Fats & Oils",
+                "subcategory": "Cooking Oils",
+                "preparation_state": "liquid",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "11f298b7-79d0-4034-aa1a-0c04a2bfbafd",
+                "name": "Flaxseed Oil",
+                "category": "Fats & Oils",
+                "subcategory": "Cooking Oils",
+                "preparation_state": "liquid",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "5ad35e42-a471-47b0-b91d-214450fe3353",
+                "name": "Olive Oil",
+                "category": "Fats & Oils",
+                "subcategory": "Cooking Oils",
+                "preparation_state": "liquid",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "181cb73a-ba2b-46e4-9b32-24fb60aa8eb9",
+                "name": "Peanut Oil",
+                "category": "Fats & Oils",
+                "subcategory": "Cooking Oils",
+                "preparation_state": "liquid",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "83a3c50c-3043-4326-8f05-e411c43363fc",
+                "name": "Safflower Oil",
+                "category": "Fats & Oils",
+                "subcategory": "Cooking Oils",
+                "preparation_state": "liquid",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "a9ef270d-f8aa-4aee-a186-749cc59d9789",
+                "name": "Sesame Oil",
+                "category": "Fats & Oils",
+                "subcategory": "Cooking Oils",
+                "preparation_state": "liquid",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "e2047ca6-3f66-4c5d-8a87-25395f5732cd",
+                "name": "Sunflower Oil",
+                "category": "Fats & Oils",
+                "subcategory": "Cooking Oils",
+                "preparation_state": "liquid",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "905233ed-bb65-4c95-af57-0a9180e4d14d",
+                "name": "Vegetable Oil",
+                "category": "Fats & Oils",
+                "subcategory": "Cooking Oils",
+                "preparation_state": "liquid",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "95b7687c-5a64-415b-8359-85b22ff5d248",
+                "name": "Apple",
+                "category": "Fruits",
+                "subcategory": "Pome Fruits",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "c6e08cc8-ef50-4163-95d3-4d5472e319c8",
+                "name": "Apple",
+                "category": "Fruits",
+                "subcategory": "Processed Fruits",
+                "preparation_state": "processed",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "38c3d7d9-00e8-43e0-9d97-1807f4659461",
+                "name": "Apple Juice",
+                "category": "Fruits",
+                "subcategory": "Pome Fruits",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "a347ef4a-217e-43e9-9701-a694eb068b9e",
+                "name": "Apple Juice",
+                "category": "Fruits",
+                "subcategory": "Processed Fruits",
+                "preparation_state": "juice",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "c8ff2a0c-658e-4a3b-bacf-f0a3d18a77f4",
+                "name": "Applesauce",
+                "category": "Fruits",
+                "subcategory": "Pome Fruits",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "07b4a43a-9785-4444-87d8-819a18efab45",
+                "name": "Applesauce",
+                "category": "Fruits",
+                "subcategory": "Processed Fruits",
+                "preparation_state": "sauce",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "ad6ddf5e-85d2-46c5-9fd4-bbf2b95f87a8",
+                "name": "Avocado",
+                "category": "Fruits",
+                "subcategory": "Stone Fruits",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "0bacf20a-6519-4075-9e3f-97dac37ce268",
+                "name": "Banana",
+                "category": "Fruits",
+                "subcategory": "Tropical Fruits",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "17ecef8d-5d1f-4096-ba9e-e6e511e83348",
+                "name": "Cherries",
+                "category": "Fruits",
+                "subcategory": "Stone Fruits",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "b4051572-2263-4015-9bb7-20270e153138",
+                "name": "Cherries",
+                "category": "Fruits",
+                "subcategory": "Processed Fruits",
+                "preparation_state": "processed",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "538a3cfb-f0ca-4a17-8eab-fbdaf3ff44f4",
+                "name": "Cranberry Juice",
+                "category": "Fruits",
+                "subcategory": "Processed Fruits",
+                "preparation_state": "juice",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "404f0fd9-2637-4c18-89f7-03db6a5c47f1",
+                "name": "Cranberry Juice",
+                "category": "Fruits",
+                "subcategory": "Berries",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "556ddefe-815b-4cad-a20c-77d0f5fd5235",
+                "name": "Fruit Juice",
+                "category": "Fruits",
+                "subcategory": "Processed Fruits",
+                "preparation_state": "juice",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "b405321d-e3e7-4333-ae8c-8bd9c3f49773",
+                "name": "Fruit Juice",
+                "category": "Fruits",
+                "subcategory": "Stone Fruits",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "15f34c4f-e38d-4dea-b135-9ceb0e3df2ef",
+                "name": "Fuji Apple",
+                "category": "Fruits",
+                "subcategory": "Pome Fruits",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "67b09010-283d-47eb-8cff-cc0a28d480c9",
+                "name": "Gala Apple",
+                "category": "Fruits",
+                "subcategory": "Pome Fruits",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "1558a922-6b2d-406c-b70f-0a015d80a8d4",
+                "name": "Granny Smith Apple",
+                "category": "Fruits",
+                "subcategory": "Pome Fruits",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "9684de86-2192-432c-b6a5-e71f7de7ad91",
+                "name": "Grape Juice",
+                "category": "Fruits",
+                "subcategory": "Processed Fruits",
+                "preparation_state": "juice",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "0aa9211c-200a-45bb-a112-def67926bba6",
+                "name": "Grape Juice",
+                "category": "Fruits",
+                "subcategory": "Citrus Fruits",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "b20d6958-631e-48be-b7cd-3dbafe16721e",
+                "name": "Honeycrisp Apple",
+                "category": "Fruits",
+                "subcategory": "Pome Fruits",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "b3a20cf1-15e1-47e2-bc23-063415c9e206",
+                "name": "Kiwi",
+                "category": "Fruits",
+                "subcategory": "Tropical Fruits",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "fcde6915-3fda-497c-8712-8c2663ec3a68",
+                "name": "Mango",
+                "category": "Fruits",
+                "subcategory": "Tropical Fruits",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "6f7bccb3-9cbd-40d9-a100-e107c25cbced",
+                "name": "Nectarine",
+                "category": "Fruits",
+                "subcategory": "Stone Fruits",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "b532729d-2c7f-4d79-a77a-348edb4f760c",
+                "name": "Orange",
+                "category": "Fruits",
+                "subcategory": "Citrus Fruits",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "02c527fe-46f3-4f6f-99f4-c6f7cae428f7",
+                "name": "Orange Juice",
+                "category": "Fruits",
+                "subcategory": "Citrus Fruits",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "04017fa6-bb75-431b-b7d3-52ce46ef4131",
+                "name": "Orange Juice",
+                "category": "Fruits",
+                "subcategory": "Processed Fruits",
+                "preparation_state": "juice",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "2f6ef99d-ce5a-4ccf-8eb3-cf5ce60d3625",
+                "name": "Peach",
+                "category": "Fruits",
+                "subcategory": "Stone Fruits",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "f2cdf06c-5e89-4843-a6e4-4bd99dd73207",
+                "name": "Pear",
+                "category": "Fruits",
+                "subcategory": "Pome Fruits",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "126dc093-09c4-455c-af89-20da495d8214",
+                "name": "Pineapple",
+                "category": "Fruits",
+                "subcategory": "Tropical Fruits",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "8d4c654c-dcc2-4446-9b5f-b8f351236f9a",
+                "name": "Pineapple",
+                "category": "Fruits",
+                "subcategory": "Pome Fruits",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "cdfaf55a-cd8f-4fac-99fe-98d3c2470bc2",
+                "name": "Plum",
+                "category": "Fruits",
+                "subcategory": "Stone Fruits",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "60563a54-8252-4195-9fcf-0d97f47d312a",
+                "name": "Pomegranate Juice",
+                "category": "Fruits",
+                "subcategory": "Processed Fruits",
+                "preparation_state": "juice",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "48496e11-49f2-450d-a1a1-6dd84e8912e2",
+                "name": "Red Delicious Apple",
+                "category": "Fruits",
+                "subcategory": "Pome Fruits",
+                "preparation_state": "fresh",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "a2990a89-7680-48f8-9237-36242a548491",
+                "name": "All-Purpose Flour",
+                "category": "Grains & Starches",
+                "subcategory": "Refined Grains",
+                "preparation_state": "prepared",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "0257cc5d-5087-4569-990d-6684859912bf",
+                "name": "Barley",
+                "category": "Grains & Starches",
+                "subcategory": "Refined Grains",
+                "preparation_state": "prepared",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "10ea4dc9-1d27-471a-b31f-74febe396aba",
+                "name": "Brown Rice",
+                "category": "Grains & Starches",
+                "subcategory": "Whole Grains",
+                "preparation_state": "cooked",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "82e275b7-f5a2-46d8-a25c-46e6a234d921",
+                "name": "Brown Rice, uncooked",
+                "category": "Grains & Starches",
+                "subcategory": "Whole Grains",
+                "preparation_state": "cooked",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "84a16f82-ec73-4bb3-b143-345a9b3c2db5",
+                "name": "Bulgur, uncooked",
+                "category": "Grains & Starches",
+                "subcategory": "Refined Grains",
+                "preparation_state": "cooked",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "dc13ccb2-145a-4fe4-bbad-b7a4cba76b0b",
+                "name": "Corn, raw",
+                "category": "Grains & Starches",
+                "subcategory": "Starchy Vegetables",
+                "preparation_state": "raw",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "df6685c8-6406-47f1-982c-65ded6606ca3",
+                "name": "Farro, uncooked",
+                "category": "Grains & Starches",
+                "subcategory": "Refined Grains",
+                "preparation_state": "cooked",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "12e096af-deb9-4cce-995c-20f98eb0cf94",
+                "name": "Flour",
+                "category": "Grains & Starches",
+                "subcategory": "Whole Grains",
+                "preparation_state": "cooked",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "a6bb7f88-72a0-49a4-bb2f-edfd3ed0f7cb",
+                "name": "Millet",
+                "category": "Grains & Starches",
+                "subcategory": "Whole Grains",
+                "preparation_state": "cooked",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "519bffe9-d5c9-40c1-a57d-76fd58ec975e",
+                "name": "Oats",
+                "category": "Grains & Starches",
+                "subcategory": "Whole Grains",
+                "preparation_state": "cooked",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "5c1ff181-6a85-4a74-b969-fdea20820160",
+                "name": "Quinoa",
+                "category": "Grains & Starches",
+                "subcategory": "Refined Grains",
+                "preparation_state": "prepared",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "175244b9-82a4-4c66-a95a-1e2dc19d0413",
+                "name": "Rolled Oats",
+                "category": "Grains & Starches",
+                "subcategory": "Whole Grains",
+                "preparation_state": "cooked",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "06b7530c-7500-4252-8827-444d96ca8e16",
+                "name": "Steel Cut Oats",
+                "category": "Grains & Starches",
+                "subcategory": "Whole Grains",
+                "preparation_state": "cooked",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "51e8b8d3-2db1-4048-8a18-5890919d2f26",
+                "name": "White Bread",
+                "category": "Grains & Starches",
+                "subcategory": "Refined Grains",
+                "preparation_state": "prepared",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "64e07dfc-bd21-41e4-bc76-b0ba522d2d68",
+                "name": "White Rice",
+                "category": "Grains & Starches",
+                "subcategory": "Refined Grains",
+                "preparation_state": "prepared",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "497fbb41-e9c2-4a8f-a2ba-218f697a6dfc",
+                "name": "White Rice, uncooked",
+                "category": "Grains & Starches",
+                "subcategory": "Refined Grains",
+                "preparation_state": "cooked",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "44ef2070-6bd5-4080-a109-9b7051e3d58b",
+                "name": "Whole Wheat Flour",
+                "category": "Grains & Starches",
+                "subcategory": "Whole Grains",
+                "preparation_state": "cooked",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "f20bd9cb-e199-4590-9c2a-6434791b1f7a",
+                "name": "Wild Rice, uncooked",
+                "category": "Grains & Starches",
+                "subcategory": "Whole Grains",
+                "preparation_state": "cooked",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              },
+              {
+                "id": "abd326c3-28d8-40cc-ba94-502bafcc0b23",
+                "name": "Table Salt",
+                "category": "Herbs & Spices",
+                "subcategory": "Dried Herbs",
+                "preparation_state": "dried",
+                "is_organic": false,
+                "protocol_status": "unknown"
+              }
+            ],
+            "foods_by_category": {
+              "Beverages": [
+                {
+                  "id": "defae1af-0618-4441-a453-c73dcd14c79f",
+                  "name": "Beer",
+                  "category": "Beverages",
+                  "subcategory": "Alcoholic Beverages",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "987699aa-1b56-42ce-a0ef-6f6689943f4a",
+                  "name": "Coffee",
+                  "category": "Beverages",
+                  "subcategory": "Hot Beverages",
+                  "preparation_state": "hot",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "59285aa7-0d10-44eb-b945-96ea3f564aa9",
+                  "name": "Light Beer",
+                  "category": "Beverages",
+                  "subcategory": "Alcoholic Beverages",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "ca41e391-ba8f-4583-86a3-8374677bc038",
+                  "name": "Red Wine",
+                  "category": "Beverages",
+                  "subcategory": "Alcoholic Beverages",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "684bec24-4d29-4ebb-82a8-f005dcadce2a",
+                  "name": "Rosé Wine",
+                  "category": "Beverages",
+                  "subcategory": "Alcoholic Beverages",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "1b689e37-d903-45c5-818f-bc4b7117abb6",
+                  "name": "Rum",
+                  "category": "Beverages",
+                  "subcategory": "Alcoholic Beverages",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "b2b4fba9-4557-4c35-b22a-4c6142a56f00",
+                  "name": "Tequila",
+                  "category": "Beverages",
+                  "subcategory": "Alcoholic Beverages",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "44438789-6471-41bb-a00d-56960b485e54",
+                  "name": "Vodka",
+                  "category": "Beverages",
+                  "subcategory": "Alcoholic Beverages",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "ca315c8c-bf16-4133-8a1a-ae228cc5ae74",
+                  "name": "Water",
+                  "category": "Beverages",
+                  "subcategory": "Water & Hydration",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "7aab098c-40d2-4677-969e-7e4db7726c32",
+                  "name": "Whiskey",
+                  "category": "Beverages",
+                  "subcategory": "Alcoholic Beverages",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "44e5b862-223f-4a6f-b6b0-1f659afabb25",
+                  "name": "White Wine",
+                  "category": "Beverages",
+                  "subcategory": "Alcoholic Beverages",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "0ee5e339-79b8-4c39-a050-975a434788e4",
+                  "name": "Wine",
+                  "category": "Beverages",
+                  "subcategory": "Alcoholic Beverages",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                }
+              ],
+              "Dairy & Alternatives": [
+                {
+                  "id": "35ead611-8016-41c0-9f52-8d8e22263a74",
+                  "name": "1% Milk",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fresh Dairy",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "120038c0-fe6f-4c08-a42f-d034aa139c8e",
+                  "name": "2% Milk",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fresh Dairy",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "d8068a2d-9c1e-4475-b38c-dc126d0025fe",
+                  "name": "Blue Cheese",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fermented Dairy",
+                  "preparation_state": "fermented",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "3eba3948-e93d-49c0-a2e2-16354156986b",
+                  "name": "Brie Cheese",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fermented Dairy",
+                  "preparation_state": "fermented",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "3ca04486-a74a-404b-a195-c485f5783950",
+                  "name": "Butter",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fresh Dairy",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "22be95f6-afd0-4343-a319-ea3c4645cbce",
+                  "name": "Cheddar Cheese",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fermented Dairy",
+                  "preparation_state": "fermented",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "d15b5749-0c64-41a2-afa2-13dbafe1494d",
+                  "name": "Cheese, generic",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fermented Dairy",
+                  "preparation_state": "fermented",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "c642403e-fb61-4414-994f-027f3e9a6893",
+                  "name": "Cottage Cheese",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fermented Dairy",
+                  "preparation_state": "fermented",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "101b6311-e2eb-41ac-8da8-cb5b6a84c761",
+                  "name": "Cream",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fresh Dairy",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "789258b2-26b5-4be3-813e-1ee4e0465b6c",
+                  "name": "Cream Cheese",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fermented Dairy",
+                  "preparation_state": "fermented",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "ba340463-22fd-461e-8cde-f19d3c855dcf",
+                  "name": "Feta Cheese",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fermented Dairy",
+                  "preparation_state": "fermented",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "ff93d8d6-1f89-4986-b4ce-474f30c6e76d",
+                  "name": "Ghee",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fresh Dairy",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "47d1598b-e573-4bc5-a366-d25f50345ac2",
+                  "name": "Goat Cheese",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fermented Dairy",
+                  "preparation_state": "fermented",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "db95152e-8052-4b30-9961-289e157b9e32",
+                  "name": "Greek Yogurt, nonfat",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fermented Dairy",
+                  "preparation_state": "fermented",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "7fb42fd6-db28-49a4-a656-030ed339bdca",
+                  "name": "Half and Half",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fresh Dairy",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "81dc170c-333e-44d8-b84d-6fff1df49e48",
+                  "name": "Heavy Cream",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fresh Dairy",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "fd434201-88a8-434f-8555-5360aa40cd68",
+                  "name": "Kefir",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fermented Dairy",
+                  "preparation_state": "fermented",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "0cb2d6a7-7ac3-4cc7-b62a-e967a50c1f89",
+                  "name": "Light Cream",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fresh Dairy",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "91f7d376-eafa-4fd2-b4d8-eb008fe3ef35",
+                  "name": "Milk",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fresh Dairy",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "8c23258d-9cf9-41ea-9b81-350b0db605ea",
+                  "name": "Mozzarella Cheese",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fermented Dairy",
+                  "preparation_state": "fermented",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "cf498842-7579-4aee-a507-9c95c5296fee",
+                  "name": "Parmesan Cheese",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fermented Dairy",
+                  "preparation_state": "fermented",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "f6d725a1-883d-4a95-96dd-292c7d5e47f9",
+                  "name": "Plain Yogurt, nonfat",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fermented Dairy",
+                  "preparation_state": "fermented",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "f327cb5e-d953-4b9a-be5c-62584916b29f",
+                  "name": "Salted Butter",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fresh Dairy",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "95f481f8-3d1b-45bb-ae00-5b03c533e307",
+                  "name": "Skim Milk",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fresh Dairy",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "279be980-02bf-4dc7-ae9e-191012074206",
+                  "name": "Swiss Cheese",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fermented Dairy",
+                  "preparation_state": "fermented",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "ee0f9ce1-c94b-4f44-ada1-8ef788d9a79a",
+                  "name": "Whole Milk",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fresh Dairy",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                }
+              ],
+              "Fats & Oils": [
+                {
+                  "id": "553f87a9-ac8e-4b0d-8757-684feb01b5ce",
+                  "name": "Canola Oil",
+                  "category": "Fats & Oils",
+                  "subcategory": "Cooking Oils",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "6cde5795-6358-42d6-8592-33536b754c22",
+                  "name": "Coconut Oil",
+                  "category": "Fats & Oils",
+                  "subcategory": "Cooking Oils",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "cc8b6ccd-ed11-4946-85e8-ba389cea8220",
+                  "name": "Fish Oil",
+                  "category": "Fats & Oils",
+                  "subcategory": "Cooking Oils",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "11f298b7-79d0-4034-aa1a-0c04a2bfbafd",
+                  "name": "Flaxseed Oil",
+                  "category": "Fats & Oils",
+                  "subcategory": "Cooking Oils",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "5ad35e42-a471-47b0-b91d-214450fe3353",
+                  "name": "Olive Oil",
+                  "category": "Fats & Oils",
+                  "subcategory": "Cooking Oils",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "181cb73a-ba2b-46e4-9b32-24fb60aa8eb9",
+                  "name": "Peanut Oil",
+                  "category": "Fats & Oils",
+                  "subcategory": "Cooking Oils",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "83a3c50c-3043-4326-8f05-e411c43363fc",
+                  "name": "Safflower Oil",
+                  "category": "Fats & Oils",
+                  "subcategory": "Cooking Oils",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "a9ef270d-f8aa-4aee-a186-749cc59d9789",
+                  "name": "Sesame Oil",
+                  "category": "Fats & Oils",
+                  "subcategory": "Cooking Oils",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "e2047ca6-3f66-4c5d-8a87-25395f5732cd",
+                  "name": "Sunflower Oil",
+                  "category": "Fats & Oils",
+                  "subcategory": "Cooking Oils",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "905233ed-bb65-4c95-af57-0a9180e4d14d",
+                  "name": "Vegetable Oil",
+                  "category": "Fats & Oils",
+                  "subcategory": "Cooking Oils",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                }
+              ],
+              "Fruits": [
+                {
+                  "id": "95b7687c-5a64-415b-8359-85b22ff5d248",
+                  "name": "Apple",
+                  "category": "Fruits",
+                  "subcategory": "Pome Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "c6e08cc8-ef50-4163-95d3-4d5472e319c8",
+                  "name": "Apple",
+                  "category": "Fruits",
+                  "subcategory": "Processed Fruits",
+                  "preparation_state": "processed",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "38c3d7d9-00e8-43e0-9d97-1807f4659461",
+                  "name": "Apple Juice",
+                  "category": "Fruits",
+                  "subcategory": "Pome Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "a347ef4a-217e-43e9-9701-a694eb068b9e",
+                  "name": "Apple Juice",
+                  "category": "Fruits",
+                  "subcategory": "Processed Fruits",
+                  "preparation_state": "juice",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "c8ff2a0c-658e-4a3b-bacf-f0a3d18a77f4",
+                  "name": "Applesauce",
+                  "category": "Fruits",
+                  "subcategory": "Pome Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "07b4a43a-9785-4444-87d8-819a18efab45",
+                  "name": "Applesauce",
+                  "category": "Fruits",
+                  "subcategory": "Processed Fruits",
+                  "preparation_state": "sauce",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "ad6ddf5e-85d2-46c5-9fd4-bbf2b95f87a8",
+                  "name": "Avocado",
+                  "category": "Fruits",
+                  "subcategory": "Stone Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "0bacf20a-6519-4075-9e3f-97dac37ce268",
+                  "name": "Banana",
+                  "category": "Fruits",
+                  "subcategory": "Tropical Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "17ecef8d-5d1f-4096-ba9e-e6e511e83348",
+                  "name": "Cherries",
+                  "category": "Fruits",
+                  "subcategory": "Stone Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "b4051572-2263-4015-9bb7-20270e153138",
+                  "name": "Cherries",
+                  "category": "Fruits",
+                  "subcategory": "Processed Fruits",
+                  "preparation_state": "processed",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "538a3cfb-f0ca-4a17-8eab-fbdaf3ff44f4",
+                  "name": "Cranberry Juice",
+                  "category": "Fruits",
+                  "subcategory": "Processed Fruits",
+                  "preparation_state": "juice",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "404f0fd9-2637-4c18-89f7-03db6a5c47f1",
+                  "name": "Cranberry Juice",
+                  "category": "Fruits",
+                  "subcategory": "Berries",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "556ddefe-815b-4cad-a20c-77d0f5fd5235",
+                  "name": "Fruit Juice",
+                  "category": "Fruits",
+                  "subcategory": "Processed Fruits",
+                  "preparation_state": "juice",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "b405321d-e3e7-4333-ae8c-8bd9c3f49773",
+                  "name": "Fruit Juice",
+                  "category": "Fruits",
+                  "subcategory": "Stone Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "15f34c4f-e38d-4dea-b135-9ceb0e3df2ef",
+                  "name": "Fuji Apple",
+                  "category": "Fruits",
+                  "subcategory": "Pome Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "67b09010-283d-47eb-8cff-cc0a28d480c9",
+                  "name": "Gala Apple",
+                  "category": "Fruits",
+                  "subcategory": "Pome Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "1558a922-6b2d-406c-b70f-0a015d80a8d4",
+                  "name": "Granny Smith Apple",
+                  "category": "Fruits",
+                  "subcategory": "Pome Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "9684de86-2192-432c-b6a5-e71f7de7ad91",
+                  "name": "Grape Juice",
+                  "category": "Fruits",
+                  "subcategory": "Processed Fruits",
+                  "preparation_state": "juice",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "0aa9211c-200a-45bb-a112-def67926bba6",
+                  "name": "Grape Juice",
+                  "category": "Fruits",
+                  "subcategory": "Citrus Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "b20d6958-631e-48be-b7cd-3dbafe16721e",
+                  "name": "Honeycrisp Apple",
+                  "category": "Fruits",
+                  "subcategory": "Pome Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "b3a20cf1-15e1-47e2-bc23-063415c9e206",
+                  "name": "Kiwi",
+                  "category": "Fruits",
+                  "subcategory": "Tropical Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "fcde6915-3fda-497c-8712-8c2663ec3a68",
+                  "name": "Mango",
+                  "category": "Fruits",
+                  "subcategory": "Tropical Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "6f7bccb3-9cbd-40d9-a100-e107c25cbced",
+                  "name": "Nectarine",
+                  "category": "Fruits",
+                  "subcategory": "Stone Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "b532729d-2c7f-4d79-a77a-348edb4f760c",
+                  "name": "Orange",
+                  "category": "Fruits",
+                  "subcategory": "Citrus Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "02c527fe-46f3-4f6f-99f4-c6f7cae428f7",
+                  "name": "Orange Juice",
+                  "category": "Fruits",
+                  "subcategory": "Citrus Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "04017fa6-bb75-431b-b7d3-52ce46ef4131",
+                  "name": "Orange Juice",
+                  "category": "Fruits",
+                  "subcategory": "Processed Fruits",
+                  "preparation_state": "juice",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "2f6ef99d-ce5a-4ccf-8eb3-cf5ce60d3625",
+                  "name": "Peach",
+                  "category": "Fruits",
+                  "subcategory": "Stone Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "f2cdf06c-5e89-4843-a6e4-4bd99dd73207",
+                  "name": "Pear",
+                  "category": "Fruits",
+                  "subcategory": "Pome Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "126dc093-09c4-455c-af89-20da495d8214",
+                  "name": "Pineapple",
+                  "category": "Fruits",
+                  "subcategory": "Tropical Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "8d4c654c-dcc2-4446-9b5f-b8f351236f9a",
+                  "name": "Pineapple",
+                  "category": "Fruits",
+                  "subcategory": "Pome Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "cdfaf55a-cd8f-4fac-99fe-98d3c2470bc2",
+                  "name": "Plum",
+                  "category": "Fruits",
+                  "subcategory": "Stone Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "60563a54-8252-4195-9fcf-0d97f47d312a",
+                  "name": "Pomegranate Juice",
+                  "category": "Fruits",
+                  "subcategory": "Processed Fruits",
+                  "preparation_state": "juice",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "48496e11-49f2-450d-a1a1-6dd84e8912e2",
+                  "name": "Red Delicious Apple",
+                  "category": "Fruits",
+                  "subcategory": "Pome Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                }
+              ],
+              "Grains & Starches": [
+                {
+                  "id": "a2990a89-7680-48f8-9237-36242a548491",
+                  "name": "All-Purpose Flour",
+                  "category": "Grains & Starches",
+                  "subcategory": "Refined Grains",
+                  "preparation_state": "prepared",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "0257cc5d-5087-4569-990d-6684859912bf",
+                  "name": "Barley",
+                  "category": "Grains & Starches",
+                  "subcategory": "Refined Grains",
+                  "preparation_state": "prepared",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "10ea4dc9-1d27-471a-b31f-74febe396aba",
+                  "name": "Brown Rice",
+                  "category": "Grains & Starches",
+                  "subcategory": "Whole Grains",
+                  "preparation_state": "cooked",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "82e275b7-f5a2-46d8-a25c-46e6a234d921",
+                  "name": "Brown Rice, uncooked",
+                  "category": "Grains & Starches",
+                  "subcategory": "Whole Grains",
+                  "preparation_state": "cooked",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "84a16f82-ec73-4bb3-b143-345a9b3c2db5",
+                  "name": "Bulgur, uncooked",
+                  "category": "Grains & Starches",
+                  "subcategory": "Refined Grains",
+                  "preparation_state": "cooked",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "dc13ccb2-145a-4fe4-bbad-b7a4cba76b0b",
+                  "name": "Corn, raw",
+                  "category": "Grains & Starches",
+                  "subcategory": "Starchy Vegetables",
+                  "preparation_state": "raw",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "df6685c8-6406-47f1-982c-65ded6606ca3",
+                  "name": "Farro, uncooked",
+                  "category": "Grains & Starches",
+                  "subcategory": "Refined Grains",
+                  "preparation_state": "cooked",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "12e096af-deb9-4cce-995c-20f98eb0cf94",
+                  "name": "Flour",
+                  "category": "Grains & Starches",
+                  "subcategory": "Whole Grains",
+                  "preparation_state": "cooked",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "a6bb7f88-72a0-49a4-bb2f-edfd3ed0f7cb",
+                  "name": "Millet",
+                  "category": "Grains & Starches",
+                  "subcategory": "Whole Grains",
+                  "preparation_state": "cooked",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "519bffe9-d5c9-40c1-a57d-76fd58ec975e",
+                  "name": "Oats",
+                  "category": "Grains & Starches",
+                  "subcategory": "Whole Grains",
+                  "preparation_state": "cooked",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "5c1ff181-6a85-4a74-b969-fdea20820160",
+                  "name": "Quinoa",
+                  "category": "Grains & Starches",
+                  "subcategory": "Refined Grains",
+                  "preparation_state": "prepared",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "175244b9-82a4-4c66-a95a-1e2dc19d0413",
+                  "name": "Rolled Oats",
+                  "category": "Grains & Starches",
+                  "subcategory": "Whole Grains",
+                  "preparation_state": "cooked",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "06b7530c-7500-4252-8827-444d96ca8e16",
+                  "name": "Steel Cut Oats",
+                  "category": "Grains & Starches",
+                  "subcategory": "Whole Grains",
+                  "preparation_state": "cooked",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "51e8b8d3-2db1-4048-8a18-5890919d2f26",
+                  "name": "White Bread",
+                  "category": "Grains & Starches",
+                  "subcategory": "Refined Grains",
+                  "preparation_state": "prepared",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "64e07dfc-bd21-41e4-bc76-b0ba522d2d68",
+                  "name": "White Rice",
+                  "category": "Grains & Starches",
+                  "subcategory": "Refined Grains",
+                  "preparation_state": "prepared",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "497fbb41-e9c2-4a8f-a2ba-218f697a6dfc",
+                  "name": "White Rice, uncooked",
+                  "category": "Grains & Starches",
+                  "subcategory": "Refined Grains",
+                  "preparation_state": "cooked",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "44ef2070-6bd5-4080-a109-9b7051e3d58b",
+                  "name": "Whole Wheat Flour",
+                  "category": "Grains & Starches",
+                  "subcategory": "Whole Grains",
+                  "preparation_state": "cooked",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "f20bd9cb-e199-4590-9c2a-6434791b1f7a",
+                  "name": "Wild Rice, uncooked",
+                  "category": "Grains & Starches",
+                  "subcategory": "Whole Grains",
+                  "preparation_state": "cooked",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                }
+              ],
+              "Herbs & Spices": [
+                {
+                  "id": "abd326c3-28d8-40cc-ba94-502bafcc0b23",
+                  "name": "Table Salt",
+                  "category": "Herbs & Spices",
+                  "subcategory": "Dried Herbs",
+                  "preparation_state": "dried",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                }
+              ]
+            },
             "foods_by_status": {
               "allowed": [],
               "avoid": [],
               "reintroduction": [],
-              "unknown": []
+              "unknown": [
+                {
+                  "id": "defae1af-0618-4441-a453-c73dcd14c79f",
+                  "name": "Beer",
+                  "category": "Beverages",
+                  "subcategory": "Alcoholic Beverages",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "987699aa-1b56-42ce-a0ef-6f6689943f4a",
+                  "name": "Coffee",
+                  "category": "Beverages",
+                  "subcategory": "Hot Beverages",
+                  "preparation_state": "hot",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "59285aa7-0d10-44eb-b945-96ea3f564aa9",
+                  "name": "Light Beer",
+                  "category": "Beverages",
+                  "subcategory": "Alcoholic Beverages",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "ca41e391-ba8f-4583-86a3-8374677bc038",
+                  "name": "Red Wine",
+                  "category": "Beverages",
+                  "subcategory": "Alcoholic Beverages",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "684bec24-4d29-4ebb-82a8-f005dcadce2a",
+                  "name": "Rosé Wine",
+                  "category": "Beverages",
+                  "subcategory": "Alcoholic Beverages",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "1b689e37-d903-45c5-818f-bc4b7117abb6",
+                  "name": "Rum",
+                  "category": "Beverages",
+                  "subcategory": "Alcoholic Beverages",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "b2b4fba9-4557-4c35-b22a-4c6142a56f00",
+                  "name": "Tequila",
+                  "category": "Beverages",
+                  "subcategory": "Alcoholic Beverages",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "44438789-6471-41bb-a00d-56960b485e54",
+                  "name": "Vodka",
+                  "category": "Beverages",
+                  "subcategory": "Alcoholic Beverages",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "ca315c8c-bf16-4133-8a1a-ae228cc5ae74",
+                  "name": "Water",
+                  "category": "Beverages",
+                  "subcategory": "Water & Hydration",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "7aab098c-40d2-4677-969e-7e4db7726c32",
+                  "name": "Whiskey",
+                  "category": "Beverages",
+                  "subcategory": "Alcoholic Beverages",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "44e5b862-223f-4a6f-b6b0-1f659afabb25",
+                  "name": "White Wine",
+                  "category": "Beverages",
+                  "subcategory": "Alcoholic Beverages",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "0ee5e339-79b8-4c39-a050-975a434788e4",
+                  "name": "Wine",
+                  "category": "Beverages",
+                  "subcategory": "Alcoholic Beverages",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "35ead611-8016-41c0-9f52-8d8e22263a74",
+                  "name": "1% Milk",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fresh Dairy",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "120038c0-fe6f-4c08-a42f-d034aa139c8e",
+                  "name": "2% Milk",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fresh Dairy",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "d8068a2d-9c1e-4475-b38c-dc126d0025fe",
+                  "name": "Blue Cheese",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fermented Dairy",
+                  "preparation_state": "fermented",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "3eba3948-e93d-49c0-a2e2-16354156986b",
+                  "name": "Brie Cheese",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fermented Dairy",
+                  "preparation_state": "fermented",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "3ca04486-a74a-404b-a195-c485f5783950",
+                  "name": "Butter",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fresh Dairy",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "22be95f6-afd0-4343-a319-ea3c4645cbce",
+                  "name": "Cheddar Cheese",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fermented Dairy",
+                  "preparation_state": "fermented",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "d15b5749-0c64-41a2-afa2-13dbafe1494d",
+                  "name": "Cheese, generic",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fermented Dairy",
+                  "preparation_state": "fermented",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "c642403e-fb61-4414-994f-027f3e9a6893",
+                  "name": "Cottage Cheese",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fermented Dairy",
+                  "preparation_state": "fermented",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "101b6311-e2eb-41ac-8da8-cb5b6a84c761",
+                  "name": "Cream",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fresh Dairy",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "789258b2-26b5-4be3-813e-1ee4e0465b6c",
+                  "name": "Cream Cheese",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fermented Dairy",
+                  "preparation_state": "fermented",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "ba340463-22fd-461e-8cde-f19d3c855dcf",
+                  "name": "Feta Cheese",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fermented Dairy",
+                  "preparation_state": "fermented",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "ff93d8d6-1f89-4986-b4ce-474f30c6e76d",
+                  "name": "Ghee",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fresh Dairy",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "47d1598b-e573-4bc5-a366-d25f50345ac2",
+                  "name": "Goat Cheese",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fermented Dairy",
+                  "preparation_state": "fermented",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "db95152e-8052-4b30-9961-289e157b9e32",
+                  "name": "Greek Yogurt, nonfat",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fermented Dairy",
+                  "preparation_state": "fermented",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "7fb42fd6-db28-49a4-a656-030ed339bdca",
+                  "name": "Half and Half",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fresh Dairy",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "81dc170c-333e-44d8-b84d-6fff1df49e48",
+                  "name": "Heavy Cream",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fresh Dairy",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "fd434201-88a8-434f-8555-5360aa40cd68",
+                  "name": "Kefir",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fermented Dairy",
+                  "preparation_state": "fermented",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "0cb2d6a7-7ac3-4cc7-b62a-e967a50c1f89",
+                  "name": "Light Cream",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fresh Dairy",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "91f7d376-eafa-4fd2-b4d8-eb008fe3ef35",
+                  "name": "Milk",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fresh Dairy",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "8c23258d-9cf9-41ea-9b81-350b0db605ea",
+                  "name": "Mozzarella Cheese",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fermented Dairy",
+                  "preparation_state": "fermented",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "cf498842-7579-4aee-a507-9c95c5296fee",
+                  "name": "Parmesan Cheese",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fermented Dairy",
+                  "preparation_state": "fermented",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "f6d725a1-883d-4a95-96dd-292c7d5e47f9",
+                  "name": "Plain Yogurt, nonfat",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fermented Dairy",
+                  "preparation_state": "fermented",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "f327cb5e-d953-4b9a-be5c-62584916b29f",
+                  "name": "Salted Butter",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fresh Dairy",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "95f481f8-3d1b-45bb-ae00-5b03c533e307",
+                  "name": "Skim Milk",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fresh Dairy",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "279be980-02bf-4dc7-ae9e-191012074206",
+                  "name": "Swiss Cheese",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fermented Dairy",
+                  "preparation_state": "fermented",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "ee0f9ce1-c94b-4f44-ada1-8ef788d9a79a",
+                  "name": "Whole Milk",
+                  "category": "Dairy & Alternatives",
+                  "subcategory": "Fresh Dairy",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "553f87a9-ac8e-4b0d-8757-684feb01b5ce",
+                  "name": "Canola Oil",
+                  "category": "Fats & Oils",
+                  "subcategory": "Cooking Oils",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "6cde5795-6358-42d6-8592-33536b754c22",
+                  "name": "Coconut Oil",
+                  "category": "Fats & Oils",
+                  "subcategory": "Cooking Oils",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "cc8b6ccd-ed11-4946-85e8-ba389cea8220",
+                  "name": "Fish Oil",
+                  "category": "Fats & Oils",
+                  "subcategory": "Cooking Oils",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "11f298b7-79d0-4034-aa1a-0c04a2bfbafd",
+                  "name": "Flaxseed Oil",
+                  "category": "Fats & Oils",
+                  "subcategory": "Cooking Oils",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "5ad35e42-a471-47b0-b91d-214450fe3353",
+                  "name": "Olive Oil",
+                  "category": "Fats & Oils",
+                  "subcategory": "Cooking Oils",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "181cb73a-ba2b-46e4-9b32-24fb60aa8eb9",
+                  "name": "Peanut Oil",
+                  "category": "Fats & Oils",
+                  "subcategory": "Cooking Oils",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "83a3c50c-3043-4326-8f05-e411c43363fc",
+                  "name": "Safflower Oil",
+                  "category": "Fats & Oils",
+                  "subcategory": "Cooking Oils",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "a9ef270d-f8aa-4aee-a186-749cc59d9789",
+                  "name": "Sesame Oil",
+                  "category": "Fats & Oils",
+                  "subcategory": "Cooking Oils",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "e2047ca6-3f66-4c5d-8a87-25395f5732cd",
+                  "name": "Sunflower Oil",
+                  "category": "Fats & Oils",
+                  "subcategory": "Cooking Oils",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "905233ed-bb65-4c95-af57-0a9180e4d14d",
+                  "name": "Vegetable Oil",
+                  "category": "Fats & Oils",
+                  "subcategory": "Cooking Oils",
+                  "preparation_state": "liquid",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "95b7687c-5a64-415b-8359-85b22ff5d248",
+                  "name": "Apple",
+                  "category": "Fruits",
+                  "subcategory": "Pome Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "c6e08cc8-ef50-4163-95d3-4d5472e319c8",
+                  "name": "Apple",
+                  "category": "Fruits",
+                  "subcategory": "Processed Fruits",
+                  "preparation_state": "processed",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "38c3d7d9-00e8-43e0-9d97-1807f4659461",
+                  "name": "Apple Juice",
+                  "category": "Fruits",
+                  "subcategory": "Pome Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "a347ef4a-217e-43e9-9701-a694eb068b9e",
+                  "name": "Apple Juice",
+                  "category": "Fruits",
+                  "subcategory": "Processed Fruits",
+                  "preparation_state": "juice",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "c8ff2a0c-658e-4a3b-bacf-f0a3d18a77f4",
+                  "name": "Applesauce",
+                  "category": "Fruits",
+                  "subcategory": "Pome Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "07b4a43a-9785-4444-87d8-819a18efab45",
+                  "name": "Applesauce",
+                  "category": "Fruits",
+                  "subcategory": "Processed Fruits",
+                  "preparation_state": "sauce",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "ad6ddf5e-85d2-46c5-9fd4-bbf2b95f87a8",
+                  "name": "Avocado",
+                  "category": "Fruits",
+                  "subcategory": "Stone Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "0bacf20a-6519-4075-9e3f-97dac37ce268",
+                  "name": "Banana",
+                  "category": "Fruits",
+                  "subcategory": "Tropical Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "17ecef8d-5d1f-4096-ba9e-e6e511e83348",
+                  "name": "Cherries",
+                  "category": "Fruits",
+                  "subcategory": "Stone Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "b4051572-2263-4015-9bb7-20270e153138",
+                  "name": "Cherries",
+                  "category": "Fruits",
+                  "subcategory": "Processed Fruits",
+                  "preparation_state": "processed",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "538a3cfb-f0ca-4a17-8eab-fbdaf3ff44f4",
+                  "name": "Cranberry Juice",
+                  "category": "Fruits",
+                  "subcategory": "Processed Fruits",
+                  "preparation_state": "juice",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "404f0fd9-2637-4c18-89f7-03db6a5c47f1",
+                  "name": "Cranberry Juice",
+                  "category": "Fruits",
+                  "subcategory": "Berries",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "556ddefe-815b-4cad-a20c-77d0f5fd5235",
+                  "name": "Fruit Juice",
+                  "category": "Fruits",
+                  "subcategory": "Processed Fruits",
+                  "preparation_state": "juice",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "b405321d-e3e7-4333-ae8c-8bd9c3f49773",
+                  "name": "Fruit Juice",
+                  "category": "Fruits",
+                  "subcategory": "Stone Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "15f34c4f-e38d-4dea-b135-9ceb0e3df2ef",
+                  "name": "Fuji Apple",
+                  "category": "Fruits",
+                  "subcategory": "Pome Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "67b09010-283d-47eb-8cff-cc0a28d480c9",
+                  "name": "Gala Apple",
+                  "category": "Fruits",
+                  "subcategory": "Pome Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "1558a922-6b2d-406c-b70f-0a015d80a8d4",
+                  "name": "Granny Smith Apple",
+                  "category": "Fruits",
+                  "subcategory": "Pome Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "9684de86-2192-432c-b6a5-e71f7de7ad91",
+                  "name": "Grape Juice",
+                  "category": "Fruits",
+                  "subcategory": "Processed Fruits",
+                  "preparation_state": "juice",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "0aa9211c-200a-45bb-a112-def67926bba6",
+                  "name": "Grape Juice",
+                  "category": "Fruits",
+                  "subcategory": "Citrus Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "b20d6958-631e-48be-b7cd-3dbafe16721e",
+                  "name": "Honeycrisp Apple",
+                  "category": "Fruits",
+                  "subcategory": "Pome Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "b3a20cf1-15e1-47e2-bc23-063415c9e206",
+                  "name": "Kiwi",
+                  "category": "Fruits",
+                  "subcategory": "Tropical Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "fcde6915-3fda-497c-8712-8c2663ec3a68",
+                  "name": "Mango",
+                  "category": "Fruits",
+                  "subcategory": "Tropical Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "6f7bccb3-9cbd-40d9-a100-e107c25cbced",
+                  "name": "Nectarine",
+                  "category": "Fruits",
+                  "subcategory": "Stone Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "b532729d-2c7f-4d79-a77a-348edb4f760c",
+                  "name": "Orange",
+                  "category": "Fruits",
+                  "subcategory": "Citrus Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "02c527fe-46f3-4f6f-99f4-c6f7cae428f7",
+                  "name": "Orange Juice",
+                  "category": "Fruits",
+                  "subcategory": "Citrus Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "04017fa6-bb75-431b-b7d3-52ce46ef4131",
+                  "name": "Orange Juice",
+                  "category": "Fruits",
+                  "subcategory": "Processed Fruits",
+                  "preparation_state": "juice",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "2f6ef99d-ce5a-4ccf-8eb3-cf5ce60d3625",
+                  "name": "Peach",
+                  "category": "Fruits",
+                  "subcategory": "Stone Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "f2cdf06c-5e89-4843-a6e4-4bd99dd73207",
+                  "name": "Pear",
+                  "category": "Fruits",
+                  "subcategory": "Pome Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "126dc093-09c4-455c-af89-20da495d8214",
+                  "name": "Pineapple",
+                  "category": "Fruits",
+                  "subcategory": "Tropical Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "8d4c654c-dcc2-4446-9b5f-b8f351236f9a",
+                  "name": "Pineapple",
+                  "category": "Fruits",
+                  "subcategory": "Pome Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "cdfaf55a-cd8f-4fac-99fe-98d3c2470bc2",
+                  "name": "Plum",
+                  "category": "Fruits",
+                  "subcategory": "Stone Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "60563a54-8252-4195-9fcf-0d97f47d312a",
+                  "name": "Pomegranate Juice",
+                  "category": "Fruits",
+                  "subcategory": "Processed Fruits",
+                  "preparation_state": "juice",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "48496e11-49f2-450d-a1a1-6dd84e8912e2",
+                  "name": "Red Delicious Apple",
+                  "category": "Fruits",
+                  "subcategory": "Pome Fruits",
+                  "preparation_state": "fresh",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "a2990a89-7680-48f8-9237-36242a548491",
+                  "name": "All-Purpose Flour",
+                  "category": "Grains & Starches",
+                  "subcategory": "Refined Grains",
+                  "preparation_state": "prepared",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "0257cc5d-5087-4569-990d-6684859912bf",
+                  "name": "Barley",
+                  "category": "Grains & Starches",
+                  "subcategory": "Refined Grains",
+                  "preparation_state": "prepared",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "10ea4dc9-1d27-471a-b31f-74febe396aba",
+                  "name": "Brown Rice",
+                  "category": "Grains & Starches",
+                  "subcategory": "Whole Grains",
+                  "preparation_state": "cooked",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "82e275b7-f5a2-46d8-a25c-46e6a234d921",
+                  "name": "Brown Rice, uncooked",
+                  "category": "Grains & Starches",
+                  "subcategory": "Whole Grains",
+                  "preparation_state": "cooked",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "84a16f82-ec73-4bb3-b143-345a9b3c2db5",
+                  "name": "Bulgur, uncooked",
+                  "category": "Grains & Starches",
+                  "subcategory": "Refined Grains",
+                  "preparation_state": "cooked",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "dc13ccb2-145a-4fe4-bbad-b7a4cba76b0b",
+                  "name": "Corn, raw",
+                  "category": "Grains & Starches",
+                  "subcategory": "Starchy Vegetables",
+                  "preparation_state": "raw",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "df6685c8-6406-47f1-982c-65ded6606ca3",
+                  "name": "Farro, uncooked",
+                  "category": "Grains & Starches",
+                  "subcategory": "Refined Grains",
+                  "preparation_state": "cooked",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "12e096af-deb9-4cce-995c-20f98eb0cf94",
+                  "name": "Flour",
+                  "category": "Grains & Starches",
+                  "subcategory": "Whole Grains",
+                  "preparation_state": "cooked",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "a6bb7f88-72a0-49a4-bb2f-edfd3ed0f7cb",
+                  "name": "Millet",
+                  "category": "Grains & Starches",
+                  "subcategory": "Whole Grains",
+                  "preparation_state": "cooked",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "519bffe9-d5c9-40c1-a57d-76fd58ec975e",
+                  "name": "Oats",
+                  "category": "Grains & Starches",
+                  "subcategory": "Whole Grains",
+                  "preparation_state": "cooked",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "5c1ff181-6a85-4a74-b969-fdea20820160",
+                  "name": "Quinoa",
+                  "category": "Grains & Starches",
+                  "subcategory": "Refined Grains",
+                  "preparation_state": "prepared",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "175244b9-82a4-4c66-a95a-1e2dc19d0413",
+                  "name": "Rolled Oats",
+                  "category": "Grains & Starches",
+                  "subcategory": "Whole Grains",
+                  "preparation_state": "cooked",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "06b7530c-7500-4252-8827-444d96ca8e16",
+                  "name": "Steel Cut Oats",
+                  "category": "Grains & Starches",
+                  "subcategory": "Whole Grains",
+                  "preparation_state": "cooked",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "51e8b8d3-2db1-4048-8a18-5890919d2f26",
+                  "name": "White Bread",
+                  "category": "Grains & Starches",
+                  "subcategory": "Refined Grains",
+                  "preparation_state": "prepared",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "64e07dfc-bd21-41e4-bc76-b0ba522d2d68",
+                  "name": "White Rice",
+                  "category": "Grains & Starches",
+                  "subcategory": "Refined Grains",
+                  "preparation_state": "prepared",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "497fbb41-e9c2-4a8f-a2ba-218f697a6dfc",
+                  "name": "White Rice, uncooked",
+                  "category": "Grains & Starches",
+                  "subcategory": "Refined Grains",
+                  "preparation_state": "cooked",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "44ef2070-6bd5-4080-a109-9b7051e3d58b",
+                  "name": "Whole Wheat Flour",
+                  "category": "Grains & Starches",
+                  "subcategory": "Whole Grains",
+                  "preparation_state": "cooked",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "f20bd9cb-e199-4590-9c2a-6434791b1f7a",
+                  "name": "Wild Rice, uncooked",
+                  "category": "Grains & Starches",
+                  "subcategory": "Whole Grains",
+                  "preparation_state": "cooked",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                },
+                {
+                  "id": "abd326c3-28d8-40cc-ba94-502bafcc0b23",
+                  "name": "Table Salt",
+                  "category": "Herbs & Spices",
+                  "subcategory": "Dried Herbs",
+                  "preparation_state": "dried",
+                  "is_organic": false,
+                  "protocol_status": "unknown"
+                }
+              ]
             },
             "compliance_stats": {
-              "total": 0,
+              "total": 100,
               "allowed": 0,
               "avoid": 0,
               "reintroduction": 0,
-              "unknown": 0
+              "unknown": 100
             },
             "protocol_id": "1495844a-19de-404c-a288-7660eda0cbe1"
           },
-          "responseSize": 249
+          "responseSize": 60213
         },
         {
           "path": "/api/v1/protocols",
@@ -282,13 +3036,167 @@
               "value": "1495844a-19de-404c-a288-7660eda0cbe1"
             }
           ],
-          "status": 500,
-          "working": false,
-          "responseTime": 5091,
+          "status": 200,
+          "working": true,
+          "responseTime": 41,
           "responseData": {
-            "error": "Failed to complete fetch protocols"
+            "protocols": [
+              {
+                "id": "1495844a-19de-404c-a288-7660eda0cbe1",
+                "name": "AIP",
+                "description": "The Autoimmune Protocol (AIP) is an elimination diet designed to help identify food sensitivities and reduce inflammation in people with autoimmune conditions.",
+                "category": null,
+                "phases": [
+                  {
+                    "name": "Elimination",
+                    "description": "Remove all potentially inflammatory foods",
+                    "duration_weeks": 6
+                  },
+                  {
+                    "name": "Reintroduction",
+                    "description": "Systematically reintroduce foods one at a time",
+                    "duration_weeks": 12
+                  }
+                ],
+                "official": true,
+                "version": "1.0"
+              },
+              {
+                "id": "7c728266-7c7e-4389-a9b6-7c5280f2edd2",
+                "name": "Keto",
+                "description": "A ketogenic diet is high in fats, moderate in protein, and very low in carbohydrates to induce ketosis.",
+                "category": "metabolic",
+                "phases": [
+                  {
+                    "name": "Induction",
+                    "description": "Restrict carbs to <20g/day",
+                    "duration_weeks": 2
+                  },
+                  {
+                    "name": "Maintenance",
+                    "description": "Maintain ketosis with 20-50g carbs/day",
+                    "duration_weeks": "ongoing"
+                  }
+                ],
+                "official": true,
+                "version": "1.0"
+              },
+              {
+                "id": "a80be547-6db1-4722-a5a4-60930143a2d9",
+                "name": "Low FODMAP",
+                "description": "The Low FODMAP diet restricts fermentable carbohydrates that can trigger IBS symptoms, developed by Monash University.",
+                "category": "low_fodmap",
+                "phases": [
+                  {
+                    "name": "Elimination",
+                    "description": "Eliminate high FODMAP foods",
+                    "duration_weeks": "2-6"
+                  },
+                  {
+                    "name": "Reintroduction",
+                    "description": "Test individual FODMAP groups",
+                    "duration_weeks": "8-12"
+                  },
+                  {
+                    "name": "Personalization",
+                    "description": "Create personalized long-term diet",
+                    "duration_weeks": "ongoing"
+                  }
+                ],
+                "official": false,
+                "version": "1.0"
+              },
+              {
+                "id": "51ca7a24-4691-4629-8ee5-c20876e68c29",
+                "name": "Low Histamine",
+                "description": "A low histamine diet eliminates foods high in histamine or that trigger histamine release, helping manage histamine intolerance symptoms.",
+                "category": "low_histamine",
+                "phases": [
+                  {
+                    "name": "Elimination",
+                    "description": "Eliminate high histamine foods",
+                    "duration_weeks": "2-6"
+                  },
+                  {
+                    "name": "Reintroduction",
+                    "description": "Test medium histamine foods one at a time",
+                    "duration_weeks": "4-8"
+                  }
+                ],
+                "official": false,
+                "version": "1.0"
+              },
+              {
+                "id": "fd2c2435-48ea-4d5d-9d04-6fe5b8ac3b0c",
+                "name": "Low Lectin",
+                "description": "A low lectin diet eliminates foods high in lectins, which some believe can cause inflammation and digestive issues.",
+                "category": "low_lectin",
+                "phases": null,
+                "official": false,
+                "version": "1.0"
+              },
+              {
+                "id": "12f1d4f1-f56a-48a3-b936-41026014656b",
+                "name": "Low Oxalate",
+                "description": "A low oxalate diet restricts foods high in oxalates to prevent kidney stones and manage oxalate sensitivity.",
+                "category": "low_oxalate",
+                "phases": null,
+                "official": false,
+                "version": "1.0"
+              },
+              {
+                "id": "40b6955c-fd3b-4aba-846b-03caa7119ff9",
+                "name": "No Nightshades",
+                "description": "A nightshade-free diet eliminates vegetables from the nightshade family, which can trigger inflammation in sensitive individuals.",
+                "category": "no_nightshades",
+                "phases": null,
+                "official": false,
+                "version": "1.0"
+              },
+              {
+                "id": "46de08fb-03bf-4032-b507-122bb934ecb9",
+                "name": "Paleo",
+                "description": "The Paleo diet emphasizes whole foods that were available to Paleolithic humans, excluding processed foods, grains, and legumes.",
+                "category": "paleo",
+                "phases": [
+                  {
+                    "name": "Strict",
+                    "description": "Eliminate all non-Paleo foods",
+                    "duration_weeks": 4
+                  },
+                  {
+                    "name": "Modified",
+                    "description": "Allow some flexibility with certain foods",
+                    "duration_weeks": "ongoing"
+                  }
+                ],
+                "official": false,
+                "version": "1.0"
+              },
+              {
+                "id": "5cd8f8c7-3cbb-4405-ab88-a253ff7c907b",
+                "name": "Whole30",
+                "description": "Whole30 is a 30-day elimination diet that removes sugar, alcohol, grains, legumes, and dairy to reset eating habits.",
+                "category": "whole30",
+                "phases": [
+                  {
+                    "name": "Elimination",
+                    "description": "Strict 30-day elimination",
+                    "duration_weeks": 4
+                  },
+                  {
+                    "name": "Reintroduction",
+                    "description": "Systematic reintroduction of eliminated foods",
+                    "duration_weeks": 2
+                  }
+                ],
+                "official": false,
+                "version": "1.0"
+              }
+            ],
+            "total": 9
           },
-          "responseSize": 46
+          "responseSize": 3749
         },
         {
           "path": "/api/v1/timeline/entries",
@@ -304,7 +3212,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 86,
+          "responseTime": 38,
           "responseData": {
             "error": "Authentication required"
           },
@@ -324,7 +3232,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 77,
+          "responseTime": 41,
           "responseData": {
             "error": "Authentication required"
           },
@@ -344,7 +3252,7 @@
           ],
           "status": 404,
           "working": false,
-          "responseTime": 86,
+          "responseTime": 59,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -387,7 +3295,7 @@
           ],
           "status": 404,
           "working": false,
-          "responseTime": 78,
+          "responseTime": 53,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -425,7 +3333,7 @@
           "params": [],
           "status": 401,
           "working": false,
-          "responseTime": 81,
+          "responseTime": 39,
           "responseData": {
             "error": "Authentication required"
           },
@@ -445,7 +3353,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 80,
+          "responseTime": 70,
           "responseData": {
             "error": "Authentication required"
           },
@@ -465,7 +3373,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 76,
+          "responseTime": 68,
           "responseData": {
             "error": "Authentication required"
           },
@@ -485,7 +3393,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 79,
+          "responseTime": 44,
           "responseData": {
             "error": "Authentication required"
           },
@@ -505,7 +3413,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 94,
+          "responseTime": 40,
           "responseData": {
             "error": "Authentication required"
           },
@@ -525,7 +3433,7 @@
           ],
           "status": 404,
           "working": false,
-          "responseTime": 78,
+          "responseTime": 59,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -563,7 +3471,7 @@
           "params": [],
           "status": 500,
           "working": false,
-          "responseTime": 5082,
+          "responseTime": 43,
           "responseData": {
             "error": "Internal server error: corsHeaders is not defined"
           },
@@ -581,13 +3489,16 @@
               "value": "chicken"
             }
           ],
-          "status": 500,
-          "working": false,
-          "responseTime": 5132,
+          "status": 200,
+          "working": true,
+          "responseTime": 46,
           "responseData": {
-            "error": "Failed to complete search symptoms"
+            "symptoms": [],
+            "total": 0,
+            "search_term": "chicken",
+            "user_history_included": false
           },
-          "responseSize": 46
+          "responseSize": 79
         },
         {
           "path": "/api/v1/supplements/search",
@@ -601,13 +3512,15 @@
               "value": "chicken"
             }
           ],
-          "status": 500,
-          "working": false,
-          "responseTime": 5086,
+          "status": 200,
+          "working": true,
+          "responseTime": 44,
           "responseData": {
-            "error": "Failed to complete search supplements"
+            "supplements": [],
+            "total": 0,
+            "search_term": "chicken"
           },
-          "responseSize": 49
+          "responseSize": 52
         },
         {
           "path": "/api/v1/medications/search",
@@ -621,13 +3534,15 @@
               "value": "chicken"
             }
           ],
-          "status": 500,
-          "working": false,
-          "responseTime": 5084,
+          "status": 200,
+          "working": true,
+          "responseTime": 54,
           "responseData": {
-            "error": "Failed to complete search medications"
+            "medications": [],
+            "total": 0,
+            "search_term": "chicken"
           },
-          "responseSize": 49
+          "responseSize": 52
         },
         {
           "path": "/api/v1/detox-types/search",
@@ -641,13 +3556,15 @@
               "value": "chicken"
             }
           ],
-          "status": 500,
-          "working": false,
-          "responseTime": 5110,
+          "status": 200,
+          "working": true,
+          "responseTime": 70,
           "responseData": {
-            "error": "Failed to complete search detox types"
+            "detox_types": [],
+            "total": 0,
+            "search_term": "chicken"
           },
-          "responseSize": 49
+          "responseSize": 52
         },
         {
           "path": "/api/v1/exposures/search",
@@ -661,13 +3578,15 @@
               "value": "chicken"
             }
           ],
-          "status": 500,
-          "working": false,
-          "responseTime": 5085,
+          "status": 200,
+          "working": true,
+          "responseTime": 157,
           "responseData": {
-            "error": "Failed to complete search exposures"
+            "exposures": [],
+            "total": 0,
+            "search_term": "chicken"
           },
-          "responseSize": 47
+          "responseSize": 50
         },
         {
           "path": "/api/v1/admin/seed-demo-data",
@@ -678,7 +3597,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 77,
+          "responseTime": 61,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -716,7 +3635,7 @@
           "params": [],
           "status": 500,
           "working": false,
-          "responseTime": 5082,
+          "responseTime": 36,
           "responseData": {
             "error": "Failed to complete get journal entries"
           },
@@ -729,13 +3648,13 @@
           "description": "Get resource",
           "source": "backend/functions/api/index.js",
           "params": [],
-          "status": 500,
+          "status": 401,
           "working": false,
-          "responseTime": 5086,
+          "responseTime": 38,
           "responseData": {
-            "error": "Failed to complete get journal entry"
+            "error": "User not authenticated"
           },
-          "responseSize": 48
+          "responseSize": 34
         },
         {
           "path": "/api/v1/test-auth",
@@ -746,7 +3665,7 @@
           "params": [],
           "status": 401,
           "working": false,
-          "responseTime": 85,
+          "responseTime": 42,
           "responseData": {
             "error": "Authentication required"
           },
@@ -761,7 +3680,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 76,
+          "responseTime": 101,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -799,7 +3718,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 76,
+          "responseTime": 48,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -837,7 +3756,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 79,
+          "responseTime": 38,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -867,11 +3786,11 @@
           "responseSize": 629
         }
       ],
-      "workingCount": 1,
+      "workingCount": 8,
       "totalCount": 29,
       "categories": {
         "Foods": {
-          "working": 0,
+          "working": 1,
           "total": 2
         },
         "AI": {
@@ -879,11 +3798,11 @@
           "total": 1
         },
         "Lookup Data": {
-          "working": 0,
+          "working": 2,
           "total": 4
         },
         "Protocols": {
-          "working": 1,
+          "working": 2,
           "total": 6
         },
         "Timeline": {
@@ -895,7 +3814,7 @@
           "total": 4
         },
         "Health Data": {
-          "working": 0,
+          "working": 3,
           "total": 6
         },
         "Other": {
@@ -1574,7 +4493,7 @@
             }
           ],
           "utilities": [],
-          "size": "194.56 KB"
+          "size": "196.5 KB"
         },
         "backend/functions": {
           "totalFiles": 28,
@@ -1591,7 +4510,7 @@
             }
           ],
           "utilities": [],
-          "size": "194.56 KB"
+          "size": "196.5 KB"
         },
         "backend": {
           "totalFiles": 37,
@@ -1611,7 +4530,7 @@
             }
           ],
           "utilities": [],
-          "size": "261.16 KB"
+          "size": "263.1 KB"
         }
       },
       "shared": {},
@@ -1704,18 +4623,18 @@
       "repository": "https://github.com/deebyrne26/health-platform",
       "branch": "main",
       "lastCommit": {
-        "hash": "c3660fe",
-        "message": "Add script to refresh materialized views",
+        "hash": "be9537e",
+        "message": "Fix Lambda food search with correct column names and improved database connection",
         "author": "deebyrne26",
-        "date": "Thu Jul 24 07:15:49 2025 -0400"
+        "date": "Thu Jul 24 11:56:08 2025 -0400"
       },
       "contributors": [
         {
           "name": "deebyrne26",
-          "commits": 187
+          "commits": 188
         }
       ],
-      "totalCommits": 187
+      "totalCommits": 188
     }
   }
 }
