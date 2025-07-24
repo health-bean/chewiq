@@ -17,13 +17,13 @@ const handleSearchFoods = async (queryParams) => {
             query = `
                 SELECT 
                     mpf.food_id as id,
-                    mpf.display_name as name,
+                    mpf.food_name as name,
                     mpf.category_name as category,
                     mpf.protocol_status
                 FROM mat_protocol_foods mpf
-                WHERE mpf.display_name ILIKE $1
-                AND mpf.dietary_protocol_id = $2
-                ORDER BY mpf.display_name ASC
+                WHERE mpf.food_name ILIKE $1
+                AND mpf.protocol_id = $2
+                ORDER BY mpf.food_name ASC
                 LIMIT 10
             `;
             values = [searchPattern, protocol_id];
@@ -31,7 +31,7 @@ const handleSearchFoods = async (queryParams) => {
             // Use mat_food_search for general food search without protocol context
             query = `
                 SELECT 
-                    food_id as id,
+                    simplified_food_id as id,
                     display_name as name,
                     category_name as category,
                     preparation_state,
@@ -84,12 +84,12 @@ const handleGetProtocolFoods = async (queryParams) => {
         const query = `
             SELECT 
                 mpf.food_id as id,
-                mpf.display_name as name,
+                mpf.food_name as name,
                 mpf.category_name as category,
                 mpf.protocol_status,
                 mpf.protocol_phase
             FROM mat_protocol_foods mpf
-            WHERE mpf.dietary_protocol_id = $1
+            WHERE mpf.protocol_id = $1
             ORDER BY 
                 CASE 
                     WHEN mpf.protocol_status = 'included' THEN 1
@@ -98,7 +98,7 @@ const handleGetProtocolFoods = async (queryParams) => {
                     ELSE 4
                 END,
                 mpf.category_name ASC,
-                mpf.display_name ASC
+                mpf.food_name ASC
             LIMIT 200
         `;
         
