@@ -17,7 +17,7 @@ const handleGetProtocols = async (queryParams, event) => {
                 duration_weeks,
                 has_phases,
                 created_at
-            FROM protocols
+            FROM dietary_protocols
             ORDER BY name ASC
         `;
         
@@ -59,7 +59,7 @@ const handleGetUserProtocols = async (queryParams, event) => {
                 up.started_at,
                 up.ended_at
             FROM user_protocols up
-            JOIN protocols p ON up.protocol_id = p.id
+            JOIN dietary_protocols p ON up.protocol_id = p.id
             WHERE up.user_id = $1
             ORDER BY up.is_active DESC, up.started_at DESC
         `;
@@ -101,7 +101,7 @@ const handleAssignProtocol = async (body, event) => {
         
         // Check if protocol exists
         const protocolCheck = await client.query(
-            'SELECT id, name FROM protocols WHERE id = $1',
+            'SELECT id, name FROM dietary_protocols WHERE id = $1',
             [protocol_id]
         );
         
