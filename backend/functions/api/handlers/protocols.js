@@ -14,8 +14,11 @@ const handleGetProtocols = async (queryParams, event) => {
                 name,
                 description,
                 category,
-                duration_weeks,
-                has_phases,
+                phases,
+                is_global,
+                official,
+                version,
+                protocol_type,
                 created_at
             FROM dietary_protocols
             ORDER BY name ASC
@@ -49,17 +52,18 @@ const handleGetUserProtocols = async (queryParams, event) => {
         const query = `
             SELECT 
                 up.id as user_protocol_id,
-                up.protocol_id,
+                up.dietary_protocol_id as protocol_id,
                 p.name as protocol_name,
                 p.description,
                 p.category,
-                p.duration_weeks,
-                p.has_phases,
+                p.phases,
+                p.is_global,
+                p.official,
                 up.is_active,
                 up.started_at,
                 up.ended_at
-            FROM user_protocols up
-            JOIN dietary_protocols p ON up.protocol_id = p.id
+            FROM user_dietary_protocols up
+            JOIN dietary_protocols p ON up.dietary_protocol_id = p.id
             WHERE up.user_id = $1
             ORDER BY up.is_active DESC, up.started_at DESC
         `;
@@ -112,9 +116,9 @@ const handleAssignProtocol = async (body, event) => {
         
         // Insert or update user protocol assignment
         const query = `
-            INSERT INTO user_protocols (user_id, protocol_id, is_active, started_at)
+            INSERT INTO user_dietary_protocols (user_id, dietary_protocol_id, is_active, started_at)
             VALUES ($1, $2, true, CURRENT_TIMESTAMP)
-            ON CONFLICT (user_id, protocol_id)
+            ON CONFLICT (user_id, dietary_protocol_id)
             DO UPDATE SET 
                 is_active = true,
                 started_at = CURRENT_TIMESTAMP,
@@ -153,9 +157,9 @@ const handleDeactivateProtocol = async (body, event) => {
         const client = await pool.connect();
         
         const query = `
-            UPDATE user_protocols 
+            UPDATE user_dietary_protocols 
             SET is_active = false, ended_at = CURRENT_TIMESTAMP
-            WHERE user_id = $1 AND protocol_id = $2 AND is_active = true
+            WHERE user_id = $1 AND dietary_protocol_id = $2 AND is_active = true
             RETURNING *
         `;
         
