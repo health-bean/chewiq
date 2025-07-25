@@ -56,7 +56,12 @@ const handleSearchFoods = async (queryParams, event) => {
                     SELECT 
                         pf.food_id,
                         pf.dietary_protocol_name as protocol_name,
-                        pf.protocol_status as status,
+                        CASE pf.protocol_status
+                            WHEN 'included' THEN 'allowed'
+                            WHEN 'avoid_for_now' THEN 'avoid'
+                            WHEN 'try_in_moderation' THEN 'moderation'
+                            ELSE pf.protocol_status
+                        END as status,
                         pf.protocol_phase as phase,
                         pf.protocol_notes as notes
                     FROM mat_protocol_foods pf
@@ -75,8 +80,6 @@ const handleSearchFoods = async (queryParams, event) => {
                                     CASE pc.status
                                         WHEN 'allowed' THEN '✅ Great choice for your ' || pc.protocol_name || ' protocol'
                                         WHEN 'moderation' THEN '⚖️ Enjoy in moderation on your ' || pc.protocol_name || ' protocol'
-                                        WHEN 'conditional' THEN '⚠️ Check phase guidelines for your ' || pc.protocol_name || ' protocol'
-                                        WHEN 'reintroduction' THEN '🔄 Consider for reintroduction phase of ' || pc.protocol_name
                                         WHEN 'avoid' THEN '❌ Best to avoid on your ' || pc.protocol_name || ' protocol'
                                         ELSE '🔍 Not yet evaluated for your ' || pc.protocol_name || ' protocol'
                                     END,
@@ -84,8 +87,6 @@ const handleSearchFoods = async (queryParams, event) => {
                                     CASE pc.status
                                         WHEN 'allowed' THEN '✅'
                                         WHEN 'moderation' THEN '⚖️'
-                                        WHEN 'conditional' THEN '⚠️'
-                                        WHEN 'reintroduction' THEN '🔄'
                                         WHEN 'avoid' THEN '❌'
                                         ELSE '🔍'
                                     END,
@@ -164,19 +165,21 @@ const handleGetProtocolFoods = async (queryParams, event) => {
         
         const client = await pool.connect();
         
-        // OPTIMIZED: Single query using materialized view
+        // Updated query to match the new database structure
         const query = `
             SELECT 
                 dp.name as protocol_name,
                 COUNT(*) as total_foods,
-                COUNT(*) FILTER (WHERE pf.protocol_status = 'allowed') as allowed_count,
+                COUNT(*) FILTER (WHERE pf.protocol_status = 'included') as allowed_count,
                 COUNT(*) FILTER (WHERE pf.protocol_status = 'avoid') as avoid_count,
                 COUNT(*) FILTER (WHERE pf.protocol_status = 'moderation') as moderation_count,
-                COUNT(*) FILTER (WHERE pf.protocol_status = 'conditional') as conditional_count,
-                COUNT(*) FILTER (WHERE pf.protocol_status = 'reintroduction') as reintroduction_count,
-                COUNT(*) FILTER (WHERE pf.protocol_status = 'unknown') as unknown_count,
                 json_object_agg(
-                    pf.protocol_status,
+                    CASE pf.protocol_status
+                        WHEN 'included' THEN 'allowed'
+                        WHEN 'avoid' THEN 'avoid'
+                        WHEN 'moderation' THEN 'moderation'
+                        ELSE 'unknown'
+                    END,
                     foods_array
                 ) as foods_by_status
             FROM dietary_protocols dp
@@ -190,24 +193,25 @@ const handleGetProtocolFoods = async (queryParams, event) => {
                             'name', pf.display_name,
                             'category', pf.category_name,
                             'subcategory', pf.subcategory_name,
-                            'protocol_status', pf.protocol_status,
+                            'protocol_status', CASE pf.protocol_status
+                                WHEN 'included' THEN 'allowed'
+                                WHEN 'avoid' THEN 'avoid'
+                                WHEN 'moderation' THEN 'moderation'
+                                ELSE 'unknown'
+                            END,
                             'protocol_phase', pf.protocol_phase,
                             'protocol_notes', pf.protocol_notes,
                             'display_message', 
                                 CASE pf.protocol_status
-                                    WHEN 'allowed' THEN '✅ Great choice for your ' || dp_inner.name || ' protocol'
+                                    WHEN 'included' THEN '✅ Great choice for your ' || dp_inner.name || ' protocol'
                                     WHEN 'moderation' THEN '⚖️ Enjoy in moderation on your ' || dp_inner.name || ' protocol'
-                                    WHEN 'conditional' THEN '⚠️ Check phase guidelines for your ' || dp_inner.name || ' protocol'
-                                    WHEN 'reintroduction' THEN '🔄 Consider for reintroduction phase of ' || dp_inner.name
                                     WHEN 'avoid' THEN '❌ Best to avoid on your ' || dp_inner.name || ' protocol'
                                     ELSE '🔍 Not yet evaluated for your ' || dp_inner.name || ' protocol'
                                 END,
                             'icon',
                                 CASE pf.protocol_status
-                                    WHEN 'allowed' THEN '✅'
+                                    WHEN 'included' THEN '✅'
                                     WHEN 'moderation' THEN '⚖️'
-                                    WHEN 'conditional' THEN '⚠️'
-                                    WHEN 'reintroduction' THEN '🔄'
                                     WHEN 'avoid' THEN '❌'
                                     ELSE '🔍'
                                 END,
@@ -246,8 +250,6 @@ const handleGetProtocolFoods = async (queryParams, event) => {
         const cleanFoodsByStatus = {
             allowed: foodsByStatus.allowed || [],
             moderation: foodsByStatus.moderation || [],
-            conditional: foodsByStatus.conditional || [],
-            reintroduction: foodsByStatus.reintroduction || [],
             avoid: foodsByStatus.avoid || [],
             unknown: foodsByStatus.unknown || []
         };
@@ -259,9 +261,7 @@ const handleGetProtocolFoods = async (queryParams, event) => {
                 allowed: row.allowed_count || 0,
                 avoid: row.avoid_count || 0,
                 moderation: row.moderation_count || 0,
-                conditional: row.conditional_count || 0,
-                reintroduction: row.reintroduction_count || 0,
-                unknown: row.unknown_count || 0
+                unknown: (row.total_foods || 0) - (row.allowed_count || 0) - (row.avoid_count || 0) - (row.moderation_count || 0)
             },
             protocol_id,
             protocol_name: row.protocol_name
