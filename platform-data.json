@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2025-07-26T02:55:14.994Z",
+    "generated": "2025-07-26T18:30:36.113Z",
     "version": "1.0.0",
     "generator": "AutomatedProfessionalDocsGenerator"
   },
@@ -17,7 +17,7 @@
     "workingAPIs": 7,
     "totalAPIs": 29,
     "totalTables": 25,
-    "totalCommits": 198,
+    "totalCommits": 199,
     "contributors": 1
   },
   "discoveredInfo": {
@@ -133,7 +133,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 865,
+          "responseTime": 912,
           "responseData": {
             "foods": [
               {
@@ -196,9 +196,9 @@
             "total": 7,
             "search_term": "chicken",
             "performance": {
-              "total_time_ms": 147,
-              "query_time_ms": 22,
-              "connection_time_ms": 147
+              "total_time_ms": 159,
+              "query_time_ms": 16,
+              "connection_time_ms": 158
             }
           },
           "responseSize": 1414
@@ -217,7 +217,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 148,
+          "responseTime": 187,
           "responseData": {
             "error": "Authentication required"
           },
@@ -232,7 +232,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 152,
+          "responseTime": 83,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -270,7 +270,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 105,
+          "responseTime": 116,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -304,7 +304,7 @@
           "method": "GET",
           "category": "Protocols",
           "description": "Get by-protocol",
-          "source": "backend/functions/api/handlers/old-foods_with_materialized_view.js",
+          "source": "backend/functions/api/handlers/foods.js",
           "params": [
             {
               "name": "protocol_id",
@@ -313,7 +313,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 115,
+          "responseTime": 64,
           "responseData": {
             "error": "Authentication required"
           },
@@ -333,7 +333,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 107,
+          "responseTime": 68,
           "responseData": {
             "protocols": [
               {
@@ -534,7 +534,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 87,
+          "responseTime": 66,
           "responseData": {
             "error": "Authentication required"
           },
@@ -554,7 +554,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 201,
+          "responseTime": 61,
           "responseData": {
             "error": "Authentication required"
           },
@@ -574,7 +574,7 @@
           ],
           "status": 404,
           "working": false,
-          "responseTime": 140,
+          "responseTime": 117,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -617,7 +617,7 @@
           ],
           "status": 404,
           "working": false,
-          "responseTime": 93,
+          "responseTime": 68,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -655,7 +655,7 @@
           "params": [],
           "status": 401,
           "working": false,
-          "responseTime": 127,
+          "responseTime": 132,
           "responseData": {
             "error": "Authentication required"
           },
@@ -675,7 +675,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 141,
+          "responseTime": 65,
           "responseData": {
             "error": "Authentication required"
           },
@@ -695,7 +695,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 132,
+          "responseTime": 69,
           "responseData": {
             "error": "Authentication required"
           },
@@ -715,7 +715,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 94,
+          "responseTime": 59,
           "responseData": {
             "error": "Authentication required"
           },
@@ -735,7 +735,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 140,
+          "responseTime": 72,
           "responseData": {
             "error": "Authentication required"
           },
@@ -755,7 +755,7 @@
           ],
           "status": 404,
           "working": false,
-          "responseTime": 99,
+          "responseTime": 64,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -793,7 +793,7 @@
           "params": [],
           "status": 500,
           "working": false,
-          "responseTime": 126,
+          "responseTime": 113,
           "responseData": {
             "error": "Internal server error: corsHeaders is not defined"
           },
@@ -813,7 +813,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 132,
+          "responseTime": 155,
           "responseData": {
             "symptoms": [],
             "total": 0,
@@ -836,7 +836,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 89,
+          "responseTime": 72,
           "responseData": {
             "supplements": [],
             "total": 0,
@@ -858,7 +858,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 122,
+          "responseTime": 62,
           "responseData": {
             "medications": [],
             "total": 0,
@@ -880,7 +880,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 92,
+          "responseTime": 64,
           "responseData": {
             "detox_types": [],
             "total": 0,
@@ -902,7 +902,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 87,
+          "responseTime": 110,
           "responseData": {
             "exposures": [],
             "total": 0,
@@ -919,7 +919,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 90,
+          "responseTime": 106,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -957,7 +957,7 @@
           "params": [],
           "status": 500,
           "working": false,
-          "responseTime": 84,
+          "responseTime": 112,
           "responseData": {
             "error": "Failed to complete get journal entries"
           },
@@ -972,7 +972,7 @@
           "params": [],
           "status": 401,
           "working": false,
-          "responseTime": 87,
+          "responseTime": 65,
           "responseData": {
             "error": "User not authenticated"
           },
@@ -987,7 +987,7 @@
           "params": [],
           "status": 401,
           "working": false,
-          "responseTime": 94,
+          "responseTime": 104,
           "responseData": {
             "error": "Authentication required"
           },
@@ -1002,7 +1002,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 97,
+          "responseTime": 68,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -1040,7 +1040,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 98,
+          "responseTime": 63,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -1078,7 +1078,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 93,
+          "responseTime": 62,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -1815,7 +1815,7 @@
             }
           ],
           "utilities": [],
-          "size": "203.04 KB"
+          "size": "204.27 KB"
         },
         "backend/functions": {
           "totalFiles": 28,
@@ -1832,7 +1832,7 @@
             }
           ],
           "utilities": [],
-          "size": "203.04 KB"
+          "size": "204.27 KB"
         },
         "backend": {
           "totalFiles": 38,
@@ -1852,7 +1852,7 @@
             }
           ],
           "utilities": [],
-          "size": "270.34 KB"
+          "size": "271.58 KB"
         }
       },
       "shared": {},
@@ -1945,18 +1945,18 @@
       "repository": "https://github.com/deebyrne26/health-platform",
       "branch": "main",
       "lastCommit": {
-        "hash": "ac32c52",
-        "message": "Working on query speed",
+        "hash": "cb1b3ca",
+        "message": "foods.js foods tab update",
         "author": "deebyrne26",
-        "date": "Fri Jul 25 22:53:39 2025 -0400"
+        "date": "Sat Jul 26 14:28:58 2025 -0400"
       },
       "contributors": [
         {
           "name": "deebyrne26",
-          "commits": 198
+          "commits": 199
         }
       ],
-      "totalCommits": 198
+      "totalCommits": 199
     }
   }
 }
