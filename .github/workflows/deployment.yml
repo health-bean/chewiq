@@ -22,15 +22,7 @@ jobs:
       run: |
         npm ci --only=production || { echo "❌ npm install failed"; exit 1; }
         
-        # Copy connection manager from main backend directory (single source of truth)
-        echo "📋 Copying connection manager from main backend..."
-        cp ../../database/connection-manager.js database/connection-manager.js || { echo "❌ connection manager copy failed"; exit 1; }
-        
         zip -r deploy.zip . -x "*.git*" "node_modules/.cache/*" "tests/*" || { echo "❌ zip creation failed"; exit 1; }
-        
-        # Clean up the copied file (keep single source of truth)
-        echo "🧹 Cleaning up copied connection manager..."
-        rm database/connection-manager.js || { echo "❌ cleanup failed"; exit 1; }
         
     - name: Configure AWS
       uses: aws-actions/configure-aws-credentials@v4
