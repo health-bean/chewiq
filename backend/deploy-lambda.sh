@@ -4,7 +4,7 @@
 echo "🚀 Deploying Lambda function..."
 
 # Navigate to the API directory
-cd backend/functions/api
+cd functions/api
 
 # Copy the connection manager from the main backend directory (single source of truth)
 echo "📋 Copying connection manager from main backend..."

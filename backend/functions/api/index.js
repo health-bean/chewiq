@@ -12,7 +12,6 @@ const { handleSearchMedications } = require('./handlers/medications');
 const { handleSearchDetoxTypes } = require('./handlers/detox');
 const { handleSearchExposures } = require('./handlers/exposures');
 const { handleSeedDemoData } = require('./handlers/admin');
-const { handleTestAuth } = require('./handlers/test-auth');
 const { successResponse, errorResponse } = require('./utils/responses');
 const { getCurrentUser } = require('./middleware/auth');
 
@@ -262,10 +261,6 @@ exports.handler = async (event) => {
         else if (path === '/api/v1/timeline/entries' && method === 'POST') {
             response = await handleCreateTimelineEntry(body, event);
         }
-        // Test auth route
-        else if (path === '/api/v1/test-auth' && method === 'GET') {
-            response = await handleTestAuth(queryParams, event);
-        }
         else {
             response = handleNotFound(path, method);
         }
@@ -300,8 +295,7 @@ const handleNotFound = (path, method) => {
             'GET /api/v1/users/protocol-history',
             'GET /api/v1/correlations/insights',
             'GET /api/v1/timeline/entries',
-            'POST /api/v1/timeline/entries',
-            'GET /api/v1/test-auth'
+            'POST /api/v1/timeline/entries'
         ]
     });
 };

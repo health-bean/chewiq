@@ -1,11 +1,17 @@
 /**
  * Lambda Database Connection - Now using Smart Connection Manager
- * Automatically detects VPC Lambda environment and optimizes accordingly
+ * Automatically detects Lambda environment and optimizes accordingly
  */
 
-const { pool, query, healthCheck, getConnectionInfo } = require('./connection-manager');
+const { pool, query, healthCheck, getConnectionInfo } = require('../../database/connection-manager');
 
-// Set up the same event handlers as the original file
+// Export the same interface for backward compatibility
+module.exports = {
+    pool,
+    query,
+    healthCheck,
+    getConnectionInfo
+};
 pool.on('error', (err) => {
     console.error('Database pool error:', err.message);
 });
@@ -33,11 +39,4 @@ const closePool = async () => {
     }
 };
 
-// Export the same interface as the original file - handlers expect { pool }
-module.exports = { 
-    pool, 
-    closePool,
-    query,
-    healthCheck,
-    getConnectionInfo
-};
+module.exports = { pool, closePool };
