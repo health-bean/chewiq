@@ -22,7 +22,7 @@ npm run dev
 
 - **Frontend:** React 18 + Vite + Tailwind CSS
 - **Backend:** AWS Lambda + Node.js
-- **Database:** Unknown
+- **Database:** PostgreSQL
 - **Deployment:** AWS Amplify + Lambda
 
 ## Development
@@ -30,7 +30,7 @@ npm run dev
 **Requirements:**
 - Node.js >=18.0
 - npm
-- Environment variables (21 required)
+- Environment variables (27 required)
 
 **Available Scripts:**
 - `npm run docusaurus` - docusaurus
@@ -53,13 +53,13 @@ npm run dev
 ## API Status
 
 - **Base URL:** https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev
-- **Working Endpoints:** 7/29
+- **Working Endpoints:** 0/29
 - **Categories:** Foods, AI, Lookup Data, Protocols, Timeline, Users, Health Data, Other
 
 ## Database
 
-- **Type:** Unknown
-- **Tables:** 25 discovered
+- **Type:** PostgreSQL
+- **Tables:** 23 discovered
 - **Connection:** Configured via environment
 
 ---
