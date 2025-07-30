@@ -126,13 +126,13 @@ export const useFoodSearch = () => {
       
       // Use protocol search if protocol_id provided, otherwise general search
       const endpoint = params.protocol_id 
-        ? `/foods/protocol?${queryParams.toString()}`
+        ? `/foods/by-protocol?${queryParams.toString()}`
         : `/foods/search?${queryParams.toString()}`;
       
       const response = await apiCall(endpoint);
       
-      if (response.success && response.data.foods) {
-        const searchResults = response.data.foods.map(food => ({
+      if (response.success && response.foods) {
+        const searchResults = response.foods.map(food => ({
           ...food,
           compliance_status: food.protocol_status 
             ? mapProtocolStatusToCompliance(food.protocol_status)
