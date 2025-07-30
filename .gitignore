@@ -204,3 +204,4 @@ frontend/shared/.DS_Store
 *.sql
 /db
 /backend/functions/api/backups
+/archive
