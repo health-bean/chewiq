@@ -238,6 +238,9 @@ const ProtocolFoods = ({ protocolId }) => {
 
   // Show loading only if we have a protocol and it's loading
   if (hasValidProtocol && loading) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <div className="flex items-center space-x-3">
           <Loader2 className="w-6 h-6 animate-spin text-blue-500" />
           <span className="text-lg text-gray-600">Loading protocol foods...</span>
         </div>
