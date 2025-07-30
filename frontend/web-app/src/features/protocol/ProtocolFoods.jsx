@@ -12,10 +12,11 @@ const ProtocolFoods = ({ protocolId }) => {
   const hasValidProtocol = protocolId && protocolId !== 'no_protocol';
   
   const { 
-    foods: searchResults, 
-    loading: searchLoading, 
-    error: searchError,
+    foods, 
+    loading, 
+    error,
     searchFoods,
+    loadProtocolFoods,
     clearResults
   } = useFoodSearch({ 
     protocolId: hasValidProtocol ? protocolId : null,
@@ -23,24 +24,71 @@ const ProtocolFoods = ({ protocolId }) => {
     debounceMs: 300
   });
 
-  // Simplified approach: Focus on search functionality
-  // TODO: Add protocol food browsing functionality back
-  const loading = searchLoading;
-  const error = searchError;
-  
-  // Temporary: Empty protocol foods data for browsing view
-  const foodsByCategory = {};
-  const complianceStats = { allowed: 0, avoid: 0, reintroduction: 0 };
-  const totalFoods = 0;
+  // Separate state for search results vs protocol browsing
+  const [isSearching, setIsSearching] = React.useState(false);
+  const [protocolFoods, setProtocolFoods] = React.useState([]);
+
+  // Load protocol foods on mount and when protocol changes
+  React.useEffect(() => {
+    if (hasValidProtocol && !searchTerm.trim()) {
+      loadProtocolFoods();
+    }
+  }, [hasValidProtocol, protocolId, loadProtocolFoods, searchTerm]);
 
   // Handle search using unified hook (debouncing handled internally)
   React.useEffect(() => {
     if (searchTerm.trim()) {
+      setIsSearching(true);
       searchFoods(searchTerm);
     } else {
+      setIsSearching(false);
       clearResults();
+      // Reload protocol foods when search is cleared
+      if (hasValidProtocol) {
+        loadProtocolFoods();
+      }
     }
-  }, [searchTerm, searchFoods, clearResults]);
+  }, [searchTerm, searchFoods, clearResults, hasValidProtocol, loadProtocolFoods]);
+
+  // Group foods by category for browsing view
+  const foodsByCategory = React.useMemo(() => {
+    if (isSearching || !foods.length) return {};
+    
+    const grouped = {};
+    foods.forEach(food => {
+      const category = food.category || 'Other';
+      if (!grouped[category]) {
+        grouped[category] = [];
+      }
+      grouped[category].push(food);
+    });
+    
+    return grouped;
+  }, [foods, isSearching]);
+
+  // Calculate compliance stats
+  const complianceStats = React.useMemo(() => {
+    if (isSearching || !foods.length) return { allowed: 0, avoid: 0, reintroduction: 0 };
+    
+    const stats = { allowed: 0, avoid: 0, reintroduction: 0 };
+    foods.forEach(food => {
+      switch (food.compliance_status) {
+        case 'included':
+          stats.allowed++;
+          break;
+        case 'avoid_for_now':
+          stats.avoid++;
+          break;
+        case 'try_in_moderation':
+          stats.reintroduction++;
+          break;
+      }
+    });
+    
+    return stats;
+  }, [foods, isSearching]);
+
+  const totalFoods = foods.length;
 
   const getComplianceColor = (status) => {
     switch (status) {
@@ -100,9 +148,9 @@ const ProtocolFoods = ({ protocolId }) => {
 
   // Process search results with deduplication
   const processedSearchResults = React.useMemo(() => {
-    if (!searchResults || searchResults.length === 0) return [];
-    return deduplicateAndMergeFoods(searchResults);
-  }, [searchResults]);
+    if (!isSearching || !foods || foods.length === 0) return [];
+    return deduplicateAndMergeFoods(foods);
+  }, [foods, isSearching]);
 
   const getPropertyColor = (property, value) => {
     if (property === 'histamine') {
@@ -132,7 +180,7 @@ const ProtocolFoods = ({ protocolId }) => {
   // Smart search result analysis
   const analyzeSearchResults = () => {
     if (!searchTerm.trim()) return { type: 'none' };
-    if (searchLoading) return { type: 'loading' };
+    if (loading && isSearching) return { type: 'loading' };
     
     const hasResults = processedSearchResults.length > 0;
     const hasProtocolCompliance = processedSearchResults.some(food => 

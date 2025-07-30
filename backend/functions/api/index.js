@@ -5,7 +5,7 @@ const { handleGetUser, handleUpdateUser, handleGetUserDietaryProtocols, handleGe
 const { handleGetJournalEntries, handleCreateJournalEntry, handleGetJournalEntry, handleUpdateJournalEntry } = require('./handlers/journal');
 const { handleGetTimelineEntries, handleCreateTimelineEntry } = require('./handlers/timeline');
 const { handleGetProtocols } = require('./handlers/protocols');
-const { handleSearchFoods, handleGetProtocolFoods, handleGetCacheStats } = require('./handlers/foods');
+const { handleSearchFoods, handleGetCacheStats } = require('./handlers/foods');
 const { handleSearchSymptoms } = require('./handlers/symptoms');
 const { handleSearchSupplements } = require('./handlers/supplements');
 const { handleSearchMedications } = require('./handlers/medications');
@@ -168,19 +168,7 @@ exports.handler = async (event) => {
                 response = errorResponse(`Database test failed: ${error.message}`, 500);
             }
         }
-        else if (path === '/api/v1/foods/by-protocol' && method === 'GET') {
-            console.log("🔄 Legacy protocol foods route - redirecting to unified endpoint");
-            
-            // Backward compatibility: redirect to unified search endpoint
-            const unifiedParams = {
-                ...queryParams,
-                search: queryParams.search || '', // Default empty search for protocol browsing
-                protocol_id: queryParams.protocol_id,
-                limit: queryParams.limit || 50
-            };
-            
-            response = await handleSearchFoods(unifiedParams, event);
-        }
+
         else if (path === '/api/v1/foods/cache-stats' && method === 'GET') {
             response = await handleGetCacheStats(queryParams, event);
         }
@@ -283,7 +271,6 @@ const handleNotFound = (path, method) => {
             // Public endpoints (no auth required)
             'GET /api/v1/protocols',
             'GET /api/v1/foods/search',
-            'GET /api/v1/foods/by-protocol',
             'GET /api/v1/symptoms/search',
             'GET /api/v1/supplements/search',
             'GET /api/v1/medications/search',

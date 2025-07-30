@@ -88,56 +88,99 @@ const generateCacheKey = (params, userId, protocolId) => {
  * SIMPLIFIED APPROACH: Use the right view for the job, no complex JOINs
  */
 const buildUnifiedQuery = (searchParams, userId) => {
-    const searchPattern = `%${searchParams.search}%`;
-    const exactMatch = searchParams.search;
-    const startsWithMatch = `${searchParams.search}%`;
+    const hasSearchTerm = searchParams.search && searchParams.search.trim();
     
     if (searchParams.protocol_id) {
-        // Protocol-aware search: Use mat_protocol_foods directly (FAST!)
-        const query = `
-            SELECT 
-                food_id as id,
-                display_name as name,
-                category_name as category,
-                subcategory_name as subcategory,
-                protocol_status as compliance_status,
-                protocol_phase,
-                dietary_protocol_name as protocol_name,
-                nightshade,
-                histamine,
-                oxalate,
-                lectin,
-                fodmap,
-                'database' as source
-            FROM mat_protocol_foods
-            WHERE display_name ILIKE $1 
-                AND dietary_protocol_id = $4
-            ORDER BY 
-                CASE 
-                    WHEN display_name ILIKE $2 THEN 1
-                    WHEN display_name ILIKE $3 THEN 2
-                    ELSE 3
-                END,
-                CASE protocol_status
-                    WHEN 'allowed' THEN 1
-                    WHEN 'caution' THEN 2
-                    WHEN 'avoid' THEN 3
-                    ELSE 4
-                END,
-                display_name ASC
-            LIMIT $5
-        `;
-        
-        return {
-            query,
-            params: [
-                searchPattern, 
-                exactMatch, 
-                startsWithMatch, 
-                searchParams.protocol_id,
-                searchParams.limit
-            ]
-        };
+        // Protocol-aware query: Use mat_protocol_foods directly (FAST!)
+        if (hasSearchTerm) {
+            // Search within protocol foods
+            const searchPattern = `%${searchParams.search}%`;
+            const exactMatch = searchParams.search;
+            const startsWithMatch = `${searchParams.search}%`;
+            
+            const query = `
+                SELECT 
+                    food_id as id,
+                    display_name as name,
+                    category_name as category,
+                    subcategory_name as subcategory,
+                    protocol_status as compliance_status,
+                    protocol_phase,
+                    dietary_protocol_name as protocol_name,
+                    nightshade,
+                    histamine,
+                    oxalate,
+                    lectin,
+                    fodmap,
+                    'database' as source
+                FROM mat_protocol_foods
+                WHERE display_name ILIKE $1 
+                    AND dietary_protocol_id = $4
+                ORDER BY 
+                    CASE 
+                        WHEN display_name ILIKE $2 THEN 1
+                        WHEN display_name ILIKE $3 THEN 2
+                        ELSE 3
+                    END,
+                    CASE protocol_status
+                        WHEN 'allowed' THEN 1
+                        WHEN 'caution' THEN 2
+                        WHEN 'avoid' THEN 3
+                        ELSE 4
+                    END,
+                    display_name ASC
+                LIMIT $5
+            `;
+            
+            return {
+                query,
+                params: [
+                    searchPattern, 
+                    exactMatch, 
+                    startsWithMatch, 
+                    searchParams.protocol_id,
+                    searchParams.limit
+                ]
+            };
+        } else {
+            // Browse all protocol foods (no search term)
+            const query = `
+                SELECT 
+                    food_id as id,
+                    display_name as name,
+                    category_name as category,
+                    subcategory_name as subcategory,
+                    protocol_status as compliance_status,
+                    protocol_phase,
+                    dietary_protocol_name as protocol_name,
+                    nightshade,
+                    histamine,
+                    oxalate,
+                    lectin,
+                    fodmap,
+                    'database' as source
+                FROM mat_protocol_foods
+                WHERE dietary_protocol_id = $1
+                ORDER BY 
+                    category_name ASC,
+                    CASE protocol_status
+                        WHEN 'allowed' THEN 1
+                        WHEN 'caution' THEN 2
+                        WHEN 'avoid' THEN 3
+                        ELSE 4
+                    END,
+                    display_name ASC
+                LIMIT $2
+            `;
+            
+            return {
+                query,
+                params: [
+                    searchParams.protocol_id,
+                    searchParams.limit
+                ]
+            };
+        }
     } else {
         // General search: Use mat_food_search directly (FAST!)
         const query = `
@@ -481,88 +524,7 @@ const handleSearchFoodsUltraFast = async (queryParams, event) => {
     }
 };
 
-/**
- * Simple protocol foods handler - optimized version
- */
-const handleGetProtocolFoods = async (queryParams, event) => {
-    const startTime = Date.now();
-    let client;
-    
-    try {
-        console.log('🚀 PROTOCOL FOODS: Starting protocol foods query...');
-        
-        client = await pool.connect();
-        
-        const user = await getCurrentUser(event);
-        if (!user) {
-            return errorResponse('Authentication required', 401);
-        }
-        
-        const protocolId = queryParams.protocol_id;
-        const limit = Math.min(parseInt(queryParams.limit) || 50, 100);
-        
-        console.log('🚀 PROTOCOL FOODS: Query params:', { protocolId, limit });
-        
-        if (!protocolId) {
-            return errorResponse('protocol_id parameter is required', 400);
-        }
-        
-        // Simple query for protocol foods using the specific protocol_id
-        const query = `
-            SELECT 
-                food_id as id,
-                display_name as name,
-                category_name as category,
-                subcategory_name as subcategory,
-                dietary_protocol_name as protocol_name,
-                protocol_status,
-                protocol_phase,
-                nightshade,
-                histamine,
-                oxalate,
-                lectin,
-                fodmap
-            FROM mat_protocol_foods
-            WHERE dietary_protocol_id = $1
-            ORDER BY 
-                CASE protocol_status
-                    WHEN 'allowed' THEN 1
-                    WHEN 'caution' THEN 2
-                    WHEN 'avoid' THEN 3
-                    ELSE 4
-                END,
-                display_name ASC
-            LIMIT $2
-        `;
-        
-        const queryStart = Date.now();
-        const result = await client.query(query, [protocolId, limit]);
-        console.log(`🚀 PROTOCOL FOODS: Query took ${Date.now() - queryStart}ms, found ${result.rows.length} results`);
-        
-        const totalTime = Date.now() - startTime;
-        console.log(`🚀 PROTOCOL FOODS: Total request time: ${totalTime}ms`);
-        
-        return successResponse({
-            foods: result.rows,
-            total: result.rows.length,
-            protocol_id: protocolId,
-            performance: {
-                total_time_ms: totalTime,
-                query_time_ms: Date.now() - queryStart
-            }
-        });
-        
-    } catch (error) {
-        const totalTime = Date.now() - startTime;
-        console.error(`🚀 PROTOCOL FOODS: Error after ${totalTime}ms:`, error);
-        const appError = handleDatabaseError(error, 'fetch protocol foods');
-        return errorResponse(appError.message, appError.statusCode);
-    } finally {
-        if (client) {
-            client.release();
-        }
-    }
-};
+
 
 /**
  * Cache monitoring endpoint for debugging and performance tracking
@@ -598,7 +560,6 @@ const handleGetCacheStats = async (queryParams, event) => {
 
 module.exports = {
     handleSearchFoods,
-    handleGetProtocolFoods,
     handleSearchFoodsUltraFast,
     handleGetCacheStats,
     invalidateProtocolCache,

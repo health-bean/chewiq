@@ -158,6 +158,65 @@ export const useFoodSearch = (options = {}) => {
     console.log(`🗑️ Invalidated ${invalidatedCount} cache entries for protocol change`);
     return invalidatedCount;
   }, []);
+
+  /**
+   * Load all protocol foods for browsing (no search term)
+   */
+  const loadProtocolFoods = useCallback(async () => {
+    if (!protocolId) {
+      setError('Protocol ID is required for loading protocol foods');
+      return;
+    }
+
+    const cacheKey = generateCacheKey('', { protocolId, limit, includeProperties });
+    
+    // Check cache first
+    const cachedResult = globalFoodCache.get(cacheKey);
+    if (cachedResult) {
+      console.log('🎯 Cache HIT for protocol foods:', protocolId);
+      setFoods(cachedResult);
+      setLoading(false);
+      setError(null);
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const params = new URLSearchParams({
+        protocol_id: protocolId,
+        limit: limit.toString(),
+        include_properties: includeProperties.toString()
+      });
+
+      console.log('🔍 Loading protocol foods:', protocolId);
+      const startTime = Date.now();
+      
+      const response = await apiClient.get(`/api/v1/foods/search?${params}`);
+      const responseTime = Date.now() - startTime;
+      
+      console.log(`🔍 Protocol foods loaded in ${responseTime}ms:`, response.foods?.length || 0, 'foods');
+      
+      if (response.foods) {
+        const processedFoods = deduplicateFoods(response.foods);
+        
+        // Cache the result
+        globalFoodCache.set(cacheKey, processedFoods);
+        
+        setFoods(processedFoods);
+        setLastSearchTime(Date.now());
+      } else {
+        setFoods([]);
+      }
+    } catch (err) {
+      console.error('❌ Protocol foods loading failed:', err);
+      setError(err.message || 'Failed to load protocol foods');
+      setFoods([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [protocolId, limit, includeProperties]);
   
   /**
    * Main search function with caching and debouncing
@@ -297,6 +356,7 @@ export const useFoodSearch = (options = {}) => {
     
     // Actions
     searchFoods,
+    loadProtocolFoods,
     clearResults,
     clearCache,
     invalidateProtocolCache,
