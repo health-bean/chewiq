@@ -84,7 +84,8 @@ const generateCacheKey = (params, userId, protocolId) => {
 };
 
 /**
- * Build unified query that handles both general and protocol-specific searches
+ * Build optimized query using existing materialized views
+ * SIMPLIFIED APPROACH: Use the right view for the job, no complex JOINs
  */
 const buildUnifiedQuery = (searchParams, userId) => {
     const searchPattern = `%${searchParams.search}%`;
@@ -92,110 +93,36 @@ const buildUnifiedQuery = (searchParams, userId) => {
     const startsWithMatch = `${searchParams.search}%`;
     
     if (searchParams.protocol_id) {
-        // Protocol-aware search with compliance status
-        const query = `
-            WITH food_search AS (
-                SELECT 
-                    f.food_id as id,
-                    f.display_name as name,
-                    f.category_name as category,
-                    f.subcategory_name as subcategory,
-                    f.preparation_state,
-                    f.is_organic,
-                    pf.protocol_status as compliance_status,
-                    pf.protocol_phase,
-                    pf.dietary_protocol_name as protocol_name,
-                    CASE 
-                        WHEN pf.nightshade = true THEN 'nightshade'
-                        ELSE null
-                    END as nightshade,
-                    pf.histamine,
-                    pf.oxalate,
-                    CASE 
-                        WHEN pf.lectin = true THEN 'lectin'
-                        ELSE null
-                    END as lectin,
-                    CASE 
-                        WHEN pf.fodmap = true THEN 'fodmap'
-                        ELSE null
-                    END as fodmap,
-                    'database' as source
-                FROM mat_food_search f
-                LEFT JOIN mat_protocol_foods pf ON f.food_id = pf.food_id 
-                    AND pf.dietary_protocol_id = $4
-                WHERE f.display_name ILIKE $1
-            )
-            SELECT 
-                id, name, category, subcategory, preparation_state, is_organic,
-                compliance_status, protocol_phase, protocol_name,
-                CASE WHEN $5 = true THEN 
-                    json_build_object(
-                        'histamine', histamine,
-                        'oxalate', oxalate,
-                        'nightshade', CASE WHEN nightshade IS NOT NULL THEN true ELSE false END,
-                        'lectin', CASE WHEN lectin IS NOT NULL THEN true ELSE false END,
-                        'fodmap', CASE WHEN fodmap IS NOT NULL THEN true ELSE false END
-                    )
-                ELSE null END as properties,
-                source
-            FROM food_search
-            ORDER BY 
-                CASE 
-                    WHEN display_name ILIKE $2 THEN 1
-                    WHEN display_name ILIKE $3 THEN 2
-                    ELSE 3
-                END,
-                CASE compliance_status
-                    WHEN 'allowed' THEN 1
-                    WHEN 'caution' THEN 2
-                    WHEN 'avoid' THEN 3
-                    ELSE 4
-                END,
-                name ASC
-            LIMIT $6
-        `;
-        
-        return {
-            query,
-            params: [
-                searchPattern, 
-                exactMatch, 
-                startsWithMatch, 
-                searchParams.protocol_id,
-                searchParams.include_properties,
-                searchParams.limit
-            ]
-        };
-    } else {
-        // General search without protocol compliance
+        // Protocol-aware search: Use mat_protocol_foods directly (FAST!)
         const query = `
             SELECT 
                 food_id as id,
                 display_name as name,
                 category_name as category,
                 subcategory_name as subcategory,
-                preparation_state,
-                is_organic,
-                null as compliance_status,
-                null as protocol_phase,
-                null as protocol_name,
-                CASE WHEN $4 = true THEN 
-                    json_build_object(
-                        'histamine', null,
-                        'oxalate', null,
-                        'nightshade', false,
-                        'lectin', false,
-                        'fodmap', false
-                    )
-                ELSE null END as properties,
+                protocol_status as compliance_status,
+                protocol_phase,
+                dietary_protocol_name as protocol_name,
+                nightshade,
+                histamine,
+                oxalate,
+                lectin,
+                fodmap,
                 'database' as source
-            FROM mat_food_search
-            WHERE display_name ILIKE $1
+            FROM mat_protocol_foods
+            WHERE display_name ILIKE $1 
+                AND dietary_protocol_id = $4
             ORDER BY 
                 CASE 
                     WHEN display_name ILIKE $2 THEN 1
                     WHEN display_name ILIKE $3 THEN 2
                     ELSE 3
+                END,
+                CASE protocol_status
+                    WHEN 'allowed' THEN 1
+                    WHEN 'caution' THEN 2
+                    WHEN 'avoid' THEN 3
+                    ELSE 4
                 END,
                 display_name ASC
             LIMIT $5
@@ -206,8 +133,48 @@ const buildUnifiedQuery = (searchParams, userId) => {
             params: [
                 searchPattern, 
                 exactMatch, 
+                startsWithMatch, 
+                searchParams.protocol_id,
+                searchParams.limit
+            ]
+        };
+    } else {
+        // General search: Use mat_food_search directly (FAST!)
+        const query = `
+            SELECT 
+                food_id as id,
+                display_name as name,
+                category_name as category,
+                subcategory_name as subcategory,
+                preparation_state,
+                is_organic,
+                nightshade,
+                histamine,
+                oxalate,
+                lectin,
+                fodmap,
+                null as compliance_status,
+                null as protocol_phase,
+                null as protocol_name,
+                'database' as source
+            FROM mat_food_search
+            WHERE display_name ILIKE $1
+            ORDER BY 
+                CASE 
+                    WHEN display_name ILIKE $2 THEN 1
+                    WHEN display_name ILIKE $3 THEN 2
+                    ELSE 3
+                END,
+                display_name ASC
+            LIMIT $4
+        `;
+        
+        return {
+            query,
+            params: [
+                searchPattern, 
+                exactMatch, 
                 startsWithMatch,
-                searchParams.include_properties,
                 searchParams.limit
             ]
         };
