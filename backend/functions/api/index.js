@@ -5,7 +5,7 @@ const { handleGetUser, handleUpdateUser, handleGetUserDietaryProtocols, handleGe
 const { handleGetJournalEntries, handleCreateJournalEntry, handleGetJournalEntry, handleUpdateJournalEntry } = require('./handlers/journal');
 const { handleGetTimelineEntries, handleCreateTimelineEntry } = require('./handlers/timeline');
 const { handleGetProtocols } = require('./handlers/protocols');
-const { handleSearchFoods, handleGetProtocolFoods } = require('./handlers/foods');
+const { handleSearchFoods, handleGetProtocolFoods, handleGetCacheStats } = require('./handlers/foods');
 const { handleSearchSymptoms } = require('./handlers/symptoms');
 const { handleSearchSupplements } = require('./handlers/supplements');
 const { handleSearchMedications } = require('./handlers/medications');
@@ -153,34 +153,36 @@ exports.handler = async (event) => {
                 const { pool } = require('./database/connection');
                 const client = await pool.connect();
                 
-                // Test basic query
-                const result = await client.query('SELECT COUNT(*) as count FROM food_search_view LIMIT 1');
+                // Test basic query - use mat_food_search instead of food_search_view
+                const result = await client.query('SELECT COUNT(*) as count FROM mat_food_search LIMIT 1');
                 client.release();
                 
-                response = {
-                    statusCode: 200,
-                    headers: corsHeaders,
-                    body: JSON.stringify({
-                        success: true,
-                        message: 'Database connection successful',
-                        count: result.rows[0].count
-                    })
-                };
+                response = successResponse({
+                    success: true,
+                    message: 'Database connection successful',
+                    count: result.rows[0].count,
+                    timestamp: new Date().toISOString()
+                });
             } catch (error) {
-                response = {
-                    statusCode: 500,
-                    headers: corsHeaders,
-                    body: JSON.stringify({
-                        error: 'Database test failed',
-                        message: error.message,
-                        stack: error.stack
-                    })
-                };
+                console.error('Database test error:', error);
+                response = errorResponse(`Database test failed: ${error.message}`, 500);
             }
         }
         else if (path === '/api/v1/foods/by-protocol' && method === 'GET') {
-            console.log("Protocol foods route hit!");
-            response = await handleGetProtocolFoods(queryParams, event);
+            console.log("🔄 Legacy protocol foods route - redirecting to unified endpoint");
+            
+            // Backward compatibility: redirect to unified search endpoint
+            const unifiedParams = {
+                ...queryParams,
+                search: queryParams.search || '', // Default empty search for protocol browsing
+                protocol_id: queryParams.protocol_id,
+                limit: queryParams.limit || 50
+            };
+            
+            response = await handleSearchFoods(unifiedParams, event);
+        }
+        else if (path === '/api/v1/foods/cache-stats' && method === 'GET') {
+            response = await handleGetCacheStats(queryParams, event);
         }
         // Search routes
         else if (path === '/api/v1/symptoms/search' && method === 'GET') {
