@@ -1,44 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Search, Plus, Check, Loader2 } from 'lucide-react';
 import { Input, Button, Card } from '../../../../shared/components/ui';
 import { cn } from '../../../../shared/design-system';
+import { useFoodSearch } from '../../../../shared/hooks/useFoodSearchUnified';
 
 const SmartFoodSelector = ({ selectedItems, onToggleItem, selectedProtocols = [] }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [foods, setFoods] = useState([]);
-  const [loading, setLoading] = useState(false);
+  
+  // Use unified food search hook
+  const protocolId = selectedProtocols[0] && selectedProtocols[0] !== 'no_protocol' 
+    ? selectedProtocols[0] 
+    : null;
+    
+  const { 
+    foods, 
+    loading, 
+    error, 
+    searchFoods,
+    cacheStats 
+  } = useFoodSearch({ 
+    protocolId,
+    enableCache: true,
+    debounceMs: 300
+  });
 
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
-  useEffect(() => {
-    const loadFoods = async () => {
-      if (!searchTerm.trim()) {
-        setFoods([]);
-        return;
-      }
-
-      setLoading(true);
-      try {
-        const protocolId = selectedProtocols[0];
-        let url = `${API_BASE_URL}/api/v1/foods/search?search=${encodeURIComponent(searchTerm)}`;
-        if (protocolId && protocolId !== 'no_protocol') {
-          url += `&protocol_id=${protocolId}`;
-        }
-
-        const response = await fetch(url);
-        const data = await response.json();
-        setFoods(data.foods || []);
-      } catch (err) {
-        // Handle error silently
-        setFoods([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    const timer = setTimeout(loadFoods, 300);
-    return () => clearTimeout(timer);
-  }, [searchTerm, selectedProtocols, API_BASE_URL]);
+  const handleSearchChange = (e) => {
+    const newSearchTerm = e.target.value;
+    setSearchTerm(newSearchTerm);
+    searchFoods(newSearchTerm);
+  };
 
   const isSelected = (food) => {
     return selectedItems.some(item => item.name === food.name);
@@ -61,7 +51,7 @@ const SmartFoodSelector = ({ selectedItems, onToggleItem, selectedProtocols = []
         <Input
           placeholder="Search foods..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={handleSearchChange}
           className="pl-10"
         />
       </div>
@@ -71,6 +61,15 @@ const SmartFoodSelector = ({ selectedItems, onToggleItem, selectedProtocols = []
         <div className="flex items-center justify-center py-4">
           <Loader2 className="w-5 h-5 animate-spin text-gray-400" />
           <span className="ml-2 text-sm text-gray-500">Searching foods...</span>
+        </div>
+      )}
+
+      {/* Error State */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+          <div className="text-sm text-red-600">
+            Search failed: {error}
+          </div>
         </div>
       )}
 
