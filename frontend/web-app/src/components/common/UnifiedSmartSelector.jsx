@@ -170,7 +170,7 @@ const UnifiedSmartSelector = ({
         return {
           ...baseItem,
           category: item.category,
-          protocol_allowed: item.compliance_status === 'included',
+          protocol_allowed: item.compliance_status === 'allowed',
           compliance_status: item.compliance_status || 'unknown'
         };
       case 'symptom':

@@ -77,13 +77,13 @@ const ProtocolFoods = ({ protocolId }) => {
     const stats = { allowed: 0, avoid: 0, reintroduction: 0 };
     foods.forEach(food => {
       switch (food.compliance_status) {
-        case 'included':
+        case 'allowed':
           stats.allowed++;
           break;
-        case 'avoid_for_now':
+        case 'avoid':
           stats.avoid++;
           break;
-        case 'try_in_moderation':
+        case 'caution':
           stats.reintroduction++;
           break;
       }
@@ -96,9 +96,9 @@ const ProtocolFoods = ({ protocolId }) => {
 
   const getComplianceColor = (status) => {
     switch (status) {
-      case 'included': return 'bg-green-100 text-green-800 border-green-200';
-      case 'avoid_for_now': return 'bg-red-100 text-red-800 border-red-200';
-      case 'try_in_moderation': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'allowed': return 'bg-green-100 text-green-800 border-green-200';
+      case 'avoid': return 'bg-red-100 text-red-800 border-red-200';
+      case 'caution': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
       case 'not_classified': return 'bg-gray-100 text-gray-800 border-gray-200';
       default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
@@ -106,9 +106,9 @@ const ProtocolFoods = ({ protocolId }) => {
 
   const getComplianceIcon = (status) => {
     switch (status) {
-      case 'included': return '✅';
-      case 'avoid_for_now': return '❌';
-      case 'try_in_moderation': return '🟡';
+      case 'allowed': return '✅';
+      case 'avoid': return '❌';
+      case 'caution': return '🟡';
       case 'not_classified': return '❓';
       default: return '❓';
     }
@@ -116,9 +116,9 @@ const ProtocolFoods = ({ protocolId }) => {
 
   const getComplianceLabel = (status) => {
     switch (status) {
-      case 'included': return 'Allowed';
-      case 'avoid_for_now': return 'Avoid';
-      case 'try_in_moderation': return 'Use Caution';
+      case 'allowed': return 'Allowed';
+      case 'avoid': return 'Avoid';
+      case 'caution': return 'Use Caution';
       case 'not_classified': return 'Not Classified';
       default: return 'Unknown';
     }
@@ -176,6 +176,16 @@ const ProtocolFoods = ({ protocolId }) => {
     return 'bg-blue-100 text-blue-800';
   };
 
+  // Helper function to check if a property has a meaningful value
+  const hasValidProperty = (value) => {
+    return value && 
+           value !== 'unknown' && 
+           value !== 'none' && 
+           value !== null && 
+           value !== undefined && 
+           value !== '';
+  };
+
   // Filter to only show allowed foods for default view (allowed + caution)
   const filterAllowedFoods = (foods) => {
     return foods.filter(food => 
@@ -224,20 +234,20 @@ const ProtocolFoods = ({ protocolId }) => {
           </div>
           
           <div className="flex flex-wrap gap-2 mb-2">
-            {food.nightshade && (
+            {food.nightshade && food.nightshade !== 'unknown' && food.nightshade !== 'none' && food.nightshade !== null && (
               <span className="px-2 py-1 bg-red-100 text-red-800 rounded text-xs">🍅 Nightshade</span>
             )}
-            {food.histamine && (
+            {food.histamine && food.histamine !== 'unknown' && food.histamine !== 'none' && food.histamine !== null && (
               <span className={`px-2 py-1 rounded text-xs ${getPropertyColor('histamine', food.histamine)}`}>
                 Histamine: {food.histamine}
               </span>
             )}
-            {food.oxalate && (
+            {food.oxalate && food.oxalate !== 'unknown' && food.oxalate !== 'none' && food.oxalate !== null && (
               <span className={`px-2 py-1 rounded text-xs ${getPropertyColor('oxalate', food.oxalate)}`}>
                 Oxalate: {food.oxalate}
               </span>
             )}
-            {food.lectin && (
+            {food.lectin && food.lectin !== 'unknown' && food.lectin !== 'none' && food.lectin !== null && (
               <span className="px-2 py-1 bg-orange-100 text-orange-800 rounded text-xs">🌾 Lectin</span>
             )}
           </div>
