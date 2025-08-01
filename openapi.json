@@ -80,18 +80,6 @@
         }
       }
     },
-    "/api/v1/foods/by-protocol": {
-      "get": {
-        "summary": "Get foods by protocol",
-        "description": "Retrieves foods that are compliant with a specific protocol",
-        "tags": ["Search"],
-        "parameters": [
-          {
-            "name": "protocol",
-            "in": "query",
-            "required": true,
-            "description": "Protocol identifier",
-            "schema": {"type": "string"},
             "example": "aip-core"
           }
         ],
@@ -423,18 +411,6 @@
         }
       }
     },
-    "/api/v1/foods/by-protocol": {
-      "get": {
-        "summary": "Get foods by protocol",
-        "description": "Retrieves foods that are compliant with a specific protocol",
-        "tags": ["Search"],
-        "parameters": [
-          {
-            "name": "protocol",
-            "in": "query",
-            "required": true,
-            "description": "Protocol identifier",
-            "schema": {"type": "string"},
             "example": "aip-core"
           }
         ],
