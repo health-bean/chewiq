@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2025-08-01T19:03:43.882Z",
+    "generated": "2025-08-01T19:18:15.353Z",
     "version": "1.0.0",
     "generator": "AutomatedProfessionalDocsGenerator"
   },
@@ -13,11 +13,11 @@
   "statistics": {
     "totalComponents": 55,
     "totalHooks": 15,
-    "totalFiles": 109,
-    "workingAPIs": 9,
+    "totalFiles": 110,
+    "workingAPIs": 17,
     "totalAPIs": 28,
     "totalTables": 24,
-    "totalCommits": 233,
+    "totalCommits": 234,
     "contributors": 1
   },
   "discoveredInfo": {
@@ -147,7 +147,7 @@
           ],
           "status": 500,
           "working": false,
-          "responseTime": 824,
+          "responseTime": 917,
           "responseData": {
             "error": "Failed to complete unified food search"
           },
@@ -167,7 +167,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 64,
+          "responseTime": 37,
           "responseData": {
             "error": "Authentication required"
           },
@@ -182,7 +182,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 57,
+          "responseTime": 33,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -218,7 +218,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 37,
+          "responseTime": 38,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -257,13 +257,194 @@
               "value": "1495844a-19de-404c-a288-7660eda0cbe1"
             }
           ],
-          "status": 500,
-          "working": false,
-          "responseTime": 66,
+          "status": 200,
+          "working": true,
+          "responseTime": 37,
           "responseData": {
-            "error": "Failed to complete fetch protocols"
+            "protocols": [
+              {
+                "id": "1495844a-19de-404c-a288-7660eda0cbe1",
+                "name": "AIP",
+                "description": "The Autoimmune Protocol (AIP) is an elimination diet designed to help identify food sensitivities and reduce inflammation in people with autoimmune conditions.",
+                "category": null,
+                "phases": [
+                  {
+                    "name": "Elimination",
+                    "description": "Remove all potentially inflammatory foods",
+                    "duration_weeks": 6
+                  },
+                  {
+                    "name": "Reintroduction",
+                    "description": "Systematically reintroduce foods one at a time",
+                    "duration_weeks": 12
+                  }
+                ],
+                "is_global": true,
+                "official": true,
+                "version": "1.0",
+                "protocol_type": "rule_based",
+                "created_at": "2025-06-22T20:04:35.754Z"
+              },
+              {
+                "id": "7c728266-7c7e-4389-a9b6-7c5280f2edd2",
+                "name": "Keto",
+                "description": "A ketogenic diet is high in fats, moderate in protein, and very low in carbohydrates to induce ketosis.",
+                "category": "metabolic",
+                "phases": [
+                  {
+                    "name": "Induction",
+                    "description": "Restrict carbs to <20g/day",
+                    "duration_weeks": 2
+                  },
+                  {
+                    "name": "Maintenance",
+                    "description": "Maintain ketosis with 20-50g carbs/day",
+                    "duration_weeks": "ongoing"
+                  }
+                ],
+                "is_global": true,
+                "official": true,
+                "version": "1.0",
+                "protocol_type": "rule_based",
+                "created_at": "2025-07-06T19:08:31.345Z"
+              },
+              {
+                "id": "a80be547-6db1-4722-a5a4-60930143a2d9",
+                "name": "Low FODMAP",
+                "description": "The Low FODMAP diet restricts fermentable carbohydrates that can trigger IBS symptoms, developed by Monash University.",
+                "category": "low_fodmap",
+                "phases": [
+                  {
+                    "name": "Elimination",
+                    "description": "Eliminate high FODMAP foods",
+                    "duration_weeks": "2-6"
+                  },
+                  {
+                    "name": "Reintroduction",
+                    "description": "Test individual FODMAP groups",
+                    "duration_weeks": "8-12"
+                  },
+                  {
+                    "name": "Personalization",
+                    "description": "Create personalized long-term diet",
+                    "duration_weeks": "ongoing"
+                  }
+                ],
+                "is_global": true,
+                "official": false,
+                "version": "1.0",
+                "protocol_type": "rule_based",
+                "created_at": "2025-06-23T18:39:01.593Z"
+              },
+              {
+                "id": "51ca7a24-4691-4629-8ee5-c20876e68c29",
+                "name": "Low Histamine",
+                "description": "A low histamine diet eliminates foods high in histamine or that trigger histamine release, helping manage histamine intolerance symptoms.",
+                "category": "low_histamine",
+                "phases": [
+                  {
+                    "name": "Elimination",
+                    "description": "Eliminate high histamine foods",
+                    "duration_weeks": "2-6"
+                  },
+                  {
+                    "name": "Reintroduction",
+                    "description": "Test medium histamine foods one at a time",
+                    "duration_weeks": "4-8"
+                  }
+                ],
+                "is_global": true,
+                "official": false,
+                "version": "1.0",
+                "protocol_type": "property_based",
+                "created_at": "2025-06-23T18:39:01.593Z"
+              },
+              {
+                "id": "83e35884-2161-4681-adf4-952bc2bd1cde",
+                "name": "Low Lectin Protocol",
+                "description": "A dietary protocol that avoids high-lectin foods while allowing lectin-free and low-lectin options. Focuses on wild-caught seafood, grass-fed meats, specific oils, and carefully selected plant foods.",
+                "category": "elimination",
+                "phases": null,
+                "is_global": true,
+                "official": true,
+                "version": "1.0",
+                "protocol_type": "rule_based",
+                "created_at": "2025-07-29T21:27:10.614Z"
+              },
+              {
+                "id": "12f1d4f1-f56a-48a3-b936-41026014656b",
+                "name": "Low Oxalate",
+                "description": "A low oxalate diet restricts foods high in oxalates to prevent kidney stones and manage oxalate sensitivity.",
+                "category": "low_oxalate",
+                "phases": null,
+                "is_global": true,
+                "official": false,
+                "version": "1.0",
+                "protocol_type": "property_based",
+                "created_at": "2025-06-23T18:39:01.593Z"
+              },
+              {
+                "id": "40b6955c-fd3b-4aba-846b-03caa7119ff9",
+                "name": "No Nightshades",
+                "description": "A nightshade-free diet eliminates vegetables from the nightshade family, which can trigger inflammation in sensitive individuals.",
+                "category": "no_nightshades",
+                "phases": null,
+                "is_global": true,
+                "official": false,
+                "version": "1.0",
+                "protocol_type": "rule_based",
+                "created_at": "2025-06-23T18:39:01.593Z"
+              },
+              {
+                "id": "46de08fb-03bf-4032-b507-122bb934ecb9",
+                "name": "Paleo",
+                "description": "The Paleo diet emphasizes whole foods that were available to Paleolithic humans, excluding processed foods, grains, and legumes.",
+                "category": "paleo",
+                "phases": [
+                  {
+                    "name": "Strict",
+                    "description": "Eliminate all non-Paleo foods",
+                    "duration_weeks": 4
+                  },
+                  {
+                    "name": "Modified",
+                    "description": "Allow some flexibility with certain foods",
+                    "duration_weeks": "ongoing"
+                  }
+                ],
+                "is_global": true,
+                "official": false,
+                "version": "1.0",
+                "protocol_type": "rule_based",
+                "created_at": "2025-06-23T18:39:01.593Z"
+              },
+              {
+                "id": "5cd8f8c7-3cbb-4405-ab88-a253ff7c907b",
+                "name": "Whole30",
+                "description": "Whole30 is a 30-day elimination diet that removes sugar, alcohol, grains, legumes, and dairy to reset eating habits.",
+                "category": "whole30",
+                "phases": [
+                  {
+                    "name": "Elimination",
+                    "description": "Strict 30-day elimination",
+                    "duration_weeks": 4
+                  },
+                  {
+                    "name": "Reintroduction",
+                    "description": "Systematic reintroduction of eliminated foods",
+                    "duration_weeks": 2
+                  }
+                ],
+                "is_global": true,
+                "official": false,
+                "version": "1.0",
+                "protocol_type": "rule_based",
+                "created_at": "2025-06-23T18:39:01.593Z"
+              }
+            ],
+            "total": 9
           },
-          "responseSize": 46
+          "responseSize": 4624
         },
         {
           "path": "/api/v1/timeline/entries",
@@ -279,7 +460,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 32,
+          "responseTime": 33,
           "responseData": {
             "error": "Authentication required"
           },
@@ -299,7 +480,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 39,
+          "responseTime": 31,
           "responseData": {
             "error": "Authentication required"
           },
@@ -319,7 +500,7 @@
           ],
           "status": 404,
           "working": false,
-          "responseTime": 30,
+          "responseTime": 32,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -360,7 +541,7 @@
           ],
           "status": 404,
           "working": false,
-          "responseTime": 32,
+          "responseTime": 35,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -396,7 +577,7 @@
           "params": [],
           "status": 401,
           "working": false,
-          "responseTime": 31,
+          "responseTime": 36,
           "responseData": {
             "error": "Authentication required"
           },
@@ -416,7 +597,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 34,
+          "responseTime": 57,
           "responseData": {
             "error": "Authentication required"
           },
@@ -436,7 +617,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 30,
+          "responseTime": 33,
           "responseData": {
             "error": "Authentication required"
           },
@@ -456,7 +637,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 32,
+          "responseTime": 30,
           "responseData": {
             "error": "Authentication required"
           },
@@ -476,7 +657,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 32,
+          "responseTime": 29,
           "responseData": {
             "error": "Authentication required"
           },
@@ -530,13 +711,16 @@
           "description": "Get test",
           "source": "backend/functions/api/index.js",
           "params": [],
-          "status": 500,
-          "working": false,
-          "responseTime": 42,
+          "status": 200,
+          "working": true,
+          "responseTime": 34,
           "responseData": {
-            "error": "Database test failed: self-signed certificate in certificate chain"
+            "success": true,
+            "message": "Database connection successful",
+            "count": "351",
+            "timestamp": "2025-08-01T19:18:14.930Z"
           },
-          "responseSize": 78
+          "responseSize": 112
         },
         {
           "path": "/api/v1/foods/cache-stats",
@@ -547,7 +731,7 @@
           "params": [],
           "status": 200,
           "working": true,
-          "responseTime": 32,
+          "responseTime": 29,
           "responseData": {
             "cache_stats": {
               "size": 0,
@@ -558,7 +742,7 @@
               "hitCount": 0
             },
             "sample_entries": [],
-            "timestamp": "2025-08-01T19:03:43.429Z"
+            "timestamp": "2025-08-01T19:18:14.960Z"
           },
           "responseSize": 157
         },
@@ -574,13 +758,16 @@
               "value": "chicken"
             }
           ],
-          "status": 500,
-          "working": false,
-          "responseTime": 44,
+          "status": 200,
+          "working": true,
+          "responseTime": 41,
           "responseData": {
-            "error": "Failed to complete search symptoms"
+            "symptoms": [],
+            "total": 0,
+            "search_term": "chicken",
+            "user_history_included": false
           },
-          "responseSize": 46
+          "responseSize": 79
         },
         {
           "path": "/api/v1/supplements/search",
@@ -594,13 +781,15 @@
               "value": "chicken"
             }
           ],
-          "status": 500,
-          "working": false,
-          "responseTime": 43,
+          "status": 200,
+          "working": true,
+          "responseTime": 36,
           "responseData": {
-            "error": "Failed to complete search supplements"
+            "supplements": [],
+            "total": 0,
+            "search_term": "chicken"
           },
-          "responseSize": 49
+          "responseSize": 52
         },
         {
           "path": "/api/v1/medications/search",
@@ -614,13 +803,15 @@
               "value": "chicken"
             }
           ],
-          "status": 500,
-          "working": false,
-          "responseTime": 54,
+          "status": 200,
+          "working": true,
+          "responseTime": 32,
           "responseData": {
-            "error": "Failed to complete search medications"
+            "medications": [],
+            "total": 0,
+            "search_term": "chicken"
           },
-          "responseSize": 49
+          "responseSize": 52
         },
         {
           "path": "/api/v1/detox-types/search",
@@ -634,13 +825,15 @@
               "value": "chicken"
             }
           ],
-          "status": 500,
-          "working": false,
-          "responseTime": 47,
+          "status": 200,
+          "working": true,
+          "responseTime": 35,
           "responseData": {
-            "error": "Failed to complete search detox types"
+            "detox_types": [],
+            "total": 0,
+            "search_term": "chicken"
           },
-          "responseSize": 49
+          "responseSize": 52
         },
         {
           "path": "/api/v1/exposures/search",
@@ -654,13 +847,15 @@
               "value": "chicken"
             }
           ],
-          "status": 500,
-          "working": false,
-          "responseTime": 41,
+          "status": 200,
+          "working": true,
+          "responseTime": 33,
           "responseData": {
-            "error": "Failed to complete search exposures"
+            "exposures": [],
+            "total": 0,
+            "search_term": "chicken"
           },
-          "responseSize": 47
+          "responseSize": 50
         },
         {
           "path": "/api/v1/admin/seed-demo-data",
@@ -671,7 +866,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 36,
+          "responseTime": 30,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -707,7 +902,7 @@
           "params": [],
           "status": 500,
           "working": false,
-          "responseTime": 42,
+          "responseTime": 31,
           "responseData": {
             "error": "Failed to complete get journal entries"
           },
@@ -720,13 +915,13 @@
           "description": "Get resource",
           "source": "backend/functions/api/index.js",
           "params": [],
-          "status": 500,
+          "status": 401,
           "working": false,
-          "responseTime": 40,
+          "responseTime": 39,
           "responseData": {
-            "error": "Failed to complete get journal entry"
+            "error": "User not authenticated"
           },
-          "responseSize": 48
+          "responseSize": 34
         },
         {
           "path": "/api/v1/symptoms",
@@ -737,7 +932,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 33,
+          "responseTime": 30,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -773,7 +968,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 32,
+          "responseTime": 43,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -809,7 +1004,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 28,
+          "responseTime": 29,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -837,11 +1032,11 @@
           "responseSize": 573
         }
       ],
-      "workingCount": 9,
+      "workingCount": 17,
       "totalCount": 28,
       "categories": {
         "Foods": {
-          "working": 1,
+          "working": 2,
           "total": 3
         },
         "AI": {
@@ -849,11 +1044,11 @@
           "total": 1
         },
         "Lookup Data": {
-          "working": 0,
+          "working": 2,
           "total": 4
         },
         "Protocols": {
-          "working": 0,
+          "working": 1,
           "total": 5
         },
         "Timeline": {
@@ -865,7 +1060,7 @@
           "total": 4
         },
         "Health Data": {
-          "working": 0,
+          "working": 3,
           "total": 6
         },
         "Other": {
@@ -1166,7 +1361,7 @@
             {
               "name": "UnifiedSmartSelector",
               "path": "frontend/web-app/src/components/common/UnifiedSmartSelector.jsx",
-              "size": 10628,
+              "size": 9199,
               "hooks": [
                 "useState",
                 "useEffect",
@@ -1399,14 +1594,14 @@
             }
           ],
           "utilities": [],
-          "size": "674.78 KB"
+          "size": "673.39 KB"
         },
         "frontend/shared": {
-          "totalFiles": 38,
+          "totalFiles": 39,
           "fileTypes": {
             "": 1,
             ".jsx": 13,
-            ".js": 22,
+            ".js": 23,
             ".json": 2
           },
           "components": [
@@ -1536,11 +1731,11 @@
             {
               "name": "useUnifiedSearch",
               "path": "frontend/shared/hooks/useUnifiedSearch.js",
-              "size": 4476
+              "size": 3949
             }
           ],
           "utilities": [],
-          "size": "117.58 KB"
+          "size": "122.07 KB"
         }
       },
       "backend": {
@@ -1559,7 +1754,7 @@
             }
           ],
           "utilities": [],
-          "size": "191.93 KB"
+          "size": "191.94 KB"
         },
         "backend/functions": {
           "totalFiles": 24,
@@ -1576,7 +1771,7 @@
             }
           ],
           "utilities": [],
-          "size": "191.93 KB"
+          "size": "191.94 KB"
         },
         "backend": {
           "totalFiles": 33,
@@ -1596,7 +1791,7 @@
             }
           ],
           "utilities": [],
-          "size": "223.04 KB"
+          "size": "223.06 KB"
         }
       },
       "shared": {},
@@ -1692,18 +1887,18 @@
       "repository": "https://github.com/deebyrne26/health-platform",
       "branch": "main",
       "lastCommit": {
-        "hash": "b3f5d80",
-        "message": "Unified System",
+        "hash": "1addc68",
+        "message": "Lambda SSL",
         "author": "deebyrne26",
-        "date": "Fri Aug 1 15:02:17 2025 -0400"
+        "date": "Fri Aug 1 15:16:52 2025 -0400"
       },
       "contributors": [
         {
           "name": "deebyrne26",
-          "commits": 233
+          "commits": 234
         }
       ],
-      "totalCommits": 233
+      "totalCommits": 234
     }
   }
 }
