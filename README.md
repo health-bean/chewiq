@@ -28,7 +28,7 @@ npm run dev
 ## Development
 
 **Requirements:**
-- Node.js >=18.0
+- Node.js >=20.0
 - npm
 - Environment variables (27 required)
 
@@ -53,7 +53,7 @@ npm run dev
 ## API Status
 
 - **Base URL:** https://suhoxvn8ik.execute-api.us-east-1.amazonaws.com/dev
-- **Working Endpoints:** 17/28
+- **Working Endpoints:** 9/28
 - **Categories:** Foods, AI, Lookup Data, Protocols, Timeline, Users, Health Data, Other
 
 ## Database
