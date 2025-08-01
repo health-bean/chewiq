@@ -15,7 +15,7 @@ jobs:
         
     - uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '20'
         
     - name: Deploy Lambda
       working-directory: backend/functions/api
@@ -49,7 +49,7 @@ jobs:
         
     - uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '20'
         
     - name: Build Docusaurus Documentation
       working-directory: docs

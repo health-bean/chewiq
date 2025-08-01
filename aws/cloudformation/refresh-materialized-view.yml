@@ -58,7 +58,7 @@ Resources:
       FunctionName: refresh-materialized-view
       Handler: index.handler
       Role: !GetAtt LambdaExecutionRole.Arn
-      Runtime: nodejs18.x
+      Runtime: nodejs20.x
       Timeout: 30
       MemorySize: 128
       Environment:
@@ -141,7 +141,7 @@ Resources:
           cd ..
           zip -r layer.zip nodejs
       CompatibleRuntimes:
-        - nodejs18.x
+        - nodejs20.x
 
   # EventBridge rule to trigger Lambda on schedule
   ScheduledRule:

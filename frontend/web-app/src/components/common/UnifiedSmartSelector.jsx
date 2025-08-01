@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Search, Plus, Check, Loader2, X, AlertCircle, Pill, Droplets } from 'lucide-react';
 import { Input, Button, Card } from '../../../../shared/components/ui';
 import { cn } from '../../../../shared/design-system';
-import { useApi } from '../../hooks/useApi';
 
-// Import the unified food search hook
-import { useFoodSearch } from '../../../../shared/hooks/useFoodSearchUnified';
+// Import the unified search hook for all types
+import { useUnifiedSearch } from '../../../../shared/hooks/useUnifiedSearch';
 
 const UnifiedSmartSelector = ({ 
   type, // 'food', 'symptom', 'supplement', 'medication', 'exposure', 'detox'
@@ -15,26 +14,24 @@ const UnifiedSmartSelector = ({
   prioritizeUserHistory = true 
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(false);
-  
-  // Use the proper API client that sends demo headers
-  const apiClient = useApi();
 
-  // Use the unified food search hook for food searches
+  // Use the unified search hook for all types
   const protocolId = selectedProtocols.length > 0 && selectedProtocols[0] !== 'no_protocol' 
     ? selectedProtocols[0] 
     : null;
     
   const { 
-    foods: foodSearchResults, 
-    loading: foodSearchLoading, 
-    error: foodSearchError,
-    searchFoods 
-  } = useFoodSearch({ 
+    items, 
+    loading, 
+    error,
+    searchItems,
+    clearResults
+  } = useUnifiedSearch({ 
+    type,
     protocolId,
     enableCache: true,
-    debounceMs: 300
+    debounceMs: 300,
+    prioritizeUserHistory
   });
 
   // Type-specific configuration
@@ -85,59 +82,16 @@ const UnifiedSmartSelector = ({
 
   const config = typeConfig[type] || typeConfig.food;
 
-  // Handle search for different item types
+  // Handle search for all item types using unified hook
   useEffect(() => {
     if (!searchTerm.trim()) {
-      setItems([]);
-      setLoading(false);
+      clearResults();
       return;
     }
 
-    if (type === 'food') {
-      // Use the unified food search hook (handles debouncing internally)
-      searchFoods(searchTerm);
-    } else {
-      // For non-food types, use the existing API method
-      loadNonFoodItems();
-    }
-  }, [searchTerm, selectedProtocols, type, searchFoods]);
-
-  // Update items when food search results change
-  useEffect(() => {
-    if (type === 'food') {
-      setItems(foodSearchResults || []);
-      setLoading(foodSearchLoading);
-    }
-  }, [foodSearchResults, foodSearchLoading, type]);
-
-  const loadNonFoodItems = async () => {
-    setLoading(true);
-    try {
-      let endpoint = `${config.endpoint}?search=${encodeURIComponent(searchTerm)}`;
-      
-      if (prioritizeUserHistory) {
-        endpoint += '&prioritize_user_history=true';
-      }
-
-      const data = await apiClient.get(endpoint);
-      
-      // Handle different response formats
-      const itemsKey = {
-        symptom: 'symptoms', 
-        supplement: 'supplements',
-        medication: 'medications',
-        exposure: 'exposures',
-        detox: 'detox_types'
-      }[type] || 'items';
-      
-      setItems(data[itemsKey] || []);
-    } catch (err) {
-      // Handle error silently and show empty results
-      setItems([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+    // Use the unified search for all types (handles debouncing internally)
+    searchItems(searchTerm);
+  }, [searchTerm, searchItems, clearResults]);
 
   const isSelected = (item) => {
     return selectedItems.some(selectedItem => selectedItem.name === item.name);
