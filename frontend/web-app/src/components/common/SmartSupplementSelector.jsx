@@ -69,7 +69,7 @@ const SmartSupplementSelector = ({
     <div className="space-y-3">
       {/* Search Input */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-disabled" size={16} />
         <Input
           type="text"
           placeholder={placeholder}
@@ -95,22 +95,22 @@ const SmartSupplementSelector = ({
                 disabled={isSelected(supplement)}
                 className={cn(
                   "w-full text-left px-3 py-2 rounded-md text-sm transition-colors",
-                  "hover:bg-gray-100 focus:bg-gray-100 focus:outline-none",
-                  isSelected(supplement) && "bg-gray-50 text-gray-400 cursor-not-allowed"
+                  "hover:bg-neutral-100 focus:bg-neutral-100 focus:outline-none",
+                  isSelected(supplement) && "bg-neutral-50 text-disabled cursor-not-allowed"
                 )}
               >
                 <div className="flex items-center justify-between">
                   <span className="capitalize">{supplement.name}</span>
                   <div className="flex items-center space-x-2">
                     {supplement.source === 'user_history' && (
-                      <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
+                      <span className="text-xs bg-primary-100 text-primary-700 px-2 py-1 rounded">
                         From your history
                       </span>
                     )}
                     {isSelected(supplement) ? (
-                      <span className="text-green-600 text-xs">Added</span>
+                      <span className="text-allowed-600 text-xs">Added</span>
                     ) : (
-                      <Plus size={14} className="text-gray-400" />
+                      <Plus size={14} className="text-disabled" />
                     )}
                   </div>
                 </div>
@@ -123,17 +123,17 @@ const SmartSupplementSelector = ({
       {/* Selected Supplements */}
       {selectedSupplements.length > 0 && (
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-secondary-content">
             Selected Supplements ({selectedSupplements.length})
           </label>
           {selectedSupplements.map((supplement) => (
             <Card key={supplement.name} className="p-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  <Pill size={16} className="text-green-500" />
+                  <Pill size={16} className="text-allowed-500" />
                   <span className="font-medium capitalize">{supplement.name}</span>
                   {supplement.source === 'user_history' && (
-                    <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
+                    <span className="text-xs bg-primary-100 text-primary-700 px-2 py-1 rounded">
                       From your history
                     </span>
                   )}
@@ -143,7 +143,7 @@ const SmartSupplementSelector = ({
                   variant="ghost"
                   size="sm"
                   onClick={() => handleRemoveSupplement(supplement)}
-                  className="ml-3 text-red-600 hover:text-red-700 hover:bg-red-50"
+                  className="ml-3 text-avoid-600 hover:text-avoid-700 hover:bg-avoid-50"
                 >
                   <X size={16} />
                 </Button>
@@ -155,7 +155,7 @@ const SmartSupplementSelector = ({
 
       {/* Empty State */}
       {selectedSupplements.length === 0 && !searchTerm && (
-        <div className="text-center py-4 text-gray-500 text-sm">
+        <div className="text-center py-4 text-muted text-sm">
           Start typing to search for supplements
         </div>
       )}

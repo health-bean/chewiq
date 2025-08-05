@@ -184,8 +184,8 @@ const SetupWizard = ({ onComplete, isAuthenticated }) => {
           {/* Progress Bar */}
           <div className="w-full bg-gray-200 rounded-full h-2">
             <div
-              className="bg-filo-teal h-2 rounded-full transition-all duration-300"
-              style={{ width: `${((currentStep + 1) / maxSteps) * 100}%` }}
+              className="progress-primary"
+              style={{ '--progress-width': `${((currentStep + 1) / maxSteps) * 100}%` }}
             />
           </div>
         </div>

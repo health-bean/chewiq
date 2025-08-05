@@ -154,7 +154,7 @@ const LoginPage = () => {
   // Confirmation view
   if (view === 'confirm') {
     return (
-      <div className="bg-gray-50 min-h-screen">
+      <div className="bg-app min-h-screen">
         <div className="bg-gradient-to-r from-primary-600 to-primary-700 text-white p-6 text-center">
           <div className="flex items-center justify-center mb-4">
             <Rocket className="mr-2" size={32} />
@@ -222,7 +222,7 @@ const LoginPage = () => {
 
   // Login/Signup view
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-app min-h-screen">
       <div className="bg-gradient-to-r from-primary-600 to-primary-700 text-white p-6 text-center">
         <div className="flex items-center justify-center mb-4">
           <Rocket className="mr-2" size={32} />

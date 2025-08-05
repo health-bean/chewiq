@@ -185,7 +185,7 @@ const PreferencesPage = ({ onBack }) => {
       <Card>
         <div className="p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">Current Protocol</h3>
+            <h3 className="text-lg font-semibold text-primary-content">Current Protocol</h3>
             {currentProtocol && (
               <Badge variant="success" className="flex items-center">
                 <CheckCircle className="mr-1 h-3 w-3" />
@@ -197,10 +197,10 @@ const PreferencesPage = ({ onBack }) => {
           {currentProtocol ? (
             <div className="space-y-4">
               <div>
-                <h4 className="text-xl font-medium text-gray-900 mb-2">
+                <h4 className="text-xl font-medium text-primary-content mb-2">
                   {currentProtocol.protocol_name}
                 </h4>
-                <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-2 sm:space-y-0 text-sm text-gray-600">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-2 sm:space-y-0 text-sm text-secondary-content">
                   <div className="flex items-center">
                     <Calendar className="mr-1 h-4 w-4" />
                     <span className="truncate">Started {formatDate(currentProtocol.start_date)}</span>
@@ -221,15 +221,15 @@ const PreferencesPage = ({ onBack }) => {
               {currentProtocol.compliance_score && (
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-gray-700">Compliance Score</span>
+                    <span className="text-sm font-medium text-secondary-content">Compliance Score</span>
                     <span className="text-sm font-semibold text-primary-600">
                       {Math.round(currentProtocol.compliance_score * 100)}%
                     </span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="progress-bar">
                     <div 
-                      className="bg-filo-teal h-2 rounded-full transition-all duration-300" 
-                      style={{ width: `${currentProtocol.compliance_score * 100}%` }}
+                      className="progress-primary" 
+                      style={{ '--progress-width': `${currentProtocol.compliance_score * 100}%` }}
                     ></div>
                   </div>
                 </div>

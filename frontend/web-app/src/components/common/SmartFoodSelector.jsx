@@ -47,7 +47,7 @@ const SmartFoodSelector = ({ selectedItems, onToggleItem, selectedProtocols = []
     <div className="space-y-4">
       {/* Search Input */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-disabled" />
         <Input
           placeholder="Search foods..."
           value={searchTerm}
@@ -59,15 +59,15 @@ const SmartFoodSelector = ({ selectedItems, onToggleItem, selectedProtocols = []
       {/* Loading State */}
       {loading && (
         <div className="flex items-center justify-center py-4">
-          <Loader2 className="w-5 h-5 animate-spin text-gray-400" />
-          <span className="ml-2 text-sm text-gray-500">Searching foods...</span>
+          <Loader2 className="w-5 h-5 animate-spin text-disabled" />
+          <span className="ml-2 text-sm text-muted">Searching foods...</span>
         </div>
       )}
 
       {/* Error State */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-          <div className="text-sm text-red-600">
+        <div className="bg-avoid-50 border border-avoid-200 rounded-lg p-3">
+          <div className="text-sm text-avoid-600">
             Search failed: {error}
           </div>
         </div>
@@ -76,7 +76,7 @@ const SmartFoodSelector = ({ selectedItems, onToggleItem, selectedProtocols = []
       {/* Search Results */}
       {!loading && foods.length > 0 && (
         <div className="space-y-2">
-          <h4 className="text-sm font-medium text-gray-700">
+          <h4 className="text-sm font-medium text-secondary-content">
             Search Results ({foods.length})
           </h4>
           <div className="space-y-2 max-h-64 overflow-y-auto">
@@ -97,16 +97,16 @@ const SmartFoodSelector = ({ selectedItems, onToggleItem, selectedProtocols = []
                   <div className="flex items-center justify-between">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center space-x-2">
-                        <p className="text-sm font-medium text-gray-900 truncate">
+                        <p className="text-sm font-medium text-primary-content truncate">
                           {food.name}
                         </p>
                         {food.source === 'user_history' && (
-                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
+                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium status-info">
                             From your history
                           </span>
                         )}
                         {food.category && (
-                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
+                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-neutral-100 text-secondary-content">
                             {food.category}
                           </span>
                         )}
@@ -125,11 +125,11 @@ const SmartFoodSelector = ({ selectedItems, onToggleItem, selectedProtocols = []
                               ❌ Avoid for now
                             </span>
                           ) : food.compliance_status === 'reintroduction' ? (
-                            <span className="inline-flex items-center text-xs text-yellow-600">
+                            <span className="inline-flex items-center text-xs text-warning-600">
                               🟡 Try in moderation
                             </span>
                           ) : (
-                            <span className="inline-flex items-center text-xs text-gray-600">
+                            <span className="inline-flex items-center text-xs text-secondary-content">
                               ❓ Not specified in protocol
                             </span>
                           )}
@@ -165,7 +165,7 @@ const SmartFoodSelector = ({ selectedItems, onToggleItem, selectedProtocols = []
       {/* No Results */}
       {!loading && searchTerm.trim() && foods.length === 0 && (
         <div className="text-center py-6">
-          <p className="text-sm text-gray-500 mb-2">
+          <p className="text-sm text-muted mb-2">
             No foods found for "{searchTerm}"
           </p>
           <Button
@@ -187,8 +187,8 @@ const SmartFoodSelector = ({ selectedItems, onToggleItem, selectedProtocols = []
       {/* Search Prompt */}
       {!loading && !searchTerm.trim() && (
         <div className="text-center py-6">
-          <Search className="w-8 h-8 text-gray-300 mx-auto mb-2" />
-          <p className="text-sm text-gray-500">
+          <Search className="w-8 h-8 text-neutral-300 mx-auto mb-2" />
+          <p className="text-sm text-muted">
             Start typing to search for foods
           </p>
         </div>

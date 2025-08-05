@@ -113,7 +113,7 @@ const UnifiedSmartSelector = ({
     <div className="space-y-4">
       {/* Search Input */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 z-10" />
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-disabled z-10" />
         <Input
           placeholder={config.placeholder}
           value={searchTerm}
@@ -125,15 +125,15 @@ const UnifiedSmartSelector = ({
       {/* Loading State */}
       {loading && (
         <div className="flex items-center justify-center py-4">
-          <Loader2 className="w-5 h-5 animate-spin text-gray-400" />
-          <span className="ml-2 text-sm text-gray-500">Searching {type}s...</span>
+          <Loader2 className="w-5 h-5 animate-spin text-disabled" />
+          <span className="ml-2 text-sm text-muted">Searching {type}s...</span>
         </div>
       )}
 
       {/* Search Results - Simplified for Mobile */}
       {!loading && items.length > 0 && (
         <div>
-          <h4 className="text-sm font-medium text-gray-700 mb-1">
+          <h4 className="text-sm font-medium text-secondary-content mb-1">
             Results ({items.length})
           </h4>
           <div className="border rounded-md overflow-hidden">
@@ -170,7 +170,7 @@ const UnifiedSmartSelector = ({
       {/* Selected Items */}
       {selectedItems.length > 0 && (
         <div className="space-y-3">
-          <h4 className="text-sm font-medium text-gray-700">
+          <h4 className="text-sm font-medium text-secondary-content">
             Selected {type}s ({selectedItems.length})
           </h4>
           {selectedItems.map((item) => (
@@ -199,10 +199,10 @@ const UnifiedSmartSelector = ({
                 {/* Type-specific additional controls */}
                 {type === 'symptom' && (
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-secondary-content mb-2">
                       Severity: {item.severity}/10
                     </label>
-                    <div className="flex items-center space-x-2 text-xs text-gray-500 mb-1">
+                    <div className="flex items-center space-x-2 text-xs text-muted mb-1">
                       <span>Mild</span>
                       <div className="flex-1"></div>
                       <span>Severe</span>
@@ -220,7 +220,7 @@ const UnifiedSmartSelector = ({
 
                 {type === 'detox' && (
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-secondary-content mb-2">
                       Duration: {item.duration_minutes} minutes
                     </label>
                     <div className="flex items-center space-x-4">
@@ -239,9 +239,9 @@ const UnifiedSmartSelector = ({
                           max="180"
                           value={item.duration_minutes}
                           onChange={(e) => updateItemProperty(item.name, 'duration_minutes', Math.max(5, parseInt(e.target.value) || 5))}
-                          className="w-16 px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                          className="w-16 px-2 py-1 text-sm border border-neutral-300 rounded focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                         />
-                        <span className="text-sm text-gray-500">min</span>
+                        <span className="text-sm text-muted">min</span>
                       </div>
                     </div>
                   </div>
@@ -254,7 +254,7 @@ const UnifiedSmartSelector = ({
 
       {/* Empty State */}
       {!loading && items.length === 0 && selectedItems.length === 0 && !searchTerm && (
-        <div className="text-center py-8 text-gray-500">
+        <div className="text-center py-8 text-muted">
           <div className="text-sm">{config.emptyState}</div>
         </div>
       )}

@@ -93,15 +93,15 @@ const MultiSelectProtocolDropdown = ({
   if (loading) {
     return (
       <div className="flex items-center justify-center p-2">
-        <Loader2 className="w-4 h-4 animate-spin text-gray-400" />
-        <span className="ml-2 text-sm text-gray-500">Loading protocols...</span>
+        <Loader2 className="w-4 h-4 animate-spin text-disabled" />
+        <span className="ml-2 text-sm text-muted">Loading protocols...</span>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="text-sm text-red-600 p-2">
+      <div className="text-sm text-avoid-600 p-2">
         Error loading protocols
       </div>
     );
@@ -121,11 +121,11 @@ const MultiSelectProtocolDropdown = ({
         disabled={isUpdating}
       >
         <div className="flex items-center space-x-2">
-          <Filter className="w-4 h-4 text-gray-400" />
+          <Filter className="w-4 h-4 text-disabled" />
           <span className="truncate">{getDisplayText()}</span>
         </div>
         <ChevronDown className={cn(
-          "w-4 h-4 text-gray-400 transition-transform duration-200",
+          "w-4 h-4 text-disabled transition-transform duration-200",
           isOpen && "rotate-180"
         )} />
       </Button>
@@ -141,14 +141,14 @@ const MultiSelectProtocolDropdown = ({
                 "flex items-center space-x-2 p-2 rounded-md cursor-pointer transition-colors",
                 selectedProtocols.includes('no_protocol') 
                   ? "bg-primary-50" 
-                  : "hover:bg-gray-50"
+                  : "hover:bg-neutral-50"
               )}>
                 <Checkbox
                   checked={selectedProtocols.includes('no_protocol')}
                   onChange={() => toggleProtocol('no_protocol')}
                   disabled={isUpdating}
                 />
-                <span className="text-sm font-medium text-gray-700">
+                <span className="text-sm font-medium text-secondary-content">
                   No Protocol Filter
                 </span>
               </div>
@@ -166,7 +166,7 @@ const MultiSelectProtocolDropdown = ({
                     className={cn(
                       "flex items-center space-x-2 p-2 rounded-md cursor-pointer transition-colors",
                       isSelected && !isDisabled && "bg-primary-50",
-                      isDisabled ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-50"
+                      isDisabled ? "opacity-50 cursor-not-allowed" : "hover:bg-neutral-50"
                     )}
                     onClick={() => !isDisabled && toggleProtocol(protocol.id)}
                   >
@@ -176,11 +176,11 @@ const MultiSelectProtocolDropdown = ({
                       onChange={() => !isDisabled && toggleProtocol(protocol.id)}
                     />
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-700 truncate">
+                      <p className="text-sm font-medium text-secondary-content truncate">
                         {protocol.name}
                       </p>
                       {protocol.description && (
-                        <p className="text-xs text-gray-500 truncate">
+                        <p className="text-xs text-muted truncate">
                           {protocol.description}
                         </p>
                       )}

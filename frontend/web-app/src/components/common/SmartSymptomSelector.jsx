@@ -80,7 +80,7 @@ const SmartSymptomSelector = ({
     <div className="space-y-3">
       {/* Search Input */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-disabled" size={16} />
         <Input
           type="text"
           placeholder={placeholder}
@@ -90,7 +90,7 @@ const SmartSymptomSelector = ({
         />
         {loading && (
           <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-600"></div>
           </div>
         )}
       </div>
@@ -106,22 +106,22 @@ const SmartSymptomSelector = ({
                 disabled={isSelected(symptom)}
                 className={cn(
                   "w-full text-left px-3 py-2 rounded-md text-sm transition-colors",
-                  "hover:bg-gray-100 focus:bg-gray-100 focus:outline-none",
-                  isSelected(symptom) && "bg-gray-50 text-gray-400 cursor-not-allowed"
+                  "hover:bg-neutral-100 focus:bg-neutral-100 focus:outline-none",
+                  isSelected(symptom) && "bg-neutral-50 text-disabled cursor-not-allowed"
                 )}
               >
                 <div className="flex items-center justify-between">
                   <span className="capitalize">{symptom.name}</span>
                   <div className="flex items-center space-x-2">
                     {symptom.source === 'user_history' && (
-                      <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
+                      <span className="text-xs bg-primary-100 text-primary-700 px-2 py-1 rounded">
                         Your history
                       </span>
                     )}
                     {isSelected(symptom) ? (
-                      <span className="text-green-600 text-xs">Added</span>
+                      <span className="text-allowed-600 text-xs">Added</span>
                     ) : (
-                      <Plus size={14} className="text-gray-400" />
+                      <Plus size={14} className="text-disabled" />
                     )}
                   </div>
                 </div>
@@ -134,7 +134,7 @@ const SmartSymptomSelector = ({
       {/* Selected Symptoms */}
       {selectedSymptoms.length > 0 && (
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-secondary-content">
             Selected Symptoms ({selectedSymptoms.length})
           </label>
           {selectedSymptoms.map((symptom) => (
@@ -145,14 +145,14 @@ const SmartSymptomSelector = ({
                     <AlertCircle size={16} className="text-orange-500" />
                     <span className="font-medium capitalize">{symptom.name}</span>
                     {symptom.source === 'user_history' && (
-                      <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
+                      <span className="text-xs bg-primary-100 text-primary-700 px-2 py-1 rounded">
                         From your history
                       </span>
                     )}
                   </div>
                   
                   <div className="flex items-center space-x-3">
-                    <label className="text-sm text-gray-600">
+                    <label className="text-sm text-secondary-content">
                       Severity: {symptom.severity}/10
                     </label>
                     <input
@@ -170,7 +170,7 @@ const SmartSymptomSelector = ({
                   variant="ghost"
                   size="sm"
                   onClick={() => handleRemoveSymptom(symptom)}
-                  className="ml-3 text-red-600 hover:text-red-700 hover:bg-red-50"
+                  className="ml-3 text-avoid-600 hover:text-avoid-700 hover:bg-avoid-50"
                 >
                   <X size={16} />
                 </Button>
@@ -182,7 +182,7 @@ const SmartSymptomSelector = ({
 
       {/* Empty State */}
       {selectedSymptoms.length === 0 && !searchTerm && (
-        <div className="text-center py-4 text-gray-500 text-sm">
+        <div className="text-center py-4 text-muted text-sm">
           Start typing to search for symptoms you experienced during sleep
         </div>
       )}

@@ -71,7 +71,7 @@ const Header = ({
                 <User className="w-4 h-4 text-white" />
               </div>
               <ChevronDown className={cn(
-                "w-4 h-4 text-gray-400 transition-transform duration-200",
+                "w-4 h-4 text-disabled transition-transform duration-200",
                 showUserDropdown && "rotate-180"
               )} />
             </Button>
@@ -87,10 +87,10 @@ const Header = ({
                         <User className="w-5 h-5 text-white" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-900 truncate">
+                        <p className="text-sm font-medium text-primary-content truncate">
                           {user?.firstName} {user?.lastName}
                         </p>
-                        <p className="text-xs text-gray-500 truncate">
+                        <p className="text-xs text-muted truncate">
                           {user?.email}
                         </p>
                       </div>
@@ -104,17 +104,17 @@ const Header = ({
                         onPreferencesClick();
                         setShowUserDropdown(false);
                       }}
-                      className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center space-x-3 transition-colors"
+                      className="w-full px-4 py-2 text-left text-sm text-secondary-content hover:bg-neutral-50 flex items-center space-x-3 transition-colors"
                     >
-                      <Settings className="w-4 h-4 text-gray-400" />
+                      <Settings className="w-4 h-4 text-disabled" />
                       <span>Preferences</span>
                     </button>
                     
                     <button
                       onClick={handleLogout}
-                      className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center space-x-3 transition-colors"
+                      className="w-full px-4 py-2 text-left text-sm text-avoid-600 hover:bg-avoid-50 flex items-center space-x-3 transition-colors"
                     >
-                      <LogOut className="w-4 h-4 text-red-500" />
+                      <LogOut className="w-4 h-4 text-avoid-500" />
                       <span>Sign Out</span>
                     </button>
                   </div>

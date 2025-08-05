@@ -122,15 +122,7 @@ export const designTokens = {
     // Legacy mappings for backward compatibility
     secondary: extendedColors.allowed,  // Map to allowed green
     error: extendedColors.avoid,        // Map to avoid red
-    success: extendedColors.allowed     // Map to allowed green
-    
-    // Semantic Colors
-    success: {
-      50: '#f0fdf4',
-      500: '#22c55e',
-      600: '#16a34a',
-      700: '#15803d',
-    },
+    success: extendedColors.allowed,    // Map to allowed green
     
     warning: {
       50: '#fffbeb',

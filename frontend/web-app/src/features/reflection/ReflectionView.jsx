@@ -20,7 +20,7 @@ const ReflectionView = ({
     <div className="space-y-6 pb-8">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-2">
-          <CheckCircle2 size={20} className="text-green-600" />
+          <CheckCircle2 size={20} className="text-allowed-600" />
           <h2 className="text-lg font-semibold">End of Day Reflection</h2>
         </div>
         {hasUnsavedChanges && (
@@ -31,9 +31,9 @@ const ReflectionView = ({
       </div>
 
       {/* Sleep & Recovery */}
-      <Card variant="outlined" className="border-blue-200">
-        <div className="p-4 border-b border-blue-100 bg-blue-50">
-          <h3 className="text-lg font-semibold text-blue-800">Sleep & Recovery</h3>
+      <Card variant="info" className="">
+        <div className="p-4 border-b border-info-100 bg-info-50">
+          <h3 className="text-lg font-semibold text-info-800">Sleep & Recovery</h3>
         </div>
         <div className="p-4">
           <div className="space-y-4">
@@ -66,7 +66,7 @@ const ReflectionView = ({
                       value={quality}
                       checked={reflectionData.sleep_quality === quality}
                       onChange={(e) => updateReflectionData({ sleep_quality: e.target.value })}
-                      className="text-blue-600 focus:ring-blue-500"
+                      className="text-info-600 focus:ring-info-500"
                     />
                     <span className="text-sm capitalize">{quality}</span>
                   </label>
@@ -90,9 +90,9 @@ const ReflectionView = ({
       </Card>
 
       {/* Daily Wellness Check */}
-      <Card variant="outlined" className="border-yellow-200">
-        <div className="p-4 border-b border-yellow-100 bg-yellow-50">
-          <h3 className="text-lg font-semibold text-yellow-800">Daily Wellness Check</h3>
+      <Card variant="warning" className="">
+        <div className="p-4 border-b border-warning-100 bg-warning-50">
+          <h3 className="text-lg font-semibold text-warning-800">Daily Wellness Check</h3>
         </div>
         <div className="p-4">
           <div className="space-y-4">
@@ -157,9 +157,9 @@ const ReflectionView = ({
       </Card>
 
       {/* Activity Level */}
-      <Card variant="outlined" className="border-green-200">
-        <div className="p-4 border-b border-green-100 bg-green-50">
-          <h3 className="text-lg font-semibold text-green-800">Activity Level</h3>
+      <Card variant="success" className="">
+        <div className="p-4 border-b border-allowed-100 bg-allowed-50">
+          <h3 className="text-lg font-semibold text-allowed-800">Activity Level</h3>
         </div>
         <div className="p-4">
           <div className="flex space-x-4">
@@ -171,7 +171,7 @@ const ReflectionView = ({
                   value={level}
                   checked={reflectionData.activity_level === level}
                   onChange={(e) => updateReflectionData({ activity_level: e.target.value })}
-                  className="text-green-600 focus:ring-green-500"
+                  className="text-allowed-600 focus:ring-allowed-500"
                 />
                 <span className="text-sm capitalize">{level}</span>
               </label>

@@ -59,7 +59,7 @@ const Navigation = ({
             <span className="whitespace-nowrap">Insights</span>
           </Button>
           {hasCriticalInsights && (
-            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold">
+            <span className="absolute -top-1 -right-1 bg-avoid-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold">
               !
             </span>
           )}
