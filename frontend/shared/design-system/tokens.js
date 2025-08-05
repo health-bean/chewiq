@@ -33,7 +33,7 @@ export const filoColors = {
   
   // Soft cream background - gentle and chronic illness-friendly
   neutral: {
-    50: '#fefefe',   // Almost white - much gentler background
+    50: '#FFF8DC',   // Cornsilk - warm and gentle background
     100: '#faf9f7',  // Very soft warm white
     200: '#f5f4f2',  // Light warm cream
     300: '#f0efed',  // Soft cream
@@ -78,7 +78,7 @@ export const extendedColors = {
   
   // Light cream for warnings - gentle and chronic illness-friendly
   warning: {
-    50: '#fefefe',   // Almost white cream
+    50: '#FFF8DC',   // Cornsilk cream
     100: '#faf8f5',  // Very light cream
     200: '#f5f2ed',  // Light warm cream
     300: '#f0ece5',  // Soft cream
