@@ -39,7 +39,7 @@ export default {
         
         // FILO Neutral - Soft cream (gentle background)
         neutral: {
-          50: '#FFF8DC',
+          50: '#FFFEF9',
           100: '#faf9f7',
           200: '#f5f4f2',
           300: '#f0efed',
@@ -79,7 +79,7 @@ export default {
         },
         
         warning: {
-          50: '#FFF8DC',
+          50: '#FFFEF9',
           100: '#faf8f5',
           200: '#f5f2ed',
           300: '#f0ece5',

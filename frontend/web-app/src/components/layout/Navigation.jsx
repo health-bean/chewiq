@@ -36,7 +36,7 @@ const Navigation = ({
         </Button>
         
         <Button
-          variant={activeView === 'reflect' ? 'success' : 'secondary'}
+          variant={activeView === 'reflect' ? 'primary' : 'secondary'}
           onClick={() => onViewChange('reflect')}
           size="sm"
           className="w-full relative"
@@ -44,7 +44,7 @@ const Navigation = ({
           <Brain className="w-4 h-4 mr-1" />
           <span className="whitespace-nowrap">Reflect</span>
           {hasUnsavedChanges && (
-            <span className="absolute -top-1 -right-1 w-3 h-3 bg-orange-400 rounded-full border-2 border-white"></span>
+            <span className="absolute -top-1 -right-1 w-3 h-3 bg-warning-400 rounded-full border-2 border-white"></span>
           )}
         </Button>
         

@@ -224,7 +224,7 @@ export const buttonVariants = createVariants(
   'inline-flex items-center justify-center rounded-md font-medium transition-standard focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none touch-target',
   {
     primary: 'bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-400',
-    secondary: 'bg-neutral-200 text-neutral-900 hover:bg-neutral-300 focus:ring-neutral-400',
+    secondary: 'bg-neutral-300 text-neutral-900 hover:bg-neutral-400 focus:ring-neutral-400 border border-neutral-400',
     success: 'bg-allowed-600 text-white hover:bg-allowed-700 focus:ring-allowed-400',
     warning: 'bg-warning-600 text-white hover:bg-warning-700 focus:ring-warning-400',
     error: 'bg-avoid-600 text-white hover:bg-avoid-700 focus:ring-avoid-400',

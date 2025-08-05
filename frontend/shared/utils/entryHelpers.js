@@ -7,15 +7,19 @@ export const getEntryIcon = (type) => ({
   detox: '🧘'
 }[type] || '📝');
 
-// FILO semantic colors for entry types - chronic illness friendly
-export const getEntryColor = (type) => ({
-  food: 'health-food',           // FILO terracotta
-  symptom: 'health-symptom',     // Soft coral
-  supplement: 'health-supplement', // FILO teal
-  medication: 'health-medication', // Gentle lavender
-  exposure: 'health-food',       // FILO terracotta (similar to food)
-  detox: 'health-improvement'    // Sage green (positive action)
-}[type] || 'health-neutral');
+// Protocol-first coloring - what users actually care about
+export const getEntryColor = (type, protocolCompliant) => {
+  // For food entries, use protocol compliance colors
+  if (type === 'food') {
+    if (protocolCompliant === true) return 'protocol-allowed';    // Green
+    if (protocolCompliant === false) return 'protocol-avoid';     // Red  
+    if (protocolCompliant === 'reintroduction') return 'protocol-reintroduction'; // Orange
+    return 'protocol-unknown';  // Gray for unknown compliance
+  }
+  
+  // For all non-food entries, use consistent info blue
+  return 'status-info';  // Blue for symptoms, supplements, medications, detox, exposure
+};
 
 export const getProtocolDisplayText = (selectedProtocols, protocols) => {
   if (!selectedProtocols || selectedProtocols.length === 0) return 'No protocols selected';

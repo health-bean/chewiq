@@ -132,7 +132,7 @@ const TimelineEntry = ({ entry }) => {
   };
 
   return (
-    <div className={`p-3 rounded-lg border-2 ${getEntryColor(entry.entry_type)} reduced-motion`}>
+    <div className={`p-3 rounded-lg border-2 ${getEntryColor(entry.entry_type, entry.protocol_compliant)} reduced-motion`}>
       <div className="flex-start tight-spacing">
         <div className="text-lg">{getEntryIcon(entry.entry_type)}</div>
         <div className="flex-1">
