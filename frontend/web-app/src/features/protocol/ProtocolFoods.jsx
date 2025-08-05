@@ -96,10 +96,10 @@ const ProtocolFoods = ({ protocolId }) => {
 
   const getComplianceColor = (status) => {
     switch (status) {
-      case 'allowed': return 'bg-green-100 text-green-800 border-green-200';
-      case 'avoid': return 'bg-red-100 text-red-800 border-red-200';
-      case 'caution': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'not_classified': return 'bg-gray-100 text-gray-800 border-gray-200';
+      case 'allowed': return 'protocol-allowed';
+      case 'avoid': return 'protocol-avoid';
+      case 'caution': return 'protocol-reintroduction';
+      case 'not_classified': return 'health-neutral';
       default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
@@ -159,21 +159,21 @@ const ProtocolFoods = ({ protocolId }) => {
   const getPropertyColor = (property, value) => {
     if (property === 'histamine') {
       switch (value) {
-        case 'high': return 'bg-red-100 text-red-800';
-        case 'moderate': return 'bg-orange-100 text-orange-800';
-        case 'low': return 'bg-green-100 text-green-800';
-        default: return 'bg-gray-100 text-gray-800';
+        case 'high': return 'protocol-avoid';
+        case 'moderate': return 'protocol-reintroduction';
+        case 'low': return 'protocol-allowed';
+        default: return 'health-neutral';
       }
     }
     if (property === 'oxalate') {
       switch (value) {
-        case 'high': return 'bg-red-100 text-red-800';
-        case 'moderate': return 'bg-orange-100 text-orange-800';
-        case 'low': return 'bg-green-100 text-green-800';
-        default: return 'bg-gray-100 text-gray-800';
+        case 'high': return 'protocol-avoid';
+        case 'moderate': return 'protocol-reintroduction';
+        case 'low': return 'protocol-allowed';
+        default: return 'health-neutral';
       }
     }
-    return 'bg-blue-100 text-blue-800';
+    return 'status-info';
   };
 
   // Helper function to check if a property has a meaningful value
