@@ -400,7 +400,7 @@ const PreferencesPage = ({ onBack }) => {
   );
 
   return (
-    <div className="bg-filo-cream min-h-screen">
+    <div className="bg-app min-h-screen">
       {/* Header */}
       <div className="bg-neutral-50 p-4 border-b border-neutral-200 shadow-sm">
         <div className="flex items-center">

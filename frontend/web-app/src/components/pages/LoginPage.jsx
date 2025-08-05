@@ -362,7 +362,7 @@ const LoginPage = () => {
                 <div className="w-full border-t border-gray-300" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-filo-cream text-neutral-500">Or try a demo account</span>
+                <span className="px-2 bg-app text-muted">Or try a demo account</span>
               </div>
             </div>
 

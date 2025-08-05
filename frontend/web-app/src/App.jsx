@@ -111,7 +111,7 @@ const MainApp = () => {
   // Handle auth loading
   if (authLoading) {
     return (
-      <div className="max-w-md mx-auto bg-filo-cream min-h-screen flex items-center justify-center">
+      <div className="max-w-md mx-auto bg-app min-h-screen flex items-center justify-center">
         <div className="text-center">
           <Loader2 size={32} className="animate-spin mx-auto mb-4 text-filo-teal" />
           <p className="text-neutral-600">Loading...</p>
@@ -130,7 +130,7 @@ const MainApp = () => {
   // Handle app data loading (simplified for clean auth)
   if (authLoading || preferencesLoading) {
     return (
-      <div className="max-w-md mx-auto bg-filo-cream min-h-screen flex items-center justify-center">
+      <div className="max-w-md mx-auto bg-app min-h-screen flex items-center justify-center">
         <div className="text-center">
           <Loader2 size={32} className="animate-spin mx-auto mb-4 text-filo-teal" />
           <p className="text-neutral-600">Loading your health journey...</p>
@@ -197,7 +197,7 @@ const MainApp = () => {
   // Loading states
   if (preferencesLoading || !isReady) {
     return (
-      <div className="max-w-md mx-auto bg-filo-cream min-h-screen flex items-center justify-center">
+      <div className="max-w-md mx-auto bg-app min-h-screen flex items-center justify-center">
         <div className="text-center">
           <Loader2 size={32} className="animate-spin mx-auto mb-4 text-filo-teal" />
           <p className="text-neutral-600">Loading your health journey...</p>
@@ -209,7 +209,7 @@ const MainApp = () => {
   // Error states
   if (preferencesError && !preferences) {
     return (
-      <div className="max-w-md mx-auto bg-filo-cream min-h-screen p-4">
+      <div className="max-w-md mx-auto bg-app min-h-screen p-4">
         <Alert variant="error" title="Connection Error">
           <p className="mb-2">Unable to load your preferences.</p>
           <p className="text-sm text-neutral-600 mb-3">{preferencesError}</p>
@@ -237,7 +237,7 @@ const MainApp = () => {
   }
 
   return (
-    <div className="bg-filo-cream min-h-screen">
+    <div className="bg-app min-h-screen">
       {/* Demo Mode Banner */}
       {isDemoMode && (
         <div className="bg-accent-100 border-b border-accent-200 px-4 py-2">

@@ -199,7 +199,7 @@ export const getStatusColor = (status) => {
   const statusColors = {
     excellent: 'text-green-600 bg-green-50',
     good: 'text-green-500 bg-green-50',
-    fair: 'text-yellow-600 bg-yellow-50',
+    fair: 'text-warning-600 bg-warning-50',
     poor: 'text-orange-600 bg-orange-50',
     critical: 'text-red-600 bg-red-50',
   };

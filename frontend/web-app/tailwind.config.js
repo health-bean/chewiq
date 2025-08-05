@@ -37,18 +37,18 @@ export default {
           900: '#4d1a00',
         },
         
-        // FILO Neutral - Cream (#FFFFCC)
+        // FILO Neutral - Soft cream (gentle background)
         neutral: {
-          50: '#FFFFCC',
-          100: '#ffffc2',
-          200: '#ffffb8',
-          300: '#ffffae',
-          400: '#ffffa3',
-          500: '#cccc99',
-          600: '#999966',
-          700: '#666633',
-          800: '#333300',
-          900: '#1a1a00',
+          50: '#fefefe',
+          100: '#faf9f7',
+          200: '#f5f4f2',
+          300: '#f0efed',
+          400: '#ebeae8',
+          500: '#d4d3d1',
+          600: '#a8a7a5',
+          700: '#7c7b79',
+          800: '#504f4d',
+          900: '#242321',
         },
         
         // FILO Protocol Colors
@@ -79,16 +79,16 @@ export default {
         },
         
         warning: {
-          50: '#fffef0',
-          100: '#fffacc',
-          200: '#fff599',
-          300: '#fff066',
-          400: '#ffeb33',
-          500: '#FFCC66',
-          600: '#FFCC66',
-          700: '#ccaa52',
-          800: '#99883d',
-          900: '#666629',
+          50: '#fefefe',
+          100: '#faf8f5',
+          200: '#f5f2ed',
+          300: '#f0ece5',
+          400: '#ebe6dd',
+          500: '#e6e0d5',
+          600: '#d4c8b8',
+          700: '#c2b09b',
+          800: '#a8967e',
+          900: '#8e7c61',
         },
         
         info: {

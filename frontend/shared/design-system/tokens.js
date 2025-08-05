@@ -31,18 +31,18 @@ export const filoColors = {
     900: '#4d1a00'   // Darkest orange
   },
   
-  // Cream background - #FFFFCC
+  // Soft cream background - gentle and chronic illness-friendly
   neutral: {
-    50: '#FFFFCC',   // FILO cream background (exact)
-    100: '#ffffc2',  // Slightly darker cream
-    200: '#ffffb8',  // Light warm cream
-    300: '#ffffae',  // Medium warm cream
-    400: '#ffffa3',  // Darker warm cream
-    500: '#cccc99',  // Medium neutral
-    600: '#999966',  // Dark neutral
-    700: '#666633',  // Darker neutral
-    800: '#333300',  // Very dark neutral
-    900: '#1a1a00'   // Darkest neutral
+    50: '#fefefe',   // Almost white - much gentler background
+    100: '#faf9f7',  // Very soft warm white
+    200: '#f5f4f2',  // Light warm cream
+    300: '#f0efed',  // Soft cream
+    400: '#ebeae8',  // Medium cream
+    500: '#d4d3d1',  // Medium neutral
+    600: '#a8a7a5',  // Dark neutral
+    700: '#7c7b79',  // Darker neutral
+    800: '#504f4d',  // Very dark neutral
+    900: '#242321'   // Darkest neutral
   }
 };
 
@@ -76,18 +76,18 @@ export const extendedColors = {
     900: '#4d1616'   // Darkest red
   },
   
-  // Yellow for warnings - #FFCC66
+  // Light cream for warnings - gentle and chronic illness-friendly
   warning: {
-    50: '#fffef0',   // Very light yellow
-    100: '#fffacc',  // Light yellow
-    200: '#fff599',  // Soft yellow
-    300: '#fff066',  // Medium yellow
-    400: '#ffeb33',  // Lighter yellow
-    500: '#FFCC66',  // Core warning yellow (exact)
-    600: '#FFCC66',  // FILO warning yellow (exact)
-    700: '#ccaa52',  // Deep yellow
-    800: '#99883d',  // Very deep yellow
-    900: '#666629'   // Darkest yellow
+    50: '#fefefe',   // Almost white cream
+    100: '#faf8f5',  // Very light cream
+    200: '#f5f2ed',  // Light warm cream
+    300: '#f0ece5',  // Soft cream
+    400: '#ebe6dd',  // Medium cream
+    500: '#e6e0d5',  // Core warning cream
+    600: '#d4c8b8',  // Slightly darker cream
+    700: '#c2b09b',  // Warm beige
+    800: '#a8967e',  // Deeper beige
+    900: '#8e7c61'   // Darkest warm beige
   },
   
   // Blue for info - #006699
