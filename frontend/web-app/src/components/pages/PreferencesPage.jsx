@@ -140,35 +140,35 @@ const PreferencesPage = ({ onBack }) => {
       icon: <Settings className="w-5 h-5" />,
       title: 'Account Settings',
       description: 'Update your profile, email, and password preferences',
-      color: 'text-gray-600 bg-gray-100',
+      color: 'text-neutral-600 bg-neutral-100',
       available: false
     },
     {
       icon: <Bell className="w-5 h-5" />,
       title: 'Notifications',
       description: 'Customize alerts for symptoms, medications, and insights',
-      color: 'text-blue-600 bg-blue-100',
+      color: 'text-info-600 bg-info-100',
       available: false
     },
     {
       icon: <Sparkles className="w-5 h-5" />,
       title: 'AI Insights',
       description: 'Configure how AI analyzes your health patterns',
-      color: 'text-purple-600 bg-purple-100',
+      color: 'text-primary-600 bg-primary-100',
       available: false
     },
     {
       icon: <Zap className="w-5 h-5" />,
       title: 'Quick Actions',
       description: 'Customize your frequently used foods, supplements, and symptoms',
-      color: 'text-yellow-600 bg-yellow-100',
+      color: 'text-warning-600 bg-warning-100',
       available: false
     },
     {
       icon: <Shield className="w-5 h-5" />,
       title: 'Privacy & Data',
       description: 'Control how your health data is stored and shared',
-      color: 'text-green-600 bg-green-100',
+      color: 'text-allowed-600 bg-allowed-100',
       available: false
     }
   ];
@@ -312,9 +312,9 @@ const PreferencesPage = ({ onBack }) => {
             
             <div className="space-y-3">
               {protocolHistory.map((entry, index) => (
-                <div key={index} className="flex flex-col sm:flex-row sm:items-center justify-between py-3 border-b border-gray-100 last:border-b-0 space-y-2 sm:space-y-0">
+                <div key={index} className="flex flex-col sm:flex-row sm:items-center justify-between py-3 border-b border-neutral-100 last:border-b-0 space-y-2 sm:space-y-0">
                   <div className="flex-1 min-w-0">
-                    <div className="font-medium text-gray-900 truncate">{entry.new_protocol}</div>
+                    <div className="font-medium text-neutral-900 truncate">{entry.new_protocol}</div>
                     <div className="text-sm text-gray-600">
                       {formatDate(entry.date)}
                       {entry.duration_days && (
@@ -400,9 +400,9 @@ const PreferencesPage = ({ onBack }) => {
   );
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-filo-cream min-h-screen">
       {/* Header */}
-      <div className="bg-white p-4 border-b border-gray-200 shadow-sm">
+      <div className="bg-neutral-50 p-4 border-b border-neutral-200 shadow-sm">
         <div className="flex items-center">
           <Button
             variant="ghost"

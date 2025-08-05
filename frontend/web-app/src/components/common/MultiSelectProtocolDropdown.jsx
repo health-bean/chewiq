@@ -136,7 +136,7 @@ const MultiSelectProtocolDropdown = ({
           <Card variant="elevated" padding="none" className="shadow-lg max-h-64 overflow-y-auto">
             
             {/* No Protocol Option */}
-            <div className="p-2 border-b border-gray-100">
+            <div className="p-2 border-b border-neutral-100">
               <div className={cn(
                 "flex items-center space-x-2 p-2 rounded-md cursor-pointer transition-colors",
                 selectedProtocols.includes('no_protocol') 
@@ -191,8 +191,8 @@ const MultiSelectProtocolDropdown = ({
             </div>
 
             {/* Footer */}
-            <div className="p-2 border-t border-gray-100 bg-gray-50">
-              <p className="text-xs text-gray-500 text-center">
+            <div className="p-2 border-t border-neutral-100 bg-neutral-100">
+              <p className="text-xs text-neutral-500 text-center">
                 {selectedProtocols.length === 0 
                   ? "Showing all protocol data"
                   : `Filtering by ${selectedProtocols.length} protocol${selectedProtocols.length > 1 ? 's' : ''}`

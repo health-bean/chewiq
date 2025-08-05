@@ -55,38 +55,38 @@ export const getSemanticColor = (category, type, variant = 'container') => {
         accent: 'text-primary-600'
       },
       success: {
-        container: 'border-sage-200 bg-sage-50',
-        text: 'text-sage-800',
-        accent: 'text-sage-600'
+        container: 'border-allowed-200 bg-allowed-50',
+        text: 'text-allowed-800',
+        accent: 'text-allowed-600'
       },
       warning: {
-        container: 'border-amber-200 bg-amber-50',
-        text: 'text-amber-800',
-        accent: 'text-amber-600'
+        container: 'border-warning-200 bg-warning-50',
+        text: 'text-warning-800',
+        accent: 'text-warning-600'
       },
       error: {
-        container: 'border-coral-200 bg-coral-50',
-        text: 'text-coral-800',
-        accent: 'text-coral-600'
+        container: 'border-avoid-200 bg-avoid-50',
+        text: 'text-avoid-800',
+        accent: 'text-avoid-600'
       }
     },
     
     // Health-specific colors - gentle but meaningful
     health: {
       symptom: {
-        container: 'border-coral-200 bg-coral-50',
-        text: 'text-coral-800',
-        accent: 'text-coral-600'
+        container: 'border-avoid-200 bg-avoid-50',
+        text: 'text-avoid-800',
+        accent: 'text-avoid-600'
       },
       improvement: {
-        container: 'border-sage-200 bg-sage-50',
-        text: 'text-sage-800',
-        accent: 'text-sage-600'
+        container: 'border-allowed-200 bg-allowed-50',
+        text: 'text-allowed-800',
+        accent: 'text-allowed-600'
       },
       medication: {
-        container: 'border-lavender-200 bg-lavender-50',
-        text: 'text-lavender-800',
-        accent: 'text-lavender-600'
+        container: 'border-info-200 bg-info-50',
+        text: 'text-info-800',
+        accent: 'text-info-600'
       },
       supplement: {
         container: 'border-primary-200 bg-primary-50',
@@ -108,19 +108,19 @@ export const getSemanticColor = (category, type, variant = 'container') => {
     // Protocol compliance colors - intuitive but gentle
     protocol: {
       allowed: {
-        container: 'border-sage-200 bg-sage-50',
-        text: 'text-sage-800',
-        accent: 'text-sage-600'
+        container: 'border-allowed-200 bg-allowed-50',
+        text: 'text-allowed-800',
+        accent: 'text-allowed-600'
       },
       avoid: {
-        container: 'border-coral-200 bg-coral-50',
-        text: 'text-coral-800',
-        accent: 'text-coral-600'
+        container: 'border-avoid-200 bg-avoid-50',
+        text: 'text-avoid-800',
+        accent: 'text-avoid-600'
       },
       reintroduction: {
-        container: 'border-amber-200 bg-amber-50',
-        text: 'text-amber-800',
-        accent: 'text-amber-600'
+        container: 'border-accent-200 bg-accent-50',
+        text: 'text-accent-800',
+        accent: 'text-accent-600'
       },
       unknown: {
         container: 'border-neutral-200 bg-neutral-100',
@@ -136,9 +136,9 @@ export const getSemanticColor = (category, type, variant = 'container') => {
 // Legacy health color function - updated for FILO colors
 export const getHealthColor = (type, shade = 500) => {
   const healthColors = {
-    symptom: designTokens.colors.coral[shade],
-    improvement: designTokens.colors.sage[shade],
-    medication: designTokens.colors.lavender[shade],
+    symptom: designTokens.colors.avoid[shade],
+    improvement: designTokens.colors.allowed[shade],
+    medication: designTokens.colors.info[shade],
     supplement: designTokens.colors.primary[shade],
     food: designTokens.colors.accent[shade],
     neutral: designTokens.colors.neutral[shade],
@@ -225,9 +225,9 @@ export const buttonVariants = createVariants(
   {
     primary: 'bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-400',
     secondary: 'bg-neutral-200 text-neutral-900 hover:bg-neutral-300 focus:ring-neutral-400',
-    success: 'bg-sage-600 text-white hover:bg-sage-700 focus:ring-sage-400',
-    warning: 'bg-amber-600 text-white hover:bg-amber-700 focus:ring-amber-400',
-    error: 'bg-coral-600 text-white hover:bg-coral-700 focus:ring-coral-400',
+    success: 'bg-allowed-600 text-white hover:bg-allowed-700 focus:ring-allowed-400',
+    warning: 'bg-warning-600 text-white hover:bg-warning-700 focus:ring-warning-400',
+    error: 'bg-avoid-600 text-white hover:bg-avoid-700 focus:ring-avoid-400',
     outline: 'border border-neutral-300 bg-transparent hover:bg-neutral-50 focus:ring-neutral-400',
     ghost: 'hover:bg-neutral-100 focus:ring-neutral-400',
     link: 'text-primary-600 underline-offset-4 hover:underline focus:ring-primary-400',
@@ -239,9 +239,9 @@ export const inputVariants = createVariants(
   'flex w-full rounded-md border px-3 py-2 text-sm placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 touch-target bg-neutral-50',
   {
     default: 'border-neutral-300 focus:ring-primary-400',
-    success: 'border-sage-300 focus:ring-sage-400',
-    error: 'border-coral-300 focus:ring-coral-400',
-    warning: 'border-amber-300 focus:ring-amber-400',
+    success: 'border-allowed-300 focus:ring-allowed-400',
+    error: 'border-avoid-300 focus:ring-avoid-400',
+    warning: 'border-warning-300 focus:ring-warning-400',
   }
 );
 
@@ -257,14 +257,14 @@ export const cardVariants = createVariants(
     // Semantic variants using FILO-derived colors
     section: 'border-neutral-200 bg-neutral-50 shadow-sm',
     feature: 'border-primary-200 bg-primary-50',
-    success: 'border-sage-200 bg-sage-50',
-    warning: 'border-amber-200 bg-amber-50',
-    error: 'border-coral-200 bg-coral-50',
+    success: 'border-allowed-200 bg-allowed-50',
+    warning: 'border-warning-200 bg-warning-50',
+    error: 'border-avoid-200 bg-avoid-50',
     
     // Health-specific variants
-    symptom: 'border-coral-200 bg-coral-50',
-    improvement: 'border-sage-200 bg-sage-50',
-    medication: 'border-lavender-200 bg-lavender-50',
+    symptom: 'border-avoid-200 bg-avoid-50',
+    improvement: 'border-allowed-200 bg-allowed-50',
+    medication: 'border-info-200 bg-info-50',
     supplement: 'border-primary-200 bg-primary-50',
     food: 'border-accent-200 bg-accent-50',
     
@@ -273,9 +273,9 @@ export const cardVariants = createVariants(
     selected: 'border-primary-300 bg-primary-50 shadow-sm',
     
     // Protocol compliance variants
-    allowed: 'border-sage-200 bg-sage-50',
-    avoid: 'border-coral-200 bg-coral-50',
-    reintroduction: 'border-amber-200 bg-amber-50',
+    allowed: 'border-allowed-200 bg-allowed-50',
+    avoid: 'border-avoid-200 bg-avoid-50',
+    reintroduction: 'border-accent-200 bg-accent-50',
   }
 );
 

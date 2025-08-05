@@ -190,7 +190,7 @@ const UnifiedSmartSelector = ({
                     variant="ghost"
                     size="sm"
                     onClick={() => handleToggleItem(item)}
-                    className="text-coral-600 hover:text-coral-700 hover:bg-coral-50"
+                    className="text-avoid-600 hover:text-avoid-700 hover:bg-avoid-50"
                   >
                     <X size={16} />
                   </Button>

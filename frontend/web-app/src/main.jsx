@@ -40,14 +40,14 @@ const renderApp = () => {
   
   if (path === '/test/simple-auth') {
     return (
-      <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md mt-10">
+      <div className="max-w-md mx-auto p-6 bg-neutral-50 rounded-lg shadow-md mt-10">
         <h2 className="text-2xl font-bold mb-4">Simple Auth Test</h2>
-        <p className="mb-4 text-gray-600">
+        <p className="mb-4 text-neutral-600">
           This test has been removed. Please use the main app instead.
         </p>
         <a 
           href="/"
-          className="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          className="inline-block px-4 py-2 bg-info-600 text-white rounded-md hover:bg-info-700"
         >
           Go to Main App
         </a>
@@ -74,14 +74,14 @@ const renderApp = () => {
   if (path === '/test/clean-direct-auth') {
     // Temporarily disabled until AWS SDK is properly installed
     return (
-      <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md mt-10">
+      <div className="max-w-md mx-auto p-6 bg-neutral-50 rounded-lg shadow-md mt-10">
         <h2 className="text-2xl font-bold mb-4">Clean Direct Auth Test</h2>
-        <p className="mb-4 text-gray-600">
+        <p className="mb-4 text-neutral-600">
           This test is temporarily disabled. Please try the other tests first.
         </p>
         <a 
           href="/test"
-          className="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          className="inline-block px-4 py-2 bg-info-600 text-white rounded-md hover:bg-info-700"
         >
           Back to Test Index
         </a>

@@ -170,10 +170,10 @@ const LoginPage = () => {
             </Alert>
           )}
 
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6 text-center">
-            <Mail className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-blue-900 mb-2">Check Your Email</h3>
-            <p className="text-sm text-blue-700">
+          <div className="bg-info-50 border border-info-200 rounded-lg p-6 mb-6 text-center">
+            <Mail className="h-12 w-12 text-info-600 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-info-900 mb-2">Check Your Email</h3>
+            <p className="text-sm text-info-700">
               We've sent a confirmation code to <strong>{formData.email}</strong>.
               Please enter the code below to verify your email address.
             </p>
@@ -201,16 +201,16 @@ const LoginPage = () => {
             <button
               onClick={handleResendCode}
               disabled={isLoading}
-              className="text-sm text-blue-600 hover:text-blue-800 disabled:text-blue-300"
+              className="text-sm text-info-600 hover:text-info-800 disabled:text-info-300"
             >
               Resend confirmation code
             </button>
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-neutral-500">
               <p>Didn't receive the code? Check your spam folder.</p>
             </div>
             <button
               onClick={() => setView('signin')}
-              className="text-sm text-gray-600 hover:text-gray-800"
+              className="text-sm text-neutral-600 hover:text-neutral-800"
             >
               Back to sign in
             </button>
@@ -233,13 +233,13 @@ const LoginPage = () => {
 
       <div className="p-6 max-w-md mx-auto">
         {/* Mode Switcher */}
-        <div className="flex mb-6 bg-gray-100 rounded-lg p-1">
+        <div className="flex mb-6 bg-neutral-100 rounded-lg p-1">
           <button
             onClick={() => setView('signin')}
             className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
               view === 'signin' 
-                ? 'bg-white text-gray-900 shadow-sm' 
-                : 'text-gray-600 hover:text-gray-900'
+                ? 'bg-neutral-50 text-neutral-900 shadow-sm' 
+                : 'text-neutral-600 hover:text-neutral-900'
             }`}
           >
             Sign In
@@ -248,8 +248,8 @@ const LoginPage = () => {
             onClick={() => setView('signup')}
             className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
               view === 'signup' 
-                ? 'bg-white text-gray-900 shadow-sm' 
-                : 'text-gray-600 hover:text-gray-900'
+                ? 'bg-neutral-50 text-neutral-900 shadow-sm' 
+                : 'text-neutral-600 hover:text-neutral-900'
             }`}
           >
             Sign Up
@@ -268,7 +268,7 @@ const LoginPage = () => {
           {/* Email Field */}
           <FormField label="Email Address" error={errors.email}>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-neutral-400" />
               <Input
                 type="email"
                 value={formData.email}
@@ -311,7 +311,7 @@ const LoginPage = () => {
             hint={view === 'signup' ? 'Password must be at least 8 characters' : undefined}
           >
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-neutral-400" />
               <Input
                 type={showPassword ? "text" : "password"}
                 value={formData.password}
@@ -323,7 +323,7 @@ const LoginPage = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-400 hover:text-neutral-600"
               >
                 {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
               </button>
@@ -334,7 +334,7 @@ const LoginPage = () => {
           {view === 'signup' && (
             <FormField label="Confirm Password" error={errors.confirmPassword}>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-neutral-400" />
                 <Input
                   type="password"
                   value={formData.confirmPassword}
@@ -362,7 +362,7 @@ const LoginPage = () => {
                 <div className="w-full border-t border-gray-300" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-gray-50 text-gray-500">Or try a demo account</span>
+                <span className="px-2 bg-filo-cream text-neutral-500">Or try a demo account</span>
               </div>
             </div>
 
@@ -397,10 +397,10 @@ const DemoUserCard = ({ name, description, userId, onLogin, isLoading }) => {
         <div className="flex items-center justify-between">
           <div className="flex-1">
             <div className="flex items-center space-x-2 mb-1">
-              <User className="h-4 w-4 text-blue-600" />
-              <h4 className="font-medium text-gray-900">{name}</h4>
+              <User className="h-4 w-4 text-info-600" />
+              <h4 className="font-medium text-neutral-900">{name}</h4>
             </div>
-            <p className="text-sm text-gray-600">{description}</p>
+            <p className="text-sm text-neutral-600">{description}</p>
           </div>
           <Button
             variant="outline"

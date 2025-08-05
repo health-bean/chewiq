@@ -189,12 +189,12 @@ const CorrelationInsights = () => {
       {/* Triggers to Avoid */}
       {triggers.length > 0 && (
         <Card variant="error" className="shadow-sm">
-          <div className="p-4 border-b border-coral-100 bg-coral-50">
+          <div className="p-4 border-b border-avoid-100 bg-avoid-50">
             <div className="flex items-center space-x-2">
-              <AlertTriangle className="w-5 h-5 text-coral-600" />
-              <h3 className="text-lg font-semibold text-coral-800">Triggers to Avoid</h3>
+              <AlertTriangle className="w-5 h-5 text-avoid-600" />
+              <h3 className="text-lg font-semibold text-avoid-800">Triggers to Avoid</h3>
             </div>
-            <p className="text-sm text-coral-600 mt-1">These items may be causing your symptoms</p>
+            <p className="text-sm text-avoid-600 mt-1">These items may be causing your symptoms</p>
           </div>
           <div className="p-4 space-y-3">
             {(showAllTriggers ? triggers : triggers.slice(0, 3)).map((trigger) => (
@@ -210,7 +210,7 @@ const CorrelationInsights = () => {
                   )}
                 </div>
                 <div className="text-right ml-4">
-                  <div className="text-lg font-semibold text-coral-600">
+                  <div className="text-lg font-semibold text-avoid-600">
                     {trigger.percentage}%
                   </div>
                   {trigger.occurrences && trigger.opportunities && (
@@ -239,12 +239,12 @@ const CorrelationInsights = () => {
       {/* Watch for Patterns */}
       {patterns.length > 0 && (
         <Card variant="warning" className="shadow-sm">
-          <div className="p-4 border-b border-amber-100 bg-amber-50">
+          <div className="p-4 border-b border-accent-100 bg-accent-50">
             <div className="flex items-center space-x-2">
-              <Eye className="w-5 h-5 text-amber-600" />
-              <h3 className="text-lg font-semibold text-amber-800">Watch for Patterns</h3>
+              <Eye className="w-5 h-5 text-accent-600" />
+              <h3 className="text-lg font-semibold text-accent-800">Watch for Patterns</h3>
             </div>
-            <p className="text-sm text-amber-600 mt-1">These patterns might explain multiple symptoms</p>
+            <p className="text-sm text-accent-600 mt-1">These patterns might explain multiple symptoms</p>
           </div>
           <div className="p-4 space-y-3">
             {(showAllPatterns ? patterns : patterns.slice(0, 2)).map((pattern) => (
@@ -263,7 +263,7 @@ const CorrelationInsights = () => {
                   )}
                 </div>
                 <div className="text-right ml-4">
-                  <div className="text-lg font-semibold text-amber-600">
+                  <div className="text-lg font-semibold text-accent-600">
                     {pattern.percentage}%
                   </div>
                   {pattern.occurrences && pattern.opportunities && (
@@ -292,12 +292,12 @@ const CorrelationInsights = () => {
       {/* Things That Help */}
       {helpers.length > 0 && (
         <Card variant="success" className="shadow-sm">
-          <div className="p-4 border-b border-sage-100 bg-sage-50">
+          <div className="p-4 border-b border-allowed-100 bg-allowed-50">
             <div className="flex items-center space-x-2">
-              <CheckCircle className="w-5 h-5 text-sage-600" />
-              <h3 className="text-lg font-semibold text-sage-800">Things That Help</h3>
+              <CheckCircle className="w-5 h-5 text-allowed-600" />
+              <h3 className="text-lg font-semibold text-allowed-800">Things That Help</h3>
             </div>
-            <p className="text-sm text-sage-600 mt-1">Keep doing these - they're working for you</p>
+            <p className="text-sm text-allowed-600 mt-1">Keep doing these - they're working for you</p>
           </div>
           <div className="p-4 space-y-3">
             {(showAllHelpers ? helpers : helpers.slice(0, 3)).map((helper) => (
@@ -313,7 +313,7 @@ const CorrelationInsights = () => {
                   )}
                 </div>
                 <div className="text-right ml-4">
-                  <div className="text-lg font-semibold text-sage-600">
+                  <div className="text-lg font-semibold text-allowed-600">
                     {helper.percentage}%
                   </div>
                   {helper.occurrences && helper.opportunities && (

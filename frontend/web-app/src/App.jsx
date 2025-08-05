@@ -240,11 +240,11 @@ const MainApp = () => {
     <div className="bg-filo-cream min-h-screen">
       {/* Demo Mode Banner */}
       {isDemoMode && (
-        <div className="bg-orange-100 border-b border-orange-200 px-4 py-2">
+        <div className="bg-accent-100 border-b border-accent-200 px-4 py-2">
           <div className="flex items-center justify-center space-x-2 text-sm">
-            <span className="text-orange-800 font-medium">Demo Mode</span>
-            <span className="text-orange-600">•</span>
-            <span className="text-orange-700">You're viewing sample data for {user?.name}</span>
+            <span className="text-accent-800 font-medium">Demo Mode</span>
+            <span className="text-accent-600">•</span>
+            <span className="text-accent-700">You're viewing sample data for {user?.name}</span>
           </div>
         </div>
       )}

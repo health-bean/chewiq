@@ -31,9 +31,9 @@ class ErrorBoundary extends React.Component {
             
             <div className="space-y-4">
               <div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">Error Details:</h3>
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                  <pre className="text-sm text-red-800 whitespace-pre-wrap">
+                <h3 className="text-lg font-semibold text-neutral-800 mb-2">Error Details:</h3>
+                <div className="bg-avoid-50 border border-avoid-200 rounded-lg p-4">
+                  <pre className="text-sm text-avoid-800 whitespace-pre-wrap">
                     {this.state.error && this.state.error.toString()}
                   </pre>
                 </div>
@@ -41,9 +41,9 @@ class ErrorBoundary extends React.Component {
               
               {this.state.errorInfo && (
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2">Component Stack:</h3>
-                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                    <pre className="text-sm text-gray-700 whitespace-pre-wrap">
+                  <h3 className="text-lg font-semibold text-neutral-800 mb-2">Component Stack:</h3>
+                  <div className="bg-neutral-100 border border-neutral-200 rounded-lg p-4">
+                    <pre className="text-sm text-neutral-700 whitespace-pre-wrap">
                       {this.state.errorInfo.componentStack}
                     </pre>
                   </div>

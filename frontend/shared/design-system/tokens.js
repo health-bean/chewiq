@@ -1,107 +1,107 @@
 // Health Platform Design System - Design Tokens
 // Centralized design values for consistent UI
 
-// FILO Brand Colors - Optimized for chronic illness users
+// FILO Brand Colors - Exact hex colors specified
 export const filoColors = {
-  // Primary brand teal from FILO design
+  // Primary brand teal - #339999
   primary: {
-    50: '#f0f9f7',   // Very light teal
-    100: '#d1f2eb',  // Light teal
-    200: '#a3e4d7',  // Soft teal
-    300: '#76d7c4',  // Medium teal
-    400: '#48c9b0',  // FILO brand teal
-    500: '#1abc9c',  // Core teal
-    600: '#17a085',  // Darker teal
-    700: '#148f77',  // Deep teal
-    800: '#117a65',  // Very deep teal
-    900: '#0e6b5d'   // Darkest teal
+    50: '#f0fffe',   // Very light teal
+    100: '#ccf2f2',  // Light teal
+    200: '#99e6e6',  // Soft teal
+    300: '#66d9d9',  // Medium teal
+    400: '#339999',  // FILO brand teal (exact)
+    500: '#339999',  // Core teal (exact)
+    600: '#2d8080',  // Darker teal
+    700: '#266666',  // Deep teal
+    800: '#1f4d4d',  // Very deep teal
+    900: '#193333'   // Darkest teal
   },
   
-  // Warm terracotta accent from FILO design
+  // Orange for moderate/reintroduction - #993300
   accent: {
-    50: '#fdf6f0',   // Very light terracotta
-    100: '#fae5d3',  // Light terracotta
-    200: '#f4c2a1',  // Soft terracotta
-    300: '#ee9f6f',  // Medium terracotta
-    400: '#e67e22',  // FILO brand terracotta
-    500: '#d35400',  // Core terracotta
-    600: '#ba4a00',  // Darker terracotta
-    700: '#a04000',  // Deep terracotta
-    800: '#873600',  // Very deep terracotta
-    900: '#6d2c00'   // Darkest terracotta
+    50: '#fff5f0',   // Very light orange
+    100: '#ffe6cc',  // Light orange
+    200: '#ffcc99',  // Soft orange
+    300: '#ffb366',  // Medium orange
+    400: '#cc6600',  // Lighter orange
+    500: '#993300',  // Core orange (exact)
+    600: '#993300',  // FILO orange (exact)
+    700: '#802b00',  // Deep orange
+    800: '#662200',  // Very deep orange
+    900: '#4d1a00'   // Darkest orange
   },
   
-  // Warm cream background from FILO design
+  // Cream background - #FFFFCC
   neutral: {
-    50: '#fdfcfa',   // FILO cream background
-    100: '#f8f6f0',  // Slightly darker cream
-    200: '#f0ede4',  // Light warm gray
-    300: '#e8e3d8',  // Medium warm gray
-    400: '#d4cfc0',  // Darker warm gray
-    500: '#a8a196',  // Medium gray
-    600: '#8b8680',  // Dark gray
-    700: '#6f6b64',  // Darker gray
-    800: '#524f48',  // Very dark gray
-    900: '#36342c'   // Darkest gray
+    50: '#FFFFCC',   // FILO cream background (exact)
+    100: '#ffffc2',  // Slightly darker cream
+    200: '#ffffb8',  // Light warm cream
+    300: '#ffffae',  // Medium warm cream
+    400: '#ffffa3',  // Darker warm cream
+    500: '#cccc99',  // Medium neutral
+    600: '#999966',  // Dark neutral
+    700: '#666633',  // Darker neutral
+    800: '#333300',  // Very dark neutral
+    900: '#1a1a00'   // Darkest neutral
   }
 };
 
-// Chronic illness-friendly extended colors
+// FILO Protocol Colors - Exact hex colors specified
 export const extendedColors = {
-  // Sage green - for success/allowed states
-  sage: {
-    50: '#f6f9f6',
-    100: '#e8f2e8', 
-    200: '#c8e0c8',
-    300: '#a8cea8',
-    400: '#7fb87f',
-    500: '#5a9b5a',  // Core sage
-    600: '#4a8a4a',
-    700: '#3a7a3a',
-    800: '#2a5a2a',
-    900: '#1a3a1a'
+  // Green for allowed/matches protocol - #336633
+  allowed: {
+    50: '#f0fff0',   // Very light green
+    100: '#ccf2cc',  // Light green
+    200: '#99e699',  // Soft green
+    300: '#66d966',  // Medium green
+    400: '#339933',  // Lighter green
+    500: '#336633',  // Core allowed green (exact)
+    600: '#336633',  // FILO allowed green (exact)
+    700: '#2d5529',  // Deep green
+    800: '#264426',  // Very deep green
+    900: '#1f331f'   // Darkest green
   },
   
-  // Coral - for error/avoid states  
-  coral: {
-    50: '#fdf6f4',
-    100: '#fae8e2',
-    200: '#f2c5b8',
-    300: '#eaa28e',
-    400: '#de7f64',
-    500: '#d25c3a',  // Core coral
-    600: '#b84a2a',
-    700: '#9e381a',
-    800: '#84260a',
-    900: '#6a1400'
+  // Red for forbidden/avoid - #993333
+  avoid: {
+    50: '#fff0f0',   // Very light red
+    100: '#ffcccc',  // Light red
+    200: '#ff9999',  // Soft red
+    300: '#ff6666',  // Medium red
+    400: '#cc3333',  // Lighter red
+    500: '#993333',  // Core avoid red (exact)
+    600: '#993333',  // FILO avoid red (exact)
+    700: '#802929',  // Deep red
+    800: '#661f1f',  // Very deep red
+    900: '#4d1616'   // Darkest red
   },
   
-  // Amber - for warning/caution states
-  amber: {
-    50: '#fdf9f0',
-    100: '#faf0d9',
-    200: '#f2deb3',
-    300: '#eacc8d',
-    400: '#deb667',
-    500: '#d2a041',  // Core amber
-    600: '#b88a31',
-    700: '#9e7421',
-    800: '#845e11',
-    900: '#6a4801'
+  // Yellow for warnings - #FFCC66
+  warning: {
+    50: '#fffef0',   // Very light yellow
+    100: '#fffacc',  // Light yellow
+    200: '#fff599',  // Soft yellow
+    300: '#fff066',  // Medium yellow
+    400: '#ffeb33',  // Lighter yellow
+    500: '#FFCC66',  // Core warning yellow (exact)
+    600: '#FFCC66',  // FILO warning yellow (exact)
+    700: '#ccaa52',  // Deep yellow
+    800: '#99883d',  // Very deep yellow
+    900: '#666629'   // Darkest yellow
   },
   
-  // Lavender - for medications
-  lavender: {
-    50: '#f8f6fd',
-    100: '#ede8fa',
-    200: '#d4c5f2',
-    300: '#bba2ea',
-    400: '#9f7fde',
-    500: '#835cd2',  // Core lavender
-    600: '#6f4ab8',
-    700: '#5b389e',
-    800: '#472684',
-    900: '#33146a'
+  // Blue for info - #006699
+  info: {
+    50: '#f0f9ff',   // Very light blue
+    100: '#ccebff',  // Light blue
+    200: '#99d6ff',  // Soft blue
+    300: '#66c2ff',  // Medium blue
+    400: '#3399cc',  // Lighter blue
+    500: '#006699',  // Core info blue (exact)
+    600: '#006699',  // FILO info blue (exact)
+    700: '#005580',  // Deep blue
+    800: '#004466',  // Very deep blue
+    900: '#00334d'   // Darkest blue
   }
 };
 
@@ -113,17 +113,16 @@ export const designTokens = {
     accent: filoColors.accent,
     neutral: filoColors.neutral,
     
-    // Extended chronic illness-friendly colors
-    sage: extendedColors.sage,
-    coral: extendedColors.coral,
-    amber: extendedColors.amber,
-    lavender: extendedColors.lavender,
+    // FILO Protocol Colors
+    allowed: extendedColors.allowed,   // Green for protocol allowed
+    avoid: extendedColors.avoid,       // Red for protocol forbidden
+    warning: extendedColors.warning,   // Yellow for warnings
+    info: extendedColors.info,         // Blue for info
     
     // Legacy mappings for backward compatibility
-    secondary: extendedColors.sage,  // Map to sage green
-    error: extendedColors.coral,     // Map to coral
-    warning: extendedColors.amber,   // Map to amber
-    success: extendedColors.sage,    // Map to sage green
+    secondary: extendedColors.allowed,  // Map to allowed green
+    error: extendedColors.avoid,        // Map to avoid red
+    success: extendedColors.allowed     // Map to allowed green
     
     // Semantic Colors
     success: {

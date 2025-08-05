@@ -24,10 +24,10 @@
   
   /* FILO Brand Utilities */
   .bg-filo-cream { @apply bg-neutral-50; }
-  .bg-filo-teal { @apply bg-primary-400; }
-  .bg-filo-terracotta { @apply bg-accent-400; }
-  .text-filo-teal { @apply text-primary-600; }
-  .text-filo-terracotta { @apply text-accent-600; }
+  .bg-filo-teal { @apply bg-primary-500; }
+  .bg-filo-orange { @apply bg-accent-500; }
+  .text-filo-teal { @apply text-primary-500; }
+  .text-filo-orange { @apply text-accent-500; }
   
   /* Chronic Illness Accessibility Utilities */
   .touch-target { @apply min-h-[44px] min-w-[44px]; } /* Minimum touch target */
@@ -35,24 +35,24 @@
   .high-contrast { @apply contrast-more:border-2 contrast-more:border-gray-900; }
   
   /* Semantic Health Colors */
-  .health-symptom { @apply text-coral-600 bg-coral-50 border-coral-200; }
-  .health-improvement { @apply text-sage-600 bg-sage-50 border-sage-200; }
-  .health-medication { @apply text-lavender-600 bg-lavender-50 border-lavender-200; }
-  .health-supplement { @apply text-primary-600 bg-primary-50 border-primary-200; }
-  .health-food { @apply text-accent-600 bg-accent-50 border-accent-200; }
-  .health-neutral { @apply text-neutral-600 bg-neutral-100 border-neutral-200; }
+  .health-symptom { @apply text-avoid-600 bg-avoid-50 border-avoid-600; }
+  .health-improvement { @apply text-allowed-600 bg-allowed-50 border-allowed-600; }
+  .health-medication { @apply text-info-600 bg-info-50 border-info-600; }
+  .health-supplement { @apply text-primary-600 bg-primary-50 border-primary-600; }
+  .health-food { @apply text-accent-600 bg-accent-50 border-accent-600; }
+  .health-neutral { @apply text-neutral-600 bg-neutral-100 border-neutral-600; }
   
-  /* Protocol Compliance Colors */
-  .protocol-allowed { @apply text-sage-600 bg-sage-50 border-sage-200; }
-  .protocol-avoid { @apply text-coral-600 bg-coral-50 border-coral-200; }
-  .protocol-reintroduction { @apply text-amber-600 bg-amber-50 border-amber-200; }
-  .protocol-unknown { @apply text-neutral-600 bg-neutral-100 border-neutral-200; }
+  /* Protocol Compliance Colors - Exact matching */
+  .protocol-allowed { @apply text-allowed-600 bg-allowed-50 border-allowed-600; }
+  .protocol-avoid { @apply text-avoid-600 bg-avoid-50 border-avoid-600; }
+  .protocol-reintroduction { @apply text-accent-600 bg-accent-50 border-accent-600; }
+  .protocol-unknown { @apply text-neutral-600 bg-neutral-100 border-neutral-600; }
   
   /* Status Colors - FILO semantic variants */
-  .status-info { @apply text-primary-600 bg-primary-50 border-primary-200; }
-  .status-success { @apply text-sage-600 bg-sage-50 border-sage-200; }
-  .status-warning { @apply text-amber-600 bg-amber-50 border-amber-200; }
-  .status-error { @apply text-coral-600 bg-coral-50 border-coral-200; }
+  .status-info { @apply text-info-600 bg-info-50 border-info-600; }
+  .status-success { @apply text-allowed-600 bg-allowed-50 border-allowed-600; }
+  .status-warning { @apply text-warning-600 bg-warning-50 border-warning-600; }
+  .status-error { @apply text-avoid-600 bg-avoid-50 border-avoid-600; }
   
   /* Typography Utilities - Enhanced readability */
   .text-readable { @apply leading-relaxed; }

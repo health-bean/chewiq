@@ -24,7 +24,7 @@ const QuickChecks = ({ type, preferences, onQuickSelect }) => {
         label: 'Quick Supplements'
       },
       medication: {
-        color: 'health-medication border hover:bg-lavender-100 transition-standard',
+        color: 'health-medication border hover:bg-info-100 transition-standard',
         label: 'Quick Medications'
       },
       food: {
@@ -32,11 +32,11 @@ const QuickChecks = ({ type, preferences, onQuickSelect }) => {
         label: 'Quick Foods'
       },
       symptom: {
-        color: 'health-symptom border hover:bg-coral-100 transition-standard',
+        color: 'health-symptom border hover:bg-avoid-100 transition-standard',
         label: 'Quick Symptoms'
       },
       detox: {
-        color: 'health-improvement border hover:bg-sage-100 transition-standard',
+        color: 'health-improvement border hover:bg-allowed-100 transition-standard',
         label: 'Quick Detox'
       }
     };
@@ -53,7 +53,7 @@ const QuickChecks = ({ type, preferences, onQuickSelect }) => {
     <div className="mb-6">
       {/* Header */}
       <div className="flex items-center space-x-2 mb-3">
-        <div className="w-5 h-5 bg-amber-500 rounded-full flex items-center justify-center">
+        <div className="w-5 h-5 bg-warning-500 rounded-full flex items-center justify-center">
           <Zap className="w-3 h-3 text-white" />
         </div>
         <h4 className="text-sm font-medium text-gray-700">

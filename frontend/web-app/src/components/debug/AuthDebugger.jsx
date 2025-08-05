@@ -70,32 +70,30 @@ export const AuthDebugger = () => {
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
-      <h2>Authentication Debugger</h2>
+    <div className="p-5 max-w-3xl mx-auto bg-filo-cream">
+      <h2 className="text-xl font-bold mb-4">Authentication Debugger</h2>
       
-      <div style={{ marginBottom: '20px' }}>
-        <h3>Current User</h3>
-        <pre style={{ background: '#f5f5f5', padding: '10px', borderRadius: '4px' }}>
+      <div className="mb-5">
+        <h3 className="font-semibold mb-2">Current User</h3>
+        <pre className="bg-neutral-100 p-3 rounded text-sm overflow-auto">
           {JSON.stringify(auth.user, null, 2)}
         </pre>
       </div>
       
-      <div style={{ marginBottom: '20px' }}>
-        <h3>Auth Mode</h3>
+      <div className="mb-5">
+        <h3 className="font-semibold mb-2">Auth Mode</h3>
         <p><strong>{auth.authMode || 'Not set'}</strong></p>
       </div>
       
-      <div style={{ marginBottom: '20px' }}>
-        <h3>Auth Token</h3>
+      <div className="mb-5">
+        <h3 className="font-semibold mb-2">Auth Token</h3>
         <p>{token ? `Token exists (length: ${token.length})` : 'No token'}</p>
       </div>
       
-      <div style={{ marginBottom: '20px' }}>
+      <div className="mb-5">
         <button 
           onClick={fixAuthHeaders}
-          style={{ 
-            padding: '8px 16px', 
-            background: '#4CAF50', 
+          className="px-4 py-2 bg-allowed-600 text-white rounded hover:bg-allowed-700 mr-2 mb-2" 
             color: 'white', 
             border: 'none', 
             borderRadius: '4px',
@@ -107,9 +105,7 @@ export const AuthDebugger = () => {
         
         <button 
           onClick={() => testEndpoint('/api/v1/protocols')}
-          style={{ 
-            padding: '8px 16px', 
-            background: '#2196F3', 
+          className="px-4 py-2 bg-info-600 text-white rounded hover:bg-info-700 mr-2 mb-2" 
             color: 'white', 
             border: 'none', 
             borderRadius: '4px',
