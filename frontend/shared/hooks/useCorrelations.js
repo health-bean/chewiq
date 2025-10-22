@@ -29,7 +29,7 @@ export const useCorrelations = (timeframeDays = 180) => {
 
   useEffect(() => {
     fetchCorrelations();
-  }, [confidenceThreshold, timeframeDays]);
+  }, [timeframeDays]);
 
   const retryFetch = () => {
     fetchCorrelations();
