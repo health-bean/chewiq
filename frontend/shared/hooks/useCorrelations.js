@@ -36,40 +36,45 @@ export const useCorrelations = (timeframeDays = 180) => {
     fetchCorrelations();
   };
 
+  // Handle both old array format and new object format from backend
+  const allCorrelations = Array.isArray(correlations) 
+    ? correlations 
+    : [...(correlations.triggers || []), ...(correlations.helpers || []), ...(correlations.trends || [])];
+
   // ENHANCED: Group correlations by all 6 types
   const groupedCorrelations = {
     // Legacy groupings (maintain backward compatibility)
-    triggers: correlations.filter(c => c.type === 'food-symptom'),
-    improvements: correlations.filter(c => c.type === 'supplement-improvement'),
-    protocols: correlations.filter(c => c.type === 'protocol-effectiveness'),
+    triggers: allCorrelations.filter(c => c.type === 'food-symptom'),
+    improvements: allCorrelations.filter(c => c.type === 'supplement-improvement'),
+    protocols: allCorrelations.filter(c => c.type === 'protocol-effectiveness'),
     
     // NEW: Enhanced correlation types
-    medicationEffects: correlations.filter(c => c.type === 'medication-effect'),
-    sleepQuality: correlations.filter(c => c.type === 'sleep-quality'),
-    exerciseEnergy: correlations.filter(c => c.type === 'exercise-energy'),
-    stressAmplification: correlations.filter(c => c.type === 'stress-symptom'),
+    medicationEffects: allCorrelations.filter(c => c.type === 'medication-effect'),
+    sleepQuality: allCorrelations.filter(c => c.type === 'sleep-quality'),
+    exerciseEnergy: allCorrelations.filter(c => c.type === 'exercise-energy'),
+    stressAmplification: allCorrelations.filter(c => c.type === 'stress-symptom'),
     
     // Comprehensive grouping
     allTypes: {
-      'food-symptom': correlations.filter(c => c.type === 'food-symptom'),
-      'supplement-improvement': correlations.filter(c => c.type === 'supplement-improvement'),
-      'medication-effect': correlations.filter(c => c.type === 'medication-effect'),
-      'sleep-quality': correlations.filter(c => c.type === 'sleep-quality'),
-      'exercise-energy': correlations.filter(c => c.type === 'exercise-energy'),
-      'stress-symptom': correlations.filter(c => c.type === 'stress-symptom'),
-      'protocol-effectiveness': correlations.filter(c => c.type === 'protocol-effectiveness')
+      'food-symptom': allCorrelations.filter(c => c.type === 'food-symptom'),
+      'supplement-improvement': allCorrelations.filter(c => c.type === 'supplement-improvement'),
+      'medication-effect': allCorrelations.filter(c => c.type === 'medication-effect'),
+      'sleep-quality': allCorrelations.filter(c => c.type === 'sleep-quality'),
+      'exercise-energy': allCorrelations.filter(c => c.type === 'exercise-energy'),
+      'stress-symptom': allCorrelations.filter(c => c.type === 'stress-symptom'),
+      'protocol-effectiveness': allCorrelations.filter(c => c.type === 'protocol-effectiveness')
     }
   };
 
   // ENHANCED: High confidence triggers from ALL types, not just food
-  const highConfidenceTriggers = correlations.filter(c => c.confidence >= 0.7);
+  const highConfidenceTriggers = allCorrelations.filter(c => c.confidence >= 0.7);
 
   // ENHANCED: Get correlations sorted by confidence
-  const sortedCorrelations = [...correlations].sort((a, b) => b.confidence - a.confidence);
+  const sortedCorrelations = [...allCorrelations].sort((a, b) => b.confidence - a.confidence);
 
   // ENHANCED: Get statistics by type - matches backend summary format
   const correlationStats = {
-    total: correlations.length,
+    total: allCorrelations.length,
     byType: {
       foodTriggers: groupedCorrelations.triggers.length,
       medicationEffects: groupedCorrelations.medicationEffects.length,
@@ -80,15 +85,15 @@ export const useCorrelations = (timeframeDays = 180) => {
       protocolEffectiveness: groupedCorrelations.protocols.length
     },
     byConfidence: {
-      high: correlations.filter(c => c.confidence >= 0.7).length,
-      medium: correlations.filter(c => c.confidence >= 0.5 && c.confidence < 0.7).length,
-      low: correlations.filter(c => c.confidence < 0.5).length
+      high: allCorrelations.filter(c => c.confidence >= 0.7).length,
+      medium: allCorrelations.filter(c => c.confidence >= 0.5 && c.confidence < 0.7).length,
+      low: allCorrelations.filter(c => c.confidence < 0.5).length
     }
   };
 
   // ENHANCED: Get top correlations by type
   const getTopCorrelationsByType = (type, limit = 3) => {
-    return correlations
+    return allCorrelations
       .filter(c => c.type === type)
       .sort((a, b) => b.confidence - a.confidence)
       .slice(0, limit);
@@ -96,12 +101,12 @@ export const useCorrelations = (timeframeDays = 180) => {
 
   // ENHANCED: Get correlations above threshold
   const getCorrelationsAboveThreshold = (threshold = 0.6) => {
-    return correlations.filter(c => c.confidence >= threshold);
+    return allCorrelations.filter(c => c.confidence >= threshold);
   };
 
   // ENHANCED: Check if user has specific correlation types
   const hasCorrelationType = (type) => {
-    return correlations.some(c => c.type === type);
+    return allCorrelations.some(c => c.type === type);
   };
 
   // ENHANCED: Get correlation insights summary
@@ -137,7 +142,7 @@ export const useCorrelations = (timeframeDays = 180) => {
 
   return {
     // Core data
-    correlations,
+    correlations: allCorrelations, // Return the processed array instead of raw backend response
     sortedCorrelations,
     groupedCorrelations,
     summary,
