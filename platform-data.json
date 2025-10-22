@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2025-10-22T02:11:11.869Z",
+    "generated": "2025-10-22T03:00:57.127Z",
     "version": "1.0.0",
     "generator": "AutomatedProfessionalDocsGenerator"
   },
@@ -17,7 +17,7 @@
     "workingAPIs": 17,
     "totalAPIs": 28,
     "totalTables": 25,
-    "totalCommits": 255,
+    "totalCommits": 256,
     "contributors": 1
   },
   "discoveredInfo": {
@@ -148,7 +148,7 @@
           ],
           "status": 500,
           "working": false,
-          "responseTime": 1021,
+          "responseTime": 984,
           "responseData": {
             "error": "Failed to complete unified food search"
           },
@@ -168,7 +168,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 42,
+          "responseTime": 104,
           "responseData": {
             "error": "Authentication required"
           },
@@ -183,7 +183,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 39,
+          "responseTime": 249,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -219,7 +219,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 34,
+          "responseTime": 251,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -260,7 +260,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 39,
+          "responseTime": 259,
           "responseData": {
             "protocols": [
               {
@@ -461,7 +461,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 33,
+          "responseTime": 106,
           "responseData": {
             "error": "Authentication required"
           },
@@ -481,7 +481,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 35,
+          "responseTime": 251,
           "responseData": {
             "error": "Authentication required"
           },
@@ -501,7 +501,7 @@
           ],
           "status": 404,
           "working": false,
-          "responseTime": 41,
+          "responseTime": 248,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -542,7 +542,7 @@
           ],
           "status": 404,
           "working": false,
-          "responseTime": 41,
+          "responseTime": 251,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -578,7 +578,7 @@
           "params": [],
           "status": 401,
           "working": false,
-          "responseTime": 34,
+          "responseTime": 248,
           "responseData": {
             "error": "Authentication required"
           },
@@ -598,7 +598,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 39,
+          "responseTime": 101,
           "responseData": {
             "error": "Authentication required"
           },
@@ -618,7 +618,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 33,
+          "responseTime": 249,
           "responseData": {
             "error": "Authentication required"
           },
@@ -638,7 +638,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 42,
+          "responseTime": 108,
           "responseData": {
             "error": "Authentication required"
           },
@@ -658,7 +658,7 @@
           ],
           "status": 401,
           "working": false,
-          "responseTime": 36,
+          "responseTime": 259,
           "responseData": {
             "error": "Authentication required"
           },
@@ -678,7 +678,7 @@
           ],
           "status": 404,
           "working": false,
-          "responseTime": 36,
+          "responseTime": 249,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -714,12 +714,12 @@
           "params": [],
           "status": 200,
           "working": true,
-          "responseTime": 35,
+          "responseTime": 251,
           "responseData": {
             "success": true,
             "message": "Database connection successful",
             "count": "202",
-            "timestamp": "2025-10-22T02:11:11.407Z"
+            "timestamp": "2025-10-22T03:00:54.359Z"
           },
           "responseSize": 112
         },
@@ -732,7 +732,7 @@
           "params": [],
           "status": 200,
           "working": true,
-          "responseTime": 33,
+          "responseTime": 254,
           "responseData": {
             "cache_stats": {
               "size": 0,
@@ -743,7 +743,7 @@
               "hitCount": 0
             },
             "sample_entries": [],
-            "timestamp": "2025-10-22T02:11:11.441Z"
+            "timestamp": "2025-10-22T03:00:54.612Z"
           },
           "responseSize": 157
         },
@@ -761,7 +761,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 43,
+          "responseTime": 254,
           "responseData": {
             "symptoms": [],
             "total": 0,
@@ -784,7 +784,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 40,
+          "responseTime": 254,
           "responseData": {
             "supplements": [],
             "total": 0,
@@ -806,7 +806,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 37,
+          "responseTime": 248,
           "responseData": {
             "medications": [],
             "total": 0,
@@ -828,7 +828,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 40,
+          "responseTime": 256,
           "responseData": {
             "detox_types": [],
             "total": 0,
@@ -850,7 +850,7 @@
           ],
           "status": 200,
           "working": true,
-          "responseTime": 38,
+          "responseTime": 250,
           "responseData": {
             "exposures": [],
             "total": 0,
@@ -867,7 +867,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 35,
+          "responseTime": 249,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -903,7 +903,7 @@
           "params": [],
           "status": 500,
           "working": false,
-          "responseTime": 34,
+          "responseTime": 104,
           "responseData": {
             "error": "Failed to complete get journal entries"
           },
@@ -918,7 +918,7 @@
           "params": [],
           "status": 401,
           "working": false,
-          "responseTime": 35,
+          "responseTime": 250,
           "responseData": {
             "error": "User not authenticated"
           },
@@ -933,7 +933,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 34,
+          "responseTime": 247,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -969,7 +969,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 38,
+          "responseTime": 252,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -1005,7 +1005,7 @@
           "params": [],
           "status": 404,
           "working": false,
-          "responseTime": 41,
+          "responseTime": 100,
           "responseData": {
             "error": "Endpoint not found",
             "details": {
@@ -1713,7 +1713,7 @@
             {
               "name": "useCorrelations",
               "path": "frontend/shared/hooks/useCorrelations.js",
-              "size": 6031
+              "size": 6431
             },
             {
               "name": "useDetoxTypes",
@@ -1747,7 +1747,7 @@
             }
           ],
           "utilities": [],
-          "size": "146.91 KB"
+          "size": "147.3 KB"
         }
       },
       "backend": {
@@ -1899,18 +1899,18 @@
       "repository": "https://github.com/deebyrne26/health-platform",
       "branch": "main",
       "lastCommit": {
-        "hash": "42a920f",
-        "message": "Fix useCorrelations hook to handle object instead of array from backend",
+        "hash": "df8c6d2",
+        "message": "Fix correlations.filter error by handling both array and object formats from backend",
         "author": "deebyrne26",
-        "date": "Tue Oct 21 22:09:14 2025 -0400"
+        "date": "Tue Oct 21 22:58:50 2025 -0400"
       },
       "contributors": [
         {
           "name": "deebyrne26",
-          "commits": 255
+          "commits": 256
         }
       ],
-      "totalCommits": 255
+      "totalCommits": 256
     }
   }
 }
