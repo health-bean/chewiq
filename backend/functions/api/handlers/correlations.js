@@ -56,20 +56,48 @@ async function handleGetCorrelationInsights(queryParams, event) {
 
     // Run comprehensive correlation analysis
     const correlations = await detectAllCorrelations(timelineData, confidenceThreshold);
+    
+    // Enhanced filtering: Apply higher confidence threshold and limit results
+    const minConfidence = parseFloat(queryParams?.min_confidence) || 0.5; // Default to 50% for more insights
+    const maxResults = parseInt(queryParams?.max_results) || 20; // Default to top 20
+    
+    // Filter by confidence and sort by impact/confidence
+    const filteredCorrelations = correlations
+      .filter(c => c.confidence >= minConfidence)
+      .sort((a, b) => {
+        // Prioritize food property patterns (they're more valuable insights)
+        if (a.type === 'food-property-pattern' && b.type !== 'food-property-pattern') return -1;
+        if (b.type === 'food-property-pattern' && a.type !== 'food-property-pattern') return 1;
+        
+        // Then sort by impact score (if available) then confidence
+        const aScore = (a.impactScore || a.confidence) * a.confidence;
+        const bScore = (b.impactScore || b.confidence) * b.confidence;
+        return bScore - aScore;
+      })
+      .slice(0, maxResults);
+    
+    console.log(`CORRELATIONS: Filtered ${correlations.length} -> ${filteredCorrelations.length} (min confidence: ${minConfidence})`);
+
+    // ROBUST CATEGORIZATION: Group and categorize correlations properly
+    const categorizedInsights = categorizeAndGroupCorrelations(filteredCorrelations);
 
     const summary = {
       totalCorrelations: correlations.length,
-      triggers: correlations.filter(c => c.type === 'food-symptom').length,
-      improvements: correlations.filter(c => c.type === 'supplement-improvement').length,
-      medicationEffects: correlations.filter(c => c.type === 'medication-effect').length,
+      filteredCorrelations: filteredCorrelations.length,
+      foodTriggers: correlations.filter(c => c.type === 'food-symptom').length,
+      supplementEffects: correlations.filter(c => c.type.includes('supplement')).length,
+      medicationEffects: correlations.filter(c => c.type.includes('medication')).length,
       exerciseImpacts: correlations.filter(c => c.type === 'exercise-energy').length,
-      sleepFactors: correlations.filter(c => c.type === 'sleep-quality').length,
+      sleepFactors: correlations.filter(c => c.type.includes('sleep')).length,
       stressAmplifiers: correlations.filter(c => c.type === 'stress-symptom').length,
-      foodPatterns: correlations.filter(c => c.type === 'food-property-pattern').length
+      foodPatterns: correlations.filter(c => c.type === 'food-property-pattern').length,
+      mealTimingFactors: correlations.filter(c => c.type === 'meal-timing-symptom').length,
+      minConfidenceApplied: minConfidence,
+      maxResultsApplied: maxResults
     };
 
     return successResponse({
-      insights: correlations,
+      insights: categorizedInsights,
       summary,
       timeframe_days: timeframeDays,
       confidence_threshold: confidenceThreshold,
@@ -215,11 +243,11 @@ async function detectAllCorrelations(timelineData, confidenceThreshold) {
   const foodSymptomCorrelations = await detectFoodSymptomCorrelations(timelineData, confidenceThreshold);
   correlations.push(...foodSymptomCorrelations);
 
-  // 2. Supplement-Improvement Correlations
+  // 2. Supplement-Symptom Correlations (positive or negative)
   const supplementCorrelations = await detectSupplementImprovements(timelineData, confidenceThreshold);
   correlations.push(...supplementCorrelations);
 
-  // 3. Medication-Side Effect Correlations
+  // 3. Medication-Symptom Correlations (positive or negative)
   const medicationCorrelations = await detectMedicationEffects(timelineData, confidenceThreshold);
   correlations.push(...medicationCorrelations);
 
@@ -234,6 +262,14 @@ async function detectAllCorrelations(timelineData, confidenceThreshold) {
   // 6. Stress-Symptom Amplification
   const stressCorrelations = await detectStressSymptomCorrelations(timelineData, confidenceThreshold);
   correlations.push(...stressCorrelations);
+
+  // 7. Sleep Duration-Symptom Correlations
+  const sleepDurationCorrelations = await detectSleepDurationCorrelations(timelineData, confidenceThreshold);
+  correlations.push(...sleepDurationCorrelations);
+
+  // 8. Meal Timing-Symptom Correlations
+  const mealTimingCorrelations = await detectMealTimingCorrelations(timelineData, confidenceThreshold);
+  correlations.push(...mealTimingCorrelations);
 
   return correlations;
 }
@@ -545,15 +581,16 @@ async function getFoodProperties() {
   try {
     const query = `
       SELECT 
-        name, 
-        nightshade, 
-        histamine, 
-        oxalate, 
-        lectin, 
-        fodmap, 
-        salicylate,
-        category
-      FROM foods
+        sf.name, 
+        fsp.is_nightshade as nightshade, 
+        fsp.histamine_level as histamine, 
+        fsp.oxalate_level as oxalate, 
+        fsp.lectin_level as lectin, 
+        fsp.fodmap_level as fodmap, 
+        fsp.salicylate_level as salicylate,
+        sf.category
+      FROM simplified_foods sf
+      LEFT JOIN food_specialized_properties_simplified fsp ON sf.id = fsp.food_id
     `;
     
     const result = await client.query(query);
@@ -1076,7 +1113,7 @@ function analyzePersonalizedSupplementImprovement(supplementInstances, symptoms,
   }
 
   return {
-    type: 'supplement-improvement',
+    type: 'supplement-effect',
     trigger: supplementName,
     effect: `reduced ${symptomType}`,
     timeWindow: 28 * 24,
@@ -1118,6 +1155,165 @@ function parseDateTime(entry) {
  */
 function getUniqueSymptoms(symptomEntries) {
   return [...new Set(symptomEntries.map(s => s.content))];
+}
+
+/**
+ * NEW: Detect sleep duration correlations
+ */
+async function detectSleepDurationCorrelations(timelineData, confidenceThreshold) {
+  const correlations = [];
+  const sleepEntries = timelineData.filter(entry => entry.type === 'sleep' && entry.structured?.duration);
+  const symptomEntries = timelineData.filter(entry => entry.type === 'symptom');
+  
+  if (sleepEntries.length < 5 || symptomEntries.length === 0) return correlations;
+  
+  // Group sleep by duration ranges
+  const sleepRanges = {
+    'short sleep (<6h)': sleepEntries.filter(e => e.structured.duration < 6),
+    'normal sleep (6-8h)': sleepEntries.filter(e => e.structured.duration >= 6 && e.structured.duration <= 8),
+    'long sleep (>8h)': sleepEntries.filter(e => e.structured.duration > 8)
+  };
+  
+  for (const [range, entries] of Object.entries(sleepRanges)) {
+    if (entries.length < 3) continue;
+    
+    for (const symptom of [...new Set(symptomEntries.map(s => s.structured?.symptom_name || s.content))]) {
+      const correlation = calculateCorrelation(entries, symptomEntries.filter(s => (s.structured?.symptom_name || s.content) === symptom), 24);
+      if (correlation.confidence >= confidenceThreshold) {
+        correlations.push({
+          type: 'sleep-duration-symptom',
+          trigger: range,
+          effect: symptom,
+          confidence: correlation.confidence,
+          description: `🛌 ${range} correlates with ${symptom} (${Math.round(correlation.confidence * 100)}% confidence)`,
+          recommendation: correlation.confidence > 0.7 ? `Consider adjusting sleep duration` : `Monitor sleep patterns`
+        });
+      }
+    }
+  }
+  
+  return correlations;
+}
+
+/**
+ * NEW: Detect meal timing correlations
+ */
+async function detectMealTimingCorrelations(timelineData, confidenceThreshold) {
+  const correlations = [];
+  const foodEntries = timelineData.filter(entry => entry.type === 'food');
+  const symptomEntries = timelineData.filter(entry => entry.type === 'symptom');
+  
+  if (foodEntries.length < 10 || symptomEntries.length === 0) return correlations;
+  
+  // Analyze meal timing patterns
+  const timingPatterns = {
+    'late dinner (after 8pm)': foodEntries.filter(e => {
+      const hour = new Date(e.timestamp).getHours();
+      return hour >= 20 || hour <= 2;
+    }),
+    'skipped breakfast': [], // Would need to detect gaps in morning eating
+    'large meals': foodEntries.filter(e => e.structured?.portion === 'large' || e.content?.includes('large'))
+  };
+  
+  for (const [pattern, entries] of Object.entries(timingPatterns)) {
+    if (entries.length < 3) continue;
+    
+    for (const symptom of [...new Set(symptomEntries.map(s => s.structured?.symptom_name || s.content))]) {
+      const correlation = calculateCorrelation(entries, symptomEntries.filter(s => (s.structured?.symptom_name || s.content) === symptom), 12);
+      if (correlation.confidence >= confidenceThreshold) {
+        correlations.push({
+          type: 'meal-timing-symptom',
+          trigger: pattern,
+          effect: symptom,
+          confidence: correlation.confidence,
+          description: `🍽️ ${pattern} correlates with ${symptom} (${Math.round(correlation.confidence * 100)}% confidence)`,
+          recommendation: `Consider adjusting meal timing to reduce ${symptom}`
+        });
+      }
+    }
+  }
+  
+  return correlations;
+}
+
+/**
+ * ROBUST SOLUTION: Backend handles all categorization and grouping
+ */
+function categorizeAndGroupCorrelations(correlations) {
+  const result = {
+    triggers: [],
+    helpers: [],
+    trends: []
+  };
+
+  // Group by trigger first
+  const groupedByTrigger = correlations.reduce((acc, correlation) => {
+    const key = correlation.trigger;
+    if (!acc[key]) {
+      acc[key] = [];
+    }
+    acc[key].push(correlation);
+    return acc;
+  }, {});
+
+  // Process each trigger group
+  Object.entries(groupedByTrigger).forEach(([trigger, correlationGroup]) => {
+    const firstCorrelation = correlationGroup[0];
+    
+    // Trends (food-property-pattern)
+    if (firstCorrelation.type === 'food-property-pattern') {
+      result.trends.push({
+        id: `trend-${trigger}`,
+        name: trigger,
+        description: firstCorrelation.effect,
+        confidence: firstCorrelation.confidence,
+        percentage: Math.round(firstCorrelation.confidence * 100),
+        occurrences: firstCorrelation.occurrences,
+        opportunities: firstCorrelation.totalOpportunities,
+        foods: firstCorrelation.contributingFoods || [],
+        insight: firstCorrelation.patternInsight,
+        timeframe: firstCorrelation.timeWindowDescription,
+        type: 'trend'
+      });
+      return;
+    }
+
+    // Group multiple effects for same trigger
+    const effects = correlationGroup.map(c => c.effect);
+    const avgConfidence = correlationGroup.reduce((sum, c) => sum + c.confidence, 0) / correlationGroup.length;
+    
+    // ROBUST CATEGORIZATION LOGIC
+    const isHelper = (firstCorrelation.type === 'supplement-effect' && effects.some(e => e.includes('reduced'))) || 
+                     firstCorrelation.type === 'sleep-quality' ||
+                     (firstCorrelation.type === 'exercise-energy' && effects.some(e => e.includes('increased')));
+
+    const item = {
+      id: `${isHelper ? 'helper' : 'trigger'}-${trigger}`,
+      name: trigger,
+      description: effects.length > 1 ? `${effects.length} effects: ${effects.join(', ')}` : effects[0],
+      effects: effects,
+      effectCount: effects.length,
+      confidence: avgConfidence,
+      percentage: Math.round(avgConfidence * 100),
+      occurrences: Math.max(...correlationGroup.map(c => c.occurrences || 0)),
+      opportunities: Math.max(...correlationGroup.map(c => c.totalOpportunities || c.sessionsAnalyzed || 0)),
+      timeframe: firstCorrelation.timeWindowDescription,
+      type: isHelper ? 'helper' : 'trigger'
+    };
+
+    if (isHelper) {
+      result.helpers.push(item);
+    } else {
+      result.triggers.push(item);
+    }
+  });
+
+  // Sort each category by confidence
+  result.triggers.sort((a, b) => b.confidence - a.confidence);
+  result.helpers.sort((a, b) => b.confidence - a.confidence);
+  result.trends.sort((a, b) => b.confidence - a.confidence);
+
+  return result;
 }
 
 module.exports = {

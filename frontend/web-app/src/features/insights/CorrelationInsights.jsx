@@ -17,82 +17,14 @@ const CorrelationInsights = () => {
     error
   } = useCorrelations(timeframeFilter);
 
-  // Organize correlations into user-friendly categories
-  const organizeInsights = (correlations) => {
-    const triggers = [];
-    const helpers = [];
-    const patterns = [];
-
-    // Group correlations by trigger first
-    const groupedByTrigger = correlations.reduce((acc, correlation, index) => {
-      const key = correlation.trigger;
-      if (!acc[key]) {
-        acc[key] = [];
-      }
-      acc[key].push({...correlation, originalIndex: index});
-      return acc;
-    }, {});
-
-    // Process each trigger group
-    Object.entries(groupedByTrigger).forEach(([trigger, correlationGroup]) => {
-      const firstCorrelation = correlationGroup[0];
-      
-      // Patterns (food-property-pattern) - keep as single items
-      if (firstCorrelation.type === 'food-property-pattern') {
-        patterns.push({
-          id: `pattern-${trigger}`,
-          name: trigger,
-          description: firstCorrelation.effect,
-          confidence: firstCorrelation.confidence,
-          percentage: Math.round(firstCorrelation.confidence * 100),
-          occurrences: firstCorrelation.occurrences,
-          opportunities: firstCorrelation.totalOpportunities,
-          foods: firstCorrelation.contributingFoods || [],
-          insight: firstCorrelation.patternInsight,
-          action: getPatternAction(firstCorrelation),
-          timeframe: firstCorrelation.timeWindowDescription
-        });
-        return;
-      }
-
-      // Group multiple effects for same trigger
-      const effects = correlationGroup.map(c => c.effect);
-      const avgConfidence = correlationGroup.reduce((sum, c) => sum + c.confidence, 0) / correlationGroup.length;
-      
-      // Determine if positive or negative
-      const isPositive = (firstCorrelation.type === 'supplement-effect' && effects.some(e => e.includes('reduced'))) || 
-                        firstCorrelation.type === 'sleep-quality' ||
-                        (firstCorrelation.type === 'exercise-energy' && effects.some(e => e.includes('increased')));
-
-      const item = {
-        id: `grouped-${trigger}`,
-        name: trigger,
-        description: effects.length > 1 ? `${effects.length} effects: ${effects.join(', ')}` : effects[0],
-        effects: effects,
-        effectCount: effects.length,
-        confidence: avgConfidence,
-        percentage: Math.round(avgConfidence * 100),
-        occurrences: Math.max(...correlationGroup.map(c => c.occurrences || 0)),
-        opportunities: Math.max(...correlationGroup.map(c => c.totalOpportunities || c.sessionsAnalyzed || 0)),
-        action: getActionRecommendation(firstCorrelation),
-        timeframe: firstCorrelation.timeWindowDescription,
-        severity: firstCorrelation.avgSeverity,
-        type: firstCorrelation.type
-      };
-
-      if (isPositive) {
-        helpers.push(item);
-      } else {
-        triggers.push(item);
-      }
-    });
-
-    // Sort by confidence/impact
-    triggers.sort((a, b) => b.confidence - a.confidence);
-    helpers.sort((a, b) => b.confidence - a.confidence);
-    patterns.sort((a, b) => b.confidence - a.confidence);
-
-    return { triggers, helpers, patterns };
+  // SIMPLIFIED: Backend now handles all categorization and grouping
+  const organizeInsights = (insights) => {
+    // Backend returns pre-categorized data: {triggers: [], helpers: [], trends: []}
+    return {
+      triggers: insights.triggers || [],
+      helpers: insights.helpers || [],
+      patterns: insights.trends || []  // Map 'trends' to 'patterns' for UI consistency
+    };
   };
 
   const getPatternAction = (correlation) => {
