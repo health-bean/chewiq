@@ -64,27 +64,6 @@ const LoginPage = () => {
             onLogin={handleDemoLogin}
             isLoading={isLoading}
           />
-          <DemoUserCard
-            name="Lisa Rodriguez"
-            description="Low Histamine • 2 months of tracking • Histamine intolerance"
-            userId="lisa-histamine"
-            onLogin={handleDemoLogin}
-            isLoading={isLoading}
-          />
-          <DemoUserCard
-            name="John Williams"
-            description="Paleo Protocol • 5 months of tracking • General wellness"
-            userId="john-paleo"
-            onLogin={handleDemoLogin}
-            isLoading={isLoading}
-          />
-          <DemoUserCard
-            name="Emma Davis"
-            description="Multi-Protocol • 6 months of tracking • Complex dietary needs"
-            userId="emma-multi"
-            onLogin={handleDemoLogin}
-            isLoading={isLoading}
-          />
         </div>
 
         <div className="mt-8 p-4 bg-info-50 border border-info-200 rounded-lg">
