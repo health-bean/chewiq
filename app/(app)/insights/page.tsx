@@ -1,10 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { LineChart, TrendingUp, AlertTriangle, Heart, Zap } from "lucide-react";
-import { Card, Badge, Spinner } from "@/components/ui";
+import { LineChart, TrendingUp, AlertTriangle, Heart, Zap, Plus } from "lucide-react";
+import { Card, Badge, Spinner, Button } from "@/components/ui";
 import { ExerciseInsights } from "@/components/insights/ExerciseInsights";
-import type { Insight, InsightResult } from "@/types";
+import { ReintroductionCard } from "@/components/reintroductions/ReintroductionCard";
+import { StartReintroductionModal } from "@/components/reintroductions/StartReintroductionModal";
+import type { Insight, InsightResult, ReintroductionTrial } from "@/types";
+import { useRouter } from "next/navigation";
 
 function InsightCard({ insight }: { insight: Insight }) {
   const isPattern = insight.type === "food-property-pattern";
@@ -120,28 +123,50 @@ function InsightSection({
 }
 
 export default function InsightsPage() {
+  const router = useRouter();
   const [result, setResult] = useState<InsightResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [activeReintroduction, setActiveReintroduction] = useState<ReintroductionTrial | null>(null);
+  const [protocolId, setProtocolId] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    async function fetchInsights() {
+    async function fetchData() {
       try {
-        const res = await fetch("/api/insights?days=90");
-        if (res.ok) {
-          const data: InsightResult = await res.json();
+        // Fetch insights
+        const insightsRes = await fetch("/api/insights?days=90");
+        if (insightsRes.ok) {
+          const data: InsightResult = await insightsRes.json();
           setResult(data);
         } else {
           setError("Failed to load insights");
         }
+
+        // Fetch user protocol
+        const userRes = await fetch("/api/users/me");
+        if (userRes.ok) {
+          const userData = await userRes.json();
+          setProtocolId(userData.user?.currentProtocolId || null);
+        }
+
+        // Fetch active reintroduction
+        const reintroRes = await fetch("/api/reintroductions");
+        if (reintroRes.ok) {
+          const reintroData = await reintroRes.json();
+          const active = reintroData.reintroductions?.find(
+            (r: ReintroductionTrial) => r.status === "active"
+          );
+          setActiveReintroduction(active || null);
+        }
       } catch {
-        setError("Failed to load insights");
+        setError("Failed to load data");
       } finally {
         setLoading(false);
       }
     }
 
-    fetchInsights();
+    fetchData();
   }, []);
 
   if (loading) {
@@ -200,6 +225,60 @@ export default function InsightsPage() {
         </div>
       ) : (
         <div className="flex flex-col gap-6">
+          {/* Active Reintroduction */}
+          {activeReintroduction && (
+            <div>
+              <div className="mb-3 flex items-center justify-between">
+                <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400">
+                  Active Reintroduction
+                </h2>
+                <button
+                  onClick={() => router.push("/reintroductions")}
+                  className="text-xs text-indigo-600 hover:text-indigo-700"
+                >
+                  View All →
+                </button>
+              </div>
+              <ReintroductionCard
+                reintroduction={activeReintroduction}
+                onViewDetails={() => router.push("/reintroductions")}
+              />
+            </div>
+          )}
+
+          {/* Start Reintroduction CTA */}
+          {!activeReintroduction && protocolId && totalInsights > 0 && (
+            <Card>
+              <div className="flex items-start gap-4">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-indigo-50">
+                  <Plus className="h-5 w-5 text-indigo-600" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-sm font-semibold text-slate-900">
+                    Ready to Reintroduce Foods?
+                  </h3>
+                  <p className="mt-1 text-sm text-slate-600">
+                    Start testing eliminated foods to see if you can safely add them back to your diet.
+                  </p>
+                  <div className="mt-3 flex gap-2">
+                    <Button
+                      size="sm"
+                      onClick={() => setIsModalOpen(true)}
+                    >
+                      Start Reintroduction
+                    </Button>
+                    <Button
+                      size="sm"
+                      onClick={() => router.push("/reintroductions")}
+                    >
+                      View Recommendations
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          )}
+
           {exerciseInsights.length > 0 && (
             <ExerciseInsights insights={exerciseInsights} />
           )}
@@ -207,6 +286,19 @@ export default function InsightsPage() {
           <InsightSection title="Triggers" insights={otherTriggers} />
           <InsightSection title="What Helps" insights={otherHelpers} />
         </div>
+      )}
+
+      {/* Start Reintroduction Modal */}
+      {protocolId && (
+        <StartReintroductionModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onSuccess={() => {
+            setIsModalOpen(false);
+            router.push("/reintroductions");
+          }}
+          protocolId={protocolId}
+        />
       )}
     </div>
   );
