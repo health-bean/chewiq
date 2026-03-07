@@ -98,6 +98,22 @@ async function handleLogEntries(
       structuredContent.severity = entry.severity;
     }
 
+    // For food entries, try to find matching food in database
+    let foodId: string | null = null;
+    if (entry.entry_type === "food") {
+      const [matchedFood] = await db
+        .select({ id: foods.id, displayName: foods.displayName })
+        .from(foods)
+        .where(sql`LOWER(${foods.displayName}) = LOWER(${entry.name})`)
+        .limit(1);
+
+      if (matchedFood) {
+        foodId = matchedFood.id;
+        // Use the canonical display name from database
+        entry.name = matchedFood.displayName;
+      }
+    }
+
     const [inserted] = await db
       .insert(timelineEntries)
       .values({
@@ -106,6 +122,7 @@ async function handleLogEntries(
         entryType: entry.entry_type,
         name: entry.name,
         severity: entry.severity ?? null,
+        foodId: foodId,
         structuredContent:
           Object.keys(structuredContent).length > 0 ? structuredContent : null,
         entryDate: entryDate,
