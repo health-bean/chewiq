@@ -412,4 +412,98 @@ async function main() {
   }
 }
 
-main();
+// ─── Export for Onboarding ─────────────────────────────────────────────
+
+/**
+ * Generate sample data for a user during onboarding.
+ * Creates 30 days of realistic timeline + journal data.
+ */
+export async function generateSampleData(userId: string) {
+  const { db } = await import("@/lib/db");
+  const { timelineEntries, journalEntries } = await import("@/lib/db/schema");
+  const { eq } = await import("drizzle-orm");
+
+  // Clear existing data
+  await db.delete(journalEntries).where(eq(journalEntries.userId, userId));
+  await db.delete(timelineEntries).where(eq(timelineEntries.userId, userId));
+
+  const now = new Date();
+  const days = 30;
+
+  for (let dayOffset = days; dayOffset >= 0; dayOffset--) {
+    const date = new Date(now);
+    date.setDate(date.getDate() - dayOffset);
+    const dateStr = fmtDate(date);
+
+    // Journal entry
+    await db.insert(journalEntries).values({
+      userId,
+      entryDate: dateStr,
+      sleepScore: rand(5, 8),
+      energyScore: rand(4, 8),
+      moodScore: rand(4, 8),
+      stressScore: rand(2, 7),
+      isSample: true,
+    });
+
+    // Safe foods (2-4 per day)
+    const numFoods = rand(2, 4);
+    const todayFoods = [...SAFE_FOODS].sort(() => Math.random() - 0.5).slice(0, numFoods);
+    for (const food of todayFoods) {
+      const hour = pick([7, 8, 12, 13, 18, 19]);
+      await db.insert(timelineEntries).values({
+        userId,
+        entryType: "food",
+        name: food,
+        entryDate: dateStr,
+        entryTime: fmtTime(hour, rand(0, 45)),
+        isSample: true,
+      });
+    }
+
+    // Occasional trigger foods
+    if (Math.random() < 0.3) {
+      const triggerFood = pick(Object.keys(TRIGGER_FOODS));
+      const config = TRIGGER_FOODS[triggerFood as keyof typeof TRIGGER_FOODS];
+      const hour = rand(config.mealHour[0], config.mealHour[1]);
+      await db.insert(timelineEntries).values({
+        userId,
+        entryType: "food",
+        name: triggerFood,
+        entryDate: dateStr,
+        entryTime: fmtTime(hour, rand(0, 45)),
+        isSample: true,
+      });
+
+      // Correlated symptom
+      if (Math.random() < 0.5) {
+        await db.insert(timelineEntries).values({
+          userId,
+          entryType: "symptom",
+          name: pick(["Headache", "Joint Pain", "Brain Fog", "Bloating"]),
+          severity: rand(3, 7),
+          entryDate: dateStr,
+          entryTime: fmtTime(hour + rand(2, 6), rand(0, 59)),
+          isSample: true,
+        });
+      }
+    }
+
+    // Supplements (1-2 per day)
+    if (Math.random() < 0.7) {
+      const supp = pick(SUPPLEMENTS);
+      await db.insert(timelineEntries).values({
+        userId,
+        entryType: "supplement",
+        name: supp.name,
+        entryDate: dateStr,
+        entryTime: fmtTime(supp.hour, rand(0, 30)),
+        isSample: true,
+      });
+    }
+  }
+}
+
+if (require.main === module) {
+  main();
+}
