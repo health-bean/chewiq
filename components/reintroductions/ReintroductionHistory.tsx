@@ -1,0 +1,260 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { Loader2, AlertCircle, Calendar, Clock } from "lucide-react";
+import type { ReintroductionTrial, ReintroductionStatus } from "@/types";
+
+interface ReintroductionHistoryProps {
+  protocolId?: string; // Optional for future filtering by protocol
+  onViewDetails?: (reintroduction: ReintroductionTrial) => void;
+}
+
+type FilterStatus = "all" | ReintroductionStatus;
+
+export function ReintroductionHistory({
+  protocolId,
+  onViewDetails,
+}: ReintroductionHistoryProps) {
+  // Note: protocolId reserved for future protocol-specific filtering
+  void protocolId;
+  const [reintroductions, setReintroductions] = useState<ReintroductionTrial[]>([]);
+  const [filteredReintroductions, setFilteredReintroductions] = useState<ReintroductionTrial[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedFilter, setSelectedFilter] = useState<FilterStatus>("all");
+
+  // Fetch reintroductions on mount
+  useEffect(() => {
+    fetchReintroductions();
+  }, []);
+
+  // Filter reintroductions when filter changes
+  useEffect(() => {
+    if (selectedFilter === "all") {
+      setFilteredReintroductions(reintroductions);
+    } else {
+      setFilteredReintroductions(
+        reintroductions.filter((r) => r.status === selectedFilter)
+      );
+    }
+  }, [selectedFilter, reintroductions]);
+
+  const fetchReintroductions = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch("/api/reintroductions");
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to fetch reintroductions");
+      }
+
+      setReintroductions(data.reintroductions || []);
+    } catch (err) {
+      console.error("Error fetching reintroductions:", err);
+      setError(err instanceof Error ? err.message : "Failed to load reintroductions");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getStatusBadge = (status: ReintroductionStatus) => {
+    const badges = {
+      active: (
+        <span className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
+          Active
+        </span>
+      ),
+      passed: (
+        <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
+          Passed
+        </span>
+      ),
+      failed: (
+        <span className="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800">
+          Failed
+        </span>
+      ),
+      inconclusive: (
+        <span className="inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800">
+          Inconclusive
+        </span>
+      ),
+      cancelled: (
+        <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
+          Cancelled
+        </span>
+      ),
+    };
+
+    return badges[status];
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
+
+  const getPhaseDisplay = (reintroduction: ReintroductionTrial) => {
+    if (reintroduction.status !== "active") {
+      return null;
+    }
+
+    const phase = reintroduction.currentPhase || "testing";
+    const day = reintroduction.currentDay || 1;
+
+    return (
+      <div className="mt-2 flex items-center gap-2 text-xs text-slate-600">
+        <Clock className="h-3.5 w-3.5" />
+        <span>
+          Day {day} of 7 • {phase === "testing" ? "Testing Phase" : "Observation Phase"}
+        </span>
+      </div>
+    );
+  };
+
+  const handleCardClick = (reintroduction: ReintroductionTrial) => {
+    if (onViewDetails) {
+      onViewDetails(reintroduction);
+    }
+  };
+
+  // Filter buttons
+  const filters: { value: FilterStatus; label: string }[] = [
+    { value: "all", label: "All" },
+    { value: "active", label: "Active" },
+    { value: "passed", label: "Passed" },
+    { value: "failed", label: "Failed" },
+    { value: "inconclusive", label: "Inconclusive" },
+  ];
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="h-8 w-8 animate-spin text-indigo-600" />
+        <span className="ml-3 text-sm text-slate-600">Loading reintroductions...</span>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="rounded-xl border border-red-200 bg-red-50 p-6">
+        <div className="flex items-start gap-3">
+          <AlertCircle className="h-5 w-5 shrink-0 text-red-600" />
+          <div>
+            <h3 className="text-sm font-semibold text-red-900">Error Loading Reintroductions</h3>
+            <p className="mt-1 text-sm text-red-700">{error}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Empty state
+  if (reintroductions.length === 0) {
+    return (
+      <div className="rounded-xl border border-slate-200 bg-slate-50 p-8 text-center">
+        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-slate-100">
+          <Calendar className="h-6 w-6 text-slate-400" />
+        </div>
+        <h3 className="text-base font-semibold text-slate-900">No Reintroductions Yet</h3>
+        <p className="mt-2 text-sm text-slate-600">
+          Start your first food reintroduction to see your history here.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      {/* Filter Buttons */}
+      <div className="flex flex-wrap gap-2">
+        {filters.map((filter) => {
+          const count =
+            filter.value === "all"
+              ? reintroductions.length
+              : reintroductions.filter((r) => r.status === filter.value).length;
+
+          return (
+            <button
+              key={filter.value}
+              onClick={() => setSelectedFilter(filter.value)}
+              className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
+                selectedFilter === filter.value
+                  ? "bg-indigo-600 text-white"
+                  : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+              }`}
+            >
+              {filter.label} ({count})
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Reintroduction Cards */}
+      {filteredReintroductions.length === 0 ? (
+        <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 text-center">
+          <p className="text-sm text-slate-600">
+            No reintroductions found with status: {selectedFilter}
+          </p>
+        </div>
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {filteredReintroductions.map((reintroduction) => (
+            <button
+              key={reintroduction.id}
+              onClick={() => handleCardClick(reintroduction)}
+              className="group rounded-xl border border-slate-200 bg-white p-4 text-left transition-all hover:border-indigo-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            >
+              {/* Food Name & Status */}
+              <div className="flex items-start justify-between gap-2">
+                <h3 className="text-base font-semibold text-slate-900 group-hover:text-indigo-600">
+                  {reintroduction.foodName}
+                </h3>
+                {getStatusBadge(reintroduction.status)}
+              </div>
+
+              {/* Dates */}
+              <div className="mt-3 space-y-1.5 text-xs text-slate-600">
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-3.5 w-3.5" />
+                  <span>Started: {formatDate(reintroduction.startDate)}</span>
+                </div>
+                {reintroduction.endDate && (
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-3.5 w-3.5" />
+                    <span>Ended: {formatDate(reintroduction.endDate)}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Phase Info (for active reintroductions) */}
+              {getPhaseDisplay(reintroduction)}
+
+              {/* Outcome Summary (for completed reintroductions) */}
+              {reintroduction.status !== "active" && reintroduction.outcome && (
+                <p className="mt-3 line-clamp-2 text-xs text-slate-600">
+                  {reintroduction.outcome}
+                </p>
+              )}
+
+              {/* Click hint */}
+              <div className="mt-3 text-xs text-indigo-600 opacity-0 transition-opacity group-hover:opacity-100">
+                Click to view details →
+              </div>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

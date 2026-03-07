@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(find app:*)",
+      "Bash(/opt/homebrew/opt/postgresql@17/bin/psql:*)",
+      "Bash(wc:*)",
+      "Bash(grep:*)",
+      "Bash(npx drizzle-kit:*)",
+      "Bash(ls -la /Users/byrne/Coding/health-platform/app/api/**/route.ts)",
+      "Bash(ls:*)",
+      "Bash(find:*)"
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+# Test files
+**/*.test.ts
+**/*.test.tsx
+
+# Example files
+**/*.example.tsx
+**/*.example.ts
+
+# Build output
+.next/
+out/
+build/
+
+# Dependencies
+node_modules/
+
+# Archive
+archive/
+
+# Database
+db/
+
+# Config files
+*.config.js
+*.config.ts

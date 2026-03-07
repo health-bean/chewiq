@@ -205,3 +205,6 @@ frontend/shared/.DS_Store
 /db
 /backend/functions/api/backups
 /archive
+
+# Next.js generated types
+next-env.d.ts
