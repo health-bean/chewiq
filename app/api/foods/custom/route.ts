@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { customFoods, customFoodProperties } from "@/lib/db/schema";
 import { getSessionFromCookies } from "@/lib/auth/session";
+import { log } from "@/lib/logger";
 
 // ── POST /api/foods/custom ──────────────────────────────────────────────
 // Create a new custom food
@@ -103,7 +104,7 @@ export async function POST(request: Request) {
       food: foodWithProperties,
     });
   } catch (error) {
-    console.error("POST /api/foods/custom error:", error);
+    log.error("POST /api/foods/custom error", { error: error as Error });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

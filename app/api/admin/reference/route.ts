@@ -8,6 +8,7 @@ import {
 } from "@/lib/db/schema";
 import { asc } from "drizzle-orm";
 import { getSessionFromCookies } from "@/lib/auth/session";
+import { log } from "@/lib/logger";
 
 export async function GET(request: Request) {
   try {
@@ -80,7 +81,7 @@ export async function GET(request: Request) {
         );
     }
   } catch (error) {
-    console.error("GET /api/admin/reference error:", error);
+    log.error("GET /api/admin/reference error", { error: error as Error });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

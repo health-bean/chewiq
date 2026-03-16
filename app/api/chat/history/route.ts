@@ -3,6 +3,7 @@ import { eq, desc, asc } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { conversations, messages } from "@/lib/db/schema";
 import { getSessionFromCookies } from "@/lib/auth/session";
+import { log } from "@/lib/logger";
 
 export async function GET(request: Request) {
   try {
@@ -85,7 +86,7 @@ export async function GET(request: Request) {
       messages: conversationMessages,
     });
   } catch (error) {
-    console.error("Chat history error:", error);
+    log.error("Chat history error", { error: error as Error });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

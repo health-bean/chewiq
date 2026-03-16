@@ -7,6 +7,7 @@ import {
   timelineEntries,
 } from "@/lib/db/schema";
 import { getSessionFromCookies } from "@/lib/auth/session";
+import { log } from "@/lib/logger";
 
 // ── Types ──────────────────────────────────────────────────────────────
 
@@ -155,7 +156,7 @@ export async function GET(
       },
     });
   } catch (error) {
-    console.error("GET /api/reintroductions/[id] error:", error);
+    log.error("GET /api/reintroductions/[id] error", { error: error as Error });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
@@ -311,7 +312,7 @@ export async function PATCH(
       reintroduction: updated,
     });
   } catch (error) {
-    console.error("PATCH /api/reintroductions/[id] error:", error);
+    log.error("PATCH /api/reintroductions/[id] error", { error: error as Error });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

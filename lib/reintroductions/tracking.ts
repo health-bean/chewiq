@@ -12,6 +12,7 @@
 import { db } from "@/lib/db";
 import { reintroductionLog, reintroductionEntries } from "@/lib/db/schema";
 import { eq, and, sql } from "drizzle-orm";
+import { log } from "@/lib/logger";
 
 interface ReintroductionTrackingResult {
   linked: boolean;
@@ -118,7 +119,7 @@ export async function trackReintroductionEntry(
       message: `Linked to active reintroduction (Day ${newCurrentDay}, ${newPhase} phase)`,
     };
   } catch (error) {
-    console.error("Error tracking reintroduction entry:", error);
+    log.error("Error tracking reintroduction entry", { error: error as Error });
     // Don't fail the entry creation if tracking fails
     return { linked: false, message: "Tracking failed but entry created" };
   }
@@ -169,6 +170,6 @@ export async function updateMissedDays(userId: string): Promise<void> {
       }
     }
   } catch (error) {
-    console.error("Error updating missed days:", error);
+    log.error("Error updating missed days", { error: error as Error });
   }
 }

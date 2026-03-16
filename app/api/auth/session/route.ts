@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSessionFromCookies } from "@/lib/auth/session";
+import { log } from "@/lib/logger";
 
 export async function GET() {
   try {
@@ -21,7 +22,7 @@ export async function GET() {
       },
     });
   } catch (error) {
-    console.error("Session error:", error);
+    log.error("Session error", { error: error as Error });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

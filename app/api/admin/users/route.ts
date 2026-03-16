@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { profiles } from "@/lib/db/schema";
 import { eq, asc } from "drizzle-orm";
 import { getSessionFromCookies } from "@/lib/auth/session";
+import { log } from "@/lib/logger";
 
 async function requireAdmin() {
   const session = await getSessionFromCookies();
@@ -33,7 +34,7 @@ export async function GET() {
 
     return NextResponse.json({ users: allUsers });
   } catch (error) {
-    console.error("GET /api/admin/users error:", error);
+    log.error("GET /api/admin/users error", { error: error as Error });
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
@@ -71,7 +72,7 @@ export async function PATCH(request: Request) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("PATCH /api/admin/users error:", error);
+    log.error("PATCH /api/admin/users error", { error: error as Error });
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

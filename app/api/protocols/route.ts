@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { protocols } from "@/lib/db/schema";
+import { log } from "@/lib/logger";
 
 // ── GET /api/protocols ──────────────────────────────────────────────────
 
@@ -21,7 +22,7 @@ export async function GET() {
 
     return NextResponse.json({ protocols: allProtocols });
   } catch (error) {
-    console.error("GET /api/protocols error:", error);
+    log.error("GET /api/protocols error", { error: error as Error });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

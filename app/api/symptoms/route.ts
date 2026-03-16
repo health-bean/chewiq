@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { symptomsDatabase } from "@/lib/db/schema";
+import { log } from "@/lib/logger";
 
 // ── GET /api/symptoms ────────────────────────────────────────────────
 
@@ -17,7 +18,7 @@ export async function GET() {
 
     return NextResponse.json({ symptoms });
   } catch (error) {
-    console.error("GET /api/symptoms error:", error);
+    log.error("GET /api/symptoms error", { error: error as Error });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

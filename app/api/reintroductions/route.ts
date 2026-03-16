@@ -8,6 +8,7 @@ import {
   customFoods,
 } from "@/lib/db/schema";
 import { getSessionFromCookies } from "@/lib/auth/session";
+import { log } from "@/lib/logger";
 
 // ── POST /api/reintroductions ───────────────────────────────────────────
 // Start a new reintroduction
@@ -163,7 +164,7 @@ export async function POST(request: Request) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("POST /api/reintroductions error:", error);
+    log.error("POST /api/reintroductions error", { error: error as Error });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
@@ -217,7 +218,7 @@ export async function GET(request: Request) {
       hasMore,
     });
   } catch (error) {
-    console.error("GET /api/reintroductions error:", error);
+    log.error("GET /api/reintroductions error", { error: error as Error });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { protocols, protocolRules } from "@/lib/db/schema";
 import { eq, asc, and, sql } from "drizzle-orm";
 import { getSessionFromCookies } from "@/lib/auth/session";
+import { log } from "@/lib/logger";
 
 async function requireAdmin() {
   const session = await getSessionFromCookies();
@@ -53,7 +54,7 @@ export async function GET() {
 
     return NextResponse.json({ protocols: result });
   } catch (error) {
-    console.error("GET /api/admin/protocols error:", error);
+    log.error("GET /api/admin/protocols error", { error: error as Error });
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
@@ -121,7 +122,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ error: "Invalid action" }, { status: 400 });
   } catch (error) {
-    console.error("POST /api/admin/protocols error:", error);
+    log.error("POST /api/admin/protocols error", { error: error as Error });
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
@@ -177,7 +178,7 @@ export async function PATCH(request: Request) {
 
     return NextResponse.json({ error: "Invalid action" }, { status: 400 });
   } catch (error) {
-    console.error("PATCH /api/admin/protocols error:", error);
+    log.error("PATCH /api/admin/protocols error", { error: error as Error });
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
@@ -211,7 +212,7 @@ export async function DELETE(request: Request) {
 
     return NextResponse.json({ error: "Invalid action" }, { status: 400 });
   } catch (error) {
-    console.error("DELETE /api/admin/protocols error:", error);
+    log.error("DELETE /api/admin/protocols error", { error: error as Error });
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

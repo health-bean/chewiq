@@ -5,6 +5,7 @@ import { userProtocolState } from "@/lib/db/schema";
 import { getSessionFromCookies } from "@/lib/auth/session";
 import { searchFoods } from "@/lib/db/queries/foods";
 import { loadProtocolContext, checkComplianceSync } from "@/lib/protocols/compliance";
+import { log } from "@/lib/logger";
 
 // Note: Using Node.js runtime (not edge) due to postgres package requirements
 // Edge runtime doesn't support Node.js APIs (stream, perf_hooks) needed by postgres
@@ -98,7 +99,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json({ foods: resultsWithStatus });
   } catch (error) {
-    console.error("GET /api/foods/search error:", error);
+    log.error("GET /api/foods/search error", { error: error as Error });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

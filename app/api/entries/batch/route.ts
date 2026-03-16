@@ -3,6 +3,7 @@ import { z } from "zod";
 import { db } from "@/lib/db";
 import { timelineEntries } from "@/lib/db/schema";
 import { getSessionFromCookies } from "@/lib/auth/session";
+import { log } from "@/lib/logger";
 
 const entrySchema = z.object({
   entryType: z.enum([
@@ -67,7 +68,7 @@ export async function POST(request: Request) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("POST /api/entries/batch error:", error);
+    log.error("POST /api/entries/batch error", { error: error as Error });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

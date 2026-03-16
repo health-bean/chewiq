@@ -8,6 +8,7 @@ import {
 } from "@/lib/db/schema";
 import { eq, ilike, asc, sql } from "drizzle-orm";
 import { getSessionFromCookies } from "@/lib/auth/session";
+import { log } from "@/lib/logger";
 
 async function requireAdmin() {
   const session = await getSessionFromCookies();
@@ -76,7 +77,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json({ foods: results, categories });
   } catch (error) {
-    console.error("GET /api/admin/foods error:", error);
+    log.error("GET /api/admin/foods error", { error: error as Error });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
@@ -140,7 +141,7 @@ export async function PATCH(request: Request) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("PATCH /api/admin/foods error:", error);
+    log.error("PATCH /api/admin/foods error", { error: error as Error });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

@@ -4,6 +4,7 @@ import { z } from "zod";
 import { db } from "@/lib/db";
 import { journalEntries } from "@/lib/db/schema";
 import { getSessionFromCookies } from "@/lib/auth/session";
+import { log } from "@/lib/logger";
 
 // ── GET /api/journal?date=YYYY-MM-DD  or  ?days=30 ──────────────────
 
@@ -76,7 +77,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json({ entry: entry ?? null });
   } catch (error) {
-    console.error("GET /api/journal error:", error);
+    log.error("GET /api/journal error", { error: error as Error });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
@@ -157,7 +158,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ entry }, { status: 201 });
   } catch (error) {
-    console.error("POST /api/journal error:", error);
+    log.error("POST /api/journal error", { error: error as Error });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

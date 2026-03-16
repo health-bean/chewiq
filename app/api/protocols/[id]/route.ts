@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { eq, asc } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { protocols, protocolRules, protocolPhases } from "@/lib/db/schema";
+import { log } from "@/lib/logger";
 
 // ── GET /api/protocols/[id] ─────────────────────────────────────────────
 
@@ -69,7 +70,7 @@ export async function GET(
 
     return NextResponse.json({ protocol, rules, phases });
   } catch (error) {
-    console.error("GET /api/protocols/[id] error:", error);
+    log.error("GET /api/protocols/[id] error", { error: error as Error });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

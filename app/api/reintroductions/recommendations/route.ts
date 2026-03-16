@@ -13,6 +13,7 @@ import {
   timelineEntries,
 } from "@/lib/db/schema";
 import { getSessionFromCookies } from "@/lib/auth/session";
+import { log } from "@/lib/logger";
 
 // ── Types ──────────────────────────────────────────────────────────────
 
@@ -111,7 +112,7 @@ export async function GET() {
       total: recommendations.length,
     });
   } catch (error) {
-    console.error("GET /api/reintroductions/recommendations error:", error);
+    log.error("GET /api/reintroductions/recommendations error", { error: error as Error });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

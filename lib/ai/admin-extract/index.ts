@@ -28,6 +28,8 @@ import {
   handleDeleteReferenceItem,
 } from "./reference";
 
+import { log } from "@/lib/logger";
+
 export async function processAdminToolCall(
   toolName: string,
   toolInput: unknown
@@ -60,7 +62,7 @@ export async function processAdminToolCall(
         return { error: `Unknown tool: ${toolName}` };
     }
   } catch (error) {
-    console.error(`Admin tool error (${toolName}):`, error);
+    log.error(`Admin tool error (${toolName})`, { error: error as Error });
     return { error: `Tool execution failed: ${(error as Error).message}` };
   }
 }

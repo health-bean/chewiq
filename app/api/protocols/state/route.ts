@@ -8,6 +8,7 @@ import {
 } from "@/lib/db/schema";
 import { getSessionFromCookies } from "@/lib/auth/session";
 import { getUserProtocolContext, advancePhase } from "@/lib/protocols";
+import { log } from "@/lib/logger";
 
 // ── GET /api/protocols/state ──────────────────────────────────────────
 // Returns user's current protocol state (phase, day number, etc.)
@@ -46,7 +47,7 @@ export async function GET() {
 
     return NextResponse.json({ states: enriched });
   } catch (error) {
-    console.error("GET /api/protocols/state error:", error);
+    log.error("GET /api/protocols/state error", { error: error as Error });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
@@ -137,7 +138,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ state }, { status: 201 });
   } catch (error) {
-    console.error("POST /api/protocols/state error:", error);
+    log.error("POST /api/protocols/state error", { error: error as Error });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
@@ -183,7 +184,7 @@ export async function PATCH(request: Request) {
       context,
     });
   } catch (error) {
-    console.error("PATCH /api/protocols/state error:", error);
+    log.error("PATCH /api/protocols/state error", { error: error as Error });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

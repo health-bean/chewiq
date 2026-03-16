@@ -7,6 +7,7 @@ import {
   timelineEntries,
 } from "@/lib/db/schema";
 import { getSessionFromCookies } from "@/lib/auth/session";
+import { log } from "@/lib/logger";
 
 // ── PATCH /api/foods/custom/[id] ────────────────────────────────────────
 // Update a custom food
@@ -146,7 +147,7 @@ export async function PATCH(
       food: updatedFood,
     });
   } catch (error) {
-    console.error("PATCH /api/foods/custom/[id] error:", error);
+    log.error("PATCH /api/foods/custom/[id] error", { error: error as Error });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
@@ -219,7 +220,7 @@ export async function DELETE(
       message: "Food deleted successfully",
     });
   } catch (error) {
-    console.error("DELETE /api/foods/custom/[id] error:", error);
+    log.error("DELETE /api/foods/custom/[id] error", { error: error as Error });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

@@ -14,6 +14,7 @@
 import { db } from "@/lib/db";
 import { reintroductionLog } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
+import { log } from "@/lib/logger";
 
 export type NotificationType =
   | "testing_reminder"
@@ -164,7 +165,7 @@ export async function generateReintroductionNotifications(
 
     return notifications;
   } catch (error) {
-    console.error("Error generating reintroduction notifications:", error);
+    log.error("Error generating reintroduction notifications", { error: error as Error });
     return [];
   }
 }
@@ -256,7 +257,7 @@ export async function updateReintroductionDays(userId: string): Promise<void> {
       }
     }
   } catch (error) {
-    console.error("Error updating reintroduction days:", error);
+    log.error("Error updating reintroduction days", { error: error as Error });
   }
 }
 

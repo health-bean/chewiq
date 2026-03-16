@@ -7,6 +7,7 @@
 import { NextResponse } from "next/server";
 import { getSessionFromCookies } from "@/lib/auth/session";
 import { generateReintroductionNotifications, shouldShowNotification, getNotificationSummary } from "@/lib/notifications/reintroduction";
+import { log } from "@/lib/logger";
 
 export async function GET() {
   try {
@@ -43,7 +44,7 @@ export async function GET() {
       preferences: userPreferences,
     });
   } catch (error) {
-    console.error("Error fetching reintroduction notifications:", error);
+    log.error("Error fetching reintroduction notifications", { error: error as Error });
     return NextResponse.json(
       { error: "Failed to fetch notifications" },
       { status: 500 }
