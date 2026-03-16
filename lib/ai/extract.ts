@@ -5,7 +5,7 @@ import {
   foods,
   foodCategories,
   foodSubcategories,
-  users,
+  profiles,
   userProtocolState,
 } from "@/lib/db/schema";
 import { eq, ilike, and, sql } from "drizzle-orm";
@@ -198,10 +198,10 @@ async function handleSearchFoods(
   if (input.check_protocol) {
     const [user] = await db
       .select({
-        currentProtocolId: users.currentProtocolId,
+        currentProtocolId: profiles.currentProtocolId,
       })
-      .from(users)
-      .where(eq(users.id, userId))
+      .from(profiles)
+      .where(eq(profiles.id, userId))
       .limit(1);
 
     if (user?.currentProtocolId) {

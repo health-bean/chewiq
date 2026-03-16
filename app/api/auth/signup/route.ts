@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { db } from "@/lib/db";
 import { profiles } from "@/lib/db/schema";
+import { rateLimit, getClientIp, SIGNUP_RATE_LIMIT } from "@/lib/rate-limit";
 
 const signupSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -14,6 +15,18 @@ const signupSchema = z.object({
 
 export async function POST(request: Request) {
   try {
+    const ip = getClientIp(request);
+    const rl = rateLimit(`signup:${ip}`, SIGNUP_RATE_LIMIT);
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: "Too many signup attempts. Please try again later." },
+        {
+          status: 429,
+          headers: { "Retry-After": String(Math.ceil((rl.resetAt - Date.now()) / 1000)) },
+        }
+      );
+    }
+
     const body = await request.json();
     const parsed = signupSchema.safeParse(body);
 

@@ -1,1 +1,58 @@
 @import "tailwindcss";
+
+/*
+ * FILO Design System Tokens
+ *
+ * All color, spacing, and typography tokens are defined here as CSS custom
+ * properties. Components should reference these tokens via Tailwind's
+ * arbitrary-value syntax (e.g. `bg-[var(--color-primary)]`) or the
+ * @theme directive below which maps them into Tailwind utilities.
+ */
+
+@theme {
+  /* ── Brand colors ───────────────────────────────────────────────── */
+  --color-brand-50: oklch(0.97 0.02 264);
+  --color-brand-100: oklch(0.93 0.04 264);
+  --color-brand-200: oklch(0.87 0.08 264);
+  --color-brand-300: oklch(0.78 0.12 264);
+  --color-brand-400: oklch(0.68 0.16 264);
+  --color-brand-500: oklch(0.59 0.19 264);
+  --color-brand-600: oklch(0.50 0.19 264);
+  --color-brand-700: oklch(0.43 0.16 264);
+  --color-brand-800: oklch(0.37 0.13 264);
+  --color-brand-900: oklch(0.32 0.10 264);
+
+  /* ── Semantic colors ────────────────────────────────────────────── */
+  --color-success: oklch(0.62 0.17 145);
+  --color-warning: oklch(0.75 0.16 75);
+  --color-danger: oklch(0.58 0.22 27);
+
+  /* ── Surface / background ───────────────────────────────────────── */
+  --color-surface: #ffffff;
+  --color-surface-secondary: #f8fafc;
+  --color-surface-elevated: #ffffff;
+
+  /* ── Border ─────────────────────────────────────────────────────── */
+  --color-border: #e2e8f0;
+  --color-border-light: #f1f5f9;
+
+  /* ── Text ───────────────────────────────────────────────────────── */
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #64748b;
+  --color-text-muted: #94a3b8;
+
+  /* ── Radius ─────────────────────────────────────────────────────── */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.5rem;
+
+  /* ── Shadows ────────────────────────────────────────────────────── */
+  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.04);
+  --shadow-elevated: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+
+  /* ── Spacing scale ──────────────────────────────────────────────── */
+  --space-section: 2rem;
+  --space-card-padding: 1.25rem;
+}

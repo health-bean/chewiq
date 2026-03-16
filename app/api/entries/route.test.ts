@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import { db } from "@/lib/db";
-import { timelineEntries, users } from "@/lib/db/schema";
+import { timelineEntries, profiles } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 
 describe("Food Logging with Database References", () => {
@@ -9,10 +9,10 @@ describe("Food Logging with Database References", () => {
   beforeAll(async () => {
     // Create test user
     const [user] = await db
-      .insert(users)
+      .insert(profiles)
       .values({
+        id: crypto.randomUUID(),
         email: `test-food-logging-${Date.now()}@example.com`,
-        passwordHash: "test-hash",
         firstName: "Test",
       })
       .returning();
@@ -23,7 +23,7 @@ describe("Food Logging with Database References", () => {
     // Cleanup test data
     if (testUserId) {
       await db.delete(timelineEntries).where(eq(timelineEntries.userId, testUserId));
-      await db.delete(users).where(eq(users.id, testUserId));
+      await db.delete(profiles).where(eq(profiles.id, testUserId));
     }
   });
 
@@ -211,7 +211,7 @@ describe("Reintroduction Tracking Integration", () => {
       await db.delete(timelineEntries).where(eq(timelineEntries.userId, testUserId));
       await db.delete(foods).where(eq(foods.id, testFoodId));
       await db.delete(protocols).where(eq(protocols.id, testProtocolId));
-      await db.delete(users).where(eq(users.id, testUserId));
+      await db.delete(profiles).where(eq(profiles.id, testUserId));
     }
   });
 

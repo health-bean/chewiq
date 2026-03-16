@@ -10,7 +10,7 @@ import {
   foodTriggerProperties,
   customFoods,
   customFoodProperties,
-  users,
+  profiles,
 } from "@/lib/db/schema";
 import { getSessionFromCookies } from "@/lib/auth/session";
 import { loadProtocolContext, checkComplianceSync } from "@/lib/protocols/compliance";
@@ -34,9 +34,9 @@ export async function GET(request: Request) {
 
     // Get user's current protocol for compliance checking
     const [user] = await db
-      .select({ currentProtocolId: users.currentProtocolId })
-      .from(users)
-      .where(eq(users.id, session.userId))
+      .select({ currentProtocolId: profiles.currentProtocolId })
+      .from(profiles)
+      .where(eq(profiles.id, session.userId))
       .limit(1);
 
     const currentProtocolId = user?.currentProtocolId;

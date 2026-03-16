@@ -184,8 +184,6 @@ export const profiles = pgTable("profiles", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-/** @deprecated Use `profiles` instead. Alias for backward compatibility during migration. */
-export const users = profiles;
 
 export const conversations = pgTable(
   "conversations",
@@ -193,7 +191,7 @@ export const conversations = pgTable(
     id: uuid("id").defaultRandom().primaryKey(),
     userId: uuid("user_id")
       .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
+      .references(() => profiles.id, { onDelete: "cascade" }),
     title: varchar("title", { length: 255 }).default("New conversation"),
     createdAt: timestamp("created_at").defaultNow(),
     updatedAt: timestamp("updated_at").defaultNow(),
@@ -221,7 +219,7 @@ export const timelineEntries = pgTable("timeline_entries", {
   id: uuid("id").defaultRandom().primaryKey(),
   userId: uuid("user_id")
     .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
+    .references(() => profiles.id, { onDelete: "cascade" }),
   sourceMessageId: uuid("source_message_id").references(() => messages.id),
   entryType: varchar("entry_type", { length: 20 }).notNull(), // food, symptom, supplement, medication, exposure, detox, exercise
   name: varchar("name", { length: 255 }).notNull(),
@@ -260,7 +258,7 @@ export const journalEntries = pgTable(
     id: uuid("id").defaultRandom().primaryKey(),
     userId: uuid("user_id")
       .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
+      .references(() => profiles.id, { onDelete: "cascade" }),
     entryDate: date("entry_date").notNull(),
     sleepScore: integer("sleep_score"),
     energyScore: integer("energy_score"),
@@ -280,7 +278,7 @@ export const userProtocolState = pgTable(
     id: uuid("id").defaultRandom().primaryKey(),
     userId: uuid("user_id")
       .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
+      .references(() => profiles.id, { onDelete: "cascade" }),
     protocolId: uuid("protocol_id")
       .notNull()
       .references(() => protocols.id, { onDelete: "cascade" }),
@@ -301,7 +299,7 @@ export const reintroductionLog = pgTable("reintroduction_log", {
   id: uuid("id").defaultRandom().primaryKey(),
   userId: uuid("user_id")
     .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
+    .references(() => profiles.id, { onDelete: "cascade" }),
   protocolId: uuid("protocol_id")
     .notNull()
     .references(() => protocols.id, { onDelete: "cascade" }),
@@ -363,7 +361,7 @@ export const customFoods = pgTable("custom_foods", {
   id: uuid("id").defaultRandom().primaryKey(),
   userId: uuid("user_id")
     .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
+    .references(() => profiles.id, { onDelete: "cascade" }),
   displayName: varchar("display_name", { length: 255 }).notNull(),
   category: varchar("category", { length: 100 }),
   subcategory: varchar("subcategory", { length: 100 }),

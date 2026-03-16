@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { users } from "@/lib/db/schema";
+import { profiles } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { getSessionFromCookies } from "@/lib/auth/session";
 
@@ -14,11 +14,11 @@ export async function GET() {
 
     const [user] = await db
       .select({
-        onboardingCompleted: users.onboardingCompleted,
-        currentProtocolId: users.currentProtocolId,
+        onboardingCompleted: profiles.onboardingCompleted,
+        currentProtocolId: profiles.currentProtocolId,
       })
-      .from(users)
-      .where(eq(users.id, session.userId))
+      .from(profiles)
+      .where(eq(profiles.id, session.userId))
       .limit(1);
 
     if (!user) {
@@ -51,12 +51,12 @@ export async function POST(request: Request) {
 
     // Update user onboarding status
     await db
-      .update(users)
+      .update(profiles)
       .set({
         onboardingCompleted: true,
         ...(protocolId && { currentProtocolId: protocolId }),
       })
-      .where(eq(users.id, session.userId));
+      .where(eq(profiles.id, session.userId));
 
     // Load sample data if requested
     if (loadSampleData) {

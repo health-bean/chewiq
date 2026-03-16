@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import { db } from "@/lib/db";
 import {
-  users,
+  profiles,
   customFoods,
   customFoodProperties,
   timelineEntries,
@@ -15,10 +15,10 @@ describe("Custom Food API Routes", () => {
   beforeAll(async () => {
     // Create test user
     const [user] = await db
-      .insert(users)
+      .insert(profiles)
       .values({
+        id: crypto.randomUUID(),
         email: `test-custom-foods-${Date.now()}@example.com`,
-        passwordHash: "test-hash",
         firstName: "Test",
       })
       .returning();
@@ -35,7 +35,7 @@ describe("Custom Food API Routes", () => {
     }
     if (testUserId) {
       await db.delete(timelineEntries).where(eq(timelineEntries.userId, testUserId));
-      await db.delete(users).where(eq(users.id, testUserId));
+      await db.delete(profiles).where(eq(profiles.id, testUserId));
     }
   });
 
@@ -267,10 +267,10 @@ describe("Custom Food API Routes", () => {
     it("should not delete food belonging to another user", async () => {
       // Create another user
       const [otherUser] = await db
-        .insert(users)
+        .insert(profiles)
         .values({
+          id: crypto.randomUUID(),
           email: `other-user-${Date.now()}@example.com`,
-          passwordHash: "test-hash",
           firstName: "Other",
         })
         .returning();
@@ -294,7 +294,7 @@ describe("Custom Food API Routes", () => {
 
       // Cleanup
       await db.delete(customFoods).where(eq(customFoods.id, food.id));
-      await db.delete(users).where(eq(users.id, otherUser.id));
+      await db.delete(profiles).where(eq(profiles.id, otherUser.id));
     });
   });
 

@@ -2,7 +2,7 @@ import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import { searchFoods } from "./foods";
 import { db } from "@/lib/db";
 import {
-  users,
+  profiles,
   foods,
   foodCategories,
   foodSubcategories,
@@ -20,10 +20,10 @@ describe("searchFoods", () => {
   beforeAll(async () => {
     // Create test user
     const [user] = await db
-      .insert(users)
+      .insert(profiles)
       .values({
+        id: crypto.randomUUID(),
         email: `test-foods-${Date.now()}@example.com`,
-        passwordHash: "test-hash",
         firstName: "Test",
       })
       .returning();
@@ -92,7 +92,7 @@ describe("searchFoods", () => {
       await db.delete(foods).where(eq(foods.id, testFoodId));
     }
     if (testUserId) {
-      await db.delete(users).where(eq(users.id, testUserId));
+      await db.delete(profiles).where(eq(profiles.id, testUserId));
     }
   });
 

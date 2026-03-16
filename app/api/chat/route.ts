@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import { eq, and, asc } from "drizzle-orm";
+import { z } from "zod";
 import { db } from "@/lib/db";
 import {
   conversations,
   messages,
-  users,
+  profiles,
   protocols,
   protocolRules,
 } from "@/lib/db/schema";
@@ -16,6 +17,11 @@ import { processToolCall } from "@/lib/ai/extract";
 import { buildCoachingContext } from "@/lib/coaching/context";
 import type { AIMessage } from "@/lib/ai/providers/types";
 
+const chatSchema = z.object({
+  message: z.string().min(1).max(10_000),
+  conversationId: z.string().uuid().optional(),
+});
+
 export async function POST(request: Request) {
   try {
     // ── Auth ──────────────────────────────────────────────────────────
@@ -26,17 +32,14 @@ export async function POST(request: Request) {
 
     // ── Parse body ───────────────────────────────────────────────────
     const body = await request.json();
-    const { message, conversationId: incomingConversationId } = body as {
-      message: string;
-      conversationId?: string;
-    };
-
-    if (!message || typeof message !== "string" || message.trim().length === 0) {
+    const parsed = chatSchema.safeParse(body);
+    if (!parsed.success) {
       return NextResponse.json(
-        { error: "Message is required" },
+        { error: "Validation failed", details: parsed.error.flatten() },
         { status: 400 }
       );
     }
+    const { message, conversationId: incomingConversationId } = parsed.data;
 
     // ── Conversation: find or create ─────────────────────────────────
     let conversationId = incomingConversationId;
@@ -95,11 +98,11 @@ export async function POST(request: Request) {
     // ── Build system prompt with user's protocol ─────────────────────
     const [user] = await db
       .select({
-        currentProtocolId: users.currentProtocolId,
-        firstName: users.firstName,
+        currentProtocolId: profiles.currentProtocolId,
+        firstName: profiles.firstName,
       })
-      .from(users)
-      .where(eq(users.id, session.userId))
+      .from(profiles)
+      .where(eq(profiles.id, session.userId))
       .limit(1);
 
     let protocolName: string | undefined;

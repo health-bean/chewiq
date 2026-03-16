@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { db } from "@/lib/db";
 import { profiles } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
+import { rateLimit, getClientIp, AUTH_RATE_LIMIT } from "@/lib/rate-limit";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -12,6 +13,18 @@ const loginSchema = z.object({
 
 export async function POST(request: Request) {
   try {
+    const ip = getClientIp(request);
+    const rl = rateLimit(`login:${ip}`, AUTH_RATE_LIMIT);
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: "Too many login attempts. Please try again later." },
+        {
+          status: 429,
+          headers: { "Retry-After": String(Math.ceil((rl.resetAt - Date.now()) / 1000)) },
+        }
+      );
+    }
+
     const body = await request.json();
     const parsed = loginSchema.safeParse(body);
 
