@@ -460,6 +460,31 @@ export const userNotifications = pgTable("user_notifications", {
   ]
 );
 
+// ─── Subscriptions ───────────────────────────────────────────────────
+
+export const subscriptions = pgTable("subscriptions", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => profiles.id, { onDelete: "cascade" }),
+  tier: varchar("tier", { length: 20 }).notNull().default("free"), // free, basic, premium
+  stripeCustomerId: varchar("stripe_customer_id", { length: 255 }),
+  stripeSubscriptionId: varchar("stripe_subscription_id", { length: 255 }),
+  stripePriceId: varchar("stripe_price_id", { length: 255 }),
+  status: varchar("status", { length: 20 }).notNull().default("active"), // active, past_due, canceled, trialing
+  currentPeriodStart: timestamp("current_period_start"),
+  currentPeriodEnd: timestamp("current_period_end"),
+  cancelAtPeriodEnd: boolean("cancel_at_period_end").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+},
+  (table) => [
+    uniqueIndex("subscriptions_user_id_idx").on(table.userId),
+    index("subscriptions_stripe_customer_id_idx").on(table.stripeCustomerId),
+    index("subscriptions_stripe_subscription_id_idx").on(table.stripeSubscriptionId),
+  ]
+);
+
 // ─── User Food Reactions (confirmed outcomes from reintroductions) ────
 
 export const userFoodReactions = pgTable(
