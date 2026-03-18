@@ -250,6 +250,7 @@ export const timelineEntries = pgTable("timeline_entries", {
   // Sample data tracking
   isSample: boolean("is_sample").default(false),
   createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 },
   (table) => [
     index("timeline_entries_user_id_entry_date_idx").on(
@@ -332,6 +333,7 @@ export const reintroductionLog = pgTable("reintroduction_log", {
   cancellationDate: date("cancellation_date"),
   cancellationReason: text("cancellation_reason"),
   createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 },
   (table) => [
     index("reintroduction_log_user_id_status_idx").on(
