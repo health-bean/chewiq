@@ -38,6 +38,8 @@ export const foods = pgTable("foods", {
   properties: jsonb("properties").$type<Record<string, unknown>>(),
   displayOrder: integer("display_order").default(0),
   isCommon: boolean("is_common").default(false),
+  source: varchar("source", { length: 20 }).default("curated"),
+  usdaFdcId: integer("usda_fdc_id"),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -174,7 +176,7 @@ export const profiles = pgTable("profiles", {
   email: varchar("email", { length: 255 }).notNull().unique(),
   firstName: varchar("first_name", { length: 100 }).notNull(),
   lastName: varchar("last_name", { length: 100 }),
-  currentProtocolId: uuid("current_protocol_id").references(() => protocols.id),
+  currentProtocolId: uuid("current_protocol_id").references(() => protocols.id, { onDelete: "set null" }),
   isAdmin: boolean("is_admin").default(false),
   // Onboarding tracking
   onboardingCompleted: boolean("onboarding_completed").default(false),
@@ -214,14 +216,21 @@ export const messages = pgTable("messages", {
   content: text("content").notNull(),
   extractedData: jsonb("extracted_data"),
   createdAt: timestamp("created_at").defaultNow(),
-});
+},
+  (table) => [
+    index("messages_conversation_id_created_at_idx").on(
+      table.conversationId,
+      table.createdAt
+    ),
+  ]
+);
 
 export const timelineEntries = pgTable("timeline_entries", {
   id: uuid("id").defaultRandom().primaryKey(),
   userId: uuid("user_id")
     .notNull()
     .references(() => profiles.id, { onDelete: "cascade" }),
-  sourceMessageId: uuid("source_message_id").references(() => messages.id),
+  sourceMessageId: uuid("source_message_id").references(() => messages.id, { onDelete: "set null" }),
   entryType: varchar("entry_type", { length: 20 }).notNull(), // food, symptom, supplement, medication, exposure, detox, exercise
   name: varchar("name", { length: 255 }).notNull(),
   severity: integer("severity"),
@@ -235,7 +244,7 @@ export const timelineEntries = pgTable("timeline_entries", {
   intensityLevel: varchar("intensity_level", { length: 20 }),
   energyLevel: integer("energy_level"),
   // Food logging fields
-  foodId: uuid("food_id").references(() => foods.id),
+  foodId: uuid("food_id").references(() => foods.id, { onDelete: "set null" }),
   portion: varchar("portion", { length: 100 }),
   mealType: varchar("meal_type", { length: 20 }),
   // Sample data tracking
@@ -251,6 +260,7 @@ export const timelineEntries = pgTable("timeline_entries", {
       table.userId,
       table.entryType
     ),
+    index("timeline_entries_food_id_idx").on(table.foodId),
   ]
 );
 
@@ -305,7 +315,7 @@ export const reintroductionLog = pgTable("reintroduction_log", {
   protocolId: uuid("protocol_id")
     .notNull()
     .references(() => protocols.id, { onDelete: "cascade" }),
-  foodId: uuid("food_id").references(() => foods.id),
+  foodId: uuid("food_id").references(() => foods.id, { onDelete: "set null" }),
   foodName: varchar("food_name", { length: 255 }).notNull(),
   startDate: date("start_date").notNull(),
   endDate: date("end_date"),
@@ -331,6 +341,10 @@ export const reintroductionLog = pgTable("reintroduction_log", {
     index("reintroduction_log_food_id_user_id_idx").on(
       table.foodId,
       table.userId
+    ),
+    index("reintroduction_log_user_id_start_date_idx").on(
+      table.userId,
+      table.startDate
     ),
   ]
 );
@@ -370,7 +384,11 @@ export const customFoods = pgTable("custom_foods", {
   isArchived: boolean("is_archived").default(false),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
-});
+},
+  (table) => [
+    index("custom_foods_user_id_idx").on(table.userId),
+  ]
+);
 
 export const customFoodProperties = pgTable(
   "custom_food_properties",
@@ -399,5 +417,28 @@ export const customFoodProperties = pgTable(
     uniqueIndex("custom_food_properties_custom_food_id_unique").on(
       table.customFoodId
     ),
+  ]
+);
+
+// ─── User Food Reactions (confirmed outcomes from reintroductions) ────
+
+export const userFoodReactions = pgTable(
+  "user_food_reactions",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => profiles.id, { onDelete: "cascade" }),
+    foodId: uuid("food_id").references(() => foods.id, { onDelete: "set null" }),
+    foodName: varchar("food_name", { length: 255 }).notNull(),
+    status: varchar("status", { length: 20 }).notNull(), // safe, unsafe, sensitive
+    reintroductionId: uuid("reintroduction_id").references(() => reintroductionLog.id, { onDelete: "set null" }),
+    confirmedDate: date("confirmed_date").notNull(),
+    notes: text("notes"),
+    createdAt: timestamp("created_at").defaultNow(),
+  },
+  (table) => [
+    index("user_food_reactions_user_id_idx").on(table.userId),
+    uniqueIndex("user_food_reactions_user_food_idx").on(table.userId, table.foodName),
   ]
 );
