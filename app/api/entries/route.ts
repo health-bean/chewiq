@@ -196,7 +196,7 @@ export async function GET(request: Request) {
               protocolViolations = compliance.violations;
             }
           } catch (error) {
-            console.error("Error checking compliance:", error);
+            log.warn("Error checking compliance", { error: error as Error });
           }
         }
 
@@ -237,6 +237,7 @@ const createEntrySchema = z.object({
     "exposure",
     "detox",
     "exercise",
+    "off_protocol",
   ]),
   name: z.string().min(1).max(255),
   severity: z.number().int().min(1).max(10).optional(),
@@ -338,8 +339,14 @@ export async function POST(request: Request) {
       finalPortion = "1 serving";
     }
 
-    // Validate that food fields are only provided for food entries
-    if (entryType !== "food" && (foodId || portion || mealType)) {
+    // Validate food fields: off_protocol can use mealType but not foodId/portion
+    if (entryType === "off_protocol" && (foodId || portion)) {
+      return NextResponse.json(
+        { error: "Off-protocol entries should not reference a specific food" },
+        { status: 400 }
+      );
+    }
+    if (entryType !== "food" && entryType !== "off_protocol" && (foodId || portion || mealType)) {
       return NextResponse.json(
         { error: "Food fields can only be provided for food entries" },
         { status: 400 }

@@ -104,7 +104,7 @@ export async function POST(request: Request) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("Signup error:", error);
+    log.error("Signup error", { error: error as Error });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
