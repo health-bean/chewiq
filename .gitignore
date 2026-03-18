@@ -192,6 +192,19 @@ docs/.docusaurus/
 scripts/
 *.sql
 !lib/db/migrations/*.sql
+!supabase/migrations/*.sql
 
 # Next.js generated types
 next-env.d.ts
+
+# Capacitor native builds
+ios/App/Pods/
+ios/App/build/
+ios/App/DerivedData/
+android/.gradle/
+android/app/build/
+android/build/
+android/local.properties
+
+# Capacitor fallback page (generated)
+out/
