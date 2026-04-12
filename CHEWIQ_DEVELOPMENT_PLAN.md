@@ -1,7 +1,11 @@
 # ChewIQ Health: Comprehensive Development Plan
 
+> **Status: Stale snapshot from 2026-03-16. Updated 2026-04-11.**
+> Most Phase 1 items shipped. Phase 2–4 mostly untouched. See authoritative status in Notion "Feature Status & Roadmap" and in `.claude/projects/-Users-health-bean-Coding-chewiq/memory/project_status_march2026.md`.
+> Strikethroughs below (~~text~~) indicate work completed since this plan was written.
+
 ## Vision
-ChewIQ is a holistic health tracking platform that helps people with chronic illness understand how **everything** affects **everything else**: food, sleep, supplements, stress, exercise, medications, and environmental exposures.
+ChewIQ is the **Protocol Management & Healing Platform** for chronic illness — intelligent protocol guidance, comprehensive health tracking, AI-powered correlation insights, and practitioner collaboration. (Not "a holistic tracker" — that framing is out of date.)
 
 ---
 
@@ -41,12 +45,12 @@ ChewIQ is a holistic health tracking platform that helps people with chronic ill
 ### ❌ What's Missing or Broken
 
 #### Critical Gaps
-1. **No Exercise Tracking** - Missing exercise entry type and energy correlations
-2. **No Reintroduction Workflow** - Schema exists but no UI/UX
-3. **No Onboarding** - Users land in empty app with no guidance
-4. **No Data Export** - Can't share findings with doctors
-5. **No Food Search** - Hard to log foods accurately
-6. **Limited Mobile Experience** - No PWA, no offline support
+1. ~~**No Exercise Tracking**~~ — ✅ DONE. Schema supports exerciseType/duration/intensity/energyLevel; ExerciseInsights component wired.
+2. ~~**No Reintroduction Workflow**~~ — ✅ DONE. Full schema, API, notifications, 4 test files. Deepest-tested feature in repo.
+3. ~~**No Onboarding**~~ — ✅ DONE. 3-step flow (Welcome → Protocol → Ready).
+4. ~~**No Data Export**~~ — ✅ DONE. `GET /api/export?type=all&from=&to=` with CSV, joins custom foods.
+5. ~~**No Food Search**~~ — ✅ DONE. Local curated + USDA cache-through + custom foods.
+6. ~~**Limited Mobile Experience**~~ — Swapped PWA path for **Capacitor native wrapper** (iOS + Android v8.2, points at chewiq.app). PWA/offline is no longer on the roadmap.
 
 #### UX Issues
 7. **No Visual Insights** - Just text lists (hard to spot trends)
@@ -64,10 +68,11 @@ ChewIQ is a holistic health tracking platform that helps people with chronic ill
 
 ## Development Roadmap
 
-### Phase 1: Complete Core Functionality (2-3 weeks)
-**Goal**: Make the app fully functional for the core use case
+### Phase 1: Complete Core Functionality — ✅ SHIPPED
 
-#### 1.1 Exercise Tracking & Energy Correlations
+All of Phase 1 (1.1 through 1.4) shipped between March 16 and March 19, 2026. Keeping the original content below for historical reference but marking each section done.
+
+#### ~~1.1 Exercise Tracking & Energy Correlations~~ ✅ DONE
 **Priority**: HIGH | **Effort**: 2 days
 
 **What**:
@@ -87,7 +92,7 @@ ChewIQ is a holistic health tracking platform that helps people with chronic ill
 
 ---
 
-#### 1.2 Reintroduction Workflow
+#### ~~1.2 Reintroduction Workflow~~ ✅ DONE
 **Priority**: HIGH | **Effort**: 5 days
 
 **What**:
@@ -136,7 +141,7 @@ ChewIQ is a holistic health tracking platform that helps people with chronic ill
 
 ---
 
-#### 1.3 User Onboarding Flow
+#### ~~1.3 User Onboarding Flow~~ ✅ DONE (simplified to 3 steps)
 **Priority**: HIGH | **Effort**: 3 days
 
 **What**:
@@ -160,7 +165,7 @@ ChewIQ is a holistic health tracking platform that helps people with chronic ill
 
 ---
 
-#### 1.4 Food Search & Database
+#### ~~1.4 Food Search & Database~~ ✅ DONE (local curated + USDA cache-through)
 **Priority**: MEDIUM | **Effort**: 3 days
 
 **What**:
@@ -181,10 +186,11 @@ ChewIQ is a holistic health tracking platform that helps people with chronic ill
 
 ---
 
-### Phase 2: Enhanced UX & Insights (2-3 weeks)
-**Goal**: Make insights actionable and easy to understand
+### Phase 2: Enhanced UX & Insights — 🚧 NOT STARTED (this is where we're going next)
 
-#### 2.1 Visual Insights & Charts
+**Current plan: the "Insights v2" design spec being produced 2026-04-11 covers 2.1, 2.2, and 2.3 as a single coherent system rather than three separate tasks.**
+
+#### 2.1 Visual Insights & Charts — ⏳ pending Insights v2 spec
 **Priority**: MEDIUM | **Effort**: 4 days
 
 **What**:
@@ -215,7 +221,7 @@ ChewIQ is a holistic health tracking platform that helps people with chronic ill
 
 ---
 
-#### 2.2 Multi-Factor Insights
+#### 2.2 Multi-Factor Insights — ⏳ pending Insights v2 spec
 **Priority**: MEDIUM | **Effort**: 5 days
 
 **What**:
@@ -235,7 +241,7 @@ ChewIQ is a holistic health tracking platform that helps people with chronic ill
 
 ---
 
-#### 2.3 Progress Tracking & Goals
+#### 2.3 Progress Tracking & Goals — ⏳ pending Insights v2 spec
 **Priority**: MEDIUM | **Effort**: 3 days
 
 **What**:
@@ -254,8 +260,9 @@ ChewIQ is a holistic health tracking platform that helps people with chronic ill
 
 ---
 
-#### 2.4 Data Export & Sharing
+#### ~~2.4 Data Export & Sharing~~ ✅ DONE (CSV)
 **Priority**: MEDIUM | **Effort**: 3 days
+(PDF report for practitioners still pending — deferred to practitioner dashboard work.)
 
 **What**:
 - Export data as PDF report for doctors
@@ -273,10 +280,11 @@ ChewIQ is a holistic health tracking platform that helps people with chronic ill
 
 ---
 
-### Phase 3: Mobile & Offline (1-2 weeks)
-**Goal**: Make the app work seamlessly on mobile
+### Phase 3: Mobile & Offline — ⚠️ STRATEGY CHANGED
 
-#### 3.1 Progressive Web App (PWA)
+Original plan was PWA-based. Actual direction is **Capacitor native wrapper** (iOS + Android, v8.2, points at chewiq.app). PWA/service-worker work has been dropped from roadmap. Offline support is not currently planned.
+
+#### ~~3.1 Progressive Web App (PWA)~~ ❌ DROPPED (Capacitor native instead)
 **Priority**: HIGH | **Effort**: 3 days
 
 **What**:
@@ -295,7 +303,7 @@ ChewIQ is a holistic health tracking platform that helps people with chronic ill
 
 ---
 
-#### 3.2 Mobile-Optimized UI
+#### ~~3.2 Mobile-Optimized UI~~ ✅ DONE (via Botanical Clinical design system with 44px touch targets)
 **Priority**: MEDIUM | **Effort**: 2 days
 
 **What**:
@@ -378,12 +386,15 @@ ChewIQ is a holistic health tracking platform that helps people with chronic ill
 
 ## Technical Debt & Infrastructure
 
-### Immediate Priorities
-1. **Add comprehensive error handling** - Many API routes lack proper error handling
-2. **Add loading states** - Some pages show blank screens while loading
-3. **Add input validation** - Client and server-side validation needed
-4. **Add rate limiting** - Protect API routes from abuse
-5. **Add monitoring** - Error tracking (Sentry) and analytics (PostHog)
+### Immediate Priorities (as of 2026-04-11)
+1. ~~Add comprehensive error handling~~ — ✅ React error boundaries added app-level + auth-level
+2. ~~Add loading states~~ — ✅ Skeleton component in design system, used throughout
+3. ~~Add input validation~~ — ✅ Zod schemas on all request bodies
+4. ~~Add rate limiting~~ — ✅ Upstash Redis rate limiting on chat + admin routes
+5. **Add monitoring** — ⏳ Still pending (Sentry + PostHog not yet wired)
+6. **Fix Stripe webhook period-dates bug** — ⏳ `app/api/billing/webhook/route.ts:29-30` sets both start and end to current_period_end
+7. **Rename `middleware.ts` → `proxy.ts`** — ⏳ Next.js 16 deprecation warning
+8. **Wire `/api/insights` to full correlation output** — ⏳ engine exists, endpoint thin
 
 ### Testing Strategy
 1. **Unit tests** - Critical business logic (correlation engine, pattern detection)

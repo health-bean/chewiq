@@ -1,16 +1,20 @@
 # ChewIQ Infrastructure & Architecture Decisions
 
-## Date: March 7, 2026
+## Date: March 7, 2026 — updated 2026-04-11
+
+> **Status update (2026-04-11):** The "Phase 1 / Phase 2" language below predates the actual migration. We are now fully on Supabase in production with RLS, rate limiting, and Stripe billing shipped. Strikethrough (~~text~~) marks items that are now done. The scaling/phasing timelines are kept for reference but should not be read as current plan.
 
 ## Tech Stack Decision
 
-### Current Stack (MVP - Phase 1)
-- **Frontend**: Next.js (already in use)
-- **Hosting**: Vercel
-- **Database**: PostgreSQL (current) → Migrate to Supabase
-- **Authentication**: Supabase Auth
-- **Real-time**: Supabase Realtime
-- **Cost**: $0-45/month
+### Current Stack (production, 2026-04-11)
+- **Frontend**: Next.js 16.1.6 (App Router, Turbopack), React 19
+- **Hosting**: Vercel (chewiq.app)
+- **Database**: Supabase Postgres (migrated, 25 tables, RLS enabled)
+- **Authentication**: Supabase Auth + SSR, middleware-level `getUser()` verification
+- **Rate limiting**: Upstash Redis (not "optional add later" — shipped)
+- **Billing**: Stripe (checkout, portal, webhook, tiered subscriptions)
+- **Mobile**: Capacitor v8.2 wrapping chewiq.app (iOS + Android shells)
+- **Cost**: ~$45/month (Vercel Pro + Supabase Pro)
 
 ### Future Stack (Phase 2+)
 - **iOS App**: SwiftUI native (HealthKit integration)
@@ -63,11 +67,11 @@
 7. Storage for file uploads
 8. Free tier: 500MB database, 2GB bandwidth
 
-### Migration Path
-1. **Now**: Keep current PostgreSQL setup
-2. **Phase 1**: Deploy to Vercel with current DB
-3. **Phase 2**: Migrate to Supabase (mostly config changes)
-4. **Phase 3**: Enable Supabase Auth, Realtime, pg_cron
+### Migration Path (historical — all done)
+1. ~~**Now**: Keep current PostgreSQL setup~~ ✅
+2. ~~**Phase 1**: Deploy to Vercel with current DB~~ ✅
+3. ~~**Phase 2**: Migrate to Supabase~~ ✅ DONE
+4. ~~**Phase 3**: Enable Supabase Auth, Realtime, pg_cron~~ ✅ Auth done, Realtime not used yet, pg_cron not yet wired
 
 ## Correlation Analysis Strategy
 
@@ -246,28 +250,40 @@ Supabase PostgreSQL
 - Reuse web UI components
 - Cross-platform (macOS, Windows, Linux)
 
-## Current Implementation Status
+## Current Implementation Status (updated 2026-04-11)
 
-### ✅ Completed (Sections 1-11.2)
-- Database schema and migrations
-- Exercise tracking (backend + frontend)
-- Food search and database
-- Reintroduction workflow (backend)
-- Reintroduction frontend (StartReintroductionModal, ReintroductionCard)
-- Real-time correlation analysis (on-demand)
+### ✅ Completed
+- Database schema (25 tables) and migrations, RLS on all user tables
+- Exercise tracking (backend + frontend + ExerciseInsights component)
+- Food search and database (local curated + USDA cache-through)
+- Reintroduction workflow — full stack, 4 test files (deepest-tested feature)
+- Onboarding — 3-step flow (Welcome → Protocol → Ready)
+- Real-time correlation engine (`lib/correlations/`) — logic done, needs richer wiring to `/api/insights`
+- Stripe billing (checkout, portal, webhook, subscription tiers)
+- CSV data export (`GET /api/export`)
+- Capacitor iOS + Android shells pointing at chewiq.app
+- Design system ("Botanical Clinical"): 14 UI components, Fraunces + Source Sans 3
+- Supabase Auth + middleware JWT verification
+- Upstash Redis rate limiting on AI + admin routes
+- Security headers (HSTS, CSP, X-Frame-Options, etc.)
+- `audit_log` table for HIPAA tracking
+- `user_notifications` table
+- Structured logging
 
-### 🚧 In Progress (Section 11)
-- Task 11.3: ReintroductionHistory component
-- Task 11.4: ReintroductionDetail component
-- Task 11.5: ReintroductionRecommendations component
-- Task 11.6: Reintroductions page
-- Task 11.7: Integrate into insights
+### 🚧 In Progress / Bugs
+- Stripe webhook period-dates bug (`app/api/billing/webhook/route.ts:29-30`)
+- `/api/insights` endpoint doesn't yet surface full correlation output
+- Push notifications: Capacitor plugin configured but no `device_tokens` table
+- Next.js 16: `middleware.ts` needs renaming to `proxy.ts` (deprecation warning)
 
-### 📋 Remaining
-- Section 13: Onboarding Backend
-- Section 14: Onboarding Frontend
-- Section 16: Integration & Polish
-- Section 17: Deployment & Verification
+### 📋 Next Up
+- **Insights v2 redesign** (in active design 2026-04-11)
+- **Personal data store hardening + practitioner sharing model** (design to follow)
+- **Aggregate research data lake** (future, ML / Cleveland Clinic research) — design to follow
+- Practitioner dashboard v0 (read-only patient view for Phase 1 pilot)
+- HealthKit / Health Connect integration
+- Monitoring (Sentry + PostHog)
+- App Store submission
 
 ## Key Decisions Summary
 
@@ -295,27 +311,22 @@ The current implementation is **production-ready** for Vercel + Supabase:
 
 ## Deployment Checklist
 
-### Phase 1: Deploy to Vercel (Now)
-- [ ] Push code to GitHub
-- [ ] Connect Vercel to repository
-- [ ] Set environment variables (DATABASE_URL, etc.)
-- [ ] Deploy to production
-- [ ] Run database migration on production DB
+### Phase 1: Deploy to Vercel — ✅ DONE
+- [x] Push code to GitHub
+- [x] Connect Vercel to repository
+- [x] Set environment variables
+- [x] Deploy to production (chewiq.app)
+- [x] Run database migrations on production
 
-### Phase 2: Migrate to Supabase (Later)
-- [ ] Create Supabase project
-- [ ] Export current PostgreSQL data
-- [ ] Import to Supabase
-- [ ] Update DATABASE_URL environment variable
-- [ ] Enable Supabase Auth
-- [ ] Configure Row Level Security (RLS)
-- [ ] Set up pg_cron for background jobs
+### Phase 2: Migrate to Supabase — ✅ DONE
+- [x] Create Supabase project
+- [x] Import data to Supabase
+- [x] Enable Supabase Auth
+- [x] Configure Row Level Security (RLS on all 25 tables)
+- [ ] Set up pg_cron for background jobs (not yet wired)
 
-### Phase 3: Add Background Jobs (When Needed)
-- [ ] Create correlation cache table
-- [ ] Write pg_cron job for nightly correlation
-- [ ] Add "Refresh Insights" button to UI
-- [ ] Monitor performance and adjust schedule
+### Phase 3: Add Background Jobs — ⏳ DEFERRED
+Will be picked up as part of Insights v2 design (pre-aggregation for correlation materialized views).
 
 ## Cost Breakdown
 
